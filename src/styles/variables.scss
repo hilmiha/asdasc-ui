@@ -1,0 +1,216 @@
+@use 'sass:color';
+@use "sass:map";
+
+$clr-light:'#FFFFFF';
+$clr-dark:'#000000';
+
+$clr-rose: (
+    light: #eb7c8b,
+    dark: #ff637e,
+);
+$clr-red: (
+    light: #F15B50,
+    dark: #E2483D,
+);
+$clr-orange: (
+    light: #ff8903, //#ffb869
+    dark: #ff6900,
+);
+$clr-yellow: (
+    light: #E2B203,
+    dark: #CF9F02,
+);
+$clr-lime: (
+    light: #82B536,
+    dark: #6A9A23,
+);
+$clr-green: (
+    light: #0cc468,
+    dark: #0aa347,
+);
+$clr-emerald: (
+    light: #00bc7d,
+    dark: #009966,
+);
+$clr-teal: (
+    light: #42B2D7,
+    dark: #2898BD,
+);
+$clr-blue: (
+    light: #388BFF,
+    dark: #1D7AFC,
+);
+$clr-purple: (
+    light: #8F7EE7,
+    dark: #8270DB,
+);
+$clr-magenta: (
+    light: #DA62AC,
+    dark: #CD519D,
+);
+$clr-grey: (
+    light: #8590A2,
+    dark: #758195,
+);
+$clr-stone: (
+    light: #a6a09b,
+    dark: #847a72,
+);
+$clr-black: (
+    light: #2c3135,
+    dark: #15181c,
+);
+
+@mixin generate-colors($prefix, $colors, $isDark: false) {
+    @if $isDark {
+        --#{$prefix}-1000: #{color.mix(map.get($colors, light), #F7F8F9, 8%)};
+        --#{$prefix}-900: #{color.mix(map.get($colors, light), #F1F2F4, 20%)};
+        --#{$prefix}-800: #{color.mix(map.get($colors, light), #F1F2F4, 56%)};
+        --#{$prefix}-700: #{color.mix(map.get($colors, light), #DCDFE4, 80%)};
+        --#{$prefix}-600: #{color.mix(map.get($colors, light), #8590A2, 95%)};
+        --#{$prefix}-500: #{color.mix(map.get($colors, dark), #758195, 92%)};
+        --#{$prefix}-400: #{color.mix(map.get($colors, dark), #191414, 72%)};
+        --#{$prefix}-300: #{color.mix(map.get($colors, dark), #101214, 65%)};
+        --#{$prefix}-200: #{color.mix(map.get($colors, dark), #141618, 40%)};
+        --#{$prefix}-100: #{color.mix(map.get($colors, dark), #141618, 20%)};
+    } @else {
+        --#{$prefix}-100: #{color.mix(map.get($colors, light), #F7F8F9, 8%)};
+        --#{$prefix}-200: #{color.mix(map.get($colors, light), #F1F2F4, 20%)};
+        --#{$prefix}-300: #{color.mix(map.get($colors, light), #F1F2F4, 56%)};
+        --#{$prefix}-400: #{color.mix(map.get($colors, light), #DCDFE4, 80%)};
+        --#{$prefix}-500: #{color.mix(map.get($colors, light), #8590A2, 95%)};
+        --#{$prefix}-600: #{color.mix(map.get($colors, dark), #758195, 92%)};
+        --#{$prefix}-700: #{color.mix(map.get($colors, dark), #191414, 72%)};
+        --#{$prefix}-800: #{color.mix(map.get($colors, dark), #101214, 65%)};
+        --#{$prefix}-900: #{color.mix(map.get($colors, dark), #141618, 40%)};
+        --#{$prefix}-1000: #{color.mix(map.get($colors, dark), #141618, 20%)};
+    }
+}
+
+@mixin generate-surface-colors($prefix, $colors, $isDark: false) {
+    @if $isDark {
+        --#{$prefix}-1: #{color.mix(map.get($colors, light), #101214, 5%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, light), #1D2125, 7%)};
+        --#{$prefix}-3: #{color.mix(map.get($colors, light), #22272B, 10%)};
+        --#{$prefix}-4: #{color.mix(map.get($colors, light), #38414A, 12%)};
+        --#{$prefix}-5: #{color.mix(map.get($colors, light), #596773, 15%)};
+    } @else {
+        --#{$prefix}-1: #{color.mix(map.get($colors, dark), #F7F8F9, 5%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, dark), #F1F2F4, 10%)};
+        --#{$prefix}-3: #{color.mix(map.get($colors, dark), #e3e4e7, 15%)};
+        --#{$prefix}-4: #{color.mix(map.get($colors, dark), #B3B9C4, 20%)};
+        --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8590A2, 25%)};
+    }
+}
+
+@mixin generate-border-colors($prefix, $colors, $isDark: false) {
+    @if $isDark {
+        --#{$prefix}: hsl(from #{color.mix(map.get($colors, light), #596773, 15%)} h s l / 0.4); 
+    } @else {
+        --#{$prefix}: hsl(from #{color.mix(map.get($colors, dark), #8590A2, 25%)} h s l / 0.4); 
+    }
+}
+
+@mixin generate-shadow-colors($isDark: false) {
+    @if $isDark {
+        --clr-shadow: hsl(from #{$clr-dark} h s l / 0.4);
+    } @else {
+        --clr-shadow: hsl(from #{$clr-dark} h s l / 0.2);
+    }
+
+    --box-shadow: var(--clr-shadow) 0px 4px 12px;
+}
+
+// Create a map of your color variables
+$color-map: (
+    'rose': $clr-rose,
+    'red': $clr-red,
+    'orange': $clr-orange,
+    'yellow': $clr-yellow,
+    'lime': $clr-lime,
+    'green': $clr-green,
+    'emerald': $clr-emerald,
+    'teal': $clr-teal,
+    'blue': $clr-blue,
+    'purple': $clr-purple,
+    'magenta': $clr-magenta,
+    'grey': $clr-grey,
+    'stone': $clr-stone,
+    'black': $clr-black,
+);
+
+$clr-success:$clr-green; //defaul success color
+$clr-warning:$clr-orange; //defaul warning color
+$clr-danger:$clr-red; //defaul danger color
+
+@mixin generate-global-color-variable($isDark: false) {
+    //constant color
+    --clr-light: #{$clr-light};
+    --clr-dark: #{$clr-dark};
+    --clr-focus-ouline: var(--clr-orange-600);
+
+    //text color on dark mode
+    @if $isDark {
+        --clr-text: #{$clr-light};
+        --clr-text-rev: #{$clr-dark};
+    } @else {
+        --clr-text: #{$clr-dark};
+        --clr-text-rev: #{$clr-light};
+    }
+
+    // Generate all color variants using loop
+    @each $name, $color in $color-map {
+        @include generate-colors('clr-#{$name}', $color, $isDark);
+        @include generate-surface-colors('clr-surface-#{$name}', $color, $isDark);
+        @include generate-border-colors('clr-border-#{$name}', $color, $isDark);
+    }
+
+    // Theme variants using loop (excluding black for primary themes)
+    @each $name, $color in $color-map {
+        &[data-theme*="primary_#{$name}"] {
+            @include generate-colors('clr-primary', $color, $isDark);
+            @include generate-surface-colors('clr-surface-primary', $color, $isDark);
+            @include generate-border-colors('clr-border-primary', $color, $isDark);
+        }
+    }
+    @each $name, $color in $color-map {
+        &[data-theme*="tonal_#{$name}"] {
+            @include generate-surface-colors('clr-surface', $color, $isDark);
+            @include generate-border-colors('clr-border', $color, $isDark);
+        }
+    }
+
+    @include generate-colors('clr-success', $clr-success, $isDark);
+    @include generate-surface-colors('clr-surface-success', $clr-success, $isDark);
+    @include generate-border-colors('clr-border-success', $clr-success, $isDark);
+
+    @include generate-colors('clr-warning', $clr-warning, $isDark);
+    @include generate-surface-colors('clr-surface-warning', $clr-warning, $isDark);
+    @include generate-border-colors('clr-border-warning', $clr-warning, $isDark);
+
+    @include generate-colors('clr-danger', $clr-danger, $isDark);
+    @include generate-surface-colors('clr-surface-danger', $clr-danger, $isDark);
+    @include generate-border-colors('clr-border-danger', $clr-danger, $isDark);
+
+    @include generate-shadow-colors($isDark);
+}
+
+$space-0: 0px;
+$space-25: 2px;
+$space-50: 4px;
+$space-100: 8px;
+$space-150: 12px;
+$space-200: 16px;
+$space-250: 20px;
+$space-300: 24px;
+$space-400: 32px;
+$space-500: 40px;
+$space-600: 48px;
+$space-800: 64px;
+$space-1000: 80px;
+
+$font-weight-subtext: 300;
+$font-weight-text: 400;
+$font-weight-subtitle: 600;
+$font-weight-title: 700;
+$font-weight-xtitle: 800;

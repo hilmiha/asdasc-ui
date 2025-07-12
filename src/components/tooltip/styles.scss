@@ -1,0 +1,25 @@
+.tooltip{
+    pointer-events: all;
+    display: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+}
+
+.tooltip-content-container{
+    padding: var(--space-50) var(--space-150);
+    background-color: var(--clr-surface-2);
+    border: 1px solid var(--clr-border);
+    z-index: 1;
+    font-size: 12px;
+    box-shadow: var(--box-shadow);
+
+    &.rounded{
+        border-radius: var(--space-100);
+    }
+    &.box{
+        border-radius: var(--space-0);
+    }
+    &.circle{
+        border-radius: var(--space-200);
+    }
+}

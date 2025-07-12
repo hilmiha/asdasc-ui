@@ -1,0 +1,94 @@
+@use '/src/styles/variables.scss' as *;
+@import '@fontsource/inter/100.css';
+@import '@fontsource/inter/200.css';
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+@import '@fontsource/inter/900.css';
+
+:root {
+    // Font weights
+    --font-weight-subtext: #{$font-weight-subtext};           
+    --font-weight-text: #{$font-weight-text};
+    --font-weight-subtitle: #{$font-weight-subtitle};
+    --font-weight-title: #{$font-weight-title};
+    --font-weight-xtitle: #{$font-weight-xtitle};
+
+    // Spacing
+    --space-0: #{$space-0};
+    --space-25: #{$space-25};
+    --space-50: #{$space-50};
+    --space-100: #{$space-100};
+    --space-150: #{$space-150};
+    --space-200: #{$space-200};
+    --space-250: #{$space-250};
+    --space-300: #{$space-300};
+    --space-400: #{$space-400};
+    --space-500: #{$space-500};
+    --space-600: #{$space-600};
+    --space-800: #{$space-800};
+    --space-1000: #{$space-1000};
+
+    @include generate-global-color-variable(false)
+}
+
+[data-theme^="dark"] {
+    @include generate-global-color-variable(true)
+}
+
+* {
+    font-family: 'Inter', monospace;
+    font-size: 12px;
+}
+
+html {
+    font-weight: 400;
+    background-color: var(--clr-surface-1);
+    color: var(--clr-text);
+
+    body {
+        margin: 0;
+    }
+
+    p{
+        margin: 0;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: var(--space-100);
+    height: var(--space-100);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: hsl(from var(--clr-surface-4) h s l / 0.2);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: hsl(from var(--clr-surface-4) h s l / 0.4);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(from var(--clr-surface-4) h s l / 1);
+}
+
+[data-theme*="box"] {
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border-radius: 0px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+    }
+}

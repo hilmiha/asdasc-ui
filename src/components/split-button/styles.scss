@@ -1,0 +1,21 @@
+.split-button{
+    display: flex;
+    position: relative;
+
+    .button-one{
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        margin-right: 0px;
+    }
+
+    .button-more{
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        margin-left: 0px;
+        border-left: 0px;
+    }
+    
+    .button-more.circle{
+        width: var(--space-500);
+    }
+}
