@@ -7,7 +7,7 @@
 .dropdown-menu-container{
     background-color: var(--clr-surface-2);
     border: 1px solid var(--clr-border);
-    padding: var(--space-0);
+    padding: var(--space-25) var(--space-0);
     min-width: 260px;
     max-width: 310px;
     max-height: inherit;
@@ -25,7 +25,15 @@
     &.circle{
         border-radius: var(--space-200);
     }
+    
+    .dropdown-item {
+        flex-grow: 1;
+        margin: var(--space-25) var(--space-50);
 
+        .text-label{
+            flex-grow: 1;
+        }
+    }
     .check-icon-container{
         display: flex;
         gap: var(--space-100)
