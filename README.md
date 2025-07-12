@@ -60,25 +60,25 @@ ASDASC is my attempt to apply everything I've learned about front-end developmen
 Clone the project
 
 ```bash
-  git clone https://github.com/hilmiha/asdasc-ui.git
+git clone https://github.com/hilmiha/asdasc-ui.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd asdasc-ui
+cd asdasc-ui
 ```
 
 Install dependencies
 
 ```bash
-  npm install
+npm install
 ```
 
 Start the server
 
 ```bash
-  npm run dev
+npm run dev
 ```
 
 ## Philosophy
