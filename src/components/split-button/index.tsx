@@ -6,7 +6,7 @@ import Button, { type buttonStyleType } from "../button";
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import IconButton, { type iconButtonStyleType } from '../icon-button';
 import { PiCaretDownBold, PiCaretUpBold } from 'react-icons/pi';
-import type { globalShapeType } from '../types';
+import type { globalShapeType } from '../_types';
 import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
 
 const SplitButton = ({
@@ -14,7 +14,7 @@ const SplitButton = ({
     id = undefined,
     className = undefined,
     style = undefined,
-    apperance = 'neutral',
+    appearance = 'neutral',
     shape = undefined,
     txtLabel = '',
     options = [],
@@ -44,7 +44,7 @@ const SplitButton = ({
             <Button
                 className='button-one'
                 txtLabel={txtLabel}
-                apperance={apperance}
+                appearance={appearance}
                 shape={(shape)?(shape):(globalShape)}
                 isDisabled={isDisabled}
                 onClick={(e)=>{ctrl.thisOnClick('_main', e, onClick)}}
@@ -61,8 +61,8 @@ const SplitButton = ({
                         ref={triggerRef} 
                         className='button-more'
                         txtLabel={`${txtLabel} More`}
-                        icon={(isDropdownOpen)?(<PiCaretUpBold/>):(<PiCaretDownBold/>)}
-                        apperance={apperance}
+                        icon={(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
+                        appearance={appearance}
                         shape={(shape)?(shape):(globalShape)}
                         isDisabled={isDisabled}
                         isShowtooltip={false}
@@ -82,7 +82,7 @@ interface _SplitButton {
     id?:string
     className?:string;
     style?:splitButtonStyleType;
-    apperance?: 'neutral' | 'primary';
+    appearance?: 'neutral' | 'primary';
     shape?:globalShapeType;
     txtLabel:string;
     options:dropdownMenuOptionType[]

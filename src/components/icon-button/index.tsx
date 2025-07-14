@@ -5,14 +5,14 @@ import { useContext, type JSX } from "react"
 import { PiCircle } from 'react-icons/pi';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import Tooltip from '../tooltip';
-import type { globalApperanceType, globalShapeType } from '../types';
+import type { globalAppearanceType, globalShapeType } from '../_types';
 
 const IconButton = ({
     ref = undefined,
     id = undefined,
     className = undefined,
     style = undefined,
-    apperance = 'neutral',
+    appearance = 'neutral',
     shape = undefined,
     icon = <PiCircle/>,
     txtLabel = '',
@@ -39,7 +39,7 @@ const IconButton = ({
                     clsx(
                         className,
                         'icon-button',
-                        apperance,
+                        appearance,
                         (shape)?(shape):(globalShape),
                         {
                             ['selected']:(isSelected),
@@ -77,7 +77,7 @@ interface _IconButton {
     id?:string;
     className?:string;
     style?:iconButtonStyleType;
-    apperance?:globalApperanceType;
+    appearance?:globalAppearanceType;
     shape?:globalShapeType;
     icon:JSX.Element;
     txtLabel:string;

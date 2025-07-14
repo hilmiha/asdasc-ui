@@ -5,7 +5,7 @@ import React, { useContext, useState, type JSX } from 'react';
 import type { buttonStyleType } from "../button";
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import { autoUpdate, flip, FloatingFocusManager, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
-import type { globalShapeType } from '../types';
+import type { globalShapeType } from '../_types';
 import { PiCaretRightBold, PiCheckBold, PiCircleBold } from 'react-icons/pi';
 import Button from '../button';
 
@@ -20,15 +20,15 @@ const DropdownMenu = ({
     onClick
 }:_DropdownMenu) =>{
 
-    //States start ====
-    const [isShowOption, setIsShowOption] = useState<boolean>(false)
-    //States end ====
-
     //Context start ====
     const {
         globalShape
     } = useContext(GlobalContext) as _GlobalContextType
     //Context end ====
+
+    //States start ====
+    const [isShowOption, setIsShowOption] = useState<boolean>(false)
+    //States end ====
     
     //FloatingUi Config ====
     const {refs, floatingStyles, context} = useFloating({
@@ -121,9 +121,9 @@ const DropdownMenu = ({
                                                                     <div className='check-icon-container'>
                                                                         {
                                                                             (optionSelected?.includes(option.id))?(
-                                                                                <PiCheckBold/>
+                                                                                <PiCheckBold className='global-icon'/>
                                                                             ):(
-                                                                                <PiCircleBold style={{color:'transparent'}}/>
+                                                                                <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
                                                                             )
                                                                         }
                                                                         {option.icon}
@@ -138,7 +138,7 @@ const DropdownMenu = ({
                                                                 </div>
                                                             }
                                                             isSelected={optionSelected?.includes(option.id)}
-                                                            apperance={'subtle'}
+                                                            appearance={'subtle'}
                                                             onClick={(e)=>{ctrl.thisOnClick(option.id, e, onClick)}}
                                                             isDisabled={option.isDisabled}
                                                         />
@@ -176,7 +176,7 @@ const DropdownMenu = ({
                                                                         iconBefore={
                                                                             (optionSelected)?(
                                                                                 <div className='check-icon-container'>
-                                                                                    <PiCircleBold style={{color:'transparent'}}/>
+                                                                                    <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
                                                                                     {option.icon}
                                                                                 </div>
                                                                             ):(
@@ -186,11 +186,11 @@ const DropdownMenu = ({
                                                                         iconAfter={
                                                                             <div className='check-icon-container'>
                                                                                 {option.iconAfter}
-                                                                                <PiCaretRightBold style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-5)`}}/>
+                                                                                <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
                                                                             </div>
                                                                         }
                                                                         isSelected={isDropdownOpen}
-                                                                        apperance={'subtle'}
+                                                                        appearance={'subtle'}
                                                                         isDisabled={option.isDisabled}
                                                                     />
                                                                 )

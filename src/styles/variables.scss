@@ -90,16 +90,16 @@ $clr-black: (
 @mixin generate-surface-colors($prefix, $colors, $isDark: false) {
     @if $isDark {
         --#{$prefix}-1: #{color.mix(map.get($colors, light), #101214, 5%)};
-        --#{$prefix}-2: #{color.mix(map.get($colors, light), #1D2125, 7%)};
-        --#{$prefix}-3: #{color.mix(map.get($colors, light), #22272B, 10%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, light), #121416, 8%)};
+        --#{$prefix}-3: #{color.mix(map.get($colors, light), #17191c, 10%)};
         --#{$prefix}-4: #{color.mix(map.get($colors, light), #38414A, 12%)};
         --#{$prefix}-5: #{color.mix(map.get($colors, light), #596773, 15%)};
     } @else {
         --#{$prefix}-1: #{color.mix(map.get($colors, dark), #F7F8F9, 5%)};
-        --#{$prefix}-2: #{color.mix(map.get($colors, dark), #F1F2F4, 10%)};
-        --#{$prefix}-3: #{color.mix(map.get($colors, dark), #e3e4e7, 15%)};
-        --#{$prefix}-4: #{color.mix(map.get($colors, dark), #B3B9C4, 20%)};
-        --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8590A2, 25%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, dark), #f6f7f9, 10%)};
+        --#{$prefix}-3: #{color.mix(map.get($colors, dark), #f1f3f7, 15%)};
+        --#{$prefix}-4: #{color.mix(map.get($colors, dark), #bac2cf, 20%)};
+        --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8c95a4, 25%)};
     }
 }
 
@@ -115,10 +115,10 @@ $clr-black: (
     @if $isDark {
         --clr-shadow: hsl(from #{$clr-dark} h s l / 0.4);
     } @else {
-        --clr-shadow: hsl(from #{$clr-dark} h s l / 0.2);
+        --clr-shadow: hsl(from #3c4043 h s l / 0.2);
     }
 
-    --box-shadow: var(--clr-shadow) 0px 4px 12px;
+    --box-shadow: var(--clr-shadow) 0px 0px 5px 0px, var(--clr-shadow) 0px 0px 1px 0px;
 }
 
 // Create a map of your color variables
@@ -214,3 +214,4 @@ $font-weight-text: 400;
 $font-weight-subtitle: 600;
 $font-weight-title: 700;
 $font-weight-xtitle: 800;
+$icon-size:14px;

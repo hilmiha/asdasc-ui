@@ -1,7 +1,7 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import type { globalApperanceType, globalShapeType } from '../types';
+import type { globalAppearanceType, globalShapeType } from '../_types';
 import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 
@@ -10,7 +10,7 @@ const Button = ({
     id = undefined,
     className = undefined,
     style = undefined,
-    apperance = 'neutral',
+    appearance = 'neutral',
     shape = undefined,
     txtLabel = '',
     iconBefore = undefined,
@@ -33,7 +33,7 @@ const Button = ({
             className={
                 clsx(
                     'button',
-                    apperance,
+                    appearance,
                     (shape)?(shape):(globalShape),
                     {
                         ['selected']:(isSelected),
@@ -87,7 +87,7 @@ interface _Button {
     id?:string
     className?:string;
     style?:buttonStyleType;
-    apperance?:globalApperanceType;
+    appearance?:globalAppearanceType;
     shape?:globalShapeType;
     txtLabel:JSX.Element | string;
     iconBefore?:JSX.Element;

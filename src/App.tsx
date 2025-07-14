@@ -1,12 +1,15 @@
 import './App.scss'
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiCircleBold, PiCircleDashedBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiStarFourBold, PiXCircleBold } from 'react-icons/pi';
+import { PiCircleBold, PiCircleDashedBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiPencilLineBold, PiStarFourBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
 import SplitButton from './components/split-button';
 import DropdownMenu from './components/dropdown-menu';
+import InputText from './components/input-text';
+import type { fieldErrorType } from './components/_types';
+import InputPassword from './components/input-password';
 
 function App() {
     const {
@@ -26,9 +29,38 @@ function App() {
     const surfaceLevel = useMemo(()=>{
         return [5,4,3,2,1]
     },[])
+
+    const [form, setForm] = useState<{[key:string]:any}>({
+        testText:'',
+        testPassword:'',
+        testTextNoSpace:'',
+        testTextNumber:'',
+        testTextNumberText:'',
+    })
+    const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
+        testText:{isError:false, errorMessage:''},
+        testPassword:{isError:false, errorMessage:''},
+        testTextNoSpace:{isError:false, errorMessage:''},
+        testTextNumber:{isError:false, errorMessage:''},
+        testTextNumberText:{isError:false, errorMessage:''},
+    })
+    const onChange = useCallback((key: string, newValue: string) => {
+        setForm((prev) => ({
+            ...prev,
+            [key]: newValue
+        }));
+    }, []);
+
+    const onValidate = useCallback((key: string, error: fieldErrorType) => {
+        setFormError((prev) => ({
+            ...prev,
+            [key]: error
+        }));
+    }, []); 
+
     return (
         <div>
-            <div style={{height:'200px', padding:"var(--space-300)"}}>
+            <div style={{padding:"var(--space-300)"}}>
                 <div style={{display:'flex'}}>
                     <Button 
                         txtLabel='Hello World'
@@ -43,58 +75,58 @@ function App() {
                     />
                     <Button 
                         txtLabel='Hello World'
-                        apperance='primary'
+                        appearance='primary'
                     />
                     <Button 
                         txtLabel='Hello World'
-                        apperance='subtle'
+                        appearance='subtle'
                     />
                 </div>
                 
                 <div style={{display:'flex'}}>
                     <Button
-                        iconBefore={<PiStarFourBold/>}
+                        iconBefore={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello'
                     />
                     <Button
-                        iconAfter={<PiStarFourBold/>}
+                        iconAfter={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello'
                     />
                 </div>
                 <div style={{display:'flex'}}>
                     <IconButton 
-                        icon={<PiStarFourBold/>}
+                        icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                         isDisabled
                     />
                     <IconButton 
-                        icon={<PiStarFourBold/>}
+                        icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                         isSelected
                     />
                     <IconButton 
-                        icon={<PiStarFourBold/>}
+                        icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                     />
                     <IconButton 
-                        icon={<PiStarFourBold/>}
+                        icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
-                        apperance='primary'
+                        appearance='primary'
                     />
                     <IconButton 
-                        icon={<PiStarFourBold/>}
+                        icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
-                        apperance='subtle'
+                        appearance='subtle'
                     />
                 </div>
                 <div style={{display:'flex'}}>
                     <SplitButton
                         txtLabel='Hello World'
                         options={[
-                            {id:'duplicate', txtLabel:'Duplicate', icon:<PiCopyBold/>, isDisabled:true},
-                            {id:'edit', txtLabel:'Edit', icon:<PiPencilBold/>},
-                            {id:'hide', txtLabel:'Hide', icon:<PiCircleDashedBold/>},
-                            {id:'delete', txtLabel:'Delete', icon:<PiXCircleBold/>},
+                            {id:'duplicate', txtLabel:'Duplicate', icon:<PiCopyBold className='global-icon'/>, isDisabled:true},
+                            {id:'edit', txtLabel:'Edit', icon:<PiPencilBold className='global-icon'/>},
+                            {id:'hide', txtLabel:'Hide', icon:<PiCircleDashedBold className='global-icon'/>},
+                            {id:'delete', txtLabel:'Delete', icon:<PiXCircleBold className='global-icon'/>},
                         ]}
                         onClick={(id)=>{console.log(id)}}
                     />
@@ -102,16 +134,16 @@ function App() {
                 <div>
                     <DropdownMenu
                         options={[
-                            {id:'duplicate', txtLabel:'Duplicate', icon:<PiCopyBold/>, isDisabled:true},
-                            {id:'edit', txtLabel:'Edit', icon:<PiPencilBold/>},
-                            {id:'hide', txtLabel:'Hide', icon:<PiCircleDashedBold/>},
+                            {id:'duplicate', txtLabel:'Duplicate', icon:<PiCopyBold className='global-icon'/>, isDisabled:true},
+                            {id:'edit', txtLabel:'Edit', icon:<PiPencilBold className='global-icon'/>},
+                            {id:'hide', txtLabel:'Hide', icon:<PiCircleDashedBold className='global-icon'/>},
 
                             {id:"modified", type:"separator", txtLabel:''},
-                            {id:'delete', txtLabel:'Delete', icon:<PiXCircleBold/>},
+                            {id:'delete', txtLabel:'Delete', icon:<PiXCircleBold className='global-icon'/>},
                             {
                                 id:'other', 
                                 txtLabel:'Others', 
-                                icon:<PiDotsThreeBold/>, 
+                                icon:<PiDotsThreeBold className='global-icon'/>, 
                                 childMenu:[
                                     {id:'a', txtLabel:'A'},
                                     {id:'b', txtLabel:'B'},
@@ -136,6 +168,228 @@ function App() {
                         onClick={(idButton)=>{console.log(idButton)}}
                     />
                 </div>
+                <div
+                    style={{
+                        display:'flex',
+                        gap:'var(--space-300)',
+                        margin:"var(--space-500) 0px"
+                    }}
+                >
+                    
+                    <div
+                        style={{
+                            flexGrow:'1', 
+                            borderRadius:'var(--space-100)',
+                            boxShadow:'var(--box-shadow)',
+                            border:'1px solid var(--clr-border)',
+                        }}
+                    >
+                        <div
+                            style={{
+                                backgroundColor:'var(--clr-surface-1)',
+                                padding: 'var(--space-500) var(--space-1000) var(--space-200) var(--space-1000)',
+                                // border:'1px solid var(--clr-border)',
+                                borderBottom:'transparent',
+                                borderRadius:'var(--space-100) var(--space-100) 0px 0px',
+                                display:'flex',
+                                alignItems:'center',
+                                gap:'var(--space-100)',
+                                color:"var(--clr-primary-700)",
+                            }}
+                        >
+                            <PiPencilLineBold className='global-icon'/>
+                            <span style={{fontWeight:'var(--font-weight-subtitle)'}}>Edit Detail Form</span>
+                        </div>
+                        <div
+                            style={{
+                                padding:'var(--space-500) var(--space-1000)',
+                                backgroundColor:'var(--clr-surface-1)',
+                                flexGrow:'1',
+                                display:"grid",
+                                gap:'var(--space-100)',
+                                // border:'1px solid var(--clr-border)',
+                                borderTop:'transparent',
+                                borderRadius:'var(--space-100)',
+                                borderTopRightRadius:'0px',
+                                borderTopLeftRadius:'0px',
+                            }}
+                        >
+                            <InputText
+                                type='text'
+                                txtPlaceholder='Enter test text...'
+                                value={form['testText']}
+                                onChange={(newValue)=>{onChange('testText', newValue)}}
+                                onValidate={(error)=>{onValidate('testText', error)}}
+                                error={formError['testText']}
+                                config={{
+                                    isRequired:true,
+                                    isDisabled:false,
+                                }}
+                            />
+                            <InputText
+                                type='text'
+                                txtPlaceholder='Enter test text...'
+                                value={form['testText']}
+                                config={{
+                                    isDisabled:true,
+                                }}
+                            />
+                            <InputPassword
+                                txtPlaceholder='Enter password...'
+                                value={form['testPassword']}
+                                onChange={(newValue)=>{onChange('testPassword', newValue)}}
+                                onValidate={(error)=>{onValidate('testPassword', error)}}
+                                error={formError['testPassword']}
+                                config={{
+                                    isDisabled:false,
+                                    validRegex: [
+                                        // [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
+                                    ]
+                                }}
+                            />
+                            <InputText
+                                type='text-no-space'
+                                txtPlaceholder='Enter test text nospace...'
+                                value={form['testTextNoSpace']}
+                                onChange={(newValue)=>{onChange('testTextNoSpace', newValue)}}
+                                config={{
+                                    isDisabled:false,
+                                    maxLength:42
+                                }}
+                            />
+                            <InputText
+                                type='number'
+                                txtPlaceholder='Enter test text number...'
+                                value={form['testTextNumber']}
+                                onChange={(newValue)=>{onChange('testTextNumber', newValue)}}
+                                onValidate={(error)=>{onValidate('testTextNumber', error)}}
+                                error={formError['testTextNumber']}
+                                config={{
+                                    isDisabled:false,
+                                    maxLength:42,
+                                    minValue:10,
+                                    maxValue:1000
+                                }}
+                            />
+                            <InputText
+                                type='number-text'
+                                txtPlaceholder='Enter test text number...'
+                                value={form['testTextNumberText']}
+                                onChange={(newValue)=>{onChange('testTextNumberText', newValue)}}
+                                config={{
+                                    isDisabled:false,
+                                    maxLength:42
+                                }}
+                            />
+                            <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
+                                <Button
+                                    txtLabel={'Submit'}
+                                    appearance='primary'
+                                />
+                                <Button
+                                    txtLabel={'Cancel'}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        style={{
+                            padding:'var(--space-200)',
+                            // backgroundColor:'var(--clr-surface-2)',
+                            display:"grid",
+                            gap:'var(--space-100)',
+                            // border:'1px solid var(--clr-border)',
+                            borderRadius:'var(--space-100)',
+                            marginBottom:'var(--space-400)',
+                            marginTop:'var(--space-400)',
+                            minWidth:'40vw'
+                        }}
+                    >
+                        
+                    </div>
+                </div>
+                {/* <div
+                    style={{
+                        padding:'var(--space-200)',
+                        backgroundColor:'var(--clr-surface-2)',
+                        display:"grid",
+                        gap:'var(--space-100)',
+                        border:'1px solid var(--clr-border)',
+                        borderRadius:'var(--space-100)',
+                        marginBottom:'var(--space-100)'
+                    }}
+                >
+                    <InputText
+                        type='text'
+                        txtPlaceholder='Enter test text...'
+                        value={form['testText']}
+                    />
+                    <InputText
+                        type='text-no-space'
+                        txtPlaceholder='Enter test text nospace...'
+                        value={form['testTextNoSpace']}
+                    />
+                    <InputText
+                        type='number'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumber']}
+                    />
+                    <InputText
+                        type='number-text'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumberText']}
+                    />
+                    <div style={{display:'flex', gap:'var(--spacep-50)'}}>
+                        <Button
+                            txtLabel={'Submit'}
+                            appearance='primary'
+                        />
+                        <Button
+                            txtLabel={'Cancel'}
+                        />
+                    </div>
+                </div>
+                <div
+                    style={{
+                        padding:'var(--space-200)',
+                        backgroundColor:'var(--clr-surface-3)',
+                        display:"grid",
+                        gap:'var(--space-100)',
+                        border:'1px solid var(--clr-border)',
+                        borderRadius:'var(--space-100)',
+                        marginBottom:'var(--space-100)'
+                    }}
+                >
+                    <InputText
+                        type='text'
+                        txtPlaceholder='Enter test text...'
+                        value={form['testText']}
+                    />
+                    <InputText
+                        type='text-no-space'
+                        txtPlaceholder='Enter test text nospace...'
+                        value={form['testTextNoSpace']}
+                    />
+                    <InputText
+                        type='number'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumber']}
+                    />
+                    <InputText
+                        type='number-text'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumberText']}
+                    />
+                    <div style={{display:'flex', gap:'var(--spacep-50)'}}>
+                        <Button
+                            txtLabel={'Submit'}
+                            appearance='primary'
+                        />
+                        <Button
+                            txtLabel={'Cancel'}
+                        />
+                    </div>
+                </div> */}
             </div>
             <div
                 style={{
@@ -168,11 +422,11 @@ function App() {
                         <SplitButton
                             txtLabel='Toggle Theme'
                             options={[
-                                {id:'circle', txtLabel:'Toggle Shape Circle', icon:<PiCircleBold/>},
-                                {id:'rounded', txtLabel:'Toggle Shape Rounded', icon:<BiSquareRounded/>},
-                                {id:'box', txtLabel:'Toggle Shape Box', icon:<BiSquare/>},
+                                {id:'circle', txtLabel:'Toggle Shape Circle', icon:<PiCircleBold className='global-icon'/>},
+                                {id:'rounded', txtLabel:'Toggle Shape Rounded', icon:<BiSquareRounded className='global-icon'/>},
+                                {id:'box', txtLabel:'Toggle Shape Box', icon:<BiSquare className='global-icon'/>},
                             ]}
-                            apperance='neutral'
+                            appearance='neutral'
                             optionSelected={[appTheme.split('-')[3]??'-']}
                             onClick={(id)=>{
                                 if(id==='_main'){

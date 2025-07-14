@@ -41,11 +41,11 @@
 
 * {
     font-family: 'Inter', monospace;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 html {
-    font-weight: 400;
+    font-weight: var(--font-weight-text);
     background-color: var(--clr-surface-1);
     color: var(--clr-text);
 
@@ -55,6 +55,11 @@ html {
 
     p{
         margin: 0;
+    }
+
+    .global-icon{
+        min-height: #{$icon-size};
+        min-width: #{$icon-size};
     }
 }
 
