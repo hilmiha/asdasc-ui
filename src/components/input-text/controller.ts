@@ -1,25 +1,7 @@
 import React from "react";
 import type { inputTextConfigType, inputTextType } from ".";
 import type { fieldErrorType } from "../_types";
-
-// Helper function to format number for display
-const formatNumberForDisplay = (value: string): string => {
-    if (!value) return '';
-    
-    // Remove any non-digit characters except the first minus sign
-    const cleanValue = value.replace(/[^0-9-]/g, '').replace(/-+/g, (_, offset) => offset === 0 ? '-' : '');
-    
-    // Handle negative sign
-    const isNegative = cleanValue.startsWith('-');
-    const numberPart = cleanValue.replace('-', '');
-    
-    if (!numberPart) return isNegative ? '-' : '';
-    
-    // Add thousand separators (dots in your case)
-    const formatted = numberPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    
-    return isNegative ? `-${formatted}` : formatted;
-};
+import { formatNumberForDisplay } from "../../helper/helper";
 
 // Helper function to clean number for state storage
 const cleanNumberForState = (value: string): string => {
@@ -132,6 +114,15 @@ export const thisOnchange = (
         if (shouldUpdate) {
             onChange(newValue, e)
         }
+    }
+}
+
+export const clearValue = (
+    e:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    onChange?:(newValue:string, e:any)=>void,
+) =>{
+    if(onChange){
+        onChange('', e)
     }
 }
 

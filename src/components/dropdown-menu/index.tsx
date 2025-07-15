@@ -10,14 +10,22 @@ import { PiCaretRightBold, PiCheckBold, PiCircleBold } from 'react-icons/pi';
 import Button from '../button';
 
 const DropdownMenu = ({
+    className,
     trigger,
     style = undefined,
     shape = undefined,
     options = [],
     optionSelected = undefined,
     placement,
+    isContainerWidthSameAsTrigger = false,
+    isWithCheckmark = false,
     level = 0,
-    onClick
+    onClick,
+    onOptionClose,
+    onOptionOpen,
+
+    elementHeader = undefined,
+    elementFooter = undefined
 }:_DropdownMenu) =>{
 
     //Context start ====
@@ -33,7 +41,17 @@ const DropdownMenu = ({
     //FloatingUi Config ====
     const {refs, floatingStyles, context} = useFloating({
         open: isShowOption,
-        onOpenChange: setIsShowOption,
+        onOpenChange: (open)=>{
+            setIsShowOption(open)
+            
+            if(onOptionOpen){
+                onOptionOpen(refs.domReference)
+            }
+
+            if(onOptionClose){
+                onOptionClose(refs.domReference)
+            }
+        },
         placement: placement??'bottom-start',
         middleware: [
             offset(level ? 8 : 4),
@@ -42,9 +60,18 @@ const DropdownMenu = ({
                 padding: 10,
             }),
             size({
-                apply({availableHeight, elements}) {
+                apply({availableHeight, elements, rects}) {
                     const value = `${Math.max(0, availableHeight) - 20}px`;
                     elements.floating.style.maxHeight = value;
+                    if(isContainerWidthSameAsTrigger){
+                        elements.floating.style.width = `${rects.reference.width}px`
+                        elements.floating.style.minWidth = `${rects.reference.width}px`
+                        elements.floating.style.maxWidth = `${rects.reference.width}px`
+                    }else{
+                        elements.floating.style.width = `260px`
+                        elements.floating.style.minWidth = `260px`
+                        elements.floating.style.maxWidth = `310px`
+                    }
                 },
             }),
         ],
@@ -67,12 +94,14 @@ const DropdownMenu = ({
     return(
         <>
             <div 
-                className='dropdown-menu-trigger-box'
+                className={clsx(
+                    'dropdown-menu-trigger-box',
+                )}
                 {...getReferenceProps()}
                 style={style?.triggerBox}
             >
                 {typeof trigger === 'function' 
-                    ? trigger(refs.setReference, isShowOption)
+                    ? trigger(refs.setReference, isShowOption, refs.domReference)
                     : trigger && React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })
                 }
             </div>
@@ -88,6 +117,7 @@ const DropdownMenu = ({
                                 className={clsx(
                                     'dropdown-menu-box',
                                     (shape)?(shape):(globalShape),
+                                    className
                                 )}
                                 ref={refs.setFloating}
                                 style={floatingStyles}
@@ -100,6 +130,15 @@ const DropdownMenu = ({
                                     )}
                                     style={style?.container}
                                 >
+                                    {
+                                        elementHeader&&(
+                                            <div className='element-header-box'>
+                                                {
+                                                    elementHeader
+                                                }
+                                            </div>
+                                        )
+                                    }
                                     {
                                         options.map((option)=>{
                                             if(option.type!=='separator'){
@@ -120,7 +159,9 @@ const DropdownMenu = ({
                                                                 (optionSelected)?(
                                                                     <div className='check-icon-container'>
                                                                         {
-                                                                            (optionSelected?.includes(option.id))?(
+                                                                            (!isWithCheckmark)?(
+                                                                                <></>
+                                                                            ):(optionSelected?.includes(option.id))?(
                                                                                 <PiCheckBold className='global-icon'/>
                                                                             ):(
                                                                                 <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
@@ -211,6 +252,15 @@ const DropdownMenu = ({
                                             }
                                         })
                                     }
+                                    {
+                                        elementFooter&&(
+                                            <div className='element-footer-box'>
+                                                {
+                                                    elementFooter
+                                                }
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </FloatingFocusManager>
@@ -224,14 +274,22 @@ const DropdownMenu = ({
 export default DropdownMenu
 
 interface _DropdownMenu {
-    trigger:JSX.Element | ((triggerRef: React.RefCallback<HTMLElement>, isDropdownOpen:boolean) => JSX.Element);
+    className?:string
+    trigger:JSX.Element | ((triggerRef: React.RefCallback<HTMLElement>, isDropdownOpen:boolean, trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => JSX.Element);
     style?:dropdownMenuStyleType;
     shape?:globalShapeType;
     options:dropdownMenuOptionType[]
     optionSelected?:string[]
     placement?:Placement,
+    isContainerWidthSameAsTrigger?:boolean
+    isWithCheckmark?:boolean
     level?:number
     onClick?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onOptionOpen?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;
+    onOptionClose?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;
+
+    elementHeader?:JSX.Element
+    elementFooter?:JSX.Element
 }
 
 export type dropdownMenuStyleType = {
@@ -244,7 +302,7 @@ export type dropdownMenuStyleType = {
 export type dropdownMenuOptionType = {
     id:string,
     type?: 'option' | 'separator',
-    txtLabel?:JSX.Element | string,
+    txtLabel:string,
     icon?:JSX.Element,
     iconAfter?:JSX.Element,
     isDisabled?:boolean,

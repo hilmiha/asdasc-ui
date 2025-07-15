@@ -4,7 +4,8 @@ import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType } from '../_types';
 import React, { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import { PiLockBold, PiWarningBold } from 'react-icons/pi';
+import { PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
+import IconButton from '../icon-button';
 
 const InputText = ({
     ref = undefined,
@@ -104,6 +105,7 @@ const InputText = ({
                     }}
                     disabled={isDisabled}
                     type={inputMode}
+                    inputMode={(inputMode==='numeric')?('tel'):('text')}
                 />
                 {
                     (isDisabled)&&(
@@ -111,6 +113,26 @@ const InputText = ({
                     )
                 }
             </div>
+            {
+                (value.length > 0 && !isDisabled)&&(
+                    <IconButton
+                        className='clear-button'
+                        icon={<PiXBold/>}
+                        txtLabel='Clear'
+                        appearance='subtle'
+                        isShowtooltip={false}
+                        onClick={(e)=>{
+                            ctrl.clearValue(e, onChange)
+                            if(onValidate && config){
+                                ctrl.thisOnValidate(type, onValidate, '', config)
+                            }
+                            if(inputRef.current){
+                                inputRef.current.focus()
+                            }
+                        }}
+                    />
+                )
+            }
             {
                 (beforeElement)&&(
                     <div className='before-element-box'>

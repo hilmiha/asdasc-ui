@@ -41,13 +41,17 @@
 
 * {
     font-family: 'Inter', monospace;
-    font-size: 12px;
+    font-size: #{$text-size};
 }
 
 html {
     font-weight: var(--font-weight-text);
     background-color: var(--clr-surface-1);
     color: var(--clr-text);
+
+    button{
+        color: var(--clr-text);
+    }
 
     body {
         margin: 0;

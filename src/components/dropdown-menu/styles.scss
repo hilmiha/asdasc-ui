@@ -5,11 +5,11 @@
 }
 
 .dropdown-menu-container{
-    background-color: var(--clr-surface-2);
+    background-color: var(--clr-surface-1);
     border: 1px solid var(--clr-border);
     padding: var(--space-25) var(--space-0);
-    min-width: 260px;
-    max-width: 310px;
+    min-width: inherit;
+    max-width: inherit;
     max-height: inherit;
     overflow: auto;
     display: flex;

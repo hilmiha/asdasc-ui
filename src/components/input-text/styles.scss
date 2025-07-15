@@ -1,7 +1,9 @@
 .input-text-box{
+    position: relative;
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     grid-template-rows: min-content min-content;
+    align-items: center;
 
     .input-text-container{
         grid-column: 2 / 3;
@@ -58,6 +60,11 @@
                 padding-right: var(--space-250);
             }
         }
+        
+        &:has(:focus-visible){
+            outline: 2px solid var(--clr-focus-ouline);
+            outline-offset: 2px;
+        }
 
         .input-text{
             flex-grow: 1;
@@ -73,17 +80,31 @@
             }
         }
 
-        &:has(:focus-visible){
-                outline: 2px solid var(--clr-focus-ouline);
-                outline-offset: 2px;
-                z-index: 1;
-        }
-
         .lock-box{
             display: flex;
             align-items: center;
             margin-left: var(--space-100);
             color: var(--clr-surface-4);
+        }
+    }
+
+    .clear-button{
+        position: absolute;
+        z-index: 0;
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        right: var(--space-100);
+        height: fit-content;
+        width: fit-content;
+
+        .icon{
+            color: var(--clr-surface-4);
+        }
+
+        &:hover, &:focus-visible{
+            .icon{
+                color: var(--clr-surface-5);
+            }
         }
     }
 

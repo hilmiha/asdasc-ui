@@ -1,7 +1,7 @@
 import './App.scss'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiCircleBold, PiCircleDashedBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiPencilLineBold, PiStarFourBold, PiXCircleBold } from 'react-icons/pi';
+import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiPencilLineBold, PiStarFourBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -10,6 +10,7 @@ import DropdownMenu from './components/dropdown-menu';
 import InputText from './components/input-text';
 import type { fieldErrorType } from './components/_types';
 import InputPassword from './components/input-password';
+import InputSelection from './components/input-selection';
 
 function App() {
     const {
@@ -36,6 +37,12 @@ function App() {
         testTextNoSpace:'',
         testTextNumber:'',
         testTextNumberText:'',
+        testSelection:[],
+        testSelectionMulti:[
+            'jakarta',
+            'bandung',
+            'surabaya',
+        ],
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -43,8 +50,11 @@ function App() {
         testTextNoSpace:{isError:false, errorMessage:''},
         testTextNumber:{isError:false, errorMessage:''},
         testTextNumberText:{isError:false, errorMessage:''},
+        testSelection:{isError:false, errorMessage:''},
+        testSelectionMulti:{isError:false, errorMessage:''},
+
     })
-    const onChange = useCallback((key: string, newValue: string) => {
+    const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
             ...prev,
             [key]: newValue
@@ -276,9 +286,48 @@ function App() {
                                 txtPlaceholder='Enter test text number...'
                                 value={form['testTextNumberText']}
                                 onChange={(newValue)=>{onChange('testTextNumberText', newValue)}}
+                                onValidate={(error)=>{onValidate('testTextNumberText', error)}}
+                                error={formError['testTextNumberText']}
                                 config={{
                                     isDisabled:false,
                                     maxLength:42
+                                }}
+                            />
+                            <InputSelection
+                                type='selection'
+                                txtPlaceholder='Select city...'
+                                value={form['testSelection']}
+                                onChange={(newValue)=>{onChange('testSelection', newValue)}}
+                                onValidate={(error)=>{
+                                    console.log(error)
+                                    onValidate('testSelection', error)
+                                }}
+                                error={formError['testSelection']}
+                                option={[
+                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
+                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
+                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
+                                ]}
+                                config={{
+                                    isDisabled:false,
+                                    isRequired:true
+                                }}
+                            />
+                            <InputSelection
+                                type='multiple'
+                                txtPlaceholder='Select city...'
+                                value={form['testSelectionMulti']}
+                                onChange={(newValue)=>{onChange('testSelectionMulti', newValue)}}
+                                onValidate={(error)=>{onValidate('testSelectionMulti', error)}}
+                                error={formError['testSelectionMulti']}
+                                option={[
+                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
+                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
+                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
+                                ]}
+                                config={{
+                                    maxValue:2,
+                                    isRequired:true
                                 }}
                             />
                             <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
@@ -393,124 +442,118 @@ function App() {
             </div>
             <div
                 style={{
-                    padding:'30px',
+                    backgroundColor:'var(--clr-surface-2)',
+                    border:'0px solid var(--clr-border)',
+                    padding:'20px',
+                    minWidth:'200px',
+                    borderRadius:'10px',
                     display:'flex',
-                    gap:'var(--space-300)'
+                    flexDirection:"column",
+                    gap:"20px",
+                    margin:'var(--space-300)',
+                    maxWidth:'240px'
                 }}
             >
                 <div
                     style={{
-                        backgroundColor:'var(--clr-surface-2)',
+                        backgroundColor:'var(--clr-surface-3)',
                         border:'0px solid var(--clr-border)',
                         padding:'20px',
                         minWidth:'200px',
-                        borderRadius:'10px',
-                        display:'flex',
-                        flexDirection:"column",
-                        gap:"20px"
+                        borderRadius:'10px'
                     }}
                 >
+                    <SplitButton
+                        txtLabel='Toggle Theme'
+                        options={[
+                            {id:'circle', txtLabel:'Toggle Shape Circle', icon:<PiCircleBold className='global-icon'/>},
+                            {id:'rounded', txtLabel:'Toggle Shape Rounded', icon:<BiSquareRounded className='global-icon'/>},
+                            {id:'box', txtLabel:'Toggle Shape Box', icon:<BiSquare className='global-icon'/>},
+                        ]}
+                        appearance='neutral'
+                        optionSelected={[appTheme.split('-')[3]??'-']}
+                        onClick={(id)=>{
+                            if(id==='_main'){
+                                toggleGlobalTheme()
+                            }else if(
+                                id==='circle'||
+                                id==='rounded'||
+                                id==='box'
+                            ){
+                                toggleGlobalShape(id)
+                            }
+                        }}
+                    />
+                    <p className='hello'>{appTheme.split('-')[0]??'-'}</p>
+                    <p className='hello'>{appTheme.split('-')[1]??'-'}</p>
+                    <p className='hello'>{appTheme.split('-')[2]??'-'}</p>
+                    <p className='hello'>{appTheme.split('-')[3]??'-'}</p>
                     <div
                         style={{
-                            backgroundColor:'var(--clr-surface-3)',
-                            border:'0px solid var(--clr-border)',
-                            padding:'20px',
-                            minWidth:'200px',
-                            borderRadius:'10px'
+                            display:'grid',
+                            gridTemplateColumns:'1fr 1fr'
                         }}
                     >
-                        <SplitButton
-                            txtLabel='Toggle Theme'
-                            options={[
-                                {id:'circle', txtLabel:'Toggle Shape Circle', icon:<PiCircleBold className='global-icon'/>},
-                                {id:'rounded', txtLabel:'Toggle Shape Rounded', icon:<BiSquareRounded className='global-icon'/>},
-                                {id:'box', txtLabel:'Toggle Shape Box', icon:<BiSquare className='global-icon'/>},
-                            ]}
-                            appearance='neutral'
-                            optionSelected={[appTheme.split('-')[3]??'-']}
-                            onClick={(id)=>{
-                                if(id==='_main'){
-                                    toggleGlobalTheme()
-                                }else if(
-                                    id==='circle'||
-                                    id==='rounded'||
-                                    id==='box'
-                                ){
-                                    toggleGlobalShape(id)
-                                }
-                            }}
-                        />
-                        <p className='hello'>{appTheme.split('-')[0]??'-'}</p>
-                        <p className='hello'>{appTheme.split('-')[1]??'-'}</p>
-                        <p className='hello'>{appTheme.split('-')[2]??'-'}</p>
-                        <p className='hello'>{appTheme.split('-')[3]??'-'}</p>
-                        <div
-                            style={{
-                                display:'grid',
-                                gridTemplateColumns:'1fr 1fr'
-                            }}
-                        >
-                            <div>
-                                {
-                                    colors.map((clr)=>(
-                                        <div 
-                                            key={clr} 
-                                            style={{
-                                                display:'flex',
-                                                height:'40px',
-                                                width:'40px',
-                                                background:`var(--clr-${clr}-500)`,
-                                                border:`2px solid ${appTheme.includes(`tonal_${clr}`)?'var(--surface-3)':'transparent'}`
-                                            }}
-                                            onClick={()=>{toggleGlobalTone(clr)}}
-                                        >
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            <div>
-                                {
-                                    colors.map((clr)=>(
-                                        <div 
-                                            key={clr} 
-                                            style={{
-                                                display:'flex',
-                                                height:'40px',
-                                                width:'40px',
-                                                background:`var(--clr-${clr}-500)`,
-                                                border:`2px solid ${appTheme.includes(`primary_${clr}`)?'var(--surface-3)':'transparent'}`
-                                            }}
-                                            onClick={()=>{toggleGlobalPrimary(clr)}}
-                                        >
-                                            
-                                        </div>
-                                    ))
-                                }
-                            </div>
+                        <div>
+                            {
+                                colors.map((clr)=>(
+                                    <div 
+                                        key={clr} 
+                                        style={{
+                                            display:'flex',
+                                            height:'40px',
+                                            width:'40px',
+                                            background:`var(--clr-${clr}-500)`,
+                                            border:`2px solid ${appTheme.includes(`tonal_${clr}`)?'var(--surface-3)':'transparent'}`
+                                        }}
+                                        onClick={()=>{toggleGlobalTone(clr)}}
+                                    >
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div>
+                            {
+                                colors.map((clr)=>(
+                                    <div 
+                                        key={clr} 
+                                        style={{
+                                            display:'flex',
+                                            height:'40px',
+                                            width:'40px',
+                                            background:`var(--clr-${clr}-500)`,
+                                            border:`2px solid ${appTheme.includes(`primary_${clr}`)?'var(--surface-3)':'transparent'}`
+                                        }}
+                                        onClick={()=>{toggleGlobalPrimary(clr)}}
+                                    >
+                                        
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
-                <div>
-                    {
-                        colors.map((clr)=>(
-                            <div key={clr} style={{display:'flex'}}>
-                                {
-                                    colorLevel.map((lvl)=>(
-                                        <div key={`${lvl}`} style={{height:'40px',width:'40px',background:`var(--clr-${clr}-${lvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
-                                            <span style={{color:(appTheme.includes('light')?((lvl<=600)?('var(--clr-text)'):('var(--clr-text-rev)')):((lvl<=400)?('var(--clr-text)'):('var(--clr-text-rev)')))}}>o</span>
-                                        </div>
-                                    ))
-                                }
-                                {
-                                    surfaceLevel.map((sfLvl)=>(
-                                        <div key={`${sfLvl}`} style={{height:'40px',width:'40px',background:`var(--clr-surface-${clr}-${sfLvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        ))
-                    }
-                </div>
+            </div>
+            <div>
+                {
+                    colors.map((clr)=>(
+                        <div key={clr} style={{display:'flex'}}>
+                            {
+                                colorLevel.map((lvl)=>(
+                                    <div key={`${lvl}`} style={{height:'15px',width:'15px',background:`var(--clr-${clr}-${lvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
+                                        <span style={{color:(appTheme.includes('light')?((lvl<=600)?('var(--clr-text)'):('var(--clr-text-rev)')):((lvl<=400)?('var(--clr-text)'):('var(--clr-text-rev)')))}}>o</span>
+                                    </div>
+                                ))
+                            }
+                            {
+                                surfaceLevel.map((sfLvl)=>(
+                                    <div key={`${sfLvl}`} style={{height:'15px',width:'15px',background:`var(--clr-surface-${clr}-${sfLvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )
