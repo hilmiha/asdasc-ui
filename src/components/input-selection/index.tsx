@@ -5,9 +5,9 @@ import type { fieldErrorType, globalShapeType } from "../_types";
 import { useContext, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu, { type dropdownMenuOptionType } from '../dropdown-menu';
-import { PiEmpty, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
+import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
-import InputText from '../input-text';
+import InputText, { type inputTextStyleType } from '../input-text';
 
 const InputSelection = ({
     id = undefined,
@@ -18,7 +18,7 @@ const InputSelection = ({
     afterElement = undefined,
     beforeElement = undefined,
 
-    type = 'selection',
+    type = 'single',
     txtPlaceholder = undefined,
     option = [],
     value = [],
@@ -26,7 +26,7 @@ const InputSelection = ({
     error = undefined,
     onValidate = undefined,
 
-    config = undefined
+    config = undefined,
 }:_InputSelection) =>{
 
     //Context start ====
@@ -38,21 +38,25 @@ const InputSelection = ({
     //States start ====
     const [isDirty, setIsDirty] = useState(false)
     
+    const isComboBox = useMemo(()=>{
+        return type==='combo-box'
+    },[type])
+    
     const isDisabled = useMemo(()=>{
         return config?.isDisabled??false
     },[config?.isDisabled])
 
     const labelValue = useMemo(()=>{
         return option.filter(i=>value.includes(i.id)).map(i=>i.txtLabel).join(', ')
-    },[value])
+    },[value, option])
 
-    const [seacrhParam, setSearchParam] = useState('')
+    const [searchParam, setSearchParam] = useState('')
 
     const optionTamp = useMemo(()=>{
         let tampOptions = [...option]
 
-        if(seacrhParam){
-            tampOptions = tampOptions.filter(i=>(i.txtLabel).toLowerCase().includes(seacrhParam.toLowerCase()))
+        if(searchParam){
+            tampOptions = tampOptions.filter(i=>(i.txtLabel).toLowerCase().includes(searchParam.toLowerCase()))
         }
 
         if(config?.maxValue){
@@ -70,9 +74,8 @@ const InputSelection = ({
         }else{
             return tampOptions
         }
-    },[option, value, seacrhParam])
+    },[option, value, searchParam])
     //States end ====
-
 
     // Update ref
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
@@ -85,6 +88,20 @@ const InputSelection = ({
                 ['open']:(isDropdownOpen)
             }
         )}>
+            <select
+                style={{display:'none'}}
+                id={id}
+                value={(type==='multiple')?(value):(value.length>0?value[0]:'')}
+                multiple={type==='multiple'}
+                disabled
+            >
+                <option value=""></option>
+                {
+                    option.filter(i=>i.type==='option').map((i)=>(
+                        <option key={i.id} value={i.id}>{i.txtLabel}</option>
+                    ))
+                }
+            </select>
             <DropdownMenu
                 className='input-select-dropdown'
                 trigger={
@@ -93,48 +110,85 @@ const InputSelection = ({
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
                         setIsDropdownOpen(isDropdownOpen);
-
-                        return (
-                            <button
-                                ref={triggerRef}
-                                id={id}
-                                className={clsx(
-                                    'input-selection-container',
-                                    (shape)?(shape):(globalShape),
+                        if(!isComboBox){
+                            return (
+                                <button
+                                    ref={triggerRef}
+                                    id={id}
+                                    className={clsx(
+                                        'input-selection-container',
+                                        (shape)?(shape):(globalShape),
+                                        {
+                                            ['disabled']:(isDisabled),
+                                            ['selected']:(isDropdownOpen),
+                                            ['error']:(error?.isError),
+                                        },
+                                        className
+                                    )}
+                                    style={style?.triggerButton}
+                                    disabled={isDisabled}
+                                >
+                                    <div className='value-label-box'>
+                                        {
+                                            (value.length>0)?(
+                                                <span>{labelValue}</span>
+                                            ):(
+                                                <span className='placeholder'>{txtPlaceholder}</span>
+                                            )
+                                        }
+                                    </div>
+                                </button>
+                            )
+                        }else{
+                            return (
+                                <>
+                                    <InputText
+                                        ref={triggerRef}
+                                        className='input-combo-box'
+                                        type='text'
+                                        txtPlaceholder={value.length>0?(undefined):(txtPlaceholder)}
+                                        value={searchParam}
+                                        shape={shape}
+                                        style={style?.triggerInput}
+                                        onChange={(newValue)=>{
+                                            if(newValue===' '){
+                                                ctrl.toggleTrigger(triggerButtonRef)
+                                            }else{
+                                                if(newValue && !isDropdownOpen){
+                                                    ctrl.toggleTrigger(triggerButtonRef)
+                                                }
+                                                setSearchParam(newValue)
+                                            }
+                                        }}
+                                        config={{
+                                            isDisabled:config?.isDisabled
+                                        }}
+                                    />
                                     {
-                                        ['disabled']:(isDisabled),
-                                        ['selected']:(isDropdownOpen),
-                                        ['error']:(error?.isError),
-                                    },
-                                    className
-                                )}
-                                style={
-                                    style?.inputContainer
-                                }
-                                disabled={isDisabled}
-                            >
-                                <div className='value-label-box'>
-                                    {
-                                        (value.length>0)?(
-                                            <span>{labelValue}</span>
-                                        ):(
-                                            <span className='placeholder'>{txtPlaceholder}</span>
+                                        (!searchParam)&&(
+                                            <p
+                                                className='input-combo-box-value'
+                                                style={{
+                                                    position:'absolute',
+                                                    left:'var(--space-250)',
+                                                    height:'100%',
+                                                    display:'flex',
+                                                    alignItems:'center'
+                                                }}
+                                            >{labelValue}</p>
                                         )
                                     }
-                                </div>
-                                {
-                                    (isDisabled)&&(
-                                        <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                                    )
-                                }
-                            </button>
-                        )
+                                </>
+                            )
+                        }
+                        
                     }
                 }
                 options={optionTamp}
                 optionSelected={value}
                 isContainerWidthSameAsTrigger={true}
                 isWithCheckmark={type==='multiple'}
+                shape={shape}
                 style={{
                     optionButton:{
                         textLabel:{
@@ -150,6 +204,10 @@ const InputSelection = ({
                             onValidate({isError:false, errorMessage:''},[])
                         }
 
+                        if(type==='combo-box'){
+                            setSearchParam('')
+                        }
+
                         setIsDirty(true)
                     }
                 }}
@@ -157,26 +215,31 @@ const InputSelection = ({
                     if(config && onValidate && isDirty){
                         ctrl.doValidate(value, config, onValidate)
                     }
-                    if(seacrhParam){
+                    
+                    if(searchParam && isDropdownOpen){
                         setSearchParam('')
                     }
                 }}
                 elementHeader={
                     <>
-                        <div className='search-bar-box'>
-                            <InputText 
-                                type='text'
-                                txtPlaceholder='Search...'
-                                value={seacrhParam}
-                                onChange={(newValue)=>{setSearchParam(newValue)}}
-                            />
-                        </div>
+                        {
+                            (!isComboBox)&&(
+                                <div className='search-bar-box'>
+                                    <InputText 
+                                        type='text'
+                                        txtPlaceholder='Search...'
+                                        value={searchParam}
+                                        onChange={(newValue)=>{setSearchParam(newValue)}}
+                                    />
+                                </div>
+                            )
+                        }
                     </>
                 }
                 elementFooter={
                     <>
                         {
-                            (seacrhParam && optionTamp.length===0 && option.length>0)&&(
+                            (searchParam && optionTamp.length===0 && option.length>0)&&(
                                 <div className='empty-box'>
                                     <PiEmpty className='global-icon' size={32}/>
                                     <div>
@@ -189,6 +252,15 @@ const InputSelection = ({
                     </>
                 }
             />
+            {
+                (isDisabled)?(
+                    <div className='lock-box'><PiLockBold className='global-icon'/></div>
+                ):(
+                    <div className='caret-box'>
+                        {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
+                    </div>
+                )
+            }
             {
                 (value.length > 0 && !isDisabled)&&(
                     <IconButton
@@ -232,19 +304,6 @@ const InputSelection = ({
                     </div>
                 )
             }
-            {/* <select
-                style={{display:'none'}}
-                id={id}
-                value={value}
-                multiple={type==='multiple'}
-            >
-                <option value=""></option>
-                {
-                    option.filter(i=>i.type==='option').map((i)=>(
-                        <option key={i.id} value={i.id}>{i.txtLabel}</option>
-                    ))
-                }
-            </select> */}
         </div>
     )
 }
@@ -270,7 +329,7 @@ interface _InputSelection {
     config?:inputSelectConfigType
 }
 
-export type inputSelectType = 'selection' | 'multiple';
+export type inputSelectType = 'single' | 'combo-box' | 'multiple';
 
 export type inputSelectConfigType = {
     isDisabled?:boolean
@@ -280,6 +339,6 @@ export type inputSelectConfigType = {
 }
 
 export type inputSelectionStyleType = {
-    inputContainer:React.CSSProperties,
-    input:React.CSSProperties,
+    triggerButton:React.CSSProperties,
+    triggerInput:inputTextStyleType,
 }

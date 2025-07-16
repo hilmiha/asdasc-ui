@@ -21,6 +21,8 @@ const InputText = ({
     txtPlaceholder = undefined,
     value = '',
     onChange = undefined,
+    onBlur = undefined,
+    onFocus = undefined,
     error = undefined,
     onValidate = undefined,
 
@@ -61,58 +63,65 @@ const InputText = ({
     }, [ref]);
 
     return(
-        <div className='input-text-box'>
-            <div
+        <div className={clsx(
+            'input-text-box',
+            className
+        )}>
+            <input
+                id={id}
+                ref={inputRef}
                 className={clsx(
-                    'input-text-container',
+                    'input-text',
                     (shape)?(shape):(globalShape),
                     {
                         ['disabled']:(isDisabled),
                         ['error']:(error?.isError),
-                    },
-                    className
+                    }
                 )}
-                style={style?.inputContainer}
-            >
-                <input
-                    id={id}
-                    ref={inputRef}
-                    className={clsx('input-text')}
-                    style={style?.input}
-                    placeholder={txtPlaceholder}
-                    value={ctrl.getDisplayValue(value, type)}
-                    onChange={(e)=>{
-                        if(!isDisabled){
-                            ctrl.thisOnchange(e, type, config, onChange)
-                            
-                            if(type==='number' && inputRef.current){
-                                ctrl.setFormattedCursorPosition(inputRef.current, displayValue, e);
-                            }
+                style={style?.input}
+                placeholder={txtPlaceholder}
+                value={ctrl.getDisplayValue(value, type)}
+                onChange={(e)=>{
+                    if(!isDisabled){
+                        ctrl.thisOnchange(e, type, config, onChange)
+                        
+                        if(type==='number' && inputRef.current){
+                            ctrl.setFormattedCursorPosition(inputRef.current, displayValue, e);
+                        }
 
-                            if(onValidate && error?.isError){
-                                onValidate({isError:false, errorMessage:''},'')
-                            }
-                            
-                            if(!isDirty){
-                                setIsDirty(true)
-                            }
+                        if(onValidate && error?.isError){
+                            onValidate({isError:false, errorMessage:''},'')
                         }
-                    }}
-                    onBlur={(e)=>{
-                        if(!isDisabled){
-                            ctrl.thisOnBlur(e, type, value, isDirty, config, onChange, onValidate)
+                        
+                        if(!isDirty){
+                            setIsDirty(true)
                         }
-                    }}
-                    disabled={isDisabled}
-                    type={inputMode}
-                    inputMode={(inputMode==='numeric')?('tel'):('text')}
-                />
-                {
-                    (isDisabled)&&(
-                        <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                    )
-                }
-            </div>
+                    }
+                }}
+                onBlur={(e)=>{
+                    if(!isDisabled){
+                        ctrl.thisOnBlur(e, type, value, isDirty, config, onChange, onValidate)
+                        if(onBlur){
+                            onBlur(e)
+                        }
+                    }
+                }}
+                onFocus={(e)=>{
+                    if(!isDisabled){
+                        if(onFocus){
+                            onFocus(e)
+                        }
+                    }
+                }}
+                disabled={isDisabled}
+                type={inputMode}
+                inputMode={(inputMode==='numeric')?('tel'):('text')}
+            />
+            {
+                (isDisabled)&&(
+                    <div className='lock-box'><PiLockBold className='global-icon'/></div>
+                )
+            }
             {
                 (value.length > 0 && !isDisabled)&&(
                     <IconButton
@@ -176,6 +185,8 @@ export interface _InputText {
     txtPlaceholder?:string;
     value?:string;
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>)=>void
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>)=>void
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void
     config?:inputTextConfigType
@@ -194,6 +205,5 @@ export type inputTextConfigType = {
 }
 
 export type inputTextStyleType = {
-    inputContainer:React.CSSProperties,
     input:React.CSSProperties,
 }

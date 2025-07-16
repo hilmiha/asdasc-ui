@@ -38,11 +38,8 @@ function App() {
         testTextNumber:'',
         testTextNumberText:'',
         testSelection:[],
-        testSelectionMulti:[
-            'jakarta',
-            'bandung',
-            'surabaya',
-        ],
+        testSelectionComboBox:[],
+        testSelectionMulti:[],
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -51,6 +48,7 @@ function App() {
         testTextNumber:{isError:false, errorMessage:''},
         testTextNumberText:{isError:false, errorMessage:''},
         testSelection:{isError:false, errorMessage:''},
+        testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
 
     })
@@ -294,7 +292,7 @@ function App() {
                                 }}
                             />
                             <InputSelection
-                                type='selection'
+                                type='single'
                                 txtPlaceholder='Select city...'
                                 value={form['testSelection']}
                                 onChange={(newValue)=>{onChange('testSelection', newValue)}}
@@ -303,6 +301,26 @@ function App() {
                                     onValidate('testSelection', error)
                                 }}
                                 error={formError['testSelection']}
+                                option={[
+                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
+                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
+                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
+                                ]}
+                                config={{
+                                    isDisabled:false,
+                                    isRequired:true
+                                }}
+                            />
+                            <InputSelection
+                                type='combo-box'
+                                txtPlaceholder='Select city...'
+                                value={form['testSelectionComboBox']}
+                                onChange={(newValue)=>{onChange('testSelectionComboBox', newValue)}}
+                                onValidate={(error)=>{
+                                    console.log(error)
+                                    onValidate('testSelectionComboBox', error)
+                                }}
+                                error={formError['testSelectionComboBox']}
                                 option={[
                                     {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
                                     {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
@@ -327,7 +345,8 @@ function App() {
                                 ]}
                                 config={{
                                     maxValue:2,
-                                    isRequired:true
+                                    isRequired:true,
+                                    isDisabled:false
                                 }}
                             />
                             <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>

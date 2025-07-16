@@ -71,3 +71,11 @@ export const clearValue = (
         onChange([])
     }
 }
+
+export const toggleTrigger = (triggerButtonRef?:React.RefObject<HTMLButtonElement | null>) =>{
+    if (triggerButtonRef?.current){
+        setTimeout(() => {
+            triggerButtonRef.current?.click();
+        }, 100);
+    }
+}
