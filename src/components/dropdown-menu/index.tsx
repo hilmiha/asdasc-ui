@@ -4,7 +4,7 @@ import * as ctrl from './controller';
 import React, { useContext, useState, type JSX } from 'react';
 import type { buttonStyleType } from "../button";
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import { autoUpdate, flip, FloatingFocusManager, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
+import { autoUpdate, flip, FloatingFocusManager, FloatingOverlay, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
 import type { globalShapeType } from '../_types';
 import { PiCaretRightBold, PiCheckBold, PiCircleBold } from 'react-icons/pi';
 import Button from '../button';
@@ -58,6 +58,7 @@ const DropdownMenu = ({
             shift(),
             flip({
                 padding: 10,
+                fallbackPlacements:['bottom', 'top']
             }),
             size({
                 apply({availableHeight, elements, rects}) {
@@ -108,161 +109,166 @@ const DropdownMenu = ({
             {
                 (isShowOption)&&(
                     <FloatingPortal>
-                        <FloatingFocusManager 
-                            context={context} 
-                            order={['reference', 'content']}
-                            modal={true}
-                        >
-                            <div
-                                className={clsx(
-                                    'dropdown-menu-box',
-                                    className
-                                )}
-                                ref={refs.setFloating}
-                                style={floatingStyles}
-                                {...getFloatingProps()}
+                        <FloatingOverlay lockScroll>
+                            <FloatingFocusManager 
+                                context={context} 
+                                order={['reference', 'content']}
+                                modal={true}
                             >
-                                <div 
+                                <div
                                     className={clsx(
-                                        'dropdown-menu-container',
-                                        (shape)?(shape):(globalShape),
+                                        'dropdown-menu-box',
+                                        className
                                     )}
-                                    style={style?.container}
+                                    ref={refs.setFloating}
+                                    style={floatingStyles}
+                                    {...getFloatingProps()}
                                 >
-                                    {
-                                        elementHeader&&(
-                                            <div className='element-header-box'>
-                                                {
-                                                    elementHeader
-                                                }
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        options.map((option)=>{
-                                            if(option.type!=='separator'){
-                                                if(option.childMenu===undefined){
-                                                    return (
-                                                        <Button
-                                                            key={option.id}
-                                                            id={option.id}
-                                                            className={
-                                                                clsx(
-                                                                    'dropdown-item',
-                                                                )
-                                                            }
-                                                            style={style?.optionButton}
-                                                            shape={shape}
-                                                            txtLabel={option.txtLabel??''}
-                                                            iconBefore={
-                                                                (optionSelected)?(
-                                                                    <div className='check-icon-container'>
-                                                                        {
-                                                                            (!isWithCheckmark)?(
-                                                                                <></>
-                                                                            ):(optionSelected?.includes(option.id))?(
-                                                                                <PiCheckBold className='global-icon'/>
-                                                                            ):(
-                                                                                <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
-                                                                            )
-                                                                        }
-                                                                        {option.icon}
-                                                                    </div>
-                                                                ):(
-                                                                    option.icon
-                                                                )
-                                                            }
-                                                            iconAfter={
-                                                                <div className='check-icon-container'>
-                                                                    {option.iconAfter}
-                                                                </div>
-                                                            }
-                                                            isSelected={optionSelected?.includes(option.id)}
-                                                            appearance={'subtle'}
-                                                            onClick={(e)=>{ctrl.thisOnClick(option.id, e, onClick)}}
-                                                            isDisabled={option.isDisabled}
-                                                        />
-                                                    )
-                                                }else{
-                                                    return(
-                                                        <DropdownMenu
-                                                            key={option.id}
-                                                            options={option.childMenu}
-                                                            optionSelected={optionSelected}
-                                                            style={{
-                                                                ...style,
-                                                                triggerBox:{
-                                                                    width:'unset'
-                                                                }
-                                                            }}
-                                                            shape={(shape)?(shape):(globalShape)}
-                                                            onClick={(idButton, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
-                                                            placement='right-start'
-                                                            level={level + 1}
-                                                            trigger={
-                                                                (triggerRef, isDropdownOpen)=>(
-                                                                    <Button
-                                                                        ref={triggerRef}
-                                                                        key={option.id}
-                                                                        id={option.id}
-                                                                        className={
-                                                                            clsx(
-                                                                                'dropdown-item',
-                                                                            )
-                                                                        }
-                                                                        style={style?.optionButton}
-                                                                        shape={shape}
-                                                                        txtLabel={option.txtLabel??''}
-                                                                        iconBefore={
-                                                                            (optionSelected)?(
-                                                                                <div className='check-icon-container'>
-                                                                                    <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
-                                                                                    {option.icon}
-                                                                                </div>
-                                                                            ):(
-                                                                                option.icon
-                                                                            )
-                                                                        }
-                                                                        iconAfter={
+                                    <div 
+                                        className={clsx(
+                                            'dropdown-menu-container',
+                                            (shape)?(shape):(globalShape),
+                                        )}
+                                        style={style?.container}
+                                    >
+                                        {
+                                            elementHeader&&(
+                                                <div className='element-header-box'>
+                                                    {
+                                                        elementHeader
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                        <div className='dropdown-body-box'>
+                                            {
+                                                options.map((option)=>{
+                                                    if(option.type!=='separator'){
+                                                        if(option.childMenu===undefined){
+                                                            return (
+                                                                <Button
+                                                                    key={option.id}
+                                                                    id={option.id}
+                                                                    className={
+                                                                        clsx(
+                                                                            'dropdown-item',
+                                                                        )
+                                                                    }
+                                                                    style={style?.optionButton}
+                                                                    shape={shape}
+                                                                    txtLabel={option.txtLabel??''}
+                                                                    iconBefore={
+                                                                        (optionSelected)?(
                                                                             <div className='check-icon-container'>
-                                                                                {option.iconAfter}
-                                                                                <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
+                                                                                {
+                                                                                    (!isWithCheckmark)?(
+                                                                                        <></>
+                                                                                    ):(optionSelected?.includes(option.id))?(
+                                                                                        <PiCheckBold className='global-icon'/>
+                                                                                    ):(
+                                                                                        <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
+                                                                                    )
+                                                                                }
+                                                                                {option.icon}
                                                                             </div>
+                                                                        ):(
+                                                                            option.icon
+                                                                        )
+                                                                    }
+                                                                    iconAfter={
+                                                                        <div className='check-icon-container'>
+                                                                            {option.iconAfter}
+                                                                        </div>
+                                                                    }
+                                                                    isSelected={optionSelected?.includes(option.id)}
+                                                                    appearance={'subtle'}
+                                                                    onClick={(e)=>{ctrl.thisOnClick(option.id, e, onClick)}}
+                                                                    isDisabled={option.isDisabled}
+                                                                />
+                                                            )
+                                                        }else{
+                                                            return(
+                                                                <DropdownMenu
+                                                                    key={option.id}
+                                                                    options={option.childMenu}
+                                                                    optionSelected={optionSelected}
+                                                                    style={{
+                                                                        ...style,
+                                                                        triggerBox:{
+                                                                            width:'unset'
                                                                         }
-                                                                        isSelected={isDropdownOpen}
-                                                                        appearance={'subtle'}
-                                                                        isDisabled={option.isDisabled}
-                                                                    />
-                                                                )
-                                                            }
-                                                        />
-                                                    )
-                                                }
-                                            }else{
-                                                return(
-                                                    <div className='separator'>
-                                                        {
-                                                            (option.txtLabel)&&(
-                                                                <span className='section-title'>{option.txtLabel}</span>
+                                                                    }}
+                                                                    shape={(shape)?(shape):(globalShape)}
+                                                                    onClick={(idButton, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
+                                                                    placement='right-start'
+                                                                    level={level + 1}
+                                                                    trigger={
+                                                                        (triggerRef, isDropdownOpen)=>(
+                                                                            <Button
+                                                                                ref={triggerRef}
+                                                                                key={option.id}
+                                                                                id={option.id}
+                                                                                className={
+                                                                                    clsx(
+                                                                                        'dropdown-item',
+                                                                                    )
+                                                                                }
+                                                                                style={style?.optionButton}
+                                                                                shape={shape}
+                                                                                txtLabel={option.txtLabel??''}
+                                                                                iconBefore={
+                                                                                    (optionSelected)?(
+                                                                                        <div className='check-icon-container'>
+                                                                                            <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
+                                                                                            {option.icon}
+                                                                                        </div>
+                                                                                    ):(
+                                                                                        option.icon
+                                                                                    )
+                                                                                }
+                                                                                iconAfter={
+                                                                                    <div className='check-icon-container'>
+                                                                                        {option.iconAfter}
+                                                                                        <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
+                                                                                    </div>
+                                                                                }
+                                                                                isSelected={isDropdownOpen}
+                                                                                appearance={'subtle'}
+                                                                                isDisabled={option.isDisabled}
+                                                                            />
+                                                                        )
+                                                                    }
+                                                                />
                                                             )
                                                         }
-                                                    </div>
-                                                )
+                                                    }else{
+                                                        return(
+                                                            <div className='separator'>
+                                                                {
+                                                                    (option.txtLabel)&&(
+                                                                        <span className='section-title'>{option.txtLabel}</span>
+                                                                    )
+                                                                }
+                                                            </div>
+                                                        )
+                                                    }
+                                                })
                                             }
-                                        })
-                                    }
-                                    {
-                                        elementFooter&&(
-                                            <div className='element-footer-box'>
-                                                {
-                                                    elementFooter
-                                                }
-                                            </div>
-                                        )
-                                    }
+                                        </div>
+                                        
+                                        {
+                                            elementFooter&&(
+                                                <div className='element-footer-box'>
+                                                    {
+                                                        elementFooter
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        </FloatingFocusManager>
+                            </FloatingFocusManager>
+                        </FloatingOverlay>
                     </FloatingPortal>
                 )
             }
