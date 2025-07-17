@@ -47,7 +47,18 @@ const InputSelection = ({
     },[config?.isDisabled])
 
     const labelValue = useMemo(()=>{
-        return option.filter(i=>value.includes(i.id)).map(i=>i.txtLabel).join(', ')
+        return option.filter(i=>value.includes(i.id)).map(i=>i.txtLabel)
+    },[value, option])
+    const velueLabelPair = useMemo(()=>{
+        return value.map(i=>{
+            const tamp = option.find(j=>j.id===i)
+            if(tamp){
+                return([tamp.id, tamp.txtLabel])
+            }else{
+                return [i, i]
+            }
+        })
+        return option.filter(i=>value.includes(i.id)).map(i=>{return [i.id, i.txtLabel]})
     },[value, option])
 
     const [searchParam, setSearchParam] = useState('')
@@ -110,7 +121,127 @@ const InputSelection = ({
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
                         setIsDropdownOpen(isDropdownOpen);
-                        if(!isComboBox){
+                        if(type==='tags'){
+                            return (
+                                <div
+                                    className={clsx(
+                                        'input-selection-container',
+                                        'input-selection-tag-container',
+                                        (shape)?(shape):(globalShape),
+                                        {
+                                            ['disabled']:(isDisabled),
+                                            ['selected']:(isDropdownOpen),
+                                            ['error']:(error?.isError),
+                                        },
+                                        className
+                                    )}
+                                    style={style?.triggerButton}
+                                >
+                                    {
+                                        (value.length>0)&&(
+                                            <>
+                                                {
+                                                    velueLabelPair.map((i)=>(
+                                                        <div className='tag-box' key={i[0]}>
+                                                            <span className='tag-label'>{i[1]}</span>
+                                                            <IconButton
+                                                                icon={<PiXBold size={12}/>}
+                                                                txtLabel={`Remove ${i}`}
+                                                                appearance='subtle'
+                                                                isShowtooltip={false}
+                                                                onClick={()=>{
+                                                                    ctrl.thisOnchange(i[0], value, type, config, onChange)
+
+                                                                    if(onValidate && error?.isError){
+                                                                        onValidate({isError:false, errorMessage:''},[])
+                                                                    }
+                                                                    setIsDirty(true)
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    ))
+                                                }
+                                            </>
+                                        )
+                                    }
+                                    <input
+                                        ref={triggerRef}
+                                        placeholder={txtPlaceholder}
+                                        className='input-tag'
+                                        value={searchParam}
+                                        onChange={(e)=>{
+                                            const newValue = e.target.value
+                                            if(newValue===' '){
+                                                ctrl.toggleTrigger(triggerButtonRef)
+                                            }else{
+                                                if(newValue && !isDropdownOpen){
+                                                    ctrl.toggleTrigger(triggerButtonRef)
+                                                }
+                                                setSearchParam(newValue)
+                                            }
+                                        }}
+                                        onKeyDown={(e)=>{
+                                            if(e.key==='Backspace' && searchParam==='' && value.length>0){
+                                                ctrl.thisOnchange(value.at(-1)??'', value, type, config, onChange)
+                                                if(onValidate && error?.isError){
+                                                    onValidate({isError:false, errorMessage:''},[])
+                                                }
+                                                setIsDirty(true)
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            )
+                        }else if(isComboBox){
+                            return (
+                                <>
+                                    <InputText
+                                        ref={triggerRef}
+                                        className={
+                                            clsx(
+                                                'input-combo-box',
+                                                {
+                                                    ['selected']:(isDropdownOpen),
+                                                }
+                                            )
+                                        }
+                                        type='text'
+                                        txtPlaceholder={value.length>0?(undefined):(txtPlaceholder)}
+                                        value={searchParam}
+                                        shape={shape}
+                                        style={style?.triggerInput}
+                                        onChange={(newValue)=>{
+                                            if(newValue===' '){
+                                                ctrl.toggleTrigger(triggerButtonRef)
+                                            }else{
+                                                if(newValue && !isDropdownOpen){
+                                                    ctrl.toggleTrigger(triggerButtonRef)
+                                                }
+                                                setSearchParam(newValue)
+                                            }
+                                        }}
+                                        error={error}
+                                        config={{
+                                            isDisabled:config?.isDisabled
+                                        }}
+                                    />
+                                    {
+                                        (!searchParam)&&(
+                                            <p
+                                                className='input-combo-box-value'
+                                                style={{
+                                                    position:'absolute',
+                                                    left:((shape??globalShape)==='circle')?('calc(var(--space-300) + 5px)'):('var(--space-250)'),
+                                                    height:'100%',
+                                                    display:'flex',
+                                                    alignItems:'center'
+                                                }}
+                                            >{labelValue.join(',')}</p>
+                                        )
+                                    }
+                                </>
+                            )
+                        }else{
                             return (
                                 <button
                                     ref={triggerRef}
@@ -131,7 +262,7 @@ const InputSelection = ({
                                     <div className='value-label-box'>
                                         {
                                             (value.length>0)?(
-                                                <span>{labelValue}</span>
+                                                <span>{labelValue.join(', ')}</span>
                                             ):(
                                                 <span className='placeholder'>{txtPlaceholder}</span>
                                             )
@@ -139,55 +270,13 @@ const InputSelection = ({
                                     </div>
                                 </button>
                             )
-                        }else{
-                            return (
-                                <>
-                                    <InputText
-                                        ref={triggerRef}
-                                        className='input-combo-box'
-                                        type='text'
-                                        txtPlaceholder={value.length>0?(undefined):(txtPlaceholder)}
-                                        value={searchParam}
-                                        shape={shape}
-                                        style={style?.triggerInput}
-                                        onChange={(newValue)=>{
-                                            if(newValue===' '){
-                                                ctrl.toggleTrigger(triggerButtonRef)
-                                            }else{
-                                                if(newValue && !isDropdownOpen){
-                                                    ctrl.toggleTrigger(triggerButtonRef)
-                                                }
-                                                setSearchParam(newValue)
-                                            }
-                                        }}
-                                        config={{
-                                            isDisabled:config?.isDisabled
-                                        }}
-                                    />
-                                    {
-                                        (!searchParam)&&(
-                                            <p
-                                                className='input-combo-box-value'
-                                                style={{
-                                                    position:'absolute',
-                                                    left:'var(--space-250)',
-                                                    height:'100%',
-                                                    display:'flex',
-                                                    alignItems:'center'
-                                                }}
-                                            >{labelValue}</p>
-                                        )
-                                    }
-                                </>
-                            )
                         }
-                        
                     }
                 }
                 options={optionTamp}
                 optionSelected={value}
                 isContainerWidthSameAsTrigger={true}
-                isWithCheckmark={type==='multiple'}
+                isWithCheckmark={type==='multiple' || type==='tags'}
                 shape={shape}
                 style={{
                     optionButton:{
@@ -206,6 +295,11 @@ const InputSelection = ({
 
                         if(type==='combo-box'){
                             setSearchParam('')
+                            triggerButtonRef.current?.focus()
+                        }
+
+                        if(type==='tags'){
+                            triggerButtonRef.current?.focus()
                         }
 
                         setIsDirty(true)
@@ -223,7 +317,7 @@ const InputSelection = ({
                 elementHeader={
                     <>
                         {
-                            (!isComboBox)&&(
+                            (!isComboBox && type!=='tags')&&(
                                 <div className='search-bar-box'>
                                     <InputText 
                                         type='text'
@@ -329,7 +423,7 @@ interface _InputSelection {
     config?:inputSelectConfigType
 }
 
-export type inputSelectType = 'single' | 'combo-box' | 'multiple';
+export type inputSelectType = 'single' | 'combo-box' | 'multiple' | 'tags';
 
 export type inputSelectConfigType = {
     isDisabled?:boolean

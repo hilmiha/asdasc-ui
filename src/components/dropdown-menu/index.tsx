@@ -61,15 +61,15 @@ const DropdownMenu = ({
             }),
             size({
                 apply({availableHeight, elements, rects}) {
-                    const value = `${Math.max(0, availableHeight) - 20}px`;
+                    const value = `${Math.min(240, (Math.max(0, availableHeight) - 20))}px`;
                     elements.floating.style.maxHeight = value;
                     if(isContainerWidthSameAsTrigger){
                         elements.floating.style.width = `${rects.reference.width}px`
-                        elements.floating.style.minWidth = `${rects.reference.width}px`
+                        elements.floating.style.minWidth = `${Math.max(310, rects.reference.width)}px`
                         elements.floating.style.maxWidth = `${rects.reference.width}px`
                     }else{
-                        elements.floating.style.width = `260px`
-                        elements.floating.style.minWidth = `260px`
+                        elements.floating.style.width = `310x`
+                        elements.floating.style.minWidth = `310px`
                         elements.floating.style.maxWidth = `310px`
                     }
                 },
@@ -116,7 +116,6 @@ const DropdownMenu = ({
                             <div
                                 className={clsx(
                                     'dropdown-menu-box',
-                                    (shape)?(shape):(globalShape),
                                     className
                                 )}
                                 ref={refs.setFloating}

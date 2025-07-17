@@ -2,7 +2,7 @@
     font-weight: var(--font-weight-subtitle);
     outline: 0px;
     border: 1px solid transparent;
-    height: var(--space-400);
+    min-height: var(--space-400);
     margin: var(--space-50);
     padding: var(--space-50) var(--space-200);
     cursor: pointer;

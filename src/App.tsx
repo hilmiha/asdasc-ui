@@ -6,7 +6,7 @@ import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
 import SplitButton from './components/split-button';
-import DropdownMenu from './components/dropdown-menu';
+import DropdownMenu, { type dropdownMenuOptionType } from './components/dropdown-menu';
 import InputText from './components/input-text';
 import type { fieldErrorType } from './components/_types';
 import InputPassword from './components/input-password';
@@ -40,6 +40,7 @@ function App() {
         testSelection:[],
         testSelectionComboBox:[],
         testSelectionMulti:[],
+        testSelectionTags:[],
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -50,6 +51,7 @@ function App() {
         testSelection:{isError:false, errorMessage:''},
         testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
+        testSelectionTags:{isError:false, errorMessage:''},
 
     })
     const onChange = useCallback((key: string, newValue: any) => {
@@ -69,7 +71,7 @@ function App() {
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
-                <div style={{display:'flex'}}>
+                <div style={{display:'flex', flexWrap:'wrap'}}>
                     <Button 
                         txtLabel='Hello World'
                         isDisabled
@@ -176,204 +178,143 @@ function App() {
                         onClick={(idButton)=>{console.log(idButton)}}
                     />
                 </div>
-                <div
-                    style={{
-                        display:'flex',
-                        gap:'var(--space-300)',
-                        margin:"var(--space-500) 0px"
-                    }}
-                >
-                    
-                    <div
-                        style={{
-                            flexGrow:'1', 
-                            borderRadius:'var(--space-100)',
-                            boxShadow:'var(--box-shadow)',
-                            border:'1px solid var(--clr-border)',
+                <div>
+                    <InputText
+                        type='text'
+                        txtPlaceholder='Enter test text...'
+                        value={form['testText']}
+                        onChange={(newValue)=>{onChange('testText', newValue)}}
+                        onValidate={(error)=>{onValidate('testText', error)}}
+                        error={formError['testText']}
+                        config={{
+                            isRequired:true,
+                            isDisabled:false,
                         }}
-                    >
-                        <div
-                            style={{
-                                backgroundColor:'var(--clr-surface-1)',
-                                padding: 'var(--space-500) var(--space-1000) var(--space-200) var(--space-1000)',
-                                // border:'1px solid var(--clr-border)',
-                                borderBottom:'transparent',
-                                borderRadius:'var(--space-100) var(--space-100) 0px 0px',
-                                display:'flex',
-                                alignItems:'center',
-                                gap:'var(--space-100)',
-                                color:"var(--clr-primary-700)",
-                            }}
-                        >
-                            <PiPencilLineBold className='global-icon'/>
-                            <span style={{fontWeight:'var(--font-weight-subtitle)'}}>Edit Detail Form</span>
-                        </div>
-                        <div
-                            style={{
-                                padding:'var(--space-500) var(--space-1000)',
-                                backgroundColor:'var(--clr-surface-1)',
-                                flexGrow:'1',
-                                display:"grid",
-                                gap:'var(--space-100)',
-                                // border:'1px solid var(--clr-border)',
-                                borderTop:'transparent',
-                                borderRadius:'var(--space-100)',
-                                borderTopRightRadius:'0px',
-                                borderTopLeftRadius:'0px',
-                            }}
-                        >
-                            <InputText
-                                type='text'
-                                txtPlaceholder='Enter test text...'
-                                value={form['testText']}
-                                onChange={(newValue)=>{onChange('testText', newValue)}}
-                                onValidate={(error)=>{onValidate('testText', error)}}
-                                error={formError['testText']}
-                                config={{
-                                    isRequired:true,
-                                    isDisabled:false,
-                                }}
-                            />
-                            <InputText
-                                type='text'
-                                txtPlaceholder='Enter test text...'
-                                value={form['testText']}
-                                config={{
-                                    isDisabled:true,
-                                }}
-                            />
-                            <InputPassword
-                                txtPlaceholder='Enter password...'
-                                value={form['testPassword']}
-                                onChange={(newValue)=>{onChange('testPassword', newValue)}}
-                                onValidate={(error)=>{onValidate('testPassword', error)}}
-                                error={formError['testPassword']}
-                                config={{
-                                    isDisabled:false,
-                                    validRegex: [
-                                        // [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
-                                    ]
-                                }}
-                            />
-                            <InputText
-                                type='text-no-space'
-                                txtPlaceholder='Enter test text nospace...'
-                                value={form['testTextNoSpace']}
-                                onChange={(newValue)=>{onChange('testTextNoSpace', newValue)}}
-                                config={{
-                                    isDisabled:false,
-                                    maxLength:42
-                                }}
-                            />
-                            <InputText
-                                type='number'
-                                txtPlaceholder='Enter test text number...'
-                                value={form['testTextNumber']}
-                                onChange={(newValue)=>{onChange('testTextNumber', newValue)}}
-                                onValidate={(error)=>{onValidate('testTextNumber', error)}}
-                                error={formError['testTextNumber']}
-                                config={{
-                                    isDisabled:false,
-                                    maxLength:42,
-                                    minValue:10,
-                                    maxValue:1000
-                                }}
-                            />
-                            <InputText
-                                type='number-text'
-                                txtPlaceholder='Enter test text number...'
-                                value={form['testTextNumberText']}
-                                onChange={(newValue)=>{onChange('testTextNumberText', newValue)}}
-                                onValidate={(error)=>{onValidate('testTextNumberText', error)}}
-                                error={formError['testTextNumberText']}
-                                config={{
-                                    isDisabled:false,
-                                    maxLength:42
-                                }}
-                            />
-                            <InputSelection
-                                type='single'
-                                txtPlaceholder='Select city...'
-                                value={form['testSelection']}
-                                onChange={(newValue)=>{onChange('testSelection', newValue)}}
-                                onValidate={(error)=>{
-                                    console.log(error)
-                                    onValidate('testSelection', error)
-                                }}
-                                error={formError['testSelection']}
-                                option={[
-                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
-                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
-                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
-                                ]}
-                                config={{
-                                    isDisabled:false,
-                                    isRequired:true
-                                }}
-                            />
-                            <InputSelection
-                                type='combo-box'
-                                txtPlaceholder='Select city...'
-                                value={form['testSelectionComboBox']}
-                                onChange={(newValue)=>{onChange('testSelectionComboBox', newValue)}}
-                                onValidate={(error)=>{
-                                    console.log(error)
-                                    onValidate('testSelectionComboBox', error)
-                                }}
-                                error={formError['testSelectionComboBox']}
-                                option={[
-                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
-                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
-                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
-                                ]}
-                                config={{
-                                    isDisabled:false,
-                                    isRequired:true
-                                }}
-                            />
-                            <InputSelection
-                                type='multiple'
-                                txtPlaceholder='Select city...'
-                                value={form['testSelectionMulti']}
-                                onChange={(newValue)=>{onChange('testSelectionMulti', newValue)}}
-                                onValidate={(error)=>{onValidate('testSelectionMulti', error)}}
-                                error={formError['testSelectionMulti']}
-                                option={[
-                                    {id:'jakarta', txtLabel:'Jakarta', type:'option', icon:<PiCityBold/>},
-                                    {id:'bandung', txtLabel:'Bandung', type:'option', icon:<PiCityBold/>},
-                                    {id:'surabaya', txtLabel:'Surabaya', type:'option', icon:<PiCityBold/>},
-                                ]}
-                                config={{
-                                    maxValue:2,
-                                    isRequired:true,
-                                    isDisabled:false
-                                }}
-                            />
-                            <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
-                                <Button
-                                    txtLabel={'Submit'}
-                                    appearance='primary'
-                                />
-                                <Button
-                                    txtLabel={'Cancel'}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        style={{
-                            padding:'var(--space-200)',
-                            // backgroundColor:'var(--clr-surface-2)',
-                            display:"grid",
-                            gap:'var(--space-100)',
-                            // border:'1px solid var(--clr-border)',
-                            borderRadius:'var(--space-100)',
-                            marginBottom:'var(--space-400)',
-                            marginTop:'var(--space-400)',
-                            minWidth:'40vw'
+                    />
+                    <InputText
+                        type='text'
+                        txtPlaceholder='Enter test text...'
+                        value={form['testText']}
+                        config={{
+                            isDisabled:true,
                         }}
-                    >
-                        
+                    />
+                    <InputPassword
+                        txtPlaceholder='Enter password...'
+                        value={form['testPassword']}
+                        onChange={(newValue)=>{onChange('testPassword', newValue)}}
+                        onValidate={(error)=>{onValidate('testPassword', error)}}
+                        error={formError['testPassword']}
+                        config={{
+                            isDisabled:false,
+                            validRegex: [
+                                // [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
+                            ]
+                        }}
+                    />
+                    <InputText
+                        type='text-no-space'
+                        txtPlaceholder='Enter test text nospace...'
+                        value={form['testTextNoSpace']}
+                        onChange={(newValue)=>{onChange('testTextNoSpace', newValue)}}
+                        config={{
+                            isDisabled:false,
+                            maxLength:42
+                        }}
+                    />
+                    <InputText
+                        type='number'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumber']}
+                        onChange={(newValue)=>{onChange('testTextNumber', newValue)}}
+                        onValidate={(error)=>{onValidate('testTextNumber', error)}}
+                        error={formError['testTextNumber']}
+                        config={{
+                            isDisabled:false,
+                            maxLength:42,
+                            minValue:10,
+                            maxValue:1000
+                        }}
+                    />
+                    <InputText
+                        type='number-text'
+                        txtPlaceholder='Enter test text number...'
+                        value={form['testTextNumberText']}
+                        onChange={(newValue)=>{onChange('testTextNumberText', newValue)}}
+                        onValidate={(error)=>{onValidate('testTextNumberText', error)}}
+                        error={formError['testTextNumberText']}
+                        config={{
+                            isDisabled:false,
+                            maxLength:42
+                        }}
+                    />
+                    <InputSelection
+                        type='single'
+                        txtPlaceholder='Select city...'
+                        value={form['testSelection']}
+                        onChange={(newValue)=>{onChange('testSelection', newValue)}}
+                        onValidate={(error)=>{
+                            console.log(error)
+                            onValidate('testSelection', error)
+                        }}
+                        error={formError['testSelection']}
+                        option={[...indonesiaProvinces]}
+                        config={{
+                            isDisabled:false,
+                            isRequired:true
+                        }}
+                    />
+                    <InputSelection
+                        type='combo-box'
+                        txtPlaceholder='Select city...'
+                        value={form['testSelectionComboBox']}
+                        onChange={(newValue)=>{onChange('testSelectionComboBox', newValue)}}
+                        onValidate={(error)=>{
+                            console.log(error)
+                            onValidate('testSelectionComboBox', error)
+                        }}
+                        error={formError['testSelectionComboBox']}
+                        option={[...indonesiaProvinces]}
+                        config={{
+                            isDisabled:false,
+                            isRequired:true
+                        }}
+                    />
+                    <InputSelection
+                        type='multiple'
+                        txtPlaceholder='Select city...'
+                        value={form['testSelectionMulti']}
+                        onChange={(newValue)=>{onChange('testSelectionMulti', newValue)}}
+                        onValidate={(error)=>{onValidate('testSelectionMulti', error)}}
+                        error={formError['testSelectionMulti']}
+                        option={[...indonesiaProvinces]}
+                        config={{
+                            maxValue:2,
+                            isRequired:true,
+                            isDisabled:false
+                        }}
+                    />
+                    <InputSelection
+                        type='tags'
+                        txtPlaceholder='Select city...'
+                        value={form['testSelectionTags']}
+                        onChange={(newValue)=>{onChange('testSelectionTags', newValue)}}
+                        onValidate={(error)=>{onValidate('testSelectionTags', error)}}
+                        error={formError['testSelectionTags']}
+                        option={[...indonesiaProvinces]}
+                        config={{
+                            isRequired:true,
+                            isDisabled:false
+                        }}
+                    />
+                    <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
+                        <Button
+                            txtLabel={'Submit'}
+                            appearance='primary'
+                        />
+                        <Button
+                            txtLabel={'Cancel'}
+                        />
                     </div>
                 </div>
                 {/* <div
@@ -579,3 +520,45 @@ function App() {
 }
 
 export default App
+
+
+const indonesiaProvinces:dropdownMenuOptionType[] = [
+    {id:'aceh', txtLabel:'Aceh', type:'option', icon:<PiCityBold/>},
+    {id:'sumatera-utara', txtLabel:'Sumatera Utara', type:'option', icon:<PiCityBold/>},
+    {id:'sumatera-barat', txtLabel:'Sumatera Barat', type:'option', icon:<PiCityBold/>},
+    {id:'riau', txtLabel:'Riau', type:'option', icon:<PiCityBold/>},
+    {id:'kepulauan-riau', txtLabel:'Kepulauan Riau', type:'option', icon:<PiCityBold/>},
+    {id:'jambi', txtLabel:'Jambi', type:'option', icon:<PiCityBold/>},
+    {id:'sumatera-selatan', txtLabel:'Sumatera Selatan', type:'option', icon:<PiCityBold/>},
+    {id:'kepulauan-bangka-belitung', txtLabel:'Kepulauan Bangka Belitung', type:'option', icon:<PiCityBold/>},
+    {id:'bengkulu', txtLabel:'Bengkulu', type:'option', icon:<PiCityBold/>},
+    {id:'lampung', txtLabel:'Lampung', type:'option', icon:<PiCityBold/>},
+    {id:'dki-jakarta', txtLabel:'DKI Jakarta', type:'option', icon:<PiCityBold/>},
+    {id:'jawa-barat', txtLabel:'Jawa Barat', type:'option', icon:<PiCityBold/>},
+    {id:'banten', txtLabel:'Banten', type:'option', icon:<PiCityBold/>},
+    {id:'jawa-tengah', txtLabel:'Jawa Tengah', type:'option', icon:<PiCityBold/>},
+    {id:'di-yogyakarta', txtLabel:'DI Yogyakarta', type:'option', icon:<PiCityBold/>},
+    {id:'jawa-timur', txtLabel:'Jawa Timur', type:'option', icon:<PiCityBold/>},
+    {id:'bali', txtLabel:'Bali', type:'option', icon:<PiCityBold/>},
+    {id:'nusa-tenggara-barat', txtLabel:'Nusa Tenggara Barat', type:'option', icon:<PiCityBold/>},
+    {id:'nusa-tenggara-timur', txtLabel:'Nusa Tenggara Timur', type:'option', icon:<PiCityBold/>},
+    {id:'kalimantan-barat', txtLabel:'Kalimantan Barat', type:'option', icon:<PiCityBold/>},
+    {id:'kalimantan-tengah', txtLabel:'Kalimantan Tengah', type:'option', icon:<PiCityBold/>},
+    {id:'kalimantan-selatan', txtLabel:'Kalimantan Selatan', type:'option', icon:<PiCityBold/>},
+    {id:'kalimantan-timur', txtLabel:'Kalimantan Timur', type:'option', icon:<PiCityBold/>},
+    {id:'kalimantan-utara', txtLabel:'Kalimantan Utara', type:'option', icon:<PiCityBold/>},
+    {id:'sulawesi-utara', txtLabel:'Sulawesi Utara', type:'option', icon:<PiCityBold/>},
+    {id:'gorontalo', txtLabel:'Gorontalo', type:'option', icon:<PiCityBold/>},
+    {id:'sulawesi-tengah', txtLabel:'Sulawesi Tengah', type:'option', icon:<PiCityBold/>},
+    {id:'sulawesi-barat', txtLabel:'Sulawesi Barat', type:'option', icon:<PiCityBold/>},
+    {id:'sulawesi-selatan', txtLabel:'Sulawesi Selatan', type:'option', icon:<PiCityBold/>},
+    {id:'sulawesi-tenggara', txtLabel:'Sulawesi Tenggara', type:'option', icon:<PiCityBold/>},
+    {id:'maluku', txtLabel:'Maluku', type:'option', icon:<PiCityBold/>},
+    {id:'maluku-utara', txtLabel:'Maluku Utara', type:'option', icon:<PiCityBold/>},
+    {id:'papua-barat', txtLabel:'Papua Barat', type:'option', icon:<PiCityBold/>},
+    {id:'papua-barat-daya', txtLabel:'Papua Barat Daya', type:'option', icon:<PiCityBold/>},
+    {id:'papua-tengah', txtLabel:'Papua Tengah', type:'option', icon:<PiCityBold/>},
+    {id:'papua', txtLabel:'Papua', type:'option', icon:<PiCityBold/>},
+    {id:'papua-pegunungan', txtLabel:'Papua Pegunungan', type:'option', icon:<PiCityBold/>},
+    {id:'papua-selatan', txtLabel:'Papua Selatan', type:'option', icon:<PiCityBold/>}
+];

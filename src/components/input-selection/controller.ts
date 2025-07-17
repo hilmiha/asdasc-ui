@@ -43,7 +43,7 @@ export const thisOnchange = (
     onChange?:(newValue:string[])=>void,
 ) =>{
     let newValue = []
-    if(type==='multiple'){
+    if(type==='multiple' || type==='tags'){
         const tamp = [...currentValue]
         if(currentValue.includes(idButton)){
             newValue = tamp.filter(i=>i!=idButton)
