@@ -43,7 +43,7 @@ export const thisOnchange = (
     onChange?:(newValue:string[])=>void,
 ) =>{
     let newValue = []
-    if(type==='multiple' || type==='tags'){
+    if(type==='multiple'){
         const tamp = [...currentValue]
         if(currentValue.includes(idButton)){
             newValue = tamp.filter(i=>i!=idButton)
@@ -69,13 +69,5 @@ export const clearValue = (
 ) =>{
     if(onChange){
         onChange([])
-    }
-}
-
-export const toggleTrigger = (triggerButtonRef?:React.RefObject<HTMLButtonElement | null>) =>{
-    if (triggerButtonRef?.current){
-        setTimeout(() => {
-            triggerButtonRef.current?.click();
-        }, 100);
     }
 }

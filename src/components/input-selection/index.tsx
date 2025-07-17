@@ -36,11 +36,8 @@ const InputSelection = ({
     //Context end ====
 
     //States start ====
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isDirty, setIsDirty] = useState(false)
-    
-    const isComboBox = useMemo(()=>{
-        return type==='combo-box'
-    },[type])
     
     const isDisabled = useMemo(()=>{
         return config?.isDisabled??false
@@ -48,17 +45,6 @@ const InputSelection = ({
 
     const labelValue = useMemo(()=>{
         return option.filter(i=>value.includes(i.id)).map(i=>i.txtLabel)
-    },[value, option])
-    const velueLabelPair = useMemo(()=>{
-        return value.map(i=>{
-            const tamp = option.find(j=>j.id===i)
-            if(tamp){
-                return([tamp.id, tamp.txtLabel])
-            }else{
-                return [i, i]
-            }
-        })
-        return option.filter(i=>value.includes(i.id)).map(i=>{return [i.id, i.txtLabel]})
     },[value, option])
 
     const [searchParam, setSearchParam] = useState('')
@@ -88,9 +74,11 @@ const InputSelection = ({
     },[option, value, searchParam])
     //States end ====
 
-    // Update ref
+    //Refs start ====
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
-    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const searchBarRef = useRef<HTMLInputElement>(null);
+    //Refs end ====
+
 
     return(
         <div className={clsx(
@@ -121,162 +109,40 @@ const InputSelection = ({
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
                         setIsDropdownOpen(isDropdownOpen);
-                        if(type==='tags'){
-                            return (
-                                <div
-                                    className={clsx(
-                                        'input-selection-container',
-                                        'input-selection-tag-container',
-                                        (shape)?(shape):(globalShape),
-                                        {
-                                            ['disabled']:(isDisabled),
-                                            ['selected']:(isDropdownOpen),
-                                            ['error']:(error?.isError),
-                                        },
-                                        className
-                                    )}
-                                    style={style?.triggerButton}
-                                >
+                        return(
+                            <button
+                                ref={triggerRef}
+                                id={id}
+                                className={clsx(
+                                    'input-selection-container',
+                                    (shape)?(shape):(globalShape),
                                     {
-                                        (value.length>0)&&(
-                                            <>
-                                                {
-                                                    velueLabelPair.map((i)=>(
-                                                        <div className='tag-box' key={i[0]}>
-                                                            <span className='tag-label'>{i[1]}</span>
-                                                            <IconButton
-                                                                icon={<PiXBold size={12}/>}
-                                                                txtLabel={`Remove ${i}`}
-                                                                appearance='subtle'
-                                                                isShowtooltip={false}
-                                                                onClick={()=>{
-                                                                    ctrl.thisOnchange(i[0], value, type, config, onChange)
-
-                                                                    if(onValidate && error?.isError){
-                                                                        onValidate({isError:false, errorMessage:''},[])
-                                                                    }
-                                                                    setIsDirty(true)
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    ))
-                                                }
-                                            </>
+                                        ['disabled']:(isDisabled),
+                                        ['selected']:(isDropdownOpen),
+                                        ['error']:(error?.isError),
+                                    },
+                                    className
+                                )}
+                                style={style?.triggerButton}
+                                disabled={isDisabled}
+                            >
+                                <div className='value-label-box'>
+                                    {
+                                        (value.length>0)?(
+                                            <span>{labelValue.join(', ')}</span>
+                                        ):(
+                                            <span className='placeholder'>{txtPlaceholder}</span>
                                         )
                                     }
-                                    <input
-                                        ref={triggerRef}
-                                        placeholder={txtPlaceholder}
-                                        className='input-tag'
-                                        value={searchParam}
-                                        onChange={(e)=>{
-                                            const newValue = e.target.value
-                                            if(newValue===' '){
-                                                ctrl.toggleTrigger(triggerButtonRef)
-                                            }else{
-                                                if(newValue && !isDropdownOpen){
-                                                    ctrl.toggleTrigger(triggerButtonRef)
-                                                }
-                                                setSearchParam(newValue)
-                                            }
-                                        }}
-                                        onKeyDown={(e)=>{
-                                            if(e.key==='Backspace' && searchParam==='' && value.length>0){
-                                                ctrl.thisOnchange(value.at(-1)??'', value, type, config, onChange)
-                                                if(onValidate && error?.isError){
-                                                    onValidate({isError:false, errorMessage:''},[])
-                                                }
-                                                setIsDirty(true)
-                                            }
-                                        }}
-                                    />
                                 </div>
-                            )
-                        }else if(isComboBox){
-                            return (
-                                <>
-                                    <InputText
-                                        ref={triggerRef}
-                                        className={
-                                            clsx(
-                                                'input-combo-box',
-                                                {
-                                                    ['selected']:(isDropdownOpen),
-                                                }
-                                            )
-                                        }
-                                        type='text'
-                                        txtPlaceholder={value.length>0?(undefined):(txtPlaceholder)}
-                                        value={searchParam}
-                                        shape={shape}
-                                        style={style?.triggerInput}
-                                        onChange={(newValue)=>{
-                                            if(newValue===' '){
-                                                ctrl.toggleTrigger(triggerButtonRef)
-                                            }else{
-                                                if(newValue && !isDropdownOpen){
-                                                    ctrl.toggleTrigger(triggerButtonRef)
-                                                }
-                                                setSearchParam(newValue)
-                                            }
-                                        }}
-                                        error={error}
-                                        config={{
-                                            isDisabled:config?.isDisabled
-                                        }}
-                                    />
-                                    {
-                                        (!searchParam)&&(
-                                            <p
-                                                className='input-combo-box-value'
-                                                style={{
-                                                    position:'absolute',
-                                                    left:((shape??globalShape)==='circle')?('calc(var(--space-300) + 5px)'):('var(--space-250)'),
-                                                    height:'100%',
-                                                    display:'flex',
-                                                    alignItems:'center'
-                                                }}
-                                            >{labelValue.join(',')}</p>
-                                        )
-                                    }
-                                </>
-                            )
-                        }else{
-                            return (
-                                <button
-                                    ref={triggerRef}
-                                    id={id}
-                                    className={clsx(
-                                        'input-selection-container',
-                                        (shape)?(shape):(globalShape),
-                                        {
-                                            ['disabled']:(isDisabled),
-                                            ['selected']:(isDropdownOpen),
-                                            ['error']:(error?.isError),
-                                        },
-                                        className
-                                    )}
-                                    style={style?.triggerButton}
-                                    disabled={isDisabled}
-                                >
-                                    <div className='value-label-box'>
-                                        {
-                                            (value.length>0)?(
-                                                <span>{labelValue.join(', ')}</span>
-                                            ):(
-                                                <span className='placeholder'>{txtPlaceholder}</span>
-                                            )
-                                        }
-                                    </div>
-                                </button>
-                            )
-                        }
+                            </button>
+                        )
                     }
                 }
                 options={optionTamp}
                 optionSelected={value}
                 isContainerWidthSameAsTrigger={true}
-                isWithCheckmark={type==='multiple' || type==='tags'}
+                isWithCheckmark={type==='multiple'}
                 shape={shape}
                 style={{
                     optionButton:{
@@ -293,13 +159,8 @@ const InputSelection = ({
                             onValidate({isError:false, errorMessage:''},[])
                         }
 
-                        if(type==='combo-box'){
-                            setSearchParam('')
-                            triggerButtonRef.current?.focus()
-                        }
-
-                        if(type==='tags'){
-                            triggerButtonRef.current?.focus()
+                        if(searchBarRef.current && searchParam){
+                            searchBarRef.current.focus()
                         }
 
                         setIsDirty(true)
@@ -315,20 +176,17 @@ const InputSelection = ({
                     }
                 }}
                 elementHeader={
-                    <>
-                        {
-                            (!isComboBox && type!=='tags')&&(
-                                <div className='search-bar-box'>
-                                    <InputText 
-                                        type='text'
-                                        txtPlaceholder='Search...'
-                                        value={searchParam}
-                                        onChange={(newValue)=>{setSearchParam(newValue)}}
-                                    />
-                                </div>
-                            )
-                        }
-                    </>
+                    (config?.isCombobox)?(
+                        <div className='search-bar-box'>
+                            <InputText 
+                                ref={searchBarRef}
+                                type='text'
+                                txtPlaceholder='Search...'
+                                value={searchParam}
+                                onChange={(newValue)=>{setSearchParam(newValue)}}
+                            />
+                        </div>
+                    ):undefined
                 }
                 elementFooter={
                     <>
@@ -423,9 +281,10 @@ interface _InputSelection {
     config?:inputSelectConfigType
 }
 
-export type inputSelectType = 'single' | 'combo-box' | 'multiple' | 'tags';
+export type inputSelectType = 'single' | 'multiple';
 
 export type inputSelectConfigType = {
+    isCombobox?:boolean
     isDisabled?:boolean
     isRequired?:boolean
     minValue?:number

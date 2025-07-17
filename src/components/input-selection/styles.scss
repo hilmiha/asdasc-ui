@@ -12,34 +12,6 @@
         height: unset;
         display: flex;
 
-        .input-combo-box{
-            flex-grow: 1;
-
-            .clear-button{
-                display: none;
-            }
-
-            .error-box{
-                display: none;
-            }
-
-            &.error{
-                border-color: var(--clr-danger-700);
-            }
-
-            &.selected{
-                .input-text{
-                    background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.3);
-                    border-color:  var(--clr-border-primary);
-                    color: var(--clr-primary-900);
-
-                    &::placeholder{
-                        color: var(--clr-surface-primary-5);
-                    }
-                }
-            }
-        }
-
         .input-selection-container{
             flex-grow: 1;
             border: 1px solid var(--clr-border);
@@ -53,7 +25,6 @@
                 cursor: not-allowed;
                 background-color: hsl(from var(--clr-surface-1) h s l / 0.7);
                 border: 1px dashed var(--clr-border);
-
                 background-image: repeating-linear-gradient(
                     45deg,
                     transparent,
@@ -69,7 +40,6 @@
                         color: hsl(from var(--clr-surface-4) h s l / 1);
                     }
                 }
-
             }
 
             &.error{
@@ -124,87 +94,8 @@
                 }
             }
         }
-
-        .input-selection-tag-container{
-            padding: 3.6px var(--space-500) 3.6px var(--space-200) !important;
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-50);
-
-            &:has(:focus-visible){
-                outline: 2px solid var(--clr-focus-ouline);
-                outline-offset: 2px;
-            }
-
-            &.rounded .tag-box{
-                border-radius: var(--space-100);
-            }
-            &.box .tag-box{
-                border-radius: var(--space-0);
-            }
-            &.circle .tag-box{
-                border-radius: var(--space-200);
-
-                &:has(.icon-before){
-                    padding-left: var(--space-250);
-                }
-                &:has(.icon-after){
-                    padding-right: var(--space-250);
-                }
-            }
-
-            .tag-box{
-                display: flex;
-                background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
-                border: 1px solid var(--clr-border);
-                align-items: center;
-                gap:var(--space-50);
-                .tag-label{
-                    padding: var(--space-50) var(--space-25) var(--space-50) var(--space-100);
-                }
-                .icon-button{
-                    margin: 0px;
-                    padding: var(--space-50);
-                    height: auto;
-                    width: auto;
-                    border-top-left-radius: 0px;
-                    border-bottom-left-radius: 0px;
-
-                    &:hover{
-                        background-color: var(--clr-surface-danger-4);
-                    }
-                }
-            }
-
-            .input-tag{
-                color: var(--clr-text);
-                border: 0px;
-                outline: 0px;
-                background-color: transparent;
-                width: fit-content;
-                flex-grow: 1;
-                min-height: 22.8px;
-                &::placeholder{
-                    color: var(--clr-surface-5);
-                }
-            }
-
-            &.selected{
-                .tag-box{
-                    border: 1px solid var(--clr-border-primary);
-                    background-color: hsl(from var(--clr-surface-primary-1) h s l / 0.4);
-                    color: var(--clr-primary-900);
-                }
-
-                .input-tag{
-                    color: var(--clr-primary-900);
-                    &::placeholder{
-                        color: var(--clr-surface-primary-5);
-                    }
-                }
-            }
-        }
     }
+
     .lock-box{
         position: absolute;
         grid-column: 2 / 3;
@@ -216,6 +107,7 @@
         color: var(--clr-surface-4);
     }
     .caret-box{
+        pointer-events: none;
         position: absolute;
         grid-column: 2 / 3;
         grid-row: 1 / 2;
@@ -288,8 +180,9 @@
     }
 }
 
+//Style dropdown container
 .input-select-dropdown{
-    .input-select-search-bar-box{
+    .search-bar-box{
         margin: var(--space-25) var(--space-50);
     }
 

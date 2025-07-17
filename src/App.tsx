@@ -11,6 +11,7 @@ import InputText from './components/input-text';
 import type { fieldErrorType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
+// import InputTags from './components/input-tags';
 
 function App() {
     const {
@@ -40,7 +41,7 @@ function App() {
         testSelection:[],
         testSelectionComboBox:[],
         testSelectionMulti:[],
-        testSelectionTags:[],
+        testTags:[],
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -51,7 +52,7 @@ function App() {
         testSelection:{isError:false, errorMessage:''},
         testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
-        testSelectionTags:{isError:false, errorMessage:''},
+        testTags:{isError:false, errorMessage:''},
 
     })
     const onChange = useCallback((key: string, newValue: any) => {
@@ -260,22 +261,7 @@ function App() {
                         error={formError['testSelection']}
                         option={[...indonesiaProvinces]}
                         config={{
-                            isDisabled:false,
-                            isRequired:true
-                        }}
-                    />
-                    <InputSelection
-                        type='combo-box'
-                        txtPlaceholder='Select city...'
-                        value={form['testSelectionComboBox']}
-                        onChange={(newValue)=>{onChange('testSelectionComboBox', newValue)}}
-                        onValidate={(error)=>{
-                            console.log(error)
-                            onValidate('testSelectionComboBox', error)
-                        }}
-                        error={formError['testSelectionComboBox']}
-                        option={[...indonesiaProvinces]}
-                        config={{
+                            isCombobox:true,
                             isDisabled:false,
                             isRequired:true
                         }}
@@ -289,24 +275,25 @@ function App() {
                         error={formError['testSelectionMulti']}
                         option={[...indonesiaProvinces]}
                         config={{
+                            isCombobox:true,
                             maxValue:2,
                             isRequired:true,
                             isDisabled:false
                         }}
                     />
-                    <InputSelection
+                    {/* <InputTags
                         type='tags'
                         txtPlaceholder='Select city...'
-                        value={form['testSelectionTags']}
-                        onChange={(newValue)=>{onChange('testSelectionTags', newValue)}}
-                        onValidate={(error)=>{onValidate('testSelectionTags', error)}}
-                        error={formError['testSelectionTags']}
+                        value={form['testTags']}
+                        onChange={(newValue)=>{onChange('testTags', newValue)}}
+                        onValidate={(error)=>{onValidate('testTags', error)}}
+                        error={formError['testTags']}
                         option={[...indonesiaProvinces]}
                         config={{
                             isRequired:true,
                             isDisabled:false
                         }}
-                    />
+                    /> */}
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
                         <Button
                             txtLabel={'Submit'}
