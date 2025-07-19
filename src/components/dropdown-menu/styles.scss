@@ -4,8 +4,9 @@
     height: fit-content
 }
 .dropdown-menu-box{
+    background-color: var(--clr-surface-2);
+
     .dropdown-menu-container{
-        background-color: var(--clr-surface-1);
         border: 1px solid var(--clr-border);
         min-width: inherit;
         max-width: inherit;
@@ -29,7 +30,6 @@
             grid-row: 1 / 2;
             position: sticky;
             top: 0px;
-            background-color: var(--clr-surface-1);
         }
 
         .dropdown-body-box{

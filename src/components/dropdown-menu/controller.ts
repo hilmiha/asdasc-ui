@@ -1,9 +1,11 @@
-export const thisOnClick = (
-    id:string,
+import type { dropdownMenuOptionType } from "."
+
+export const onOptionClick = (
+    option:dropdownMenuOptionType,
     e:React.MouseEvent<HTMLButtonElement>,
-    onClickFunction?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void,
+    onClickFunction?:(idOption:string, option:dropdownMenuOptionType, e:React.MouseEvent<HTMLButtonElement>)=>void,
 ) =>{
     if(onClickFunction){
-        onClickFunction(id, e)
+        onClickFunction(option.id, option, e)
     }
 }

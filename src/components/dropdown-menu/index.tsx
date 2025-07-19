@@ -16,16 +16,18 @@ const DropdownMenu = ({
     shape = undefined,
     options = [],
     optionSelected = undefined,
-    placement,
-    isContainerWidthSameAsTrigger = false,
-    isWithCheckmark = false,
-    level = 0,
+    // placement,
+    // isContainerWidthSameAsTrigger = false,
+    // isWithCheckmark = false,
+    // level = 0,
     onClick,
     onOptionClose,
     onOptionOpen,
 
     elementHeader = undefined,
-    elementFooter = undefined
+    elementFooter = undefined,
+    
+    floatingConfig = undefined
 }:_DropdownMenu) =>{
 
     //Context start ====
@@ -52,9 +54,9 @@ const DropdownMenu = ({
                 onOptionClose(refs.domReference)
             }
         },
-        placement: placement??'bottom-start',
+        placement: (floatingConfig?.placement)??('bottom-start'),
         middleware: [
-            offset(level ? 8 : 4),
+            offset((floatingConfig?.level)?8:4),
             shift(),
             flip({
                 padding: 10,
@@ -62,9 +64,9 @@ const DropdownMenu = ({
             }),
             size({
                 apply({availableHeight, elements, rects}) {
-                    const value = `${Math.min(240, (Math.max(0, availableHeight) - 20))}px`;
+                    const value = `${(Math.max(0, availableHeight) - 50)}px`;
                     elements.floating.style.maxHeight = value;
-                    if(isContainerWidthSameAsTrigger){
+                    if(floatingConfig?.isContainerWidthSameAsTrigger){
                         elements.floating.style.width = `${rects.reference.width}px`
                         elements.floating.style.minWidth = `${Math.max(310, rects.reference.width)}px`
                         elements.floating.style.maxWidth = `${rects.reference.width}px`
@@ -94,22 +96,33 @@ const DropdownMenu = ({
 
     return(
         <>
-            <div 
-                className={clsx(
-                    'dropdown-menu-trigger-box',
-                )}
-                {...getReferenceProps()}
-                style={style?.triggerBox}
-            >
+            <>
                 {typeof trigger === 'function' 
-                    ? trigger(refs.setReference, isShowOption, refs.domReference)
-                    : trigger && React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })
+                    ? trigger(
+                        refs.setReference, 
+                        getReferenceProps,
+                        isShowOption, 
+                        refs.domReference,
+                    )
+                    : trigger && (
+                        <div 
+                            className={clsx(
+                                'dropdown-menu-trigger-box',
+                            )}
+                            {...getReferenceProps()}
+                            style={style?.triggerBox}
+                        >
+                            {React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })}
+                        </div>
+                    )
                 }
-            </div>
+            </>
             {
-                (isShowOption)&&(
+                (isShowOption && floatingConfig?.isShowDropdown !== false)&&(
                     <FloatingPortal>
-                        <FloatingOverlay lockScroll>
+                        <FloatingOverlay
+                            lockScroll={floatingConfig?.isLockScroll}
+                        >
                             <FloatingFocusManager 
                                 context={context} 
                                 order={['reference', 'content']}
@@ -149,11 +162,7 @@ const DropdownMenu = ({
                                                                 <Button
                                                                     key={option.id}
                                                                     id={option.id}
-                                                                    className={
-                                                                        clsx(
-                                                                            'dropdown-item',
-                                                                        )
-                                                                    }
+                                                                    className={clsx('dropdown-item')}
                                                                     style={style?.optionButton}
                                                                     shape={shape}
                                                                     txtLabel={option.txtLabel??''}
@@ -161,7 +170,7 @@ const DropdownMenu = ({
                                                                         (optionSelected)?(
                                                                             <div className='check-icon-container'>
                                                                                 {
-                                                                                    (!isWithCheckmark)?(
+                                                                                    (!(floatingConfig?.isWithCheckmark))?(
                                                                                         <></>
                                                                                     ):(optionSelected?.includes(option.id))?(
                                                                                         <PiCheckBold className='global-icon'/>
@@ -182,7 +191,7 @@ const DropdownMenu = ({
                                                                     }
                                                                     isSelected={optionSelected?.includes(option.id)}
                                                                     appearance={'subtle'}
-                                                                    onClick={(e)=>{ctrl.thisOnClick(option.id, e, onClick)}}
+                                                                    onClick={(e)=>{ctrl.onOptionClick(option, e, onClick)}}
                                                                     isDisabled={option.isDisabled}
                                                                 />
                                                             )
@@ -199,43 +208,47 @@ const DropdownMenu = ({
                                                                         }
                                                                     }}
                                                                     shape={(shape)?(shape):(globalShape)}
-                                                                    onClick={(idButton, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
-                                                                    placement='right-start'
-                                                                    level={level + 1}
+                                                                    onClick={(_, option, e)=>{ctrl.onOptionClick(option, e, onClick)}}
+                                                                    floatingConfig={{
+                                                                        placement:'right-start',
+                                                                        level:((floatingConfig?.level)??0)+1
+                                                                    }}
                                                                     trigger={
-                                                                        (triggerRef, isDropdownOpen)=>(
-                                                                            <Button
-                                                                                ref={triggerRef}
-                                                                                key={option.id}
-                                                                                id={option.id}
-                                                                                className={
-                                                                                    clsx(
-                                                                                        'dropdown-item',
-                                                                                    )
-                                                                                }
-                                                                                style={style?.optionButton}
-                                                                                shape={shape}
-                                                                                txtLabel={option.txtLabel??''}
-                                                                                iconBefore={
-                                                                                    (optionSelected)?(
+                                                                        (triggerRef, getReferenceProps, isDropdownOpen, )=>(
+                                                                            <div style={{display:'flex'}} {...getReferenceProps()}>
+                                                                                <Button
+                                                                                    ref={triggerRef}
+                                                                                    key={option.id}
+                                                                                    id={option.id}
+                                                                                    className={
+                                                                                        clsx(
+                                                                                            'dropdown-item',
+                                                                                        )
+                                                                                    }
+                                                                                    style={style?.optionButton}
+                                                                                    shape={shape}
+                                                                                    txtLabel={option.txtLabel??''}
+                                                                                    iconBefore={
+                                                                                        (optionSelected)?(
+                                                                                            <div className='check-icon-container'>
+                                                                                                <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
+                                                                                                {option.icon}
+                                                                                            </div>
+                                                                                        ):(
+                                                                                            option.icon
+                                                                                        )
+                                                                                    }
+                                                                                    iconAfter={
                                                                                         <div className='check-icon-container'>
-                                                                                            <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
-                                                                                            {option.icon}
+                                                                                            {option.iconAfter}
+                                                                                            <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
                                                                                         </div>
-                                                                                    ):(
-                                                                                        option.icon
-                                                                                    )
-                                                                                }
-                                                                                iconAfter={
-                                                                                    <div className='check-icon-container'>
-                                                                                        {option.iconAfter}
-                                                                                        <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
-                                                                                    </div>
-                                                                                }
-                                                                                isSelected={isDropdownOpen}
-                                                                                appearance={'subtle'}
-                                                                                isDisabled={option.isDisabled}
-                                                                            />
+                                                                                    }
+                                                                                    isSelected={isDropdownOpen}
+                                                                                    appearance={'subtle'}
+                                                                                    isDisabled={option.isDisabled}
+                                                                                />
+                                                                            </div>
                                                                         )
                                                                     }
                                                                 />
@@ -280,21 +293,31 @@ export default DropdownMenu
 
 interface _DropdownMenu {
     className?:string
-    trigger:JSX.Element | ((triggerRef: React.RefCallback<HTMLElement>, isDropdownOpen:boolean, trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => JSX.Element);
+    trigger:JSX.Element | ((
+        triggerRef: React.RefCallback<HTMLElement>, 
+        getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>,
+        isDropdownOpen:boolean, 
+        trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>,
+    ) => JSX.Element);
     style?:dropdownMenuStyleType;
     shape?:globalShapeType;
     options:dropdownMenuOptionType[]
     optionSelected?:string[]
-    placement?:Placement,
-    isContainerWidthSameAsTrigger?:boolean
-    isWithCheckmark?:boolean
-    level?:number
-    onClick?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onClick?:(idOption:string, option:dropdownMenuOptionType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOptionOpen?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;
     onOptionClose?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;
 
     elementHeader?:JSX.Element
     elementFooter?:JSX.Element
+
+    floatingConfig?:{
+        placement?:Placement,
+        isContainerWidthSameAsTrigger?:boolean
+        isWithCheckmark?:boolean
+        isLockScroll?:boolean
+        isShowDropdown?:boolean
+        level?:number
+    }
 }
 
 export type dropdownMenuStyleType = {
@@ -308,6 +331,7 @@ export type dropdownMenuOptionType = {
     id:string,
     type?: 'option' | 'separator',
     txtLabel:string,
+    alis?:string, 
     icon?:JSX.Element,
     iconAfter?:JSX.Element,
     isDisabled?:boolean,

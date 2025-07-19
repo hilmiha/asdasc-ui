@@ -4,10 +4,11 @@ import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType } from "../_types";
 import { useContext, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import DropdownMenu, { type dropdownMenuOptionType } from '../dropdown-menu';
+import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
-import InputText, { type inputTextStyleType } from '../input-text';
+import InputText from '../input-text';
+import Button from '../button';
 
 const InputSelection = ({
     id = undefined,
@@ -53,7 +54,7 @@ const InputSelection = ({
         let tampOptions = [...option]
 
         if(searchParam){
-            tampOptions = tampOptions.filter(i=>(i.txtLabel).toLowerCase().includes(searchParam.toLowerCase()))
+            tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
         }
 
         if(config?.maxValue){
@@ -104,7 +105,7 @@ const InputSelection = ({
             <DropdownMenu
                 className='input-select-dropdown'
                 trigger={
-                    (triggerRef, isDropdownOpen, trigger)=>{
+                    (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
                         if(trigger.current){
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
@@ -112,9 +113,10 @@ const InputSelection = ({
                         return(
                             <button
                                 ref={triggerRef}
+                                {...getReferenceProps()}
                                 id={id}
                                 className={clsx(
-                                    'input-selection-container',
+                                    'input-selection',
                                     (shape)?(shape):(globalShape),
                                     {
                                         ['disabled']:(isDisabled),
@@ -141,19 +143,11 @@ const InputSelection = ({
                 }
                 options={optionTamp}
                 optionSelected={value}
-                isContainerWidthSameAsTrigger={true}
-                isWithCheckmark={type==='multiple'}
                 shape={shape}
-                style={{
-                    optionButton:{
-                        textLabel:{
-                            fontWeight:'var(--font-weight-text)'
-                        }
-                    }
-                }}
+                style={style?.dropdownMenu}
                 onClick={(idButton)=>{
                     if(!isDisabled){
-                        ctrl.thisOnchange(idButton, value, type, config, onChange)
+                        ctrl.onOptionClick(idButton, value, type, config, onChange)
 
                         if(onValidate && error?.isError){
                             onValidate({isError:false, errorMessage:''},[])
@@ -167,7 +161,7 @@ const InputSelection = ({
                     }
                 }}
                 onOptionClose={()=>{
-                    if(config && onValidate && isDirty){
+                    if(isDirty){
                         ctrl.doValidate(value, config, onValidate)
                     }
                     
@@ -176,17 +170,30 @@ const InputSelection = ({
                     }
                 }}
                 elementHeader={
-                    (config?.isCombobox)?(
-                        <div className='search-bar-box'>
-                            <InputText 
-                                ref={searchBarRef}
-                                type='text'
-                                txtPlaceholder='Search...'
-                                value={searchParam}
-                                onChange={(newValue)=>{setSearchParam(newValue)}}
+                    <>
+                        {
+                            (config?.isCombobox)?(
+                                <div className='search-bar-box'>
+                                    <InputText 
+                                        ref={searchBarRef}
+                                        type='text'
+                                        txtPlaceholder='Search...'
+                                        value={searchParam}
+                                        onChange={(newValue)=>{setSearchParam(newValue)}}
+                                    />
+                                </div>
+                            ):undefined
+                        }
+                        <div className='reset-box'>
+                            <Button
+                                shape='box'
+                                className='reset-button'
+                                txtLabel={'Clear Selection'}
+                                appearance='subtle'
+                                onClick={()=>{ctrl.clearValue(onChange)}}
                             />
                         </div>
-                    ):undefined
+                    </>
                 }
                 elementFooter={
                     <>
@@ -203,6 +210,11 @@ const InputSelection = ({
                         }
                     </>
                 }
+                floatingConfig={{
+                    isLockScroll:true,
+                    isContainerWidthSameAsTrigger:true,
+                    isWithCheckmark:type==='multiple'
+                }}
             />
             {
                 (isDisabled)?(
@@ -214,7 +226,7 @@ const InputSelection = ({
                 )
             }
             {
-                (value.length > 0 && !isDisabled)&&(
+                (value.length > 0 && !isDisabled && !isDropdownOpen)&&(
                     <IconButton
                         className='clear-button'
                         icon={<PiXBold/>}
@@ -292,6 +304,6 @@ export type inputSelectConfigType = {
 }
 
 export type inputSelectionStyleType = {
-    triggerButton:React.CSSProperties,
-    triggerInput:inputTextStyleType,
+    triggerButton?:React.CSSProperties,
+    dropdownMenu?:dropdownMenuStyleType
 }

@@ -4,12 +4,9 @@ import type { fieldErrorType } from "../_types";
 
 export const doValidate = (
     newValue:string[],
-    config?:inputSelectConfigType,
-    onValidate?:(error:fieldErrorType, newValue:string[])=>void,
+    config:inputSelectConfigType,
+    onValidate:(error:fieldErrorType, newValue:string[])=>void,
 ) =>{
-    if(!config || !onValidate){
-        return null
-    }
     let isError = false
     let errorMessage = ''
     
@@ -38,24 +35,24 @@ export const doValidate = (
         newValue
     )
 }
-export const onOptionClick = (
-    idButton:string,
+export const thisOnchange = (
+    newTag:string,
     currentValue:string[],
     type:inputSelectType,
     config?:inputSelectConfigType,
     onChange?:(newValue:string[])=>void,
 ) =>{
     let newValue = []
-    if(type==='multiple'){
+    if(type==='tags'){
         const tamp = [...currentValue]
-        if(currentValue.includes(idButton)){
-            newValue = tamp.filter(i=>i!=idButton)
+        if(currentValue.includes(newTag)){
+            newValue = tamp.filter(i=>i!=newTag)
         }else{
-            tamp.push(idButton)
+            tamp.push(newTag)
             newValue = tamp
         }
     }else{
-        newValue = [idButton]
+        newValue = [newTag]
     }
 
     if(onChange){
@@ -72,5 +69,13 @@ export const clearValue = (
 ) =>{
     if(onChange){
         onChange([])
+    }
+}
+
+export const toggleTrigger = (triggerButtonRef?:React.RefObject<HTMLButtonElement | null>) =>{
+    if (triggerButtonRef?.current){
+        setTimeout(() => {
+            triggerButtonRef.current?.click();
+        }, 100);
     }
 }

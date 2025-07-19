@@ -1,7 +1,7 @@
 import './App.scss'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiPencilLineBold, PiStarFourBold, PiXCircleBold } from 'react-icons/pi';
+import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -11,7 +11,7 @@ import InputText from './components/input-text';
 import type { fieldErrorType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
-// import InputTags from './components/input-tags';
+import InputTags from './components/input-tags';
 
 function App() {
     const {
@@ -68,7 +68,7 @@ function App() {
             [key]: error
         }));
     }, []); 
-
+    
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -281,19 +281,19 @@ function App() {
                             isDisabled:false
                         }}
                     />
-                    {/* <InputTags
+                    <InputTags
                         type='tags'
                         txtPlaceholder='Select city...'
                         value={form['testTags']}
                         onChange={(newValue)=>{onChange('testTags', newValue)}}
                         onValidate={(error)=>{onValidate('testTags', error)}}
                         error={formError['testTags']}
-                        option={[...indonesiaProvinces]}
+                        option={[...tagsDummy]}
                         config={{
                             isRequired:true,
                             isDisabled:false
                         }}
-                    /> */}
+                    />
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
                         <Button
                             txtLabel={'Submit'}
@@ -510,6 +510,7 @@ export default App
 
 
 const indonesiaProvinces:dropdownMenuOptionType[] = [
+    {id:'sumatera', txtLabel:'Sumatera', type:'separator'},
     {id:'aceh', txtLabel:'Aceh', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-utara', txtLabel:'Sumatera Utara', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-barat', txtLabel:'Sumatera Barat', type:'option', icon:<PiCityBold/>},
@@ -518,6 +519,7 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'jambi', txtLabel:'Jambi', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-selatan', txtLabel:'Sumatera Selatan', type:'option', icon:<PiCityBold/>},
     {id:'kepulauan-bangka-belitung', txtLabel:'Kepulauan Bangka Belitung', type:'option', icon:<PiCityBold/>},
+    {id:'jawa', txtLabel:'Jawa', type:'separator'},
     {id:'bengkulu', txtLabel:'Bengkulu', type:'option', icon:<PiCityBold/>},
     {id:'lampung', txtLabel:'Lampung', type:'option', icon:<PiCityBold/>},
     {id:'dki-jakarta', txtLabel:'DKI Jakarta', type:'option', icon:<PiCityBold/>},
@@ -526,6 +528,7 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'jawa-tengah', txtLabel:'Jawa Tengah', type:'option', icon:<PiCityBold/>},
     {id:'di-yogyakarta', txtLabel:'DI Yogyakarta', type:'option', icon:<PiCityBold/>},
     {id:'jawa-timur', txtLabel:'Jawa Timur', type:'option', icon:<PiCityBold/>},
+    {id:'nusa-tenggara', txtLabel:'Nusa Tenggara', type:'separator'},
     {id:'bali', txtLabel:'Bali', type:'option', icon:<PiCityBold/>},
     {id:'nusa-tenggara-barat', txtLabel:'Nusa Tenggara Barat', type:'option', icon:<PiCityBold/>},
     {id:'nusa-tenggara-timur', txtLabel:'Nusa Tenggara Timur', type:'option', icon:<PiCityBold/>},
@@ -548,4 +551,27 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'papua', txtLabel:'Papua', type:'option', icon:<PiCityBold/>},
     {id:'papua-pegunungan', txtLabel:'Papua Pegunungan', type:'option', icon:<PiCityBold/>},
     {id:'papua-selatan', txtLabel:'Papua Selatan', type:'option', icon:<PiCityBold/>}
+];
+
+const tagsDummy: dropdownMenuOptionType[] = [
+    {id:'1', txtLabel:'Content Management System', type:'option', icon:<PiTagBold/>, alis:'cms'},
+    {id:'2', txtLabel:'Digital Asset Management', type:'option', icon:<PiTagBold/>},
+    {id:'3', txtLabel:'Content Strategy', type:'option', icon:<PiTagBold/>},
+    {id:'4', txtLabel:'Editorial Workflow', type:'option', icon:<PiTagBold/>},
+    {id:'5', txtLabel:'Content Publishing', type:'option', icon:<PiTagBold/>},
+    {id:'6', txtLabel:'Version Control', type:'option', icon:<PiTagBold/>},
+    {id:'7', txtLabel:'Editorial Calendar', type:'option', icon:<PiTagBold/>},
+    {id:'8', txtLabel:'Content Governance', type:'option', icon:<PiTagBold/>},
+    {id:'9', txtLabel:'Metadata Management', type:'option', icon:<PiTagBold/>},
+    {id:'10', txtLabel:'Content Lifecycle', type:'option', icon:<PiTagBold/>},
+    {id:'11', txtLabel:'Multi Channel Publishing', type:'option', icon:<PiTagBold/>},
+    {id:'12', txtLabel:'Content Personalization', type:'option', icon:<PiTagBold/>},
+    {id:'13', txtLabel:'Taxonomy Management', type:'option', icon:<PiTagBold/>},
+    {id:'14', txtLabel:'Content Analytics', type:'option', icon:<PiTagBold/>},
+    {id:'15', txtLabel:'Headless CMS', type:'option', icon:<PiTagBold/>},
+    {id:'16', txtLabel:'Content Collaboration', type:'option', icon:<PiTagBold/>},
+    {id:'17', txtLabel:'SEO Optimization', type:'option', icon:<PiTagBold/>},
+    {id:'18', txtLabel:'Content Migration', type:'option', icon:<PiTagBold/>},
+    {id:'19', txtLabel:'User Permissions', type:'option', icon:<PiTagBold/>},
+    {id:'20', txtLabel:'Content Archiving', type:'option', icon:<PiTagBold/>},
 ];

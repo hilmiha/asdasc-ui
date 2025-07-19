@@ -53,22 +53,25 @@ const SplitButton = ({
             <DropdownMenu
                 options={options}
                 optionSelected={optionSelected}
-                onClick={(idButton, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
+                onClick={(idButton, _, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
                 style={style?.dropdownMenu}
                 shape={(shape)?(shape):(globalShape)}
-                trigger={(triggerRef, isDropdownOpen)=>(
-                    <IconButton
-                        ref={triggerRef} 
-                        className='button-more'
-                        txtLabel={`${txtLabel} More`}
-                        icon={(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
-                        appearance={appearance}
-                        shape={(shape)?(shape):(globalShape)}
-                        isDisabled={isDisabled}
-                        isShowtooltip={false}
-                        style={style?.secondaryButton}
-                        isSelected={isDropdownOpen}
-                    />
+                trigger={(triggerRef, getReferenceProps, isDropdownOpen)=>(
+                    <div {...getReferenceProps()}>
+                        <IconButton
+                            ref={triggerRef} 
+                            className='button-more'
+                            txtLabel={`${txtLabel} More`}
+                            icon={(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
+                            appearance={appearance}
+                            shape={(shape)?(shape):(globalShape)}
+                            isDisabled={isDisabled}
+                            isShowtooltip={false}
+                            style={style?.secondaryButton}
+                            isSelected={isDropdownOpen}
+                        />
+                    </div>
+                    
                 )}
             />
         </div>

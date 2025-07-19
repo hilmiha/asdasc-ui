@@ -32,6 +32,11 @@
     --space-800: #{$space-800};
     --space-1000: #{$space-1000};
 
+    --text-size: #{$text-size};
+    --text-size-sm: #{$text-size-sm};
+    --text-size-lg: #{$text-size-lg};
+
+
     @include generate-global-color-variable(false)
 }
 
@@ -41,7 +46,7 @@
 
 * {
     font-family: 'Inter', monospace;
-    font-size: #{$text-size};
+    font-size: var(--text-size);
 }
 
 html {
