@@ -282,13 +282,13 @@ function App() {
                         }}
                     />
                     <InputTags
-                        type='tags'
+                        type='text-no-space'
                         txtPlaceholder='Select city...'
                         value={form['testTags']}
                         onChange={(newValue)=>{onChange('testTags', newValue)}}
                         onValidate={(error)=>{onValidate('testTags', error)}}
                         error={formError['testTags']}
-                        option={[...tagsDummy]}
+                        options={[...tagsDummy]}
                         config={{
                             isRequired:true,
                             isDisabled:false

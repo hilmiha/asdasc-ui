@@ -17,11 +17,13 @@ const InputTags = ({
     afterElement = undefined,
     beforeElement = undefined,
 
-    type = 'tags',
+    type = 'text-no-space',
     txtPlaceholder = undefined,
-    option = [],
+    options = [],
     value = [],
     onChange = undefined,
+    onBlur = undefined,
+    onFocus = undefined,
     error = undefined,
     onValidate = undefined,
 
@@ -41,21 +43,13 @@ const InputTags = ({
         return config?.isDisabled??false
     },[config?.isDisabled])
 
-    const valueLabelPair = useMemo(()=>{
-        return value.map(i=>{
-            const tamp = option.find(j=>j.id===i)
-            if(tamp){
-                return([tamp.id, tamp.txtLabel])
-            }else{
-                return [i, i]
-            }
-        })
-    },[value, option])
-
     const [searchParam, setSearchParam] = useState('')
 
     const optionTamp = useMemo(()=>{
-        let tampOptions = [...option].filter(i=>!value.includes(i.txtLabel))
+        if(!options){
+            return []
+        }
+        let tampOptions = [...options].filter(i=>!value.includes(i.txtLabel))
 
         if(searchParam){
             tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
@@ -76,11 +70,11 @@ const InputTags = ({
         }else{
             return tampOptions
         }
-    },[option, value, searchParam])
+    },[options, value, searchParam])
     //States end ====
 
     // Update ref
-    const triggerButtonRef = useRef<HTMLButtonElement>(null);
+    const inputTagRef = useRef<HTMLInputElement>(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
     return(
@@ -99,147 +93,170 @@ const InputTags = ({
             >
                 <option value=""></option>
                 {
-                    option.filter(i=>i.type==='option').map((i)=>(
-                        <option key={i.id} value={i.id}>{i.txtLabel}</option>
+                    value.map((i)=>(
+                        <option key={i} value={i}>{i}</option>
                     ))
                 }
             </select>
-            <DropdownMenu
-                className={clsx(
-                    'input-tag-dropdown',
-                )}
-                trigger={
-                    (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
-                        if(trigger.current){
-                            triggerButtonRef.current = trigger.current as HTMLButtonElement
-                        }
-
-                        return(
-                            <div
-                                {...getReferenceProps()}
-                                className={clsx(
-                                    'input-tag-container',
-                                    (shape)?(shape):(globalShape),
+            {
+                (options.length===0)?(
+                    <div
+                        className={clsx(
+                            'input-tag-container',
+                            (shape)?(shape):(globalShape),
+                            {
+                                ['disabled']:(isDisabled),
+                                ['error']:(error?.isError),
+                            },
+                            className
+                        )}
+                    >
+                        {
+                            (value.length>0)&&(
+                                <>
                                     {
-                                        ['disabled']:(isDisabled),
-                                        ['selected']:(isDropdownOpen && optionTamp.length>0),
-                                        ['error']:(error?.isError),
-                                    },
-                                    className
-                                )}
-                                style={style?.triggerButton}
-                            >
-                                {
-                                    (value.length>0)&&(
-                                        <>
-                                            {
-                                                valueLabelPair.map((i)=>(
-                                                    <div className='tag-box' key={i[0]} style={{opacity:'0%'}}>
-                                                        <span className='tag-label'>{i[1]}</span>
-                                                        <IconButton
-                                                            icon={<PiXBold size={12}/>}
-                                                            txtLabel={`Remove ${i}`}
-                                                            appearance='subtle'
-                                                            isShowtooltip={false}
-                                                            onClick={()=>{
-                                                                ctrl.thisOnchange(i[0], value, type, config, onChange)
-
-                                                                if(onValidate && error?.isError){
-                                                                    onValidate({isError:false, errorMessage:''},[])
-                                                                }
-                                                                setIsDirty(true)
-                                                            }}
-                                                            isDisabled={true}
-                                                        />
-                                                    </div>
-                                                ))
-                                            }
-                                        </>
-                                    )
+                                        value.map((i)=>(
+                                            <div className='tag-box' key={i} style={{opacity:'0%'}}>
+                                                <span className='tag-label'>{i}</span>
+                                                <IconButton
+                                                    icon={<PiXBold size={12}/>}
+                                                    txtLabel={`Remove ${i}`}
+                                                    isShowtooltip={false}
+                                                    isDisabled={true}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
+                        <input
+                            ref={inputTagRef}
+                            placeholder={txtPlaceholder}
+                            className='input-tag'
+                            value={searchParam}
+                            onChange={(e)=>{
+                                if(!isDisabled){
+                                    ctrl.onInputTagChange(e, inputTagRef, type, value, isDirty, setIsDirty, isDropdownOpen, setSearchParam, error, onValidate)
                                 }
-                                <input
-                                    ref={triggerRef}
-                                    placeholder={txtPlaceholder}
-                                    className='input-tag'
-                                    value={searchParam}
-                                    onChange={(e)=>{
-                                        const newValue = e.target.value
-                                        if(newValue===' '){
-                                            ctrl.toggleTrigger(triggerButtonRef)
-                                        }else{
-                                            if(newValue && !isDropdownOpen){
-                                                ctrl.toggleTrigger(triggerButtonRef)
-                                            }
-                                            setSearchParam(newValue)
-                                        }
-                                    }}
-                                    onKeyDown={(e)=>{
-                                        if(e.key==='Backspace' && searchParam==='' && value.length>0){
-                                            ctrl.thisOnchange(value.at(-1)??'', value, type, config, onChange)
-                                        }else if(e.key==='Enter'){
-                                            ctrl.thisOnchange(searchParam.trim(), value, type, config, onChange)
-                                        }
-                                        if(onValidate && error?.isError){
-                                            onValidate({isError:false, errorMessage:''},[])
-                                        }
-                                        setIsDirty(true)
-                                    }}
-                                    onBlur={()=>{
-                                        if(optionTamp.length===0 && searchParam!=='' && isDropdownOpen){
-                                            setSearchParam('')
-                                        }
-                                    }}
-                                />
-                            </div>
-                        )
-                    }
-                }
-                options={optionTamp}
-                optionSelected={value}
-                shape={shape}
-                style={{
-                    optionButton:{
-                        textLabel:{
-                            fontWeight:'var(--font-weight-text)'
-                        }
-                    }
-                }}
-                onClick={(_, option)=>{
-                    if(!isDisabled){
-                        ctrl.thisOnchange(option.txtLabel, value, type, config, onChange)
+                            }}
+                            onBlur={(e)=>{
+                                if(!isDisabled){
+                                    ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
+                                }   
+                            }}
+                            onFocus={(e)=>{
+                                if(!isDisabled){
+                                    ctrl.onInputTagFocus(e, value, onFocus)
+                                }
+                            }}
+                            onKeyDown={(e)=>{
+                                ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange)
+                            }}
+                        />
+                    </div>
+                ):(
+                    <DropdownMenu
+                        className={clsx(
+                            'input-tag-dropdown',
+                        )}
+                        trigger={
+                            (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
+                                if(trigger.current){
+                                    inputTagRef.current = trigger.current as HTMLInputElement
+                                }
 
-                        if(onValidate && error?.isError){
-                            onValidate({isError:false, errorMessage:''},[])
+                                return(
+                                    <div
+                                        {...getReferenceProps()}
+                                        className={clsx(
+                                            'input-tag-container',
+                                            (shape)?(shape):(globalShape),
+                                            {
+                                                ['disabled']:(isDisabled),
+                                                ['selected']:(isDropdownOpen && optionTamp.length>0),
+                                                ['error']:(error?.isError),
+                                            },
+                                            className
+                                        )}
+                                        style={style?.triggerButton}
+                                    >
+                                        {
+                                            (value.length>0)&&(
+                                                <>
+                                                    {
+                                                        value.map((i)=>(
+                                                            <div className='tag-box' key={i} style={{opacity:'0%'}}>
+                                                                <span className='tag-label'>{i}</span>
+                                                                <IconButton
+                                                                    icon={<PiXBold size={12}/>}
+                                                                    txtLabel={`Remove ${i}`}
+                                                                    isShowtooltip={false}
+                                                                    isDisabled={true}
+                                                                />
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </>
+                                            )
+                                        }
+                                        <input
+                                            ref={triggerRef}
+                                            placeholder={txtPlaceholder}
+                                            className='input-tag'
+                                            value={searchParam}
+                                            onChange={(e)=>{
+                                                if(!isDisabled){
+                                                    ctrl.onInputTagChange(e, inputTagRef, type, value, isDirty, setIsDirty, isDropdownOpen, setSearchParam, error, onValidate)
+                                                }
+                                            }}
+                                            onBlur={(e)=>{
+                                                if(!isDisabled){
+                                                    ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
+                                                }   
+                                            }}
+                                            onFocus={(e)=>{
+                                                if(!isDisabled){
+                                                    ctrl.onInputTagFocus(e, value, onFocus)
+                                                }
+                                            }}
+                                            onKeyDown={(e)=>{
+                                                ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange)
+                                            }}
+                                        />
+                                    </div>
+                                )
+                            }
                         }
-
-                        if(type==='tags'){
-                            setSearchParam('')
-                            triggerButtonRef.current?.focus()
-                        }
-
-                        setIsDirty(true)
-                    }
-                }}
-                onOptionOpen={()=>{
-                    setIsDropdownOpen(true)
-                }}
-                onOptionClose={()=>{
-                    setIsDropdownOpen(false)
-                    
-                    if(config && onValidate && isDirty){
-                        ctrl.doValidate(value, config, onValidate)
-                    }
-                    
-                    if(searchParam && isDropdownOpen){
-                        setSearchParam('')
-                    }
-                }}
-                floatingConfig={{
-                    isContainerWidthSameAsTrigger:true,
-                    isLockScroll:(optionTamp.length!==0),
-                    isShowDropdown:(optionTamp.length!==0),
-                }}
-            />
+                        options={optionTamp}
+                        optionSelected={value}
+                        shape={shape}
+                        style={{
+                            optionButton:{
+                                textLabel:{
+                                    fontWeight:'var(--font-weight-text)'
+                                }
+                            }
+                        }}
+                        onClick={(_, option, e)=>{
+                            if(!isDisabled){
+                                ctrl.onOptionClick(e, option, value, setSearchParam, inputTagRef, isDirty, setIsDirty, config, onChange, error, onValidate)
+                            }
+                        }}
+                        onOptionOpen={()=>{
+                            setIsDropdownOpen(true)
+                        }}
+                        onOptionClose={()=>{
+                            setIsDropdownOpen(false)
+                        }}
+                        floatingConfig={{
+                            isContainerWidthSameAsTrigger:true,
+                            isLockScroll:(optionTamp.length!==0),
+                            isShowDropdown:(optionTamp.length!==0),
+                        }}
+                    />
+                )
+            }
             {
                 (value.length>0)&&(
                     <div
@@ -256,22 +273,15 @@ const InputTags = ({
                         }}
                     >
                         {
-                            valueLabelPair.map((i)=>(
-                                <div className='tag-box' key={i[0]} style={{pointerEvents:'all'}}>
-                                    <span className='tag-label'>{i[1]}</span>
+                            value.map((i)=>(
+                                <div className='tag-box' key={i} style={{pointerEvents:'all'}}>
+                                    <span className='tag-label'>{i}</span>
                                     <IconButton
                                         icon={<PiXBold size={12}/>}
                                         txtLabel={`Remove ${i}`}
                                         appearance='subtle'
                                         isShowtooltip={false}
-                                        onClick={()=>{
-                                            ctrl.thisOnchange(i[0], value, type, config, onChange)
-
-                                            if(onValidate && error?.isError){
-                                                onValidate({isError:false, errorMessage:''},[])
-                                            }
-                                            setIsDirty(true)
-                                        }}
+                                        onClick={(e)=>{ctrl.doRemoveValueX(e, i, value, isDirty, setIsDirty, onChange, config, onValidate)}}
                                     />
                                 </div>
                             ))
@@ -282,11 +292,11 @@ const InputTags = ({
             {
                 (isDisabled)?(
                     <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                ):(
+                ):(options.length!==0)?(
                     <div className='caret-box'>
                         {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
                     </div>
-                )
+                ):(<></>)
             }
             {
                 (value.length > 0 && !isDisabled)&&(
@@ -296,13 +306,10 @@ const InputTags = ({
                         txtLabel='Clear'
                         appearance='subtle'
                         isShowtooltip={false}
-                        onClick={()=>{
-                            ctrl.clearValue(onChange)
-                            if(onValidate && config){
-                                ctrl.doValidate([], config, onValidate)
-                            }
-                            if(triggerButtonRef.current){
-                                triggerButtonRef.current.focus()
+                        onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
+                        style={{
+                            button:{
+                                right:(options.length===0)?('var(--space-100)'):(undefined)
                             }
                         }}
                     />
@@ -345,19 +352,21 @@ interface _InputSelection {
     afterElement?:JSX.Element;
     beforeElement?:JSX.Element;
 
-    type:inputSelectType
+    type:inputTagType
     txtPlaceholder?:string;
-    option?:dropdownMenuOptionType[]
+    options?:dropdownMenuOptionType[]
     value?:string[];
-    onChange?:(newValue:string[])=>void
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
-    config?:inputSelectConfigType
+    config?:inputTagConfigType
 }
 
-export type inputSelectType = 'tags';
+export type inputTagType = 'text' | 'text-no-space';
 
-export type inputSelectConfigType = {
+export type inputTagConfigType = {
     isDisabled?:boolean
     isRequired?:boolean
     minValue?:number

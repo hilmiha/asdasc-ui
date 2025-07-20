@@ -1,15 +1,40 @@
-import type { inputSelectConfigType, inputSelectType } from ".";
+import type { inputTagConfigType, inputTagType } from ".";
 import { getFormatedNumberForDisplay } from "../../helper/helper";
 import type { fieldErrorType } from "../_types";
+import type { dropdownMenuOptionType } from "../dropdown-menu";
 
-export const doValidate = (
+export const triggerOptionDropdown = (inputTagRef:React.RefObject<HTMLInputElement | null>) =>{
+    setTimeout(() => {
+        inputTagRef.current?.click();
+    }, 100);
+}
+
+//send new value
+export const doChangeValue = (
     newValue:string[],
-    config:inputSelectConfigType,
+    addedValue:string|undefined,
+    onChange:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    event:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>,
+) =>{
+    onChange(newValue, addedValue, event)
+}
+
+//reset validation
+export const doResetValidationValue = (
+    newValue:string[],
     onValidate:(error:fieldErrorType, newValue:string[])=>void,
+) =>{
+    onValidate({isError:false, errorMessage:''}, newValue)
+}
+//validation of value
+export const doValidateValue = (
+    newValue:string[],
+    onValidate:(error:fieldErrorType, newValue:string[])=>void,
+    config:inputTagConfigType,
 ) =>{
     let isError = false
     let errorMessage = ''
-    
+
     if(config['isRequired'] && !isError){
         if(newValue.length===0){
             isError = true
@@ -30,52 +55,206 @@ export const doValidate = (
         }
     }
 
-    onValidate(
-        {isError:isError, errorMessage:errorMessage},
-        newValue
-    )
+    onValidate({isError:isError, errorMessage:errorMessage},newValue)
 }
-export const thisOnchange = (
-    newTag:string,
-    currentValue:string[],
-    type:inputSelectType,
-    config?:inputSelectConfigType,
-    onChange?:(newValue:string[])=>void,
+
+export const onOptionClick = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    option:dropdownMenuOptionType,
+    oldValue:string[],
+    setSearchParam:React.Dispatch<React.SetStateAction<string>>,
+    inputTagRef:React.RefObject<HTMLInputElement | null>,
+    isDirty:boolean, 
+    setIsDirty:(x:boolean)=>void,
+    config?:inputTagConfigType,
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    error?:fieldErrorType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
 ) =>{
-    let newValue = []
-    if(type==='tags'){
-        const tamp = [...currentValue]
-        if(currentValue.includes(newTag)){
-            newValue = tamp.filter(i=>i!=newTag)
-        }else{
-            tamp.push(newTag)
-            newValue = tamp
-        }
+    let newValue = [...oldValue]
+    const addedValue = option.txtLabel
+
+    if(newValue.includes(addedValue)){
+        newValue = newValue.filter(i=>i!=addedValue)
     }else{
-        newValue = [newTag]
+        newValue.push(addedValue)
     }
 
+    if(config?.maxValue && newValue.length > config.maxValue){
+        newValue = [...oldValue]
+    }
+
+    //send new value out of this component
     if(onChange){
-        if(config?.maxValue && newValue.length > config.maxValue){
-            
-        }else{
-            onChange(newValue)
+        doChangeValue(newValue, addedValue, onChange, event)
+    }
+
+    //Reset validation when user focus on field
+    if(onValidate && error?.isError){
+        doResetValidationValue(newValue, onValidate)
+    }
+
+    //set input text dirty after user typing something
+    if(!isDirty){
+        setIsDirty(true)
+    }
+
+    //reset input text and bring focus to input text
+    setSearchParam('')
+    inputTagRef.current?.focus()
+}
+
+export const onInputTagChange = (
+    event:React.ChangeEvent<HTMLInputElement>,
+    inputTagRef:React.RefObject<HTMLInputElement | null>,
+    type:inputTagType,
+    oldValue:string[],
+    isDirty:boolean, 
+    setIsDirty:React.Dispatch<React.SetStateAction<boolean>>,
+    isDropdownOpen:boolean,
+    setSearchParam:React.Dispatch<React.SetStateAction<string>>,
+    error?:fieldErrorType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
+) =>{
+    const inputValue = event.target.value
+    let newSearchValue = inputValue
+
+    switch (type) {
+        case 'text-no-space':
+            newSearchValue = inputValue.replace(/\s/g, '')
+            break
+        case 'text':
+        default:
+            newSearchValue = inputValue
+            break
+    }
+
+    if(newSearchValue===' '){
+        triggerOptionDropdown(inputTagRef)
+    }else{
+        if(newSearchValue && !isDropdownOpen){
+            triggerOptionDropdown(inputTagRef)
+        }
+        setSearchParam(newSearchValue)
+    }
+
+    if(onValidate && error?.isError){
+        doResetValidationValue(oldValue, onValidate)
+    }
+    
+    if(!isDirty){
+        setIsDirty(true)
+    }
+}
+
+export const onInputTagBlur = (
+    e:React.FocusEvent<HTMLInputElement>,
+    inputTagRef:React.RefObject<HTMLInputElement | null>,
+    currentValue:string[],
+    searchParam:string,
+    setSearchParam:React.Dispatch<React.SetStateAction<string>>,
+    isDropdownOpen:boolean,
+    option: dropdownMenuOptionType[],
+    isDirty:boolean, 
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string[])=>void,
+    config?:inputTagConfigType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
+) =>{
+    if(option.length===0 && searchParam!==''){
+        setSearchParam('')
+
+        if(isDropdownOpen){
+            inputTagRef.current?.click()
         }
     }
-}
+    
+    if(onValidate && config && isDirty && !isDropdownOpen){
+        doValidateValue(currentValue, onValidate , config)
+    }
 
-export const clearValue = (
-    onChange?:(newValue:string[])=>void
-) =>{
-    if(onChange){
-        onChange([])
+    if(onBlur){
+        onBlur(e, currentValue)
     }
 }
 
-export const toggleTrigger = (triggerButtonRef?:React.RefObject<HTMLButtonElement | null>) =>{
-    if (triggerButtonRef?.current){
-        setTimeout(() => {
-            triggerButtonRef.current?.click();
-        }, 100);
+export const onInputTagFocus = (
+    e:React.FocusEvent<HTMLInputElement>,
+    currentValue:string[],
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string[])=>void
+) =>{
+    if(onFocus){
+        onFocus(e, currentValue)
+    }
+}
+
+export const onInputTagKeyDown = (
+    e:React.KeyboardEvent<HTMLInputElement>,        
+    inputTagRef:React.RefObject<HTMLInputElement | null>,
+    searchParam:string,
+    setSearchParam:React.Dispatch<React.SetStateAction<string>>,
+    currentValue:string[],
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+) => {
+    const key = e.key
+    if(key==='Backspace' && searchParam==='' && currentValue.length>0){
+        const newValue = [...currentValue]
+        newValue.pop()
+        console.log(newValue)
+        if(onChange){
+            doChangeValue(newValue, undefined, onChange, e)
+        }
+    }else if(key==='Enter' && searchParam!==''){
+        const tampValue = [...currentValue]
+        const addedValue = searchParam.trim()
+        if(!tampValue.includes(addedValue)){
+            tampValue.push(addedValue)
+            if(onChange){
+                doChangeValue(tampValue, addedValue, onChange, e)
+            }
+        } 
+        setSearchParam('')
+        triggerOptionDropdown(inputTagRef)
+    }
+}
+
+export const doRemoveValueX = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    valueX:string,
+    currentValue:string[],
+    isDirty:boolean,
+    setIsDirty:React.Dispatch<React.SetStateAction<boolean>>,
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    config?:inputTagConfigType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
+) =>{
+    const newValue = [...currentValue].filter(i=>i!==valueX)
+    if(onChange){
+        doChangeValue(newValue, undefined, onChange, event)
+    }
+    if(onValidate && config){
+        doValidateValue(newValue, onValidate, config)
+    }
+    if(!isDirty){
+        setIsDirty(true)
+    }
+}
+
+export const onClearButtonClick = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    inputTagRef:React.RefObject<HTMLInputElement | null>,
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    config?:inputTagConfigType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
+) =>{
+    if(onChange){
+        doChangeValue([], undefined, onChange, event)
+    }
+
+    if(onValidate && config){
+        doValidateValue([], onValidate , config)
+    }
+
+    if(inputTagRef?.current){
+        inputTagRef.current.focus()
     }
 }
