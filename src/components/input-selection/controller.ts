@@ -1,5 +1,5 @@
 import type { inputSelectConfigType, inputSelectType } from ".";
-import { formatNumberForDisplay } from "../../helper/helper";
+import { getFormatedNumberForDisplay } from "../../helper/helper";
 import type { fieldErrorType } from "../_types";
 
 export const doValidate = (
@@ -22,14 +22,14 @@ export const doValidate = (
     if(config['maxValue'] && !isError){
         if(newValue.length > config['maxValue']){
             isError = true
-            errorMessage = `Value selected cannot exceed ${formatNumberForDisplay(`${config['maxValue']}`)} items`
+            errorMessage = `Value selected cannot exceed ${getFormatedNumberForDisplay(`${config['maxValue']}`)} items`
         }
     }
 
     if(config['minValue'] && !isError){
         if(newValue.length < config['minValue']){
             isError = true
-            errorMessage = `Value must be at least ${formatNumberForDisplay(`${config['minValue']}`)} items`
+            errorMessage = `Value must be at least ${getFormatedNumberForDisplay(`${config['minValue']}`)} items`
         }
     }
 

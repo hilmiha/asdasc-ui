@@ -1,295 +1,282 @@
 import React from "react";
 import type { inputTextConfigType, inputTextType } from ".";
 import type { fieldErrorType } from "../_types";
-import { formatNumberForDisplay } from "../../helper/helper";
+import { getCleanedNumberForState, getFormatedNumberForDisplay } from "../../helper/helper";
 
-// Helper function to clean number for state storage
-const cleanNumberForState = (value: string): string => {
-    if (!value) return '';
-    
-    // Remove everything except digits and the first minus sign
-    let cleaned = value.replace(/[^0-9-]/g, '');
-    
-    // Handle multiple minus signs - keep only the first one if it's at the beginning
-    if (cleaned.includes('-')) {
-        const firstMinusIndex = cleaned.indexOf('-');
-        if (firstMinusIndex === 0) {
-        cleaned = '-' + cleaned.substring(1).replace(/-/g, '');
-        } else {
-        cleaned = cleaned.replace(/-/g, '');
-        }
-    }
-    
-    // Handle leading zeros
-    if (cleaned) {
-        const isNegative = cleaned.startsWith('-');
-        const numberPart = cleaned.replace('-', '');
-        
-        if (numberPart) {
-        // Remove leading zeros, but keep at least one digit
-        const withoutLeadingZeros = numberPart.replace(/^0+/, '') || '0';
-        
-        // If the result is just "0", don't add negative sign
-        if (withoutLeadingZeros === '0') {
-            cleaned = '0';
-        } else {
-            cleaned = isNegative ? `-${withoutLeadingZeros}` : withoutLeadingZeros;
-        }
-        }
-    }
-    
-    return cleaned;
-};
-
-// Helper function to validate number input during typing
-const validateNumberInput = (newValue: string): boolean => {
-    // Allow empty string
-    if (!newValue) return true;
-    
-    // Allow single minus at the beginning
-    if (newValue === '-') return true;
-    
-    // Get the cleaned value
-    const cleanValue = cleanNumberForState(newValue);
-    
-    // Check if it's a valid number pattern
-    const numberPattern = /^-?\d+$/;
-    
-    if (numberPattern.test(cleanValue)) {
-        return true;
-    }
-    
-    // Allow intermediate states during typing (like "-0" before adding more digits)
-    // but these will be cleaned up by cleanNumberForState
-    if (newValue === '-0' || newValue === '0') {
-        return true;
-    }
-    
-    return false;
-};
-
-export const thisOnchange = (
-    e:React.ChangeEvent<HTMLInputElement>,
-    type:inputTextType,
-    config?:inputTextConfigType,
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>)=>void,
-) =>{
-    if(onChange){
-        const inputValue = e.target.value
-        let newValue = inputValue
-        let shouldUpdate = true;
-
-        switch (type) {
-            case 'text-no-space':
-                newValue = inputValue.replace(/\s/g, '')
-                break
-            case 'number-text':
-                newValue = inputValue.replace(/[^0-9]/g, '')
-                break
-            case 'number':
-                // Clean the input for state storage
-                const cleanedValue = cleanNumberForState(inputValue);
-                
-                // Validate the input
-                if (!validateNumberInput(inputValue)) {
-                    shouldUpdate = false;
-                    break;
-                }
-                
-                // Store the clean value in state
-                newValue = cleanedValue;
-                break;
-            case 'text':
-            case 'password':
-            default:
-                newValue = inputValue
-                break
-        }
-
-        if(config?.maxLength){
-            newValue = newValue.slice(0, config.maxLength)
-        }
-        
-        //send the final value to onChange as a new value
-        if (shouldUpdate) {
-            onChange(newValue, e)
-        }
-    }
-}
-
-export const clearValue = (
-    e:React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    onChange?:(newValue:string, e:any)=>void,
-) =>{
-    if(onChange){
-        onChange('', e)
-    }
-}
-
-export const thisOnValidate = (
-    type:inputTextType,
-    onValidate:(error:fieldErrorType, newValue:string)=>void,
-    newValue:string,
-    config?:inputTextConfigType
-) =>{
-    let isError = false
-    let errorMessage = ''
-
-    if(config){
-        if(config['isRequired'] && !isError){
-            if(!newValue){
-                isError = true
-                errorMessage = 'This field cannot be empty!'
-            }
-        }
-
-        if(config['minLength'] && !isError && type!=='number'){
-            if(newValue.length < config.minLength){
-                isError = true
-                errorMessage = `Minimum ${config.minLength} characters required`
-            }
-        }
-
-        if(config['maxLength'] && !isError && type!=='number'){
-            if(newValue.length > config.maxLength){
-                isError = true
-                errorMessage = `Maximum ${config.maxLength} characters allowed`
-            }
-        }
-
-        if(
-            (
-                config['maxValue']!==undefined ||
-                config['minValue']!==undefined
-            )
-            && !isError && type==='number'
-        ){
-            const cleanedValue = cleanNumberForState(newValue);
-            const intValue = parseInt(cleanedValue??'0')
-
-            if(
-                config['maxValue']!==undefined && 
-                config['minValue']!==undefined &&
-                (
-                    intValue < config['minValue'] ||
-                    intValue > config['maxValue']
-                )
-            ){
-                isError = true
-                errorMessage = `Value is out of range (${getDisplayValue(`${config['minValue']}`, 'number')} ~ ${getDisplayValue(`${config['maxValue']}`, 'number')})`
-            }else if(
-                config['maxValue']!==undefined && intValue > config['maxValue']
-            ){
-                isError = true
-                errorMessage = `Value cannot exceed ${getDisplayValue(`${config['maxValue']}`, 'number')}`
-            }else if(
-                config['minValue']!==undefined && intValue < config['minValue']
-            ){
-                isError = true
-                errorMessage = `Value must be at least ${getDisplayValue(`${config['minValue']}`, 'number')}`
-            }
-        }
-
-        if (config['validRegex'] && !isError && type !== 'number') {
-            for (const [regex, message] of config.validRegex) {
-                if (!regex.test(newValue)) {
-                    isError = true
-                    errorMessage = message
-                    break
-                }
-            }
-        }
-    }
-
-    onValidate(
-        {isError:isError, errorMessage:errorMessage},
-        newValue
-    )
-}
-
-export const thisOnBlur = (
-    e:React.FocusEvent<HTMLInputElement>,
-    type:inputTextType,
-    currentValue:string,
-    isDirty:boolean,
-    config?:inputTextConfigType,
-    onChange?:(newValue:string, e:React.FocusEvent<HTMLInputElement>)=>void,
-    onValidate?:(error:fieldErrorType, newValue:string)=>void
-) =>{
-    const inputValue = e.target.value
-    let newValue = inputValue.trim()
-    if(type==='number'){
-        newValue = cleanNumberForState(newValue)
-    }
-
-    if(onChange && newValue!==currentValue){
-        onChange(newValue, e)
-    }
-
-    if(onValidate && isDirty){
-        thisOnValidate(type, onValidate, newValue, config)
-    }
-}
-
-export const getInputMode = (type: inputTextType): "numeric" | "text" | "password" | undefined => {
+export const getInputTypeMode = (type: inputTextType): {type:"numeric" | "text" | "password", mode:'text' | 'tel'} => {
     switch (type) {
         case 'number':
         case 'number-text':
-            return 'numeric'
+            return {type:'numeric', mode:'tel'}
         case 'password':
-            return 'password'
+            return {type:'password', mode:'text'}
         default:
-            return 'text'
+            return {type:'text', mode:'text'}
     }
 }
 
 export const getDisplayValue = (value: string, type: inputTextType): string => {
     if (type === 'number' && value) {
-        return formatNumberForDisplay(value);
+        return getFormatedNumberForDisplay(value);
     }
     return value;
 };
 
+//send new value
+export const doChangeValue = (
+    newValue:string,
+    onChange:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    event:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>,
+) =>{
+    onChange(newValue, event)
+}
+
+export const doValidateValue = (
+    type:inputTextType,
+    newValue:string,
+    onValidate:(error:fieldErrorType, newValue:string)=>void,
+    config:inputTextConfigType,
+) =>{
+    let isError = false
+    let errorMessage = ''
+
+    if(config['isRequired'] && !isError){
+        if(!newValue){
+            isError = true
+            errorMessage = 'This field cannot be empty!'
+        }
+    }
+
+    if(config['minLength'] && !isError && type!=='number'){
+        if(newValue.length < config.minLength){
+            isError = true
+            errorMessage = `Minimum ${config.minLength} characters required`
+        }
+    }
+
+    if(config['maxLength'] && !isError && type!=='number'){
+        if(newValue.length > config.maxLength){
+            isError = true
+            errorMessage = `Maximum ${config.maxLength} characters allowed`
+        }
+    }
+
+    if(
+        (
+            config['maxValue']!==undefined ||
+            config['minValue']!==undefined
+        )
+        && !isError && type==='number'
+    ){
+        const cleanedValue = getCleanedNumberForState(newValue);
+        const intValue = parseInt(cleanedValue??'0')
+
+        if(
+            config['maxValue']!==undefined && 
+            config['minValue']!==undefined &&
+            (
+                intValue < config['minValue'] ||
+                intValue > config['maxValue']
+            )
+        ){
+            isError = true
+            errorMessage = `Value is out of range (${getDisplayValue(`${config['minValue']}`, 'number')} ~ ${getDisplayValue(`${config['maxValue']}`, 'number')})`
+        }else if(
+            config['maxValue']!==undefined && intValue > config['maxValue']
+        ){
+            isError = true
+            errorMessage = `Value cannot exceed ${getDisplayValue(`${config['maxValue']}`, 'number')}`
+        }else if(
+            config['minValue']!==undefined && intValue < config['minValue']
+        ){
+            isError = true
+            errorMessage = `Value must be at least ${getDisplayValue(`${config['minValue']}`, 'number')}`
+        }
+    }
+
+    if (config['validRegex'] && !isError && type !== 'number') {
+        for (const [regex, message] of config.validRegex) {
+            if (!regex.test(newValue)) {
+                isError = true
+                errorMessage = message
+                break
+            }
+        }
+    }
+
+    onValidate({isError:isError, errorMessage:errorMessage},newValue)
+}
+export const doResetValidationValue = (
+    newValue:string,
+    onValidate:(error:fieldErrorType, newValue:string)=>void,
+) =>{
+    onValidate({isError:false, errorMessage:''}, newValue)
+}
+
 //Adjust cursos for number input
-export const setFormattedCursorPosition = (
-    input: HTMLInputElement,
+export const doAdjustCursorInputNumber = (
+    inputTarget:HTMLInputElement,
     oldValue: string,
-    e:React.ChangeEvent<HTMLInputElement>,
+    newValue: string
 ) => {
-    const inputEvent = e.target;
-    const newValue = getDisplayValue(inputEvent.value, 'number');
-    const cursor = inputEvent.selectionStart ?? 0;
+    const countVisibleCharacters = (str: string) => {
+        return str.split('').filter(isVisibleChar).length;
+    }
+
+    const isVisibleChar = (char: string) => {
+        return /[a-zA-Z0-9]/.test(char);
+    }
+
+    const newValueDisplay = getDisplayValue(newValue, 'number');
+    const oldValueDisplay = getDisplayValue(oldValue, 'number')
+    const cursor = inputTarget.selectionStart ?? 0;
     const oldCursorPos = cursor - 1;
 
     // If user was at the end of the old string, keep them at the end
-    if (oldCursorPos >= oldValue.length) {
-        const end = newValue.length;
-        input.setSelectionRange(end, end);
+    if (oldCursorPos >= oldValueDisplay.length) {
+        const end = newValueDisplay.length;
+        inputTarget.setSelectionRange(end, end);
         return;
     }
 
-    const oldLeft = oldValue.slice(0, oldCursorPos);
+    const oldLeft = oldValueDisplay.slice(0, oldCursorPos);
     const leftCount = countVisibleCharacters(oldLeft);
 
     let newCursor = 0;
     let visibleCount = 0;
 
-    for (; newCursor < newValue.length; newCursor++) {
-        if (isVisibleChar(newValue[newCursor])) {
+    for (; newCursor < newValueDisplay.length; newCursor++) {
+        if (isVisibleChar(newValueDisplay[newCursor])) {
             visibleCount++;
         }
         if (visibleCount >= leftCount + 2) break; // +2 for newly inserted character
     }
 
     requestAnimationFrame(() => {
-        input.setSelectionRange(newCursor, newCursor);
+        inputTarget.setSelectionRange(newCursor, newCursor);
     });
 }
 
-const countVisibleCharacters = (str: string) => {
-    return str.split('').filter(isVisibleChar).length;
+//onChange function of input component
+export const onInputChange = (
+    event:React.ChangeEvent<HTMLInputElement>,
+    oldValue:string,
+    type:inputTextType,
+    isDirty:boolean, 
+    setIsDirty:(x:boolean)=>void,
+    config?:inputTextConfigType,
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    error?:fieldErrorType,
+    onValidate?:(error: fieldErrorType, newValue: string) => void,
+) =>{
+    const inputValue = event.target.value
+    let newValue = inputValue   
+    
+    switch (type) {
+        case 'text-no-space':
+            newValue = inputValue.replace(/\s/g, '')
+            break
+        case 'number-text':
+            newValue = inputValue.replace(/[^0-9]/g, '')
+            break
+        case 'number':
+            const cleanedValue = getCleanedNumberForState(inputValue);
+            newValue = cleanedValue;
+            break
+        case 'text':
+        case 'password':
+        default:
+            newValue = inputValue
+            break
+    }
+
+    if(config?.maxLength){
+        newValue = newValue.slice(0, config.maxLength)
+    }
+
+    //send new value out of this component
+    if(onChange){
+        doChangeValue(newValue, onChange, event)
+    }
+
+    //Reset validation when user focus on field
+    if(onValidate && error?.isError){
+        doResetValidationValue(newValue, onValidate)
+    }
+
+    //adjust the cursor for input number field
+    if(type==='number'){
+        doAdjustCursorInputNumber(event.target, oldValue, newValue);
+    }
+
+    //set input text dirty after user typing something
+    if(!isDirty){
+        setIsDirty(true)
+    }
 }
 
-const isVisibleChar = (char: string) => {
-    return /[a-zA-Z0-9]/.test(char); // You can adjust if only digits are expected
+//onBlur function of input component
+export const onInputBlur = (
+    event:React.FocusEvent<HTMLInputElement>,
+    oldValue:string,
+    type:inputTextType,
+    isDirty:boolean,
+    config?:inputTextConfigType,
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onValidate?:(error: fieldErrorType, newValue: string) => void,
+    onBlur?:(e: React.FocusEvent<HTMLInputElement>, newValue:string) => void
+) =>{
+    const inputValue = event.target.value
+    let newValue = inputValue.trim()
+    if(type==='number'){
+        newValue = getCleanedNumberForState(newValue)
+    }
+    
+    //send new value out of this component (timmed and clean)
+    if(onChange && newValue!==oldValue){
+        doChangeValue(newValue, onChange, event)
+    }
+
+    //do validation and send the error out of this component
+    if(onValidate && isDirty && config){
+        doValidateValue(type, newValue, onValidate, config)
+    }
+
+    //do blur event
+    if(onBlur){
+        onBlur(event, newValue)
+    }
+}
+
+//onFocus function of input component
+export const onInputFocus = (
+    event:React.FocusEvent<HTMLInputElement>,
+    value:string,
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
+) =>{
+    //do focus event
+    if(onFocus){
+        onFocus(event, value)
+    }
+}
+
+export const onClearButtonClick = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    type:inputTextType,
+    config?:inputTextConfigType,
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onValidate?:(error: fieldErrorType, newValue: string) => void,
+    inputRef?:React.RefObject<HTMLInputElement | null>
+) =>{
+    if(onChange){
+        doChangeValue('', onChange, event)
+    }
+
+    if(onValidate && config){
+        doValidateValue(type, '', onValidate , config)
+    }
+
+    if(inputRef?.current){
+        inputRef.current.focus()
+    }
 }

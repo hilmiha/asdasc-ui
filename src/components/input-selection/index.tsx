@@ -109,7 +109,6 @@ const InputSelection = ({
                         if(trigger.current){
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
-                        setIsDropdownOpen(isDropdownOpen);
                         return(
                             <button
                                 ref={triggerRef}
@@ -160,7 +159,12 @@ const InputSelection = ({
                         setIsDirty(true)
                     }
                 }}
+                onOptionOpen={()=>{
+                    setIsDropdownOpen(true)
+                }}
                 onOptionClose={()=>{
+                    setIsDropdownOpen(false)
+
                     if(isDirty){
                         ctrl.doValidate(value, config, onValidate)
                     }

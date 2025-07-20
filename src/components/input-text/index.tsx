@@ -41,13 +41,9 @@ const InputText = ({
         return config?.isDisabled??false
     },[config?.isDisabled])
 
-    const inputMode = useMemo(()=>{
-        return ctrl.getInputMode(type)
+    const inputTypeMode = useMemo(()=>{
+        return ctrl.getInputTypeMode(type)
     },[type])
-
-    const displayValue = useMemo(()=>{  // Get the display value (formatted for number type)
-        return ctrl.getDisplayValue(value, type);
-    },[value])
     //States end ====
 
     // Update ref when external ref changes
@@ -83,39 +79,22 @@ const InputText = ({
                 value={ctrl.getDisplayValue(value, type)}
                 onChange={(e)=>{
                     if(!isDisabled){
-                        ctrl.thisOnchange(e, type, config, onChange)
-                        
-                        if(type==='number' && inputRef.current){
-                            ctrl.setFormattedCursorPosition(inputRef.current, displayValue, e);
-                        }
-
-                        if(onValidate && error?.isError){
-                            onValidate({isError:false, errorMessage:''},'')
-                        }
-                        
-                        if(!isDirty){
-                            setIsDirty(true)
-                        }
+                        ctrl.onInputChange(e, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
                     }
                 }}
                 onBlur={(e)=>{
                     if(!isDisabled){
-                        ctrl.thisOnBlur(e, type, value, isDirty, config, onChange, onValidate)
-                        if(onBlur){
-                            onBlur(e)
-                        }
+                        ctrl.onInputBlur(e, value, type, isDirty, config, onChange, onValidate, onBlur)
                     }
                 }}
                 onFocus={(e)=>{
                     if(!isDisabled){
-                        if(onFocus){
-                            onFocus(e)
-                        }
+                        ctrl.onInputFocus(e, value, onFocus)
                     }
                 }}
                 disabled={isDisabled}
-                type={inputMode}
-                inputMode={(inputMode==='numeric')?('tel'):('text')}
+                type={inputTypeMode.type}
+                inputMode={inputTypeMode.mode}
             />
             {
                 (isDisabled)&&(
@@ -130,15 +109,7 @@ const InputText = ({
                         txtLabel='Clear'
                         appearance='subtle'
                         isShowtooltip={false}
-                        onClick={(e)=>{
-                            ctrl.clearValue(e, onChange)
-                            if(onValidate && config){
-                                ctrl.thisOnValidate(type, onValidate, '', config)
-                            }
-                            if(inputRef.current){
-                                inputRef.current.focus()
-                            }
-                        }}
+                        onClick={(e)=>{ctrl.onClearButtonClick(e, type, config, onChange, onValidate, inputRef)}}
                     />
                 )
             }
@@ -184,11 +155,11 @@ export interface _InputText {
     type:inputTextType
     txtPlaceholder?:string;
     value?:string;
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>)=>void
-    onBlur?:(e:React.FocusEvent<HTMLInputElement>)=>void
-    onFocus?:(e:React.FocusEvent<HTMLInputElement>)=>void
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:string)=>void
+    onValidate?:(error:fieldErrorType, value:string)=>void
     config?:inputTextConfigType
 }
 
