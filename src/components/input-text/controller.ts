@@ -31,6 +31,14 @@ export const doChangeValue = (
     onChange(newValue, event)
 }
 
+//reset validation
+export const doResetValidationValue = (
+    newValue:string,
+    onValidate:(error:fieldErrorType, newValue:string)=>void,
+) =>{
+    onValidate({isError:false, errorMessage:''}, newValue)
+}
+//validation of value
 export const doValidateValue = (
     type:inputTextType,
     newValue:string,
@@ -105,12 +113,6 @@ export const doValidateValue = (
     }
 
     onValidate({isError:isError, errorMessage:errorMessage},newValue)
-}
-export const doResetValidationValue = (
-    newValue:string,
-    onValidate:(error:fieldErrorType, newValue:string)=>void,
-) =>{
-    onValidate({isError:false, errorMessage:''}, newValue)
 }
 
 //Adjust cursos for number input
@@ -260,6 +262,7 @@ export const onInputFocus = (
     }
 }
 
+//on clear button clicked
 export const onClearButtonClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
     type:inputTextType,

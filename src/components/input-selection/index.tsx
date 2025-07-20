@@ -39,40 +39,19 @@ const InputSelection = ({
     //States start ====
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isDirty, setIsDirty] = useState(false)
+    const [searchParam, setSearchParam] = useState('')
     
     const isDisabled = useMemo(()=>{
         return config?.isDisabled??false
     },[config?.isDisabled])
 
     const labelValue = useMemo(()=>{
-        return option.filter(i=>value.includes(i.id)).map(i=>i.txtLabel)
+        return ctrl.getDisplayValue(value, option)
     },[value, option])
 
-    const [searchParam, setSearchParam] = useState('')
-
     const optionTamp = useMemo(()=>{
-        let tampOptions = [...option]
-
-        if(searchParam){
-            tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
-        }
-
-        if(config?.maxValue){
-            if(value.length >= config?.maxValue){
-                return tampOptions.map((i)=>{
-                    if(value.includes(i.id)){
-                        return i
-                    }else{
-                        return {...i, isDisabled:true}
-                    }
-                })
-            }else{
-                return tampOptions
-            }
-        }else{
-            return tampOptions
-        }
-    },[option, value, searchParam])
+        return ctrl.getProcessedOption(value, option, searchParam, config?.maxValue)
+    },[option, value, searchParam, config?.maxValue])
     //States end ====
 
     //Refs start ====
@@ -144,19 +123,9 @@ const InputSelection = ({
                 optionSelected={value}
                 shape={shape}
                 style={style?.dropdownMenu}
-                onClick={(idButton)=>{
+                onClick={(_, option, e)=>{
                     if(!isDisabled){
-                        ctrl.onOptionClick(idButton, value, type, config, onChange)
-
-                        if(onValidate && error?.isError){
-                            onValidate({isError:false, errorMessage:''},[])
-                        }
-
-                        if(searchBarRef.current && searchParam){
-                            searchBarRef.current.focus()
-                        }
-
-                        setIsDirty(true)
+                        ctrl.onOptionClick(e, option, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
                     }
                 }}
                 onOptionOpen={()=>{
@@ -164,13 +133,9 @@ const InputSelection = ({
                 }}
                 onOptionClose={()=>{
                     setIsDropdownOpen(false)
-
-                    if(isDirty){
-                        ctrl.doValidate(value, config, onValidate)
-                    }
-                    
-                    if(searchParam && isDropdownOpen){
-                        setSearchParam('')
+                    setSearchParam('')
+                    if(isDirty && onValidate && config){
+                        ctrl.doValidateValue(value, onValidate, config)
                     }
                 }}
                 elementHeader={
@@ -194,7 +159,7 @@ const InputSelection = ({
                                 className='reset-button'
                                 txtLabel={'Clear Selection'}
                                 appearance='subtle'
-                                onClick={()=>{ctrl.clearValue(onChange)}}
+                                onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange)}}
                             />
                         </div>
                     </>
@@ -237,16 +202,7 @@ const InputSelection = ({
                         txtLabel='Clear'
                         appearance='subtle'
                         isShowtooltip={false}
-                        onClick={()=>{
-                            ctrl.clearValue(onChange)
-                            if(onValidate && config){
-                                ctrl.doValidate([], config, onValidate)
-                            }
-
-                            if(triggerButtonRef.current){
-                                triggerButtonRef.current.focus()
-                            }
-                        }}
+                        onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)}}
                     />
                 )
             }
@@ -291,7 +247,7 @@ interface _InputSelection {
     txtPlaceholder?:string;
     option?:dropdownMenuOptionType[]
     value?:string[];
-    onChange?:(newValue:string[])=>void
+    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
     config?:inputSelectConfigType

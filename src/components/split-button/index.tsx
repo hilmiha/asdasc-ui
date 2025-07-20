@@ -20,7 +20,8 @@ const SplitButton = ({
     options = [],
     optionSelected = undefined,
     isDisabled = false,
-    onClick = undefined
+    onClick = undefined,
+    onOptionClick = undefined
 }:_SplitButton) =>{
 
     //Context start ====
@@ -47,13 +48,13 @@ const SplitButton = ({
                 appearance={appearance}
                 shape={(shape)?(shape):(globalShape)}
                 isDisabled={isDisabled}
-                onClick={(e)=>{ctrl.thisOnClick('_main', e, onClick)}}
+                onClick={(e)=>{ctrl.doOnClick(e, onClick)}}
                 style={style?.mainButton}
             />
             <DropdownMenu
                 options={options}
                 optionSelected={optionSelected}
-                onClick={(idButton, _, e)=>{ctrl.thisOnClick(idButton, e, onClick)}}
+                onClick={(idButton, _, e)=>{ctrl.doOptionClick(idButton, e, onOptionClick)}}
                 style={style?.dropdownMenu}
                 shape={(shape)?(shape):(globalShape)}
                 trigger={(triggerRef, getReferenceProps, isDropdownOpen)=>(
@@ -93,7 +94,8 @@ interface _SplitButton {
     iconBefore?:JSX.Element;
     iconAfter?:JSX.Element;
     isDisabled?:boolean;
-    onClick?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onOptionClick?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void;
 };
 
 export type splitButtonStyleType = {

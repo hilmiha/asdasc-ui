@@ -8,7 +8,7 @@ import { BiSquare, BiSquareRounded } from 'react-icons/bi';
 import SplitButton from './components/split-button';
 import DropdownMenu, { type dropdownMenuOptionType } from './components/dropdown-menu';
 import InputText from './components/input-text';
-import type { fieldErrorType } from './components/_types';
+import type { fieldErrorType, globalShapeType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
 import InputTags from './components/input-tags';
@@ -419,17 +419,10 @@ function App() {
                         ]}
                         appearance='neutral'
                         optionSelected={[appTheme.split('-')[3]??'-']}
-                        onClick={(id)=>{
-                            if(id==='_main'){
-                                toggleGlobalTheme()
-                            }else if(
-                                id==='circle'||
-                                id==='rounded'||
-                                id==='box'
-                            ){
-                                toggleGlobalShape(id)
-                            }
+                        onClick={()=>{
+                            toggleGlobalTheme()
                         }}
+                        onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
                     />
                     <p className='hello'>{appTheme.split('-')[0]??'-'}</p>
                     <p className='hello'>{appTheme.split('-')[1]??'-'}</p>

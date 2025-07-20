@@ -1,18 +1,69 @@
 import type { inputSelectConfigType, inputSelectType } from ".";
 import { getFormatedNumberForDisplay } from "../../helper/helper";
 import type { fieldErrorType } from "../_types";
+import type { dropdownMenuOptionType } from "../dropdown-menu";
 
-export const doValidate = (
-    newValue:string[],
-    config?:inputSelectConfigType,
-    onValidate?:(error:fieldErrorType, newValue:string[])=>void,
-) =>{
-    if(!config || !onValidate){
-        return null
+export const getDisplayValue = (value:string[], option:dropdownMenuOptionType[]): string[] => {
+    return value.map((i)=>{
+        const tamp = option.find(j=>j.id===i)
+        if(tamp){
+            return tamp.txtLabel
+        }else{
+            return i
+        }
+    });
+};
+
+export const getProcessedOption = (value:string[], option:dropdownMenuOptionType[], searchParam:string, maxValue?:number): dropdownMenuOptionType[] => {
+    let tampOptions = [...option]
+
+    if(searchParam){
+        tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
     }
+
+    if(maxValue){
+        if(value.length >= maxValue){
+            return tampOptions.map((i)=>{
+                if(value.includes(i.id)){
+                    return i
+                }else{
+                    return {...i, isDisabled:true}
+                }
+            })
+        }else{
+            return tampOptions
+        }
+    }else{
+        return tampOptions
+    }
+};
+
+//send new value
+export const doChangeValue = (
+    newValue:string[],
+    option:dropdownMenuOptionType|undefined,
+    onChange:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+) =>{
+    onChange(newValue, option, event)
+}
+
+//reset validation
+export const doResetValidationValue = (
+    newValue:string[],
+    onValidate:(error:fieldErrorType, newValue:string[])=>void,
+) =>{
+    onValidate({isError:false, errorMessage:''}, newValue)
+}
+//validation of value
+export const doValidateValue = (
+    newValue:string[],
+    onValidate:(error:fieldErrorType, newValue:string[])=>void,
+    config:inputSelectConfigType,
+) =>{
     let isError = false
     let errorMessage = ''
-    
+
     if(config['isRequired'] && !isError){
         if(newValue.length===0){
             isError = true
@@ -33,44 +84,69 @@ export const doValidate = (
         }
     }
 
-    onValidate(
-        {isError:isError, errorMessage:errorMessage},
-        newValue
-    )
+    onValidate({isError:isError, errorMessage:errorMessage},newValue)
 }
+
 export const onOptionClick = (
-    idButton:string,
-    currentValue:string[],
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    option:dropdownMenuOptionType,
+    oldValue:string[],
     type:inputSelectType,
+    isDirty:boolean, 
+    setIsDirty:(x:boolean)=>void,
     config?:inputSelectConfigType,
-    onChange?:(newValue:string[])=>void,
+    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    error?:fieldErrorType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
 ) =>{
-    let newValue = []
+    let newValue = [...oldValue]
     if(type==='multiple'){
-        const tamp = [...currentValue]
-        if(currentValue.includes(idButton)){
-            newValue = tamp.filter(i=>i!=idButton)
+        if(oldValue.includes(option.id)){
+            newValue = newValue.filter(i=>i!=option.id)
         }else{
-            tamp.push(idButton)
-            newValue = tamp
+            newValue.push(option.id)
         }
     }else{
-        newValue = [idButton]
+        newValue = [option.id]
     }
 
+    if(config?.maxValue && newValue.length > config.maxValue){
+        newValue = [...oldValue]
+    }
+
+    //send new value out of this component
     if(onChange){
-        if(config?.maxValue && newValue.length > config.maxValue){
-            
-        }else{
-            onChange(newValue)
-        }
+        doChangeValue(newValue, option, onChange, event)
+    }
+
+    //Reset validation when user focus on field
+    if(onValidate && error?.isError){
+        doResetValidationValue(newValue, onValidate)
+    }
+
+    //set input text dirty after user typing something
+    if(!isDirty){
+        setIsDirty(true)
     }
 }
 
-export const clearValue = (
-    onChange?:(newValue:string[])=>void
+//on clear button clicked
+export const onClearButtonClick = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    config?:inputSelectConfigType,
+    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
+    triggerRef?:React.RefObject<HTMLButtonElement | null>
 ) =>{
     if(onChange){
-        onChange([])
+        doChangeValue([], undefined, onChange, event)
+    }
+
+    if(onValidate && config){
+        doValidateValue([], onValidate , config)
+    }
+
+    if(triggerRef?.current){
+        triggerRef.current.focus()
     }
 }
