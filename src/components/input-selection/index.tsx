@@ -132,7 +132,7 @@ const InputSelection = ({
                                     )
                                 }
                                 {
-                                    (value.length > 0 && !isDisabled && !isDropdownOpen)&&(
+                                    (value.length > 0 && !isDisabled)&&(
                                         <IconButton
                                             className='clear-button'
                                             icon={<PiXBold/>}

@@ -76,7 +76,7 @@ const InputText = ({
             >
                 {
                     (config?.prefixElement)&&(
-                        <div className='perfix-box'>
+                        <div className='prefix-box'>
                             {config?.prefixElement}
                         </div>
                     )

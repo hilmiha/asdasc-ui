@@ -18,7 +18,7 @@ export const getProcessedOption = (value:string[], option:dropdownMenuOptionType
     let tampOptions = [...option]
 
     if(searchParam){
-        tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
+        tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alias}`).toLowerCase().includes(searchParam.toLowerCase()))
     }
 
     if(maxValue){

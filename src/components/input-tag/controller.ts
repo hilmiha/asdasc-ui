@@ -9,6 +9,38 @@ export const triggerOptionDropdown = (inputTagRef:React.RefObject<HTMLInputEleme
     }, 100);
 }
 
+export const getFilteredOptions = (
+    options:dropdownMenuOptionType[],
+    value:string[], 
+    searchParam:string, 
+    config?:inputTagConfigType,
+) => {
+    if(!options){
+        return []
+    }
+    let tampOptions = [...options].filter(i=>!value.includes(i.txtLabel))
+
+    if(searchParam){
+        tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alias}`).toLowerCase().includes(searchParam.toLowerCase()))
+    }
+
+    if(config?.maxValue){
+        if(value.length >= config?.maxValue){
+            return tampOptions.map((i)=>{
+                if(value.includes(i.id)){
+                    return i
+                }else{
+                    return {...i, isDisabled:true}
+                }
+            })
+        }else{
+            return tampOptions
+        }
+    }else{
+        return tampOptions
+    }
+}
+
 //send new value
 export const doChangeValue = (
     newValue:string[],

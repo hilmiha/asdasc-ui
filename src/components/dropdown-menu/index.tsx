@@ -331,7 +331,7 @@ export type dropdownMenuOptionType = {
     id:string,
     type?: 'option' | 'separator',
     txtLabel:string,
-    alis?:string, 
+    alias?:string, 
     icon?:JSX.Element,
     iconAfter?:JSX.Element,
     isDisabled?:boolean,

@@ -12,7 +12,6 @@ import Tag from '../tag';
 const InputTags = ({
     id = undefined,
     className = undefined,
-    style = undefined,
     shape = undefined,
 
     afterElement = undefined,
@@ -29,7 +28,7 @@ const InputTags = ({
     onValidate = undefined,
 
     config = undefined,
-}:_InputSelection) =>{
+}:_InputTag) =>{
 
     //Context start ====
     const {
@@ -46,36 +45,14 @@ const InputTags = ({
 
     const [searchParam, setSearchParam] = useState('')
 
-    const optionTamp = useMemo(()=>{
-        if(!options){
-            return []
-        }
-        let tampOptions = [...options].filter(i=>!value.includes(i.txtLabel))
-
-        if(searchParam){
-            tampOptions = tampOptions.filter(i=>(`${i.txtLabel}${i.alis}`).toLowerCase().includes(searchParam.toLowerCase()))
-        }
-
-        if(config?.maxValue){
-            if(value.length >= config?.maxValue){
-                return tampOptions.map((i)=>{
-                    if(value.includes(i.id)){
-                        return i
-                    }else{
-                        return {...i, isDisabled:true}
-                    }
-                })
-            }else{
-                return tampOptions
-            }
-        }else{
-            return tampOptions
-        }
-    },[options, value, searchParam])
+    const filteredOptions = useMemo(()=>{
+        return ctrl.getFilteredOptions(options, value, searchParam, config)
+    },[options, value, searchParam, config?.maxValue])
 
     const valueElement = useMemo(()=>{
         return  value.map((i)=>(
             <Tag
+                className='input-tag-tag'
                 key={i}
                 txtLabel={i}
                 onClickRemove={
@@ -109,15 +86,14 @@ const InputTags = ({
                     {
                         ['disabled']:(isDisabled),
                         ['error']:(error?.isError),
-                        ['selected']:(isDropdownOpen)
+                        ['selected']:(isDropdownOpen && filteredOptions.length>0)
                     },
                     className
                 )}
-                style={style?.triggerButton}
             >
                 {
                     (config?.prefixElement)&&(
-                        <div className='perfix-box'>
+                        <div className='prefix-box'>
                             {config?.prefixElement}
                         </div>
                     )
@@ -141,7 +117,7 @@ const InputTags = ({
                                 }}
                                 onBlur={(e)=>{
                                     if(!isDisabled){
-                                        ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
+                                        ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, filteredOptions,  isDirty, onBlur, config, onValidate)
                                     }   
                                 }}
                                 onFocus={(e)=>{
@@ -220,7 +196,7 @@ const InputTags = ({
                                 return(renderTagInputElement(triggerRef, {...getReferenceProps()}))
                             }
                         }
-                        options={optionTamp}
+                        options={filteredOptions}
                         optionSelected={value}
                         shape={shape}
                         style={{
@@ -243,8 +219,8 @@ const InputTags = ({
                         }}
                         floatingConfig={{
                             isContainerWidthSameAsTrigger:true,
-                            isLockScroll:(optionTamp.length!==0),
-                            isShowDropdown:(optionTamp.length!==0),
+                            isLockScroll:(filteredOptions.length!==0),
+                            isShowDropdown:(filteredOptions.length!==0),
                         }}
                     />
                 )
@@ -277,10 +253,9 @@ const InputTags = ({
 
 export default InputTags
 
-interface _InputSelection {
+interface _InputTag {
     id?:string
     className?:string;
-    style?:inputSelectionStyleType;
     shape?:globalShapeType;
     
     afterElement?:JSX.Element;
@@ -307,8 +282,4 @@ export type inputTagConfigType = {
     maxValue?:number
     prefixElement?:JSX.Element|string
     sufixElement?:JSX.Element|string
-}
-
-export type inputSelectionStyleType = {
-    triggerButton:React.CSSProperties,
 }

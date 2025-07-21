@@ -60,6 +60,20 @@
                     color: var(--clr-surface-primary-5);
                 }
             }
+
+            .input-tag-tag{
+                background-color: hsl(from var(--clr-surface-primary-5) h s l / 0.2);
+                .tag-label{
+                    color: var(--clr-primary-900);
+                }
+                .icon{
+                    color: var(--clr-primary-900);
+                }
+            }
+
+            .caret-box, .clear-button .icon, .prefix-box, .sufix-box{
+                color: var(--clr-surface-primary-5);
+            }
         }
 
         &.error{
@@ -84,7 +98,7 @@
             }
         }
 
-        &:has(:focus-visible){
+        &:has(.input-tag:focus-visible){
             outline: 2px solid var(--clr-focus-ouline);
             outline-offset: 2px;
         }

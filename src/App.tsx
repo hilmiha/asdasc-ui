@@ -550,7 +550,7 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
 ];
 
 const tagsDummy: dropdownMenuOptionType[] = [
-    {id:'1', txtLabel:'Content Management System', type:'option', icon:<PiTagBold/>, alis:'cms'},
+    {id:'1', txtLabel:'Content Management System', type:'option', icon:<PiTagBold/>, alias:'cms'},
     {id:'2', txtLabel:'Digital Asset Management', type:'option', icon:<PiTagBold/>},
     {id:'3', txtLabel:'Content Strategy', type:'option', icon:<PiTagBold/>},
     {id:'4', txtLabel:'Editorial Workflow', type:'option', icon:<PiTagBold/>},
