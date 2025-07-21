@@ -128,8 +128,7 @@ export const onInputTagChange = (
             newSearchValue = inputValue
             break
     }
-
-    if(newSearchValue===' '){
+    if(inputValue===' '){
         triggerOptionDropdown(inputTagRef)
     }else{
         if(newSearchValue && !isDropdownOpen){
@@ -168,7 +167,7 @@ export const onInputTagBlur = (
         }
     }
     
-    if(onValidate && config && isDirty && !isDropdownOpen){
+    if(onValidate && config && isDirty && (!isDropdownOpen || (isDropdownOpen && option.length===0)) ){
         doValidateValue(currentValue, onValidate , config)
     }
 
@@ -194,13 +193,18 @@ export const onInputTagKeyDown = (
     setSearchParam:React.Dispatch<React.SetStateAction<string>>,
     currentValue:string[],
     onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
+    config?:inputTagConfigType,
+    onValidate?:(error: fieldErrorType, newValue: string[]) => void,
 ) => {
     const key = e.key
     if(key==='Backspace' && searchParam==='' && currentValue.length>0){
         const newValue = [...currentValue]
         newValue.pop()
-        console.log(newValue)
+
         if(onChange){
+            if(onValidate && config?.maxValue){
+                doValidateValue(newValue, onValidate, config)
+            }
             doChangeValue(newValue, undefined, onChange, e)
         }
     }else if(key==='Enter' && searchParam!==''){
@@ -208,7 +212,16 @@ export const onInputTagKeyDown = (
         const addedValue = searchParam.trim()
         if(!tampValue.includes(addedValue)){
             tampValue.push(addedValue)
-            if(onChange){
+
+            if(onValidate && config?.maxValue){
+                doValidateValue(tampValue, onValidate, config)
+            }
+
+            let isCanAdd = true
+            if(config?.maxValue && config?.maxValue < tampValue.length){
+                isCanAdd = false
+            }
+            if(onChange && isCanAdd){
                 doChangeValue(tampValue, addedValue, onChange, e)
             }
         } 

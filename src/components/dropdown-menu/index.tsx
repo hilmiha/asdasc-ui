@@ -16,10 +16,7 @@ const DropdownMenu = ({
     shape = undefined,
     options = [],
     optionSelected = undefined,
-    // placement,
-    // isContainerWidthSameAsTrigger = false,
-    // isWithCheckmark = false,
-    // level = 0,
+    isDisabled = false,
     onClick,
     onOptionClose,
     onOptionOpen,
@@ -81,7 +78,9 @@ const DropdownMenu = ({
         strategy: 'fixed',
         whileElementsMounted: autoUpdate,
     });
-    const click = useClick(context);
+    const click = useClick(context,{
+        enabled: !isDisabled
+    });
     const dismiss = useDismiss(context,{
         outsidePressEvent: 'click',
         ancestorScroll: false,
@@ -303,6 +302,7 @@ interface _DropdownMenu {
     shape?:globalShapeType;
     options:dropdownMenuOptionType[]
     optionSelected?:string[]
+    isDisabled?:boolean
     onClick?:(idOption:string, option:dropdownMenuOptionType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOptionOpen?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;
     onOptionClose?: (ref: React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>) => void;

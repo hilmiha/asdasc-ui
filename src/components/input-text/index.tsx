@@ -63,56 +63,75 @@ const InputText = ({
             'input-text-box',
             className
         )}>
-            <input
-                id={id}
-                ref={inputRef}
+            <div
                 className={clsx(
-                    'input-text',
+                    'input-text-container',
                     (shape)?(shape):(globalShape),
                     {
                         ['disabled']:(isDisabled),
                         ['error']:(error?.isError),
                     }
                 )}
-                style={style?.input}
-                placeholder={txtPlaceholder}
-                value={ctrl.getDisplayValue(value, type)}
-                onChange={(e)=>{
-                    if(!isDisabled){
-                        ctrl.onInputChange(e, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
-                    }
-                }}
-                onBlur={(e)=>{
-                    if(!isDisabled){
-                        ctrl.onInputBlur(e, value, type, isDirty, config, onChange, onValidate, onBlur)
-                    }
-                }}
-                onFocus={(e)=>{
-                    if(!isDisabled){
-                        ctrl.onInputFocus(e, value, onFocus)
-                    }
-                }}
-                disabled={isDisabled}
-                type={inputTypeMode.type}
-                inputMode={inputTypeMode.mode}
-            />
-            {
-                (isDisabled)&&(
-                    <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                )
-            }
-            {
-                (value.length > 0 && !isDisabled)&&(
-                    <IconButton
-                        className='clear-button'
-                        icon={<PiXBold/>}
-                        txtLabel='Clear'
-                        appearance='subtle'
-                        isShowtooltip={false}
-                        onClick={(e)=>{ctrl.onClearButtonClick(e, type, config, onChange, onValidate, inputRef)}}
-                    />
-                )
-            }
+                onClick={()=>{inputRef.current?.focus()}}
+            >
+                {
+                    (config?.prefixElement)&&(
+                        <div className='perfix-box'>
+                            {config?.prefixElement}
+                        </div>
+                    )
+                }
+                <input
+                    id={id}
+                    ref={inputRef}
+                    className={clsx('input-text')}
+                    style={style?.input}
+                    placeholder={txtPlaceholder}
+                    value={ctrl.getDisplayValue(value, type)}
+                    onChange={(e)=>{
+                        if(!isDisabled){
+                            ctrl.onInputChange(e, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
+                        }
+                    }}
+                    onBlur={(e)=>{
+                        if(!isDisabled){
+                            ctrl.onInputBlur(e, value, type, isDirty, config, onChange, onValidate, onBlur)
+                        }
+                    }}
+                    onFocus={(e)=>{
+                        if(!isDisabled){
+                            ctrl.onInputFocus(e, value, onFocus)
+                        }
+                    }}
+                    disabled={isDisabled}
+                    type={inputTypeMode.type}
+                    inputMode={inputTypeMode.mode}
+                />
+                {
+                    (config?.sufixElement)&&(
+                        <div className='sufix-box'>
+                            {config?.sufixElement}
+                        </div>
+                    )
+                }
+                {
+                    (value.length > 0 && !isDisabled)&&(
+                        <IconButton
+                            className='clear-button'
+                            icon={<PiXBold/>}
+                            txtLabel='Clear'
+                            appearance='subtle'
+                            isShowtooltip={false}
+                            onClick={(e)=>{ctrl.onClearButtonClick(e, type, config, onChange, onValidate, inputRef)}}
+                        />
+                    )
+                }
+                {
+                    (isDisabled)&&(
+                        <div className='lock-box'><PiLockBold className='global-icon'/></div>
+                    )
+                }
+            </div>
             {
                 (beforeElement)&&(
                     <div className='before-element-box'>
@@ -173,6 +192,8 @@ export type inputTextConfigType = {
     minValue?:number
     maxValue?:number
     validRegex?:[RegExp, string][]
+    sufixElement?:JSX.Element|string
+    prefixElement?:JSX.Element|string
 }
 
 export type inputTextStyleType = {

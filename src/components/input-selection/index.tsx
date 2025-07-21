@@ -5,7 +5,7 @@ import type { fieldErrorType, globalShapeType } from "../_types";
 import { useContext, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
-import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
+import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import InputText from '../input-text';
 import Button from '../button';
@@ -83,15 +83,18 @@ const InputSelection = ({
             </select>
             <DropdownMenu
                 className='input-select-dropdown'
+                isDisabled={isDisabled}
                 trigger={
                     (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
                         if(trigger.current){
                             triggerButtonRef.current = trigger.current as HTMLButtonElement
                         }
                         return(
-                            <button
+                            <div
                                 ref={triggerRef}
                                 {...getReferenceProps()}
+                                role='button'
+                                tabIndex={isDisabled?-1:0}
                                 id={id}
                                 className={clsx(
                                     'input-selection',
@@ -104,8 +107,14 @@ const InputSelection = ({
                                     className
                                 )}
                                 style={style?.triggerButton}
-                                disabled={isDisabled}
                             >
+                                {
+                                    (config?.prefixElement)&&(
+                                        <div className='prefix-box'>
+                                            {config?.prefixElement}
+                                        </div>
+                                    )
+                                }
                                 <div className='value-label-box'>
                                     {
                                         (value.length>0)?(
@@ -115,7 +124,35 @@ const InputSelection = ({
                                         )
                                     }
                                 </div>
-                            </button>
+                                {
+                                    (config?.sufixElement)&&(
+                                        <div className='sufix-box'>
+                                            {config?.sufixElement}
+                                        </div>
+                                    )
+                                }
+                                {
+                                    (value.length > 0 && !isDisabled && !isDropdownOpen)&&(
+                                        <IconButton
+                                            className='clear-button'
+                                            icon={<PiXBold/>}
+                                            txtLabel='Clear'
+                                            appearance='subtle'
+                                            isShowtooltip={false}
+                                            onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)}}
+                                        />
+                                    )
+                                }
+                                {
+                                    (isDisabled)?(
+                                        <div className='lock-box'><PiLockBold className='global-icon'/></div>
+                                    ):(
+                                        <div className='caret-box'>
+                                            {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
+                                        </div>
+                                    )
+                                }
+                            </div>
                         )
                     }
                 }
@@ -149,6 +186,9 @@ const InputSelection = ({
                                         txtPlaceholder='Search...'
                                         value={searchParam}
                                         onChange={(newValue)=>{setSearchParam(newValue)}}
+                                        config={{
+                                            prefixElement:<PiMagnifyingGlassBold className='global-icon'/>
+                                        }}
                                     />
                                 </div>
                             ):undefined
@@ -185,27 +225,6 @@ const InputSelection = ({
                     isWithCheckmark:type==='multiple'
                 }}
             />
-            {
-                (isDisabled)?(
-                    <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                ):(
-                    <div className='caret-box'>
-                        {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
-                    </div>
-                )
-            }
-            {
-                (value.length > 0 && !isDisabled && !isDropdownOpen)&&(
-                    <IconButton
-                        className='clear-button'
-                        icon={<PiXBold/>}
-                        txtLabel='Clear'
-                        appearance='subtle'
-                        isShowtooltip={false}
-                        onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)}}
-                    />
-                )
-            }
             {
                 (beforeElement)&&(
                     <div className='before-element-box'>
@@ -261,6 +280,8 @@ export type inputSelectConfigType = {
     isRequired?:boolean
     minValue?:number
     maxValue?:number
+    sufixElement?:JSX.Element|string
+    prefixElement?:JSX.Element|string
 }
 
 export type inputSelectionStyleType = {

@@ -11,7 +11,7 @@ import InputText from './components/input-text';
 import type { fieldErrorType, globalShapeType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
-import InputTags from './components/input-tags';
+import InputTag from './components/input-tag';
 
 function App() {
     const {
@@ -234,7 +234,8 @@ function App() {
                             isDisabled:false,
                             maxLength:42,
                             minValue:10,
-                            maxValue:1000
+                            maxValue:1000,
+                            prefixElement:'Rp.'
                         }}
                     />
                     <InputText
@@ -263,7 +264,8 @@ function App() {
                         config={{
                             isCombobox:true,
                             isDisabled:false,
-                            isRequired:true
+                            isRequired:true,
+                            prefixElement:<PiCityBold className='global-icon'/>
                         }}
                     />
                     <InputSelection
@@ -278,12 +280,13 @@ function App() {
                             isCombobox:true,
                             maxValue:2,
                             isRequired:true,
-                            isDisabled:false
+                            isDisabled:false,
+                            prefixElement:<PiCityBold className='global-icon'/>
                         }}
                     />
-                    <InputTags
+                    <InputTag
                         type='text-no-space'
-                        txtPlaceholder='Select city...'
+                        txtPlaceholder='Select tag...'
                         value={form['testTags']}
                         onChange={(newValue)=>{onChange('testTags', newValue)}}
                         onValidate={(error)=>{onValidate('testTags', error)}}
@@ -291,7 +294,7 @@ function App() {
                         options={[...tagsDummy]}
                         config={{
                             isRequired:true,
-                            isDisabled:false
+                            isDisabled:false,
                         }}
                     />
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
