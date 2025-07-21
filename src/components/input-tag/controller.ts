@@ -207,6 +207,8 @@ export const onInputTagKeyDown = (
             }
             doChangeValue(newValue, undefined, onChange, e)
         }
+    }if(key==='Enter' && searchParam===''){
+        triggerOptionDropdown(inputTagRef)
     }else if(key==='Enter' && searchParam!==''){
         const tampValue = [...currentValue]
         const addedValue = searchParam.trim()

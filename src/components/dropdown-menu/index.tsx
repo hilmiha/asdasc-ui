@@ -43,11 +43,11 @@ const DropdownMenu = ({
         onOpenChange: (open)=>{
             setIsShowOption(open)
             
-            if(onOptionOpen){
+            if(onOptionOpen && open){
                 onOptionOpen(refs.domReference)
             }
 
-            if(onOptionClose){
+            if(onOptionClose && !open){
                 onOptionClose(refs.domReference)
             }
         },

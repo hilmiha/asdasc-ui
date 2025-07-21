@@ -73,19 +73,6 @@ const InputTags = ({
         }
     },[options, value, searchParam])
 
-    const shadowValueElement = useMemo(()=>{
-        return value.map((i)=>(
-            <Tag
-                key={i}
-                txtLabel={i}
-                onClickRemove={()=>{}}
-                style={{
-                    tagContainer:{opacity:'0%'}
-                }}
-                isDisabled={true}
-            />
-        ))
-    },[value])
     const valueElement = useMemo(()=>{
         return  value.map((i)=>(
             <Tag
@@ -112,13 +99,97 @@ const InputTags = ({
     const inputTagRef = useRef<HTMLInputElement>(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
+    //render input element
+    const renderTagInputElement = (inputRef:any, additionalProps?:Record<string, unknown>) =>{
+        return(
+            <div
+                className={clsx(
+                    'input-tag-container',
+                    (shape)?(shape):(globalShape),
+                    {
+                        ['disabled']:(isDisabled),
+                        ['error']:(error?.isError),
+                        ['selected']:(isDropdownOpen)
+                    },
+                    className
+                )}
+                style={style?.triggerButton}
+            >
+                {
+                    (config?.prefixElement)&&(
+                        <div className='perfix-box'>
+                            {config?.prefixElement}
+                        </div>
+                    )
+                }
+                <div className='input-tag-input'>
+                    {
+                        (value.length>0)&&(valueElement)
+                    }
+                    {
+                        (!isDisabled)&&(
+                            <input
+                                {...(additionalProps??{})}
+                                ref={inputRef}
+                                placeholder={txtPlaceholder}
+                                className='input-tag'
+                                value={searchParam}
+                                onChange={(e)=>{
+                                    if(!isDisabled){
+                                        ctrl.onInputTagChange(e, inputTagRef, type, value, isDirty, setIsDirty, isDropdownOpen, setSearchParam, error, onValidate)
+                                    }
+                                }}
+                                onBlur={(e)=>{
+                                    if(!isDisabled){
+                                        ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
+                                    }   
+                                }}
+                                onFocus={(e)=>{
+                                    if(!isDisabled){
+                                        ctrl.onInputTagFocus(e, value, onFocus)
+                                    }
+                                }}
+                                onKeyDown={(e)=>{
+                                    ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange, config, onValidate)
+                                }}
+                            />
+                        )
+                    }
+                </div>
+                {
+                    (config?.sufixElement)&&(
+                        <div className='sufix-box'>
+                            {config?.sufixElement}
+                        </div>
+                    )
+                }
+                {
+                    (value.length > 0 && !isDisabled)&&(
+                        <IconButton
+                            className='clear-button'
+                            icon={<PiXBold/>}
+                            txtLabel='Clear'
+                            appearance='subtle'
+                            isShowtooltip={false}
+                            onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
+                        />
+                    )
+                }
+                {
+                    (isDisabled)?(
+                        <div className='lock-box'><PiLockBold className='global-icon'/></div>
+                    ):(options.length!==0)?(
+                        <div className='caret-box' onClick={()=>{inputTagRef.current?.focus()}}>
+                            {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
+                        </div>
+                    ):(<></>)
+                }
+            </div>
+        )
+    }
+
     return(
-        <div className={clsx(
-            'input-tag-box',
-            {
-                ['open']:(isDropdownOpen)
-            }
-        )}>
+        <div className={clsx('input-tag-box')}>
             <select
                 style={{display:'none'}}
                 id={id}
@@ -135,179 +206,18 @@ const InputTags = ({
             </select>
             {
                 (options.length===0 || isDisabled)?(
-                    <div
-                        className={clsx(
-                            'input-tag-container',
-                            (shape)?(shape):(globalShape),
-                            {
-                                ['disabled']:(isDisabled),
-                                ['error']:(error?.isError),
-                            },
-                            className
-                        )}
-                    >
-                        {
-                            (config?.prefixElement)&&(
-                                <div className='perfix-box'>
-                                    {config?.prefixElement}
-                                </div>
-                            )
-                        }
-                        <div className='input-tag-input'>
-                            {
-                                (value.length>0)&&(shadowValueElement)
-                            }
-                            {
-                                (!isDisabled)&&(
-                                    <input
-                                        ref={inputTagRef}
-                                        placeholder={txtPlaceholder}
-                                        className='input-tag'
-                                        value={searchParam}
-                                        onChange={(e)=>{
-                                            if(!isDisabled){
-                                                ctrl.onInputTagChange(e, inputTagRef, type, value, isDirty, setIsDirty, isDropdownOpen, setSearchParam, error, onValidate)
-                                            }
-                                        }}
-                                        onBlur={(e)=>{
-                                            if(!isDisabled){
-                                                ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
-                                            }   
-                                        }}
-                                        onFocus={(e)=>{
-                                            if(!isDisabled){
-                                                ctrl.onInputTagFocus(e, value, onFocus)
-                                            }
-                                        }}
-                                        onKeyDown={(e)=>{
-                                            ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange, config, onValidate)
-                                        }}
-                                    />
-                                )
-                            }
-                        </div>
-                        {
-                            (config?.sufixElement)&&(
-                                <div className='sufix-box'>
-                                    {config?.sufixElement}
-                                </div>
-                            )
-                        }
-                        {
-                            (value.length > 0 && !isDisabled)&&(
-                                <IconButton
-                                    className='clear-button'
-                                    icon={<PiXBold/>}
-                                    txtLabel='Clear'
-                                    appearance='subtle'
-                                    isShowtooltip={false}
-                                    onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
-                                />
-                            )
-                        }
-                        {
-                            (isDisabled)&&(
-                                <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                            )
-                        }
-                    </div>
+                    renderTagInputElement(inputTagRef)
                 ):(
                     <DropdownMenu
                         className={clsx(
                             'input-tag-dropdown',
                         )}
                         trigger={
-                            (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
+                            (triggerRef, getReferenceProps, _, trigger)=>{
                                 if(trigger.current){
                                     inputTagRef.current = trigger.current as HTMLInputElement
                                 }
-
-                                return(
-                                    <div
-                                        className={clsx(
-                                            'input-tag-container',
-                                            (shape)?(shape):(globalShape),
-                                            {
-                                                ['disabled']:(isDisabled),
-                                                ['selected']:(isDropdownOpen && optionTamp.length>0),
-                                                ['error']:(error?.isError),
-                                            },
-                                            className
-                                        )}
-                                        style={style?.triggerButton}
-                                        onClick={()=>{inputTagRef.current?.focus()}}
-                                    >
-                                        {
-                                            (config?.prefixElement)&&(
-                                                <div className='perfix-box'>
-                                                    {config?.prefixElement}
-                                                </div>
-                                            )
-                                        }
-                                        <div className='input-tag-input'>
-                                            {
-                                                (value.length>0)&&(shadowValueElement)
-                                            }
-                                            {
-                                                (!isDisabled)&&(
-                                                    <input
-                                                        {...getReferenceProps()}
-                                                        ref={triggerRef}
-                                                        placeholder={txtPlaceholder}
-                                                        className='input-tag'
-                                                        value={searchParam}
-                                                        onChange={(e)=>{
-                                                            if(!isDisabled){
-                                                                ctrl.onInputTagChange(e, inputTagRef, type, value, isDirty, setIsDirty, isDropdownOpen, setSearchParam, error, onValidate)
-                                                            }
-                                                        }}
-                                                        onBlur={(e)=>{
-                                                            if(!isDisabled){
-                                                                ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, optionTamp,  isDirty, onBlur, config, onValidate)
-                                                            }   
-                                                        }}
-                                                        onFocus={(e)=>{
-                                                            if(!isDisabled){
-                                                                ctrl.onInputTagFocus(e, value, onFocus)
-                                                            }
-                                                        }}
-                                                        onKeyDown={(e)=>{
-                                                            ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange, config, onValidate)
-                                                        }}
-                                                    />
-                                                )
-                                            }
-                                        </div>
-                                        {
-                                            (config?.sufixElement)&&(
-                                                <div className='sufix-box'>
-                                                    {config?.sufixElement}
-                                                </div>
-                                            )
-                                        }
-                                        {
-                                            (value.length > 0 && !isDisabled)&&(
-                                                <IconButton
-                                                    className='clear-button'
-                                                    icon={<PiXBold/>}
-                                                    txtLabel='Clear'
-                                                    appearance='subtle'
-                                                    isShowtooltip={false}
-                                                    onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
-                                                />
-                                            )
-                                        }
-                                        {
-                                            (isDisabled)?(
-                                                <div className='lock-box'><PiLockBold className='global-icon'/></div>
-                                            ):(options.length!==0)?(
-                                                <div className='caret-box'>
-                                                    {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
-                                                </div>
-                                            ):(<></>)
-                                        }
-                                    </div>
-                                )
+                                return(renderTagInputElement(triggerRef, {...getReferenceProps()}))
                             }
                         }
                         options={optionTamp}
@@ -337,59 +247,6 @@ const InputTags = ({
                             isShowDropdown:(optionTamp.length!==0),
                         }}
                     />
-                )
-            }
-            {
-                (value.length>0)&&(
-                    <div
-                        className={clsx(
-                            'input-tag-container',
-                            'input-tag-value-container',
-                            (shape)?(shape):(globalShape),
-                        )}
-                    >
-                        {
-                            (config?.prefixElement)&&(
-                                <div className='perfix-box' style={{opacity:'0%'}}>
-                                    {config?.prefixElement}
-                                </div>
-                            )
-                        }
-                        <div className='input-tag-input'>
-                            {valueElement}
-                        </div>
-                        {
-                            (config?.sufixElement)&&(
-                                <div className='sufix-box' style={{opacity:'0%'}}>
-                                    {config?.sufixElement}
-                                </div>
-                            )
-                        }
-                        {
-                            (value.length > 0 && !isDisabled)&&(
-                                <IconButton
-                                    className='clear-button'
-                                    icon={<PiXBold/>}
-                                    txtLabel='Clear'
-                                    appearance='subtle'
-                                    isShowtooltip={false}
-                                    onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
-                                    style={{
-                                        button:{opacity:'0%'}
-                                    }}
-                                />
-                            )
-                        }
-                        {
-                            (isDisabled)?(
-                                <div className='lock-box' style={{opacity:'0%'}}><PiLockBold className='global-icon'/></div>
-                            ):(options.length!==0)?(
-                                <div className='caret-box' style={{opacity:'0%'}}>
-                                    {(isDropdownOpen)?(<PiCaretUpBold className='global-icon'/>):(<PiCaretDownBold className='global-icon'/>)}
-                                </div>
-                            ):(<></>)
-                        }
-                    </div>
                 )
             }
             {
