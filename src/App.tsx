@@ -12,6 +12,8 @@ import type { fieldErrorType, globalShapeType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
 import InputTag from './components/input-tag';
+import RadioButton from './components/radio-button';
+import RadioGroup from './components/radio-group';
 
 function App() {
     const {
@@ -42,6 +44,8 @@ function App() {
         testSelectionComboBox:[],
         testSelectionMulti:[],
         testTags:[],
+        isRadio:false,
+        radioStatus:'',
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -53,7 +57,8 @@ function App() {
         testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
         testTags:{isError:false, errorMessage:''},
-
+        isRadio:{isError:false, errorMessage:''},
+        radioStatus:{isError:false, errorMessage:''},
     })
     const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
@@ -278,10 +283,9 @@ function App() {
                         option={[...indonesiaProvinces]}
                         config={{
                             isCombobox:true,
-                            maxValue:2,
+                            maxValue:10,
                             isRequired:true,
                             isDisabled:false,
-                            prefixElement:<PiCityBold className='global-icon'/>
                         }}
                     />
                     <InputTag
@@ -297,6 +301,19 @@ function App() {
                             isDisabled:false,
                         }}
                     />
+                    <div>
+                        <RadioGroup
+                            options={[
+                                {id:'new', txtLabel:'New', txtSublabel:'Newly created backlog.'},
+                                {id:'pending', txtLabel:'Pending', txtSublabel:'Backlog that need to be reviewed.'},
+                                {id:'in-progress', txtLabel:'In Progress', txtSublabel:'Backlog that on progress of development.'},
+                                {id:'done', txtLabel:'Done', txtSublabel:'Backlog that have finish its development.'},
+                                {id:'closed', txtLabel:'Closed', txtSublabel:'Backlog that not needed anymore or canceled on its development.', isDisabled:true},
+                            ]}
+                            value={form['radioStatus']}
+                            onChange={(newValue)=>{onChange('radioStatus', newValue)}}
+                        />
+                    </div>
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
                         <Button
                             txtLabel={'Submit'}
@@ -506,7 +523,6 @@ export default App
 
 
 const indonesiaProvinces:dropdownMenuOptionType[] = [
-    {id:'sumatera', txtLabel:'Sumatera', type:'separator'},
     {id:'aceh', txtLabel:'Aceh', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-utara', txtLabel:'Sumatera Utara', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-barat', txtLabel:'Sumatera Barat', type:'option', icon:<PiCityBold/>},
@@ -515,7 +531,6 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'jambi', txtLabel:'Jambi', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-selatan', txtLabel:'Sumatera Selatan', type:'option', icon:<PiCityBold/>},
     {id:'kepulauan-bangka-belitung', txtLabel:'Kepulauan Bangka Belitung', type:'option', icon:<PiCityBold/>},
-    {id:'jawa', txtLabel:'Jawa', type:'separator'},
     {id:'bengkulu', txtLabel:'Bengkulu', type:'option', icon:<PiCityBold/>},
     {id:'lampung', txtLabel:'Lampung', type:'option', icon:<PiCityBold/>},
     {id:'dki-jakarta', txtLabel:'DKI Jakarta', type:'option', icon:<PiCityBold/>},
@@ -524,7 +539,6 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'jawa-tengah', txtLabel:'Jawa Tengah', type:'option', icon:<PiCityBold/>},
     {id:'di-yogyakarta', txtLabel:'DI Yogyakarta', type:'option', icon:<PiCityBold/>},
     {id:'jawa-timur', txtLabel:'Jawa Timur', type:'option', icon:<PiCityBold/>},
-    {id:'nusa-tenggara', txtLabel:'Nusa Tenggara', type:'separator'},
     {id:'bali', txtLabel:'Bali', type:'option', icon:<PiCityBold/>},
     {id:'nusa-tenggara-barat', txtLabel:'Nusa Tenggara Barat', type:'option', icon:<PiCityBold/>},
     {id:'nusa-tenggara-timur', txtLabel:'Nusa Tenggara Timur', type:'option', icon:<PiCityBold/>},

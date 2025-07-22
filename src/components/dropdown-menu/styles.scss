@@ -36,15 +36,23 @@
             grid-row: 2 / 3;
             overflow: auto;
             padding: var(--space-25) var(--space-0);
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-auto-rows: max-content;
             .dropdown-item {
                 flex-grow: 1;
                 margin: var(--space-25) var(--space-50);
 
-                .text-label{
-                    text-align: left;
+                .text-label-box{
                     flex-grow: 1;
+                    flex-direction: column;
+                    align-items: start;
+                    
+                    .text-sublabel{
+                        color: var(--clr-surface-5);
+                        font-size: var(--text-size-sm);
+                        font-weight: var(--font-weight-text);
+                        margin-top: var(--space-50);
+                    }
                 }
             }
             .check-icon-container{

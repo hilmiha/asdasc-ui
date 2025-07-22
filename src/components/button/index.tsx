@@ -60,12 +60,18 @@ const Button = ({
                     </div>
                 )
             }
-            <div 
-                className='text-label'
-                style={style?.textLabel}
-            >
-                {txtLabel}
-            </div>
+            {
+                (typeof txtLabel === 'string')?(
+                    <div 
+                        className='text-label-box'
+                        style={style?.textLabel}
+                    >
+                        <span className='text-label'>{txtLabel}</span>
+                    </div>
+                ):(
+                    <>{txtLabel}</>
+                )
+            }
             {
                 (iconAfter)&&(
                     <div 

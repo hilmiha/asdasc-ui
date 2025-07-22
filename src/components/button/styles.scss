@@ -17,8 +17,10 @@
     }
 
     &:active{
-        text-decoration: underline;
-        text-underline-offset: 2px;
+        .text-label{
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
     }
     
     &.neutral{
@@ -127,7 +129,12 @@
             hsl(from var(--clr-surface-4) h s l / 0.2) 4px
         );
 
-        text-decoration: none;
+        &:active{
+            .text-label{
+                text-decoration: none;
+            }
+        }
+        
         &:hover, &:focus-visible, &:active{
             background-color: hsl(from var(--clr-surface-2) h s l / 0.5);
         }
@@ -151,7 +158,7 @@
         }
     }
 
-    .text-label{
+    .text-label-box{
         display: flex;
         align-items: center;
     }

@@ -164,7 +164,14 @@ const DropdownMenu = ({
                                                                     className={clsx('dropdown-item')}
                                                                     style={style?.optionButton}
                                                                     shape={shape}
-                                                                    txtLabel={option.txtLabel??''}
+                                                                    txtLabel={<div className='text-label-box'>
+                                                                        <p className='text-label'>{option.txtLabel}</p>
+                                                                        {
+                                                                            (option.txtSublabel)&&(
+                                                                                <p className='text-sublabel'>{option.txtSublabel??''}</p>
+                                                                            )
+                                                                        }
+                                                                    </div>}
                                                                     iconBefore={
                                                                         (optionSelected)?(
                                                                             <div className='check-icon-container'>
@@ -331,6 +338,7 @@ export type dropdownMenuOptionType = {
     id:string,
     type?: 'option' | 'separator',
     txtLabel:string,
+    txtSublabel?:string,
     alias?:string, 
     icon?:JSX.Element,
     iconAfter?:JSX.Element,
