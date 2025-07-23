@@ -54,6 +54,10 @@
                         margin-top: var(--space-50);
                     }
                 }
+
+                &:has(.text-sublabel){
+                    align-items: start;
+                }
             }
             .check-icon-container{
                 display: flex;

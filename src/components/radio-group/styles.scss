@@ -1,4 +1,19 @@
 .radio-group-box{
     display: grid;
-    gap:var(--space-100)
+    grid-template-rows: max-content max-content;
+    
+    .radio-group{
+        grid-row: 1 / 2;
+        display: grid;
+        gap:var(--space-100)
+    }
+    .error-box{
+        grid-row: 2 / 3;
+
+        margin: var(--space-100);
+        display: flex;
+        align-items: center;
+        gap: var(--space-100);
+        color: var(--clr-danger-700);
+    }
 }

@@ -303,6 +303,10 @@ function App() {
                     />
                     <div>
                         <RadioGroup
+                            value={form['radioStatus']}
+                            onChange={(newValue)=>{onChange('radioStatus', newValue)}}
+                            onValidate={(error)=>{onValidate('radioStatus', error)}}
+                            error={formError['radioStatus']}
                             options={[
                                 {id:'new', txtLabel:'New', txtSublabel:'Newly created backlog.'},
                                 {id:'pending', txtLabel:'Pending', txtSublabel:'Backlog that need to be reviewed.'},
@@ -310,8 +314,10 @@ function App() {
                                 {id:'done', txtLabel:'Done', txtSublabel:'Backlog that have finish its development.'},
                                 {id:'closed', txtLabel:'Closed', txtSublabel:'Backlog that not needed anymore or canceled on its development.', isDisabled:true},
                             ]}
-                            value={form['radioStatus']}
-                            onChange={(newValue)=>{onChange('radioStatus', newValue)}}
+                            config={{
+                                isRequired:true,
+                                isDisabled:false,
+                            }}
                         />
                     </div>
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
@@ -433,9 +439,9 @@ function App() {
                     <SplitButton
                         txtLabel='Toggle Theme'
                         options={[
-                            {id:'circle', txtLabel:'Toggle Shape Circle', icon:<PiCircleBold className='global-icon'/>},
-                            {id:'rounded', txtLabel:'Toggle Shape Rounded', icon:<BiSquareRounded className='global-icon'/>},
-                            {id:'box', txtLabel:'Toggle Shape Box', icon:<BiSquare className='global-icon'/>},
+                            {id:'circle', txtLabel:'Circle', txtSublabel:'Toggle global shape to circle', icon:<PiCircleBold className='global-icon'/>},
+                            {id:'rounded', txtLabel:'Rounded', txtSublabel:'Toggle global shape to rounded', icon:<BiSquareRounded className='global-icon'/>},
+                            {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
                         ]}
                         appearance='neutral'
                         optionSelected={[appTheme.split('-')[3]??'-']}

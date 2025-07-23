@@ -60,7 +60,7 @@
             }
         }
         
-        &:has(:focus-visible){
+        &:has(.input-text:focus-visible){
             outline: 2px solid var(--clr-focus-ouline);
             outline-offset: 2px;
         }
