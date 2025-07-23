@@ -1,4 +1,4 @@
-.radio-button{
+.checkbox-button{
     background-color: transparent;
     border: 1px solid transparent;
     outline: 0px;
@@ -11,7 +11,7 @@
         outline: 2px solid var(--clr-focus-ouline);
         outline-offset: 2px;
         z-index: 1;
-        .circle-indicator{
+        .square-indicator{
             background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
         }
         
@@ -25,7 +25,7 @@
     }
 
     &:hover{
-        .circle-indicator{
+        .square-indicator{
             background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
         }
     }
@@ -55,7 +55,7 @@
         }
         
         &:hover, &:focus-visible, &:active{
-            .circle-indicator{
+            .square-indicator{
                 background-color: transparent;
             }
         }
@@ -72,8 +72,8 @@
     }
     
 
-    .circle-indicator{
-        border-radius: var(--space-400);
+    .square-indicator{
+        border-radius: var(--space-0);
         height: var(--space-150);
         width: var(--space-150);
         margin-top: var(--space-25);
@@ -81,18 +81,24 @@
         align-items: center;
         justify-content: center;
     }
-    .circle-on{
+    .square-on{
         border: 1px solid var(--clr-primary-700);
-        &::after{
+        color: var(--clr-primary-100);
+        .icon-check{
+            position: absolute;
+            z-index: 1;
+        }
+        &::before{
             content: '';
+            position: absolute;
             display: block;
             height: var(--space-100);
             width: var(--space-100);
             background-color: var(--clr-primary-700);
-            border-radius: 100px;
+            border-radius: var(--space-0);
         }
     }
-    .circle-off{
+    .square-off{
         border: 1px solid var(--clr-border);
     }
 

@@ -14,6 +14,8 @@ import InputSelection from './components/input-selection';
 import InputTag from './components/input-tag';
 import RadioButton from './components/radio-button';
 import RadioGroup from './components/radio-group';
+import CheckboxButton from './components/checkbox-button';
+import CheckboxGroup from './components/checkbox-group';
 
 function App() {
     const {
@@ -46,6 +48,7 @@ function App() {
         testTags:[],
         isRadio:false,
         radioStatus:'',
+        checkboxStatus:[],
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -59,6 +62,7 @@ function App() {
         testTags:{isError:false, errorMessage:''},
         isRadio:{isError:false, errorMessage:''},
         radioStatus:{isError:false, errorMessage:''},
+        checkboxStatus:{isError:false, errorMessage:''},
     })
     const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
@@ -313,6 +317,36 @@ function App() {
                                 {id:'in-progress', txtLabel:'In Progress', txtSublabel:'Backlog that on progress of development.'},
                                 {id:'done', txtLabel:'Done', txtSublabel:'Backlog that have finish its development.'},
                                 {id:'closed', txtLabel:'Closed', txtSublabel:'Backlog that not needed anymore or canceled on its development.', isDisabled:true},
+                            ]}
+                            config={{
+                                isRequired:true,
+                                isDisabled:false,
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <CheckboxGroup
+                            value={form['checkboxStatus']}
+                            onChange={(newValue)=>{onChange('checkboxStatus', newValue)}}
+                            onValidate={(error)=>{onValidate('checkboxStatus', error)}}
+                            error={formError['checkboxStatus']}
+                            options={[
+                                {
+                                    id:'user-management',
+                                    txtLabel:'User Management',
+                                    txtSublabel:'Asdas asjdhw has asjkwu.',
+                                    childOption:[
+                                        {id:'domain', txtLabel:'Domain', txtSublabel:'Domain menu asdas.'},
+                                        {id:'user-group', txtLabel:'User Group', txtSublabel:'User Group menu asdas.'},
+                                        {id:'menu-access', txtLabel:'Menu Access', txtSublabel:'Menu Access menu asdas.'},
+                                        {id:'user', txtLabel:'User', txtSublabel:'User menu asdas.', isDisabled:true},
+                                    ]
+                                },
+                                {
+                                    id:'audit-trail',
+                                    txtLabel:'Audit Trail',
+                                    isDisabled:true
+                                }
                             ]}
                             config={{
                                 isRequired:true,

@@ -1,0 +1,26 @@
+.checkbox-group-box{
+    display: grid;
+    grid-template-rows: max-content max-content;
+    
+    .checkbox-group{
+        grid-row: 1 / 2;
+        display: grid;
+        gap:var(--space-100)
+    }
+    .error-box{
+        grid-row: 2 / 3;
+
+        margin: var(--space-100);
+        display: flex;
+        align-items: center;
+        gap: var(--space-100);
+        color: var(--clr-danger-700);
+    }
+
+    .child-option-group-box{
+        padding-left: var(--space-400);
+        padding-top: var(--space-100);
+        display: grid;
+        gap:var(--space-100)
+    }
+}
