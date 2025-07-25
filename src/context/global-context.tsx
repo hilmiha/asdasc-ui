@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 export const GlobalContext = React.createContext<_GlobalContextType | null>(null);
 
@@ -9,25 +9,33 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
     const [globalShape, setGlobalShape] = useState<globalShapeType>('rounded');
 
     const appTheme = useMemo(()=>{
-        return `${globalTheme}-${globalTone}-${globalPrimary}-${globalShape}`
+        return {
+            globalTheme,
+            globalTone,
+            globalPrimary,
+            globalShape
+        }
     },[globalTheme, globalTone, globalPrimary, globalShape])
     
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', `${globalTheme}-tonal_${globalTone}-primary_${globalPrimary}-${globalShape}`);
     }, [globalTheme, globalTone, globalPrimary, globalShape]);
 
-    const toggleGlobalTheme = () => {
+    const toggleGlobalTheme = useCallback(() => {
         setGlobalTheme(globalTheme.includes('light') ? 'dark' : 'light');
-    }
-    const toggleGlobalTone = (color:string) => {
+    },[globalTheme])
+
+    const toggleGlobalTone = useCallback((color:string) => {
         setGlobalTone(`tonal_${color}`);
-    }
-    const toggleGlobalPrimary = (color:string) =>{
-        setGlobalPrimary(`primary_${color}`)
-    }
-    const toggleGlobalShape = (shape:globalShapeType) =>{
-        setGlobalShape(shape)
-    }
+    },[])
+
+    const toggleGlobalPrimary = useCallback((color:string) => {
+        setGlobalPrimary(`primary_${color}`);
+    },[])
+
+    const toggleGlobalShape = useCallback((shape:globalShapeType) => {
+        setGlobalShape(shape);
+    },[])
 
     return (
         <GlobalContext.Provider value={{
@@ -46,7 +54,12 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
 export default GlobalProvider;
 
 export interface _GlobalContextType {
-    appTheme:string;
+    appTheme:{
+        globalTheme: string;
+        globalTone: string;
+        globalPrimary: string;
+        globalShape: globalShapeType;
+    };
     toggleGlobalTheme:()=>void;
     toggleGlobalTone:(color:string)=>void;
     toggleGlobalPrimary:(color:string)=>void;

@@ -2,7 +2,7 @@
     display: grid;
     grid-template-rows: max-content max-content;
     
-    .checkbox-group{
+    .checkbox-group-container{
         grid-row: 1 / 2;
         display: grid;
         gap:var(--space-100)

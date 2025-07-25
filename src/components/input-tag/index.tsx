@@ -8,6 +8,7 @@ import DropdownMenu, { type dropdownMenuOptionType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import Tag from '../tag';
+import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
 
 const InputTags = ({
     id = undefined,
@@ -45,11 +46,11 @@ const InputTags = ({
 
     const [searchParam, setSearchParam] = useState('')
 
-    const filteredOptions = useMemo(()=>{
+    const filteredOptions = useDeepCompareMemo(()=>{
         return ctrl.getFilteredOptions(options, value, searchParam, config)
     },[options, value, searchParam, config?.maxValue])
 
-    const valueElement = useMemo(()=>{
+    const valueElement = useDeepCompareMemo(()=>{
         return  value.map((i)=>(
             <Tag
                 className='input-tag-tag'
@@ -69,7 +70,7 @@ const InputTags = ({
                 isDisabled={isDisabled}
             />
         ))
-    },[value,isDisabled])
+    },[value, isDisabled])
      //States end ====
 
     // Update ref

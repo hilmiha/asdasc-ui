@@ -12,10 +12,8 @@ import type { fieldErrorType, globalShapeType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
 import InputTag from './components/input-tag';
-import RadioButton from './components/radio-button';
 import RadioGroup from './components/radio-group';
-import CheckboxButton from './components/checkbox-button';
-import CheckboxGroup from './components/checkbox-group';
+import CheckboxGroup, { type checkboxGroupOptionType } from './components/checkbox-group';
 
 function App() {
     const {
@@ -77,6 +75,42 @@ function App() {
             [key]: error
         }));
     }, []); 
+
+    const listSelection = useMemo(()=>{
+        return[...indonesiaProvinces]
+    },[])
+    const listTag = useMemo(()=>{
+        return[...contentTags]
+    },[])
+    const listCheckbox = useMemo(()=>{
+        return[...menues]
+    },[])
+
+    const colorPaletComponent = useMemo(()=>{
+        return(
+            <>
+                {
+                    colors.map((clr)=>(
+                        <div key={clr} style={{display:'flex'}}>
+                            {
+                                colorLevel.map((lvl)=>(
+                                    <div key={`${lvl}`} style={{height:'15px',width:'15px',background:`var(--clr-${clr}-${lvl})`, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                        <span style={{color:(appTheme.globalTheme.includes('light')?((lvl<=600)?('var(--clr-text)'):('var(--clr-text-rev)')):((lvl<=400)?('var(--clr-text)'):('var(--clr-text-rev)')))}}>o</span>
+                                    </div>
+                                ))
+                            }
+                            {
+                                surfaceLevel.map((sfLvl)=>(
+                                    <div key={`${sfLvl}`} style={{height:'15px',width:'15px',background:`var(--clr-surface-${clr}-${sfLvl})`, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    ))
+                }
+            </>
+        )
+    },[appTheme.globalTheme])
     
     return (
         <div>
@@ -284,7 +318,7 @@ function App() {
                         onChange={(newValue)=>{onChange('testSelectionMulti', newValue)}}
                         onValidate={(error)=>{onValidate('testSelectionMulti', error)}}
                         error={formError['testSelectionMulti']}
-                        option={[...indonesiaProvinces]}
+                        option={listSelection}
                         config={{
                             isCombobox:true,
                             maxValue:10,
@@ -299,7 +333,7 @@ function App() {
                         onChange={(newValue)=>{onChange('testTags', newValue)}}
                         onValidate={(error)=>{onValidate('testTags', error)}}
                         error={formError['testTags']}
-                        options={[...tagsDummy]}
+                        options={listTag}
                         config={{
                             isRequired:true,
                             isDisabled:false,
@@ -330,27 +364,11 @@ function App() {
                             onChange={(newValue)=>{onChange('checkboxStatus', newValue)}}
                             onValidate={(error)=>{onValidate('checkboxStatus', error)}}
                             error={formError['checkboxStatus']}
-                            options={[
-                                {
-                                    id:'user-management',
-                                    txtLabel:'User Management',
-                                    txtSublabel:'Asdas asjdhw has asjkwu.',
-                                    childOption:[
-                                        {id:'domain', txtLabel:'Domain', txtSublabel:'Domain menu asdas.'},
-                                        {id:'user-group', txtLabel:'User Group', txtSublabel:'User Group menu asdas.'},
-                                        {id:'menu-access', txtLabel:'Menu Access', txtSublabel:'Menu Access menu asdas.'},
-                                        {id:'user', txtLabel:'User', txtSublabel:'User menu asdas.', isDisabled:true},
-                                    ]
-                                },
-                                {
-                                    id:'audit-trail',
-                                    txtLabel:'Audit Trail',
-                                    isDisabled:true
-                                }
-                            ]}
+                            options={listCheckbox}
                             config={{
                                 isRequired:true,
                                 isDisabled:false,
+                                maxValue:5
                             }}
                         />
                     </div>
@@ -364,88 +382,6 @@ function App() {
                         />
                     </div>
                 </div>
-                {/* <div
-                    style={{
-                        padding:'var(--space-200)',
-                        backgroundColor:'var(--clr-surface-2)',
-                        display:"grid",
-                        gap:'var(--space-100)',
-                        border:'1px solid var(--clr-border)',
-                        borderRadius:'var(--space-100)',
-                        marginBottom:'var(--space-100)'
-                    }}
-                >
-                    <InputText
-                        type='text'
-                        txtPlaceholder='Enter test text...'
-                        value={form['testText']}
-                    />
-                    <InputText
-                        type='text-no-space'
-                        txtPlaceholder='Enter test text nospace...'
-                        value={form['testTextNoSpace']}
-                    />
-                    <InputText
-                        type='number'
-                        txtPlaceholder='Enter test text number...'
-                        value={form['testTextNumber']}
-                    />
-                    <InputText
-                        type='number-text'
-                        txtPlaceholder='Enter test text number...'
-                        value={form['testTextNumberText']}
-                    />
-                    <div style={{display:'flex', gap:'var(--spacep-50)'}}>
-                        <Button
-                            txtLabel={'Submit'}
-                            appearance='primary'
-                        />
-                        <Button
-                            txtLabel={'Cancel'}
-                        />
-                    </div>
-                </div>
-                <div
-                    style={{
-                        padding:'var(--space-200)',
-                        backgroundColor:'var(--clr-surface-3)',
-                        display:"grid",
-                        gap:'var(--space-100)',
-                        border:'1px solid var(--clr-border)',
-                        borderRadius:'var(--space-100)',
-                        marginBottom:'var(--space-100)'
-                    }}
-                >
-                    <InputText
-                        type='text'
-                        txtPlaceholder='Enter test text...'
-                        value={form['testText']}
-                    />
-                    <InputText
-                        type='text-no-space'
-                        txtPlaceholder='Enter test text nospace...'
-                        value={form['testTextNoSpace']}
-                    />
-                    <InputText
-                        type='number'
-                        txtPlaceholder='Enter test text number...'
-                        value={form['testTextNumber']}
-                    />
-                    <InputText
-                        type='number-text'
-                        txtPlaceholder='Enter test text number...'
-                        value={form['testTextNumberText']}
-                    />
-                    <div style={{display:'flex', gap:'var(--spacep-50)'}}>
-                        <Button
-                            txtLabel={'Submit'}
-                            appearance='primary'
-                        />
-                        <Button
-                            txtLabel={'Cancel'}
-                        />
-                    </div>
-                </div> */}
             </div>
             <div
                 style={{
@@ -478,16 +414,16 @@ function App() {
                             {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
                         ]}
                         appearance='neutral'
-                        optionSelected={[appTheme.split('-')[3]??'-']}
+                        optionSelected={[appTheme.globalShape]}
                         onClick={()=>{
                             toggleGlobalTheme()
                         }}
                         onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
                     />
-                    <p className='hello'>{appTheme.split('-')[0]??'-'}</p>
-                    <p className='hello'>{appTheme.split('-')[1]??'-'}</p>
-                    <p className='hello'>{appTheme.split('-')[2]??'-'}</p>
-                    <p className='hello'>{appTheme.split('-')[3]??'-'}</p>
+                    <p className='hello'>{appTheme.globalTheme??'-'}</p>
+                    <p className='hello'>{appTheme.globalTone??'-'}</p>
+                    <p className='hello'>{appTheme.globalPrimary??'-'}</p>
+                    <p className='hello'>{appTheme.globalShape??'-'}</p>
                     <div
                         style={{
                             display:'grid',
@@ -504,7 +440,7 @@ function App() {
                                             height:'40px',
                                             width:'40px',
                                             background:`var(--clr-${clr}-500)`,
-                                            border:`2px solid ${appTheme.includes(`tonal_${clr}`)?'var(--surface-3)':'transparent'}`
+                                            border:`2px solid ${appTheme.globalTone===`tonal_${clr}`?'var(--surface-3)':'transparent'}`
                                         }}
                                         onClick={()=>{toggleGlobalTone(clr)}}
                                     >
@@ -522,11 +458,10 @@ function App() {
                                             height:'40px',
                                             width:'40px',
                                             background:`var(--clr-${clr}-500)`,
-                                            border:`2px solid ${appTheme.includes(`primary_${clr}`)?'var(--surface-3)':'transparent'}`
+                                            border:`2px solid ${appTheme.globalTone===`primary_${clr}`?'var(--surface-3)':'transparent'}`
                                         }}
                                         onClick={()=>{toggleGlobalPrimary(clr)}}
                                     >
-                                        
                                     </div>
                                 ))
                             }
@@ -536,23 +471,7 @@ function App() {
             </div>
             <div>
                 {
-                    colors.map((clr)=>(
-                        <div key={clr} style={{display:'flex'}}>
-                            {
-                                colorLevel.map((lvl)=>(
-                                    <div key={`${lvl}`} style={{height:'15px',width:'15px',background:`var(--clr-${clr}-${lvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
-                                        <span style={{color:(appTheme.includes('light')?((lvl<=600)?('var(--clr-text)'):('var(--clr-text-rev)')):((lvl<=400)?('var(--clr-text)'):('var(--clr-text-rev)')))}}>o</span>
-                                    </div>
-                                ))
-                            }
-                            {
-                                surfaceLevel.map((sfLvl)=>(
-                                    <div key={`${sfLvl}`} style={{height:'15px',width:'15px',background:`var(--clr-surface-${clr}-${sfLvl})`, display:'flex', justifyContent:'center', alignItems:'center'}} onClick={()=>{toggleGlobalPrimary(clr)}}>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ))
+                    colorPaletComponent
                 }
             </div>
         </div>
@@ -603,7 +522,7 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'papua-selatan', txtLabel:'Papua Selatan', type:'option', icon:<PiCityBold/>}
 ];
 
-const tagsDummy: dropdownMenuOptionType[] = [
+const contentTags: dropdownMenuOptionType[] = [
     {id:'1', txtLabel:'Content Management System', type:'option', icon:<PiTagBold/>, alias:'cms'},
     {id:'2', txtLabel:'Digital Asset Management', type:'option', icon:<PiTagBold/>},
     {id:'3', txtLabel:'Content Strategy', type:'option', icon:<PiTagBold/>},
@@ -625,3 +544,35 @@ const tagsDummy: dropdownMenuOptionType[] = [
     {id:'19', txtLabel:'User Permissions', type:'option', icon:<PiTagBold/>},
     {id:'20', txtLabel:'Content Archiving', type:'option', icon:<PiTagBold/>},
 ];
+
+const menues:checkboxGroupOptionType[] =  [
+    {
+        id:'user-management',
+        txtLabel:'User Management',
+        childOption:[
+            {id:'domain', txtLabel:'Domain',txtSublabel:'This is sublabel text.'},
+            {id:'user-group', txtLabel:'User Group',txtSublabel:'This is sublabel text.'},
+            {id:'menu-access', txtLabel:'Menu Access',txtSublabel:'This is sublabel text.'},
+            {id:'user', txtLabel:'User',txtSublabel:'This is sublabel text.'},
+        ]
+    },
+    {
+        id:'content-management',
+        txtLabel:'Content Management',
+        childOption:[
+            {id:"assets", txtLabel:'Assets',txtSublabel:'This is sublabel text.'},
+            {id:"category", txtLabel:'Content Category',txtSublabel:'This is sublabel text.'},
+            {id:"pages", txtLabel:'Pages',txtSublabel:'This is sublabel text.'},
+        ]
+    },
+    {
+        id:'reporting',
+        txtLabel:'Reporting',
+        txtSublabel:'This is sublabel text.'
+    },
+    {
+        id:'audit-trail',
+        txtLabel:'Audit Trail',
+        txtSublabel:'This is sublabel text.'
+    }
+]

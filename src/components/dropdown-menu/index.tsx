@@ -1,7 +1,7 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import React, { useContext, useState, type JSX } from 'react';
+import React, { useContext, useMemo, useState, type JSX } from 'react';
 import type { buttonStyleType } from "../button";
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import { autoUpdate, flip, FloatingFocusManager, FloatingOverlay, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
@@ -93,10 +93,36 @@ const DropdownMenu = ({
     ]);
     //FloatingUi Config ====
 
+    const triggerComponent = useMemo(()=>{
+        if(typeof trigger === 'function'){
+            return(trigger(
+                refs.setReference, 
+                getReferenceProps,
+                isShowOption, 
+                refs.domReference,
+            ))
+        }else{
+            return(
+                <div 
+                    className={clsx(
+                        'dropdown-menu-trigger-box',
+                    )}
+                    {...getReferenceProps()}
+                    style={style?.triggerBox}
+                >
+                    {React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })}
+                </div>
+            )
+        }
+    },[trigger, isShowOption])
+
     return(
         <>
             <>
-                {typeof trigger === 'function' 
+                {
+                    triggerComponent
+                }
+                {/* {typeof trigger === 'function' 
                     ? trigger(
                         refs.setReference, 
                         getReferenceProps,
@@ -114,7 +140,7 @@ const DropdownMenu = ({
                             {React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })}
                         </div>
                     )
-                }
+                } */}
             </>
             {
                 (isShowOption && floatingConfig?.isShowDropdown !== false)&&(
@@ -262,7 +288,7 @@ const DropdownMenu = ({
                                                         }
                                                     }else{
                                                         return(
-                                                            <div className='separator'>
+                                                            <div key={option.id} className='separator'>
                                                                 {
                                                                     (option.txtLabel)&&(
                                                                         <span className='section-title'>{option.txtLabel}</span>

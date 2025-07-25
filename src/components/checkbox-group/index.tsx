@@ -4,10 +4,12 @@ import * as ctrl from './controller';
 import CheckboxButton from '../checkbox-button';
 import type { fieldErrorType } from '../_types';
 import { PiWarningBold } from 'react-icons/pi';
-import { useMemo } from 'react';
+import React from 'react';
+import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
 
 const CheckboxGroup = ({
     className = undefined,
+    style = undefined,
     options = [],
     value = [],
     onChange = undefined,
@@ -17,7 +19,7 @@ const CheckboxGroup = ({
     config = undefined
 }:_CheckboxGroup) =>{
 
-    const optionTamp = useMemo(()=>{
+    const optionTamp = useDeepCompareMemo(()=>{
         return ctrl.getProcessedOption(value, options, config?.maxValue)
     },[options, value, config?.maxValue])
 
@@ -28,11 +30,13 @@ const CheckboxGroup = ({
                 className
             )}
         >
-            <div className='checkbox-group'>
+            <div 
+                className='checkbox-group-container'
+                style={style?.checkboxGroupContainer}
+            >
                 {
                     optionTamp.map((i)=>{
                         const {isIndeterminate, isSelected} = ctrl.getDisplayValue(i, value)
-
                         return(
                             <div key={i.id}>
                                 <CheckboxButton
@@ -51,7 +55,10 @@ const CheckboxGroup = ({
                                 />
                                 {
                                     (i.childOption)&&(
-                                        <div className='child-option-group-box'>
+                                        <div 
+                                            className='child-option-group-box'
+                                            style={style?.childOptionBox}
+                                        >
                                             {
                                                 (i.childOption)?.map((k)=>(
                                                     <CheckboxButton
@@ -95,6 +102,10 @@ interface _CheckboxGroup{
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
     config?:checkboxGroupConfigType;
+    style?:{
+        checkboxGroupContainer?:React.CSSProperties,
+        childOptionBox?:React.CSSProperties
+    }
 }
 
 export type checkboxGroupOptionType = {

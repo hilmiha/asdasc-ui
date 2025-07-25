@@ -1,6 +1,7 @@
 import { intersection } from "lodash";
 import type { checkboxGroupChildOptionType, checkboxGroupConfigType, checkboxGroupOptionType } from ".";
 import type { fieldErrorType } from "../_types";
+import { getFormatedNumberForDisplay } from "../../helper/helper";
 
 export const getProcessedOption = (value:string[], option:checkboxGroupOptionType[], maxValue?:number): checkboxGroupOptionType[] => {
     let tampOptions = [...option]
@@ -81,9 +82,16 @@ export const doValidateValue = (
     let errorMessage = ''
 
     if(config['isRequired'] && !isError){
-        if(!newValue){
+        if(!newValue || newValue.length===0){
             isError = true
             errorMessage = 'This field cannot be empty!'
+        }
+    }
+
+    if(config['maxValue'] && !isError){
+        if(newValue.length > config['maxValue']){
+            isError = true
+            errorMessage = `Value selected cannot exceed ${getFormatedNumberForDisplay(`${config['maxValue']}`)} items`
         }
     }
 
@@ -105,17 +113,22 @@ export const onCheckboxClicked = (
         newValue.push(option.id)
     }
 
-    if(config?.maxValue && newValue.length > config.maxValue){
+    if(config?.maxValue && newValue.length > config.maxValue && newValue.length > oldValue.length){
+        if(onValidate && config){
+            doValidateValue(newValue, onValidate, config)
+        }
         newValue = [...oldValue]
+    }else{
+        if(onChange){
+            doChangeValue(newValue, option, onChange, event)
+        }
+
+        if(onValidate && config){
+            doValidateValue(newValue, onValidate, config)
+        }
     }
 
-    if(onChange){
-        doChangeValue(newValue, option, onChange, event)
-    }
-
-    if(onValidate && config){
-        doValidateValue(newValue, onValidate, config)
-    }
+    
 }
 
 export const onParentCheckboxClicked = (
@@ -129,6 +142,7 @@ export const onParentCheckboxClicked = (
     let newValue = [...oldValue]
     const listIdChild = option.childOption?.filter((i)=>(!i.isDisabled)).map((i)=>i.id)??[]
     const intersected = intersection(newValue, listIdChild)
+
     if(intersected.length>=0 && intersected.length!==listIdChild.length){
         listIdChild.forEach((i)=>{
             if(!intersected.includes(i)){
@@ -138,12 +152,21 @@ export const onParentCheckboxClicked = (
     }else{
         newValue = newValue.filter((i)=>(!intersected.includes(i)))
     }
-    console.log(newValue)
-    if(onChange){
-        doChangeValue(newValue, option, onChange, event)
-    }
     
-    if(onValidate && config){
-        doValidateValue(newValue, onValidate, config)
+    if(config?.maxValue && newValue.length > config.maxValue && newValue.length > oldValue.length){
+        if(onValidate && config){
+            doValidateValue(newValue, onValidate, config)
+        }
+        newValue = [...oldValue]
+    }else{
+        if(onChange){
+            doChangeValue(newValue, option, onChange, event)
+        }
+        
+        if(onValidate && config){
+            doValidateValue(newValue, onValidate, config)
+        }
     }
+
+    
 }

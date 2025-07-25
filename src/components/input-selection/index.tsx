@@ -9,6 +9,7 @@ import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassB
 import IconButton from '../icon-button';
 import InputText from '../input-text';
 import Button from '../button';
+import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
 
 const InputSelection = ({
     id = undefined,
@@ -45,11 +46,11 @@ const InputSelection = ({
         return config?.isDisabled??false
     },[config?.isDisabled])
 
-    const labelValue = useMemo(()=>{
+    const labelValue = useDeepCompareMemo(()=>{
         return ctrl.getDisplayValue(value, option)
     },[value, option])
 
-    const optionTamp = useMemo(()=>{
+    const optionTamp = useDeepCompareMemo(()=>{
         return ctrl.getProcessedOption(value, option, searchParam, config?.maxValue)
     },[option, value, searchParam, config?.maxValue])
     //States end ====

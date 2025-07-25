@@ -7,6 +7,7 @@ import { PiWarningBold } from 'react-icons/pi';
 
 const RadioGroup = ({
     className = undefined,
+    style = undefined,
     options = [],
     value = '',
     onChange = undefined,
@@ -22,7 +23,10 @@ const RadioGroup = ({
                 className
             )}
         >
-            <div className='radio-group'>
+            <div 
+                className='checkbox-group-container'
+                style={style?.radioGroupContainer}
+            >
                 {
                     options.map((i)=>(
                         <RadioButton
@@ -58,7 +62,9 @@ interface _RadioGroup{
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void
     config?:radioGroupConfigType;
-    
+    style?:{
+        radioGroupContainer?:React.CSSProperties,
+    }
 }
 
 export type radioGroupOptionType = {
