@@ -1,7 +1,7 @@
 import './App.scss'
 import { useCallback, useContext, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
+import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpBold, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -14,6 +14,8 @@ import InputSelection from './components/input-selection';
 import InputTag from './components/input-tag';
 import RadioGroup from './components/radio-group';
 import CheckboxGroup, { type checkboxGroupOptionType } from './components/checkbox-group';
+import BottomSheet from './components/bottom-sheet';
+import Dropdown from './components/dropdown';
 
 function App() {
     const {
@@ -299,11 +301,10 @@ function App() {
                         value={form['testSelection']}
                         onChange={(newValue)=>{onChange('testSelection', newValue)}}
                         onValidate={(error)=>{
-                            console.log(error)
                             onValidate('testSelection', error)
                         }}
                         error={formError['testSelection']}
-                        option={[...indonesiaProvinces]}
+                        option={listSelection}
                         config={{
                             isCombobox:true,
                             isDisabled:false,
@@ -382,6 +383,91 @@ function App() {
                         />
                     </div>
                 </div>
+            </div>
+            <div>
+                <Dropdown
+                    trigger={<Button txtLabel={'Open'}/>}
+                    elementHeader={
+                        <div>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
+                            <p>helloworld</p>
+                        </div>
+                    }
+                    elementFooter={
+                        <div>
+                            <p>asdhwjwjjj</p>
+                        </div>
+                    }
+                    floatingConfig={{
+                        isLockScroll:true
+                    }}
+                >
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                    </p>
+                </Dropdown>
+                <BottomSheet
+                    trigger={<Button txtLabel={'Open'}/>}
+                    title='Bottom Sheets'
+                    titleIcon={<PiMonitorArrowUpBold className='global-icon'/>}
+                    elementHeader={
+                        <div>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
+                            <p>helloworld</p>
+                        </div>
+                    }
+                    elementFooter={
+                        <div>
+                            <p>asdhwjwjjj</p>
+                        </div>
+                    }
+                >
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit qddduia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quiad magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectdddddetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magaaanam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                    </p>
+                </BottomSheet>
             </div>
             <div
                 style={{

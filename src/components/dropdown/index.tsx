@@ -1,0 +1,215 @@
+import './styles.scss';
+import clsx from 'clsx';
+import React, { useContext, useMemo, useState, type JSX } from 'react';
+import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
+import { autoUpdate, flip, FloatingFocusManager, FloatingOverlay, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
+import type { globalShapeType } from '../_types';
+
+const Dropdown = ({
+    className,
+    trigger,
+    style = undefined,
+    shape = undefined,
+    isDisabled = false,
+    onClose = undefined,
+    onOpen = undefined,
+
+    elementHeader = undefined,
+    elementFooter = undefined,
+    children = <></>,
+    
+    floatingConfig = undefined
+}:_Dropdown) =>{
+
+    //Context start ====
+    const {
+        globalShape
+    } = useContext(GlobalContext) as _GlobalContextType
+    //Context end ====
+
+    //States start ====
+    const [isShowOption, setIsShowOption] = useState<boolean>(false)
+    //States end ====
+    
+    //FloatingUi Config ====
+    const {refs, floatingStyles, context} = useFloating({
+        open: isShowOption,
+        onOpenChange: (open)=>{
+            setIsShowOption(open)
+            
+            if(onOpen && open){
+                onOpen()
+            }
+
+            if(onClose && !open){
+                onClose()
+            }
+        },
+        placement: (floatingConfig?.placement)??('bottom-start'),
+        middleware: [
+            offset((floatingConfig?.level)?8:4),
+            shift(),
+            flip({
+                padding: 10,
+                fallbackPlacements:['bottom', 'top']
+            }),
+            size({
+                apply({availableHeight, elements, rects}) {
+                    const value = `${(Math.max(0, availableHeight) - 50)}px`;
+                    elements.floating.style.maxHeight = value;
+                    if(floatingConfig?.isContainerWidthSameAsTrigger){
+                        elements.floating.style.width = `${rects.reference.width}px`
+                        elements.floating.style.minWidth = `${Math.max(310, rects.reference.width)}px`
+                        elements.floating.style.maxWidth = `${rects.reference.width}px`
+                    }else{
+                        elements.floating.style.width = `310x`
+                        elements.floating.style.minWidth = `310px`
+                        elements.floating.style.maxWidth = `310px`
+                    }
+                },
+            }),
+        ],
+        strategy: 'fixed',
+        whileElementsMounted: autoUpdate,
+    });
+    const click = useClick(context,{
+        enabled: !isDisabled
+    });
+    const dismiss = useDismiss(context,{
+        outsidePressEvent: 'click',
+        ancestorScroll: false,
+    });
+    const role = useRole(context);
+    const { getReferenceProps, getFloatingProps } = useInteractions([
+        click,
+        dismiss,
+        role
+    ]);
+    //FloatingUi Config ====
+
+    //Build trigger component ====
+    const triggerComponent = useMemo(()=>{
+        if(typeof trigger === 'function'){
+            return(trigger(
+                refs.setReference, 
+                getReferenceProps,
+                isShowOption, 
+                refs.domReference,
+            ))
+        }else{
+            return(
+                <div 
+                    className={clsx(
+                        'dropdown-trigger-box',
+                    )}
+                    {...getReferenceProps()}
+                    style={style?.triggerBox}
+                >
+                    {React.cloneElement(trigger, { ref: refs.setReference, isSelected:isShowOption })}
+                </div>
+            )
+        }
+    },[trigger, isShowOption])
+
+    return(
+        <>
+            {
+                triggerComponent
+            }
+            {
+                (isShowOption && floatingConfig?.isShowDropdown !== false)&&(
+                    <FloatingPortal>
+                        <FloatingOverlay
+                            lockScroll={floatingConfig?.isLockScroll}
+                        >
+                            <FloatingFocusManager 
+                                context={context} 
+                                order={['reference', 'content']}
+                                modal={true}
+                            >
+                                <div
+                                    className={clsx(
+                                        'dropdown-box',
+                                        className
+                                    )}
+                                    ref={refs.setFloating}
+                                    style={floatingStyles}
+                                    {...getFloatingProps()}
+                                >
+                                    <div 
+                                        className={clsx(
+                                            'dropdown-container',
+                                            (shape)?(shape):(globalShape),
+                                        )}
+                                        style={style?.container}
+                                    >
+                                        {
+                                            elementHeader&&(
+                                                <div className='element-header-box'>
+                                                    {
+                                                        elementHeader
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                        <div className='dropdown-body-box'>
+                                            {children}
+                                        </div>
+                                        
+                                        {
+                                            elementFooter&&(
+                                                <div className='element-footer-box'>
+                                                    {
+                                                        elementFooter
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </FloatingFocusManager>
+                        </FloatingOverlay>
+                    </FloatingPortal>
+                )
+            }
+        </>
+    )
+}
+
+export default Dropdown
+
+interface _Dropdown {
+    className?:string
+    trigger:JSX.Element | ((
+        triggerRef: React.RefCallback<HTMLElement>, 
+        getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>,
+        isDropdownOpen:boolean, 
+        trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>,
+    ) => JSX.Element);
+    style?:dropdownStyleType;
+    shape?:globalShapeType;
+    isDisabled?:boolean
+    onOpen?: () => void;
+    onClose?: () => void;
+
+    elementHeader?:JSX.Element
+    elementFooter?:JSX.Element
+    children:JSX.Element
+
+    floatingConfig?:dropdownFloatingConfigType
+}
+
+export type dropdownFloatingConfigType = {
+    placement?:Placement,
+    isContainerWidthSameAsTrigger?:boolean
+    isWithCheckmark?:boolean
+    isLockScroll?:boolean
+    isShowDropdown?:boolean
+    level?:number,
+    isDropdownModeOnly?:boolean
+}
+
+export type dropdownStyleType = {
+    triggerBox?:React.CSSProperties,
+    container?:React.CSSProperties,
+}

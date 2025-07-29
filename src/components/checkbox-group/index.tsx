@@ -38,7 +38,7 @@ const CheckboxGroup = ({
                     optionTamp.map((i)=>{
                         const {isIndeterminate, isSelected} = ctrl.getDisplayValue(i, value)
                         return(
-                            <div key={i.id}>
+                            <div key={i.id} className='checkbox-group'>
                                 <CheckboxButton
                                     value={isSelected}
                                     txtLabel={i.txtLabel}

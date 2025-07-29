@@ -140,7 +140,9 @@ const InputSelection = ({
                                             txtLabel='Clear'
                                             appearance='subtle'
                                             isShowtooltip={false}
-                                            onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)}}
+                                            onClick={(e)=>{
+                                                ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)
+                                            }}
                                         />
                                     )
                                 }
@@ -166,10 +168,10 @@ const InputSelection = ({
                         ctrl.onOptionClick(e, option, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
                     }
                 }}
-                onOptionOpen={()=>{
+                onOpen={()=>{
                     setIsDropdownOpen(true)
                 }}
-                onOptionClose={()=>{
+                onClose={()=>{
                     setIsDropdownOpen(false)
                     setSearchParam('')
                     if(isDirty && onValidate && config){

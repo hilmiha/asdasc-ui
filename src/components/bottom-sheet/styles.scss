@@ -1,0 +1,102 @@
+.bottom-sheet-overlay{
+    position: absolute;
+    height: 100vh;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: var(--clr-surface-1);
+    z-index: 0,
+}
+.bottom-sheet-box{
+    position: absolute;
+    bottom: 0px;
+    transition: all 300ms ease-out;
+    z-index: 1;
+    outline: 0px;
+    width: 100vw;
+
+    &.dragging{
+        transition: none;
+    }
+
+    .bottom-sheet-container{
+        background-color: var(--clr-surface-2);
+        border: 1px solid var(--clr-border);
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: min-content 1fr;
+
+        &.rounded{
+            border-top-left-radius: var(--space-100);
+            border-top-right-radius: var(--space-100);
+        }
+        &.box{
+            border-top-left-radius: var(--space-0);
+            border-top-right-radius: var(--space-0);
+        }
+        &.circle{
+            border-top-left-radius: var(--space-200);
+            border-top-right-radius: var(--space-200);
+        }
+
+        .drag-handle-area{
+            grid-row: 1 / 2;
+            display: grid;
+            grid-template-rows: min-content 1fr;
+            padding: var(--space-150) var(--space-0);
+            touch-action: none;
+            overflow: hidden;
+            cursor: grab;
+
+            &.dragging{
+                cursor: grabbing;
+            }
+
+            .drag-handle{
+                display: flex;
+                justify-content: center;
+                &::after{
+                    content: '';
+                    display: block;
+                    background-color: var(--clr-surface-4);
+                    width: 20vw;
+                    height: var(--space-50);
+                }
+            }
+            .header-box{
+                display: flex;
+                gap: var(--space-50);
+                align-items: center;
+                justify-content: center;
+                padding: var(--space-200) var(--space-100);
+                color: var(--clr-primary-900);
+
+                .title-box{
+                    font-weight: var(--font-weight-title);
+                }
+            }
+        }
+        .content-box{
+            grid-row: 2 / 3;
+            display: grid;
+            grid-template-rows: min-content 1fr min-content;
+            overflow: hidden;
+
+            .element-header-box{
+                grid-row: 1 / 2;
+                position: sticky;
+                top: 0px;
+            }
+            .bottom-sheet-body-box{
+                grid-row: 2 / 3;
+                max-height: 100%;
+                overflow: auto;
+            }
+        }
+        .element-footer-box{
+            grid-row: 3 / 4;
+        }
+    }
+}

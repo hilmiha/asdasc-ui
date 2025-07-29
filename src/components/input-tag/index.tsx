@@ -212,16 +212,17 @@ const InputTags = ({
                                 ctrl.onOptionClick(e, option, value, setSearchParam, inputTagRef, isDirty, setIsDirty, config, onChange, error, onValidate)
                             }
                         }}
-                        onOptionOpen={()=>{
+                        onOpen={()=>{
                             setIsDropdownOpen(true)
                         }}
-                        onOptionClose={()=>{
+                        onClose={()=>{
                             setIsDropdownOpen(false)
                         }}
                         floatingConfig={{
                             isContainerWidthSameAsTrigger:true,
                             isLockScroll:(filteredOptions.length!==0),
                             isShowDropdown:(filteredOptions.length!==0),
+                            mode:['dropdown']
                         }}
                     />
                 )

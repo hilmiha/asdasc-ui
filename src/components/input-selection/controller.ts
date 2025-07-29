@@ -138,6 +138,7 @@ export const onClearButtonClick = (
     onValidate?:(error: fieldErrorType, newValue: string[]) => void,
     triggerRef?:React.RefObject<HTMLButtonElement | null>
 ) =>{
+    event.stopPropagation()
     if(onChange){
         doChangeValue([], undefined, onChange, event)
     }

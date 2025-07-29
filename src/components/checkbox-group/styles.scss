@@ -5,7 +5,16 @@
     .checkbox-group-container{
         grid-row: 1 / 2;
         display: grid;
-        gap:var(--space-100)
+        gap:var(--space-100);
+        .checkbox-group{
+            display: grid;
+        }
+        .child-option-group-box{
+            padding-left: var(--space-400);
+            padding-top: var(--space-100);
+            display: grid;
+            gap:var(--space-100)
+        }
     }
     .error-box{
         grid-row: 2 / 3;
@@ -17,10 +26,5 @@
         color: var(--clr-danger-700);
     }
 
-    .child-option-group-box{
-        padding-left: var(--space-400);
-        padding-top: var(--space-100);
-        display: grid;
-        gap:var(--space-100)
-    }
+    
 }

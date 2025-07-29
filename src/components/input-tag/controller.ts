@@ -260,7 +260,7 @@ export const onInputTagKeyDown = (
             }
         } 
         setSearchParam('')
-        triggerOptionDropdown(inputTagRef)
+        // triggerOptionDropdown(inputTagRef)
     }
 }
 
