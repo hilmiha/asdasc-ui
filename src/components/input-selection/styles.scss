@@ -81,26 +81,30 @@
 
         .value-label-box{
             flex-grow: 1;
-            min-height: var(--space-400);
+            padding: 3.4px var(--space-0);
             display: flex;
             align-items: center;
             color: var(--clr-text);
             
+            .value-label{
+                line-height: 1.8;
+            }
             .placeholder{
+                line-height: 1.8;
                 color: var(--clr-surface-5);
-                font-weight: var(--font-weight-text);
+                font-weight: var(--font-weight-normal);
             }
         }
 
         .prefix-box{
             display: flex;
             color: var(--clr-surface-4);
-            font-weight: var(--font-weight-title);
+            font-weight: var(--font-weight-bold);
         }
         .sufix-box{
             display: flex;
             color: var(--clr-surface-4);
-            font-weight: var(--font-weight-title);
+            font-weight: var(--font-weight-bold);
         }
         .lock-box{
             display: flex;
@@ -161,8 +165,8 @@
             min-height: var(--space-0);
             height: fit-content;
             .text-label{
-                font-weight: var(--font-weight-text);
-                font-size: var(--text-size-sm);
+                font-weight: var(--font-weight-normal);
+                font-size: var(--font-size-sm);
                 color: var(--clr-primary-700)
             }
         }
@@ -183,6 +187,6 @@
     }
 
     .dropdown-item .text-label{
-        font-weight: var(--font-weight-text);
+        font-weight: var(--font-weight-normal);
     }
 }

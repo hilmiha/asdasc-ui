@@ -1,4 +1,19 @@
 .dropdown-menu-dropdown{
+    .content-box{
+        .element-header-box{
+            padding: var(--space-0) !important;
+        }
+
+        .dropdown-body-box{
+            margin: var(--space-0) !important;
+            overflow: auto;
+        }
+
+        .element-footer-box{
+            padding: var(--space-0) !important;
+        }
+    }
+
     .dropdown-body-box{
         padding: var(--space-25) var(--space-0);
         display: grid;
@@ -14,8 +29,8 @@
                 
                 .text-sublabel{
                     color: var(--clr-surface-5);
-                    font-size: var(--text-size-sm);
-                    font-weight: var(--font-weight-text);
+                    font-size: var(--font-size-sm);
+                    font-weight: var(--font-weight-normal);
                     margin-top: var(--space-50);
                 }
             }
@@ -33,7 +48,7 @@
             .section-title{
                 display: block;
                 color: var(--clr-surface-5);
-                font-weight: var(--font-weight-subtitle);
+                font-weight: var(--font-weight-semi-bold);
                 margin-left: var(--space-200);
                 margin-right: var(--space-200);
                 margin-top: var(--space-150);
@@ -52,8 +67,10 @@
 
 .dropdown-menu-bottom-sheet{
     .bottom-sheet-box .bottom-sheet-container{
-        width: 100vw;
-
+        .content-box{
+            padding: var(--space-0);
+            gap: var(--space-0);
+        }
         .bottom-sheet-body-box{
             padding: var(--space-25) var(--space-0);
             display: grid;
@@ -69,8 +86,8 @@
                     
                     .text-sublabel{
                         color: var(--clr-surface-5);
-                        font-size: var(--text-size-sm);
-                        font-weight: var(--font-weight-text);
+                        font-size: var(--font-size-sm);
+                        font-weight: var(--font-weight-normal);
                         margin-top: var(--space-50);
                     }
                 }
@@ -88,7 +105,7 @@
                 .section-title{
                     display: block;
                     color: var(--clr-surface-5);
-                    font-weight: var(--font-weight-subtitle);
+                    font-weight: var(--font-weight-semi-bold);
                     margin-left: var(--space-200);
                     margin-right: var(--space-200);
                     margin-top: var(--space-150);

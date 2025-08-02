@@ -60,6 +60,9 @@ const InputSelection = ({
     const searchBarRef = useRef<HTMLInputElement>(null);
     //Refs end ====
 
+    const optionSelectable = useDeepCompareMemo(()=>{
+        return option.filter(i=>i.type==='option')
+    },[option])
 
     return(
         <div className={clsx(
@@ -77,7 +80,7 @@ const InputSelection = ({
             >
                 <option value=""></option>
                 {
-                    option.filter(i=>i.type==='option').map((i)=>(
+                    optionSelectable.filter(i=>i.type==='option').map((i)=>(
                         <option key={i.id} value={i.id}>{i.txtLabel}</option>
                     ))
                 }
@@ -93,7 +96,7 @@ const InputSelection = ({
                         return(
                             <div
                                 ref={triggerRef}
-                                {...getReferenceProps()}
+                                {...(getReferenceProps?.() ?? {})}
                                 role='button'
                                 tabIndex={isDisabled?-1:0}
                                 id={id}
@@ -119,7 +122,7 @@ const InputSelection = ({
                                 <div className='value-label-box'>
                                     {
                                         (value.length>0)?(
-                                            <span>{labelValue.join(', ')}</span>
+                                            <p className='value-label'>{labelValue.join(', ')}</p>
                                         ):(
                                             <span className='placeholder'>{txtPlaceholder}</span>
                                         )

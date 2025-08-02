@@ -1,7 +1,7 @@
 import './App.scss'
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpBold, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
+import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -16,6 +16,7 @@ import RadioGroup from './components/radio-group';
 import CheckboxGroup, { type checkboxGroupOptionType } from './components/checkbox-group';
 import BottomSheet from './components/bottom-sheet';
 import Dropdown from './components/dropdown';
+import Modal from './components/modal';
 
 function App() {
     const {
@@ -113,7 +114,12 @@ function App() {
             </>
         )
     },[appTheme.globalTheme])
-    
+
+    const [isShow, setIsShow] = useState(false)
+    const [modalSize, setModalSize] = useState<'small' | 'medium' | 'large'>('small')
+
+    const [isShowBottomSheet, setIsShowBottomSheet] = useState(false)
+
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -128,6 +134,7 @@ function App() {
                     />
                     <Button 
                         txtLabel='Hello World'
+                        onClick={()=>{onChange('testText', 'hello world')}}
                     />
                     <Button 
                         txtLabel='Hello World'
@@ -253,8 +260,9 @@ function App() {
                         error={formError['testPassword']}
                         config={{
                             isDisabled:false,
+                            isRequired:true,
                             validRegex: [
-                                // [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
+                                [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
                             ]
                         }}
                     />
@@ -385,18 +393,103 @@ function App() {
                 </div>
             </div>
             <div>
-                <Dropdown
-                    trigger={<Button txtLabel={'Open'}/>}
+                <SplitButton
+                    txtLabel='Modal Open'
+                    options={[
+                        {id:'small', txtLabel:'Small Modal'},
+                        {id:'medium', txtLabel:'Medium Modal'},
+                        {id:'large', txtLabel:'Large Modal'}
+                    ]}
+                    optionSelected={modalSize?([modalSize]):([])}
+                    onOptionClick={(idButton)=>{setModalSize(idButton as 'small' | 'medium' | 'large')}}
+                    onClick={()=>{setIsShow(!isShow)}}
+                />
+                <Modal
+                    isOpen={isShow}
+                    setIsOpen={setIsShow}
+                    txtTitle='Modal Controlled'
+                    iconTitle={<PiAppWindowFill className='global-icon'/>}
+                    size={modalSize}
                     elementHeader={
                         <div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
+                            <p>hello world</p>
+                        </div>
+                    }
+                    elementFooter={
+                        <div 
+                            style={{
+                                display:"flex",
+                                gap:'var(--space=100)',
+                                justifyContent:'end'
+                            }}
+                        >
+                            <Button
+                                txtLabel={'Cancel'}
+                                appearance='subtle'
+                                onClick={()=>{setIsShow(false)}}
+                            />
+                            <Button
+                                txtLabel={'Apply'}
+                                appearance='primary'
+                            />
+                        </div>
+                    }
+                    onOpen={()=>{
+                        console.log('onOpen')
+                    }}
+                    onClose={()=>{
+                        console.log('onClose')
+                    }}
+                    floatingConfig={{
+                        isDisableDismiss:false
+                    }}
+                >
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
+                    </p>
+                </Modal>
+                <Dropdown
+                    trigger={<Button txtLabel={'Dropdown Open'}/>}
+                    elementHeader={
+                        <div>
                             <p>helloworld</p>
                         </div>
                     }
                     elementFooter={
-                        <div>
-                            <p>asdhwjwjjj</p>
+                        <div 
+                            style={{
+                                display:"flex",
+                                gap:'var(--space=100)',
+                                justifyContent:'end'
+                            }}
+                        >
+                            <Button
+                                txtLabel={'Cancel'}
+                            />
+                            <Button
+                                txtLabel={'Apply'}
+                                appearance='primary'
+                            />
                         </div>
                     }
                     floatingConfig={{
@@ -427,20 +520,42 @@ function App() {
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.
                     </p>
                 </Dropdown>
+                <Button
+                    txtLabel={'Bottom Sheet'}
+                    onClick={()=>{setIsShowBottomSheet(!isShowBottomSheet)}}
+                />
                 <BottomSheet
-                    trigger={<Button txtLabel={'Open'}/>}
-                    title='Bottom Sheets'
-                    titleIcon={<PiMonitorArrowUpBold className='global-icon'/>}
+                    isOpen={isShowBottomSheet}
+                    setIsOpen={setIsShowBottomSheet}
+                    txtTitle='Bottom Sheets'
+                    iconTitle={<PiMonitorArrowUpFill className='global-icon'/>}
+                    onOpen={()=>{
+                        console.log('onOpen')
+                    }}
+                    onClose={()=>{
+                        console.log('onClose')
+                    }}
                     elementHeader={
                         <div>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sapiente beatae dignissimos tempore itaque eveniet sit a laboriosam reiciendis. Natus accusamus placeat sed quibusdam commodi dolor fugiat animi voluptas eum!</p>
                             <p>helloworld</p>
                         </div>
                     }
                     elementFooter={
-                        <div>
-                            <p>asdhwjwjjj</p>
+                        <div 
+                            style={{
+                                display:"flex",
+                                gap:'var(--space=100)',
+                                justifyContent:'end'
+                            }}
+                        >
+                            <Button
+                                txtLabel={'Cancel'}
+                                onClick={()=>{setIsShowBottomSheet(false)}}
+                            />
+                            <Button
+                                txtLabel={'Apply'}
+                                appearance='primary'
+                            />
                         </div>
                     }
                 >
@@ -544,7 +659,7 @@ function App() {
                                             height:'40px',
                                             width:'40px',
                                             background:`var(--clr-${clr}-500)`,
-                                            border:`2px solid ${appTheme.globalTone===`primary_${clr}`?'var(--surface-3)':'transparent'}`
+                                            border:`2px solid ${appTheme.globalPrimary===`primary_${clr}`?'var(--surface-3)':'transparent'}`
                                         }}
                                         onClick={()=>{toggleGlobalPrimary(clr)}}
                                     >

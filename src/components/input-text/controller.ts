@@ -2,6 +2,7 @@ import React from "react";
 import type { inputTextConfigType, inputTextType } from ".";
 import type { fieldErrorType } from "../_types";
 import { getCleanedNumberForState, getFormatedNumberForDisplay } from "../../helper/helper";
+import type { DebouncedFunc } from "lodash";
 
 export const getInputTypeMode = (type: inputTextType): {type:"numeric" | "text" | "password", mode:'text' | 'tel'} => {
     switch (type) {
@@ -21,15 +22,6 @@ export const getDisplayValue = (value: string, type: inputTextType): string => {
     }
     return value;
 };
-
-//send new value
-export const doChangeValue = (
-    newValue:string,
-    onChange:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
-    event:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>,
-) =>{
-    onChange(newValue, event)
-}
 
 //reset validation
 export const doResetValidationValue = (
@@ -164,10 +156,11 @@ export const onInputChange = (
     event:React.ChangeEvent<HTMLInputElement>,
     oldValue:string,
     type:inputTextType,
+    setTampValue: React.Dispatch<React.SetStateAction<string>>,
     isDirty:boolean, 
     setIsDirty:(x:boolean)=>void,
+    debouncedOnChange: DebouncedFunc<(newValue: string, e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) => void>,
     config?:inputTextConfigType,
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     error?:fieldErrorType,
     onValidate?:(error: fieldErrorType, newValue: string) => void,
 ) =>{
@@ -197,9 +190,8 @@ export const onInputChange = (
     }
 
     //send new value out of this component
-    if(onChange){
-        doChangeValue(newValue, onChange, event)
-    }
+    setTampValue(newValue)
+    debouncedOnChange(newValue, event)
 
     //Reset validation when user focus on field
     if(onValidate && error?.isError){
@@ -222,9 +214,10 @@ export const onInputBlur = (
     event:React.FocusEvent<HTMLInputElement>,
     oldValue:string,
     type:inputTextType,
+    setTampValue: React.Dispatch<React.SetStateAction<string>>,
     isDirty:boolean,
+    debouncedOnChange: DebouncedFunc<(newValue: string, e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) => void>,
     config?:inputTextConfigType,
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     onValidate?:(error: fieldErrorType, newValue: string) => void,
     onBlur?:(e: React.FocusEvent<HTMLInputElement>, newValue:string) => void
 ) =>{
@@ -234,9 +227,10 @@ export const onInputBlur = (
         newValue = getCleanedNumberForState(newValue)
     }
     
-    //send new value out of this component (timmed and clean)
-    if(onChange && newValue!==oldValue){
-        doChangeValue(newValue, onChange, event)
+    //send new value out of this component (trimmed and clean)
+    if(oldValue!==newValue){
+        setTampValue(newValue)
+        debouncedOnChange(newValue, event)
     }
 
     //do validation and send the error out of this component
@@ -266,14 +260,14 @@ export const onInputFocus = (
 export const onClearButtonClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
     type:inputTextType,
+    setTampValue: React.Dispatch<React.SetStateAction<string>>,
+    debouncedOnChange: DebouncedFunc<(newValue: string, e: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined) => void>,
     config?:inputTextConfigType,
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     onValidate?:(error: fieldErrorType, newValue: string) => void,
     inputRef?:React.RefObject<HTMLInputElement | null>
 ) =>{
-    if(onChange){
-        doChangeValue('', onChange, event)
-    }
+    setTampValue('')
+    debouncedOnChange('', event)
 
     if(onValidate && config){
         doValidateValue(type, '', onValidate , config)

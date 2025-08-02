@@ -13,8 +13,6 @@
         max-height: inherit;
         overflow: hidden;
         box-shadow: var(--box-shadow);
-        display: grid;
-        grid-template-rows: min-content 1fr min-content;
 
         &.rounded{
             border-radius: var(--space-100);
@@ -26,18 +24,26 @@
             border-radius: var(--space-200);
         }
 
-        .element-header-box{
-            grid-row: 1 / 2;
-        }
+        .content-box{
+            display: grid;
+            gap: var(--space-150);
+            
+            max-height: inherit;
+            overflow: hidden;
+            .element-header-box{
+                padding: var(--space-150);
+                padding-bottom: var(--space-0);
+            }
 
-        .dropdown-body-box{
-            grid-row: 2 / 3;
-            overflow: auto;
-            padding: var(--space-25) var(--space-0);
-        }
+            .dropdown-body-box{
+                margin: var(--space-150);
+                overflow: auto;
+            }
 
-        .dropdown-footer-box{
-            grid-row: 3 / 4;
+            .element-footer-box{
+                padding: var(--space-150);
+                padding-top: var(--space-0);
+            }
         }
     }
 }

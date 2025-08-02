@@ -1,0 +1,127 @@
+.modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+
+    .modal-overlay{
+        position: absolute;
+        height: 100%;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        background-color: var(--clr-surface-1);
+        z-index: 0,
+    }
+
+    .modal-container{
+        position: absolute;
+        z-index: 1;
+        display: grid;
+        overflow: hidden;
+        border: 1px solid var(--clr-border);
+        outline: 0px;
+        padding: var(--space-250);
+        background-color: var(--clr-surface-2);
+        max-height: 80vh;
+        gap: var(--space-250);
+
+        animation: opening 300ms ease 0s 1 normal forwards;
+        &.closing{
+            animation: closing 300ms ease 0s 1 normal forwards;
+        }
+        @keyframes opening {
+            0% {
+                opacity: 0;
+                transform: translateY(250px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes closing {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(250px);
+            }
+        }
+
+        &.rounded{
+            border-radius: var(--space-100);
+        }
+        &.box{
+            border-radius: var(--space-0);
+        }
+        &.circle{
+            border-radius: var(--space-200);
+        }
+
+        &.small{
+            width: 40vw;
+            min-width: 260px;
+        }
+        &.medium{
+            width: 60vw;
+            min-width: 260px;
+        }
+        &.large{
+            width: 80vw;
+            min-width: 260px;
+        }
+
+        &.mobile{
+            width: 85vw;
+            max-height: 80vh;
+            bottom: var(--space-100);
+        }
+        .modal-title-box{
+            display: flex;
+            align-items: center;
+
+            .title{
+                display: flex;
+                gap: var(--space-100);
+                align-items: center;
+                flex-grow: 1;
+                
+                .title-icon{
+                    display: flex;
+                    align-items: center;
+
+                    >svg{
+                        font-size: 20px;
+                    }
+                }
+
+                .title-text{
+                    font-size: var(--font-size-lg);
+                    font-weight: var(--font-weight-bold);
+                }
+            }
+
+            .x-button{
+                height: fit-content;
+                width: fit-content;
+                margin: var(--space-0);
+                padding: var(--space-0);
+
+                .icon svg{
+                    font-size: 20px;
+                }
+            }
+        }
+
+        .modal-body-box{
+            overflow: auto;
+        }
+    }
+}
+

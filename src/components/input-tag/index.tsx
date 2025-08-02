@@ -194,7 +194,7 @@ const InputTags = ({
                                 if(trigger.current){
                                     inputTagRef.current = trigger.current as HTMLInputElement
                                 }
-                                return(renderTagInputElement(triggerRef, {...getReferenceProps()}))
+                                return(renderTagInputElement(triggerRef, {...(getReferenceProps?.() ?? {})} ))
                             }
                         }
                         options={filteredOptions}
@@ -203,7 +203,7 @@ const InputTags = ({
                         style={{
                             optionButton:{
                                 textLabel:{
-                                    fontWeight:'var(--font-weight-text)'
+                                    fontWeight:'var(--font-weight-normal)'
                                 }
                             }
                         }}

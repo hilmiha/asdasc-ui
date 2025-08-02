@@ -2,17 +2,19 @@ import clsx from 'clsx';
 import './styles.scss';
 import * as ctrl from './controller';
 import React, { useState, useEffect, useRef, type JSX, useMemo, useContext } from 'react';
-import { autoUpdate, FloatingFocusManager, FloatingOverlay, FloatingPortal, useClick, useDismiss, useFloating, useInteractions, useRole, useTransitionStyles } from '@floating-ui/react';
+import { autoUpdate, FloatingFocusManager, FloatingOverlay, FloatingPortal, useDismiss, useFloating, useInteractions, useRole, useTransitionStyles } from '@floating-ui/react';
 import type { globalShapeType } from '../_types';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
+import IconButton from '../icon-button';
+import { PiXBold } from 'react-icons/pi';
 
 const BottomSheet = ({
+    isOpen, 
+    setIsOpen,
     className,
-    trigger,
-    titleIcon,
-    title,
+    iconTitle,
+    txtTitle,
     children,
-    isDisabled,
     onOpen = undefined,
     onClose = undefined,
     elementHeader = undefined,
@@ -24,18 +26,28 @@ const BottomSheet = ({
     
     //Context start ====
     const {
-        globalShape
+        globalShape,
+        screenSize
     } = useContext(GlobalContext) as _GlobalContextType
     //Context end ====
 
     //States and refs start ======
+    const mountedOnce = useRef(false);
     const snapPointConfig = useMemo<Record<snapPointType, number>>(()=>{
-        return{
-            HIDDEN: 0,
-            HALF: 45,
-            FULL: 90
+        if(screenSize==='mobile'){
+            return{
+                HIDDEN: 0,
+                HALF: 45,
+                FULL: 80
+            }
+        }else{
+            return{
+                HIDDEN: 0,
+                HALF: 45,
+                FULL: 95
+            }
         }
-    },[]);
+    },[screenSize]);
 
     const [snapPoint, setSnapPoint] = useState<snapPointType>('HIDDEN');
     const [currentHeight, setCurrentHeight] = useState(0);
@@ -45,13 +57,28 @@ const BottomSheet = ({
     const [dragStart, setDragStart] = useState({ y: 0, height: 0 });
     
     const [touchStart, setTouchStart] = useState<{ y: number; scrollTop: number } | null>(null);
+
+    const modalGridStyle = useMemo(()=>{
+        const gridTamp:string[] = [] //initial for title box
+        if(elementHeader){
+            gridTamp.push('min-content')
+        }
+        if(children){
+            gridTamp.push('1fr')
+        }
+        if(elementFooter){
+            gridTamp.push('min-content')
+        }
+
+        return gridTamp.join(' ')
+    },[])
     //States and refs end ======
 
 
     // Update height when snap point changes
     useEffect(() => {
         if (!isDragging) {
-            if(snapPoint==='HALF'){
+            if(snapPoint==='HALF'||snapPoint==='FULL'){
                 setTimeout(() => {
                     setCurrentHeight(snapPointConfig[snapPoint]);
                 }, 100);
@@ -68,7 +95,7 @@ const BottomSheet = ({
                 ctrl.handlePointerMove(e, isDragging, dragStart, setCurrentHeight)
             }
             const pointerUp = (e: PointerEvent)=>{
-                ctrl.handlePointerUp(e, snapPoint, setSnapPoint, snapPointConfig, isDragging, setIsDragging, dragStart, onClose, floatingConfig)
+                ctrl.handlePointerUp(e, setSnapPoint, snapPointConfig, isDragging, setIsDragging, dragStart, floatingConfig, setIsOpen)
             }
 
             document.addEventListener('pointermove', pointerMove);
@@ -86,23 +113,17 @@ const BottomSheet = ({
         open: snapPoint!=='HIDDEN',
         onOpenChange: (open)=>{
             if(open){
-                ctrl.doChangeSnappoint('HALF', snapPoint, setSnapPoint, floatingConfig, onClose);
+                ctrl.doChangeSnappoint('HALF', setSnapPoint, floatingConfig);
             }else{
-                ctrl.handleBackdropClick(snapPoint, setSnapPoint, floatingConfig, onClose)
-            }
-            
-            if(onOpen && open){
-                onOpen()
+                ctrl.handleBackdropClick(snapPoint, setSnapPoint, floatingConfig, setIsOpen)
             }
         },
         strategy: 'fixed',
         whileElementsMounted: autoUpdate,
     });
-    const click = useClick(context,{
-        enabled: !isDisabled
-    });
     const dismiss = useDismiss(context,{
-        outsidePressEvent: 'click',
+        enabled:(floatingConfig?.isDisableDismiss!==undefined)?(!floatingConfig.isDisableDismiss):(true),
+        outsidePressEvent: 'pointerdown',
         ancestorScroll: false,
     });
     const role = useRole(context);
@@ -112,178 +133,208 @@ const BottomSheet = ({
             close: 300,
         },
     });
-    const { getReferenceProps, getFloatingProps } = useInteractions([
-        click,
+    const { getFloatingProps } = useInteractions([
         dismiss,
         role
     ]);
     //FloatingUi Config ====
     
-
-    //Build trigger component ====
-    const triggerComponent = useMemo(()=>{
-        if(typeof trigger === 'function'){
-            return(trigger(
-                refs.setReference, 
-                getReferenceProps,
-                (snapPoint!=='HIDDEN'), 
-                refs.domReference,
-            ))
-        }else{
-            return(
-                <div 
-                    className={clsx(
-                        'dropdown-menu-trigger-box',
-                    )}
-                    {...getReferenceProps()}
-                    style={style?.triggerBox}
-                >
-                    {React.cloneElement(trigger, { ref: refs.setReference, isSelected:(snapPoint!=='HIDDEN') })}
-                </div>
-            )
+     //run onOpen and onClose props function
+    useEffect(()=>{
+        if(isMounted && onOpen){
+            mountedOnce.current = true;
+            onOpen()
         }
-    },[trigger, snapPoint])
+        if(!isMounted && onClose && mountedOnce.current){
+            onClose()
+        }
 
-    return (
-        <>
-            {/* trigger */}
-            {
-                triggerComponent
+        if(!isMounted && setIsOpen && isOpen){
+            setIsOpen(false)
+        }
+    },[isMounted])
+
+    useEffect(()=>{
+        if(isOpen){
+            if(floatingConfig?.defaultSnapPoint==='FULL'){
+                ctrl.doChangeSnappoint('FULL', setSnapPoint, floatingConfig);
+            }else{
+                ctrl.doChangeSnappoint('HALF', setSnapPoint, floatingConfig);
             }
+        }else{
+            ctrl.doChangeSnappoint('HIDDEN', setSnapPoint, floatingConfig);
+        }
+    },[isOpen])
 
-            {
-                (isMounted)&&(
-                    <FloatingPortal>
-                        <FloatingOverlay lockScroll={true} style={{overflow:'hidden'}}>
-                            <FloatingFocusManager 
-                                context={context} 
-                                order={['floating']}
-                                modal={true}
+    if(isMounted){
+        return(
+            <FloatingPortal>
+                <FloatingOverlay lockScroll={true} style={{overflow:'hidden'}}>
+                    <FloatingFocusManager 
+                        context={context} 
+                        order={['floating']}
+                        modal={true}
+                    >
+                        <div
+                            className={clsx(
+                                "bottom-sheet",
+                                className
+                            )}
+                        >
+                            {/* Backdrop */}
+                            <div className='bottom-sheet-overlay'
+                                style={{
+                                    opacity: (floatingConfig?.isChildOpen)?(0):((currentHeight*1)/100),
+                                }}
+                            />
+
+                            {/* Bottom Sheet */}
+                            <div
+                                ref={refs.setFloating}
+                                className={clsx(
+                                    'bottom-sheet-box',
+                                    {
+                                        ['dragging']:(isDragging)
+                                    }
+                                )}
+                                style={{
+                                    height: `${currentHeight}vh`,
+                                }}
+                                {...getFloatingProps()}
                             >
-                                <div
+                                <div 
                                     className={clsx(
-                                        "bottom-sheet",
-                                        className
+                                        'bottom-sheet-container',
+                                        (shape)?(shape):(globalShape),
                                     )}
+                                    style={style?.container}
                                 >
-                                    {/* Backdrop */}
-                                    <div className='bottom-sheet-overlay'
-                                        style={{
-                                            opacity: (floatingConfig?.isChildOpen)?(0):((currentHeight*1)/100),
-                                        }}
-                                    />
-
-                                    {/* Bottom Sheet */}
+                                    {/* Drag handle */}
                                     <div
-                                        ref={refs.setFloating}
+                                        ref={handleRef}
+                                        onPointerDown={(e)=>{
+                                            ctrl.handlePointerDown(e, currentHeight, setIsDragging, setDragStart)
+                                        }}
                                         className={clsx(
-                                            'bottom-sheet-box',
+                                            'drag-handle-area',
                                             {
                                                 ['dragging']:(isDragging)
                                             }
                                         )}
-                                        style={{
-                                            height: `${currentHeight}vh`,
-                                        }}
-                                        {...getFloatingProps()}
                                     >
-                                        <div 
-                                            className={clsx(
-                                                'bottom-sheet-container',
-                                                (shape)?(shape):(globalShape),
-                                            )}
-                                            style={style?.container}
-                                        >
-                                            {/* Drag handle */}
-                                            <div
-                                                ref={handleRef}
-                                                onPointerDown={(e)=>{ctrl.handlePointerDown(e, currentHeight, setIsDragging, setDragStart)}}
-                                                className={clsx(
-                                                    'drag-handle-area',
+                                        <div className='drag-handle'/>
+                                        {
+                                            (iconTitle || txtTitle)&&(
+                                                <div className='bottom-sheet-title-box'>
+                                                    <div className='title'>
+                                                        {
+                                                            (iconTitle)&&(
+                                                                <div className='title-icon'>
+                                                                    {iconTitle}
+                                                                </div>
+                                                            )
+                                                        }
+                                                        {
+                                                            (txtTitle)&&(
+                                                                <p className='title-text'>
+                                                                    {txtTitle}
+                                                                </p>
+                                                            )
+                                                        }
+                                                    </div>
                                                     {
-                                                        ['dragging']:(isDragging)
+                                                        (!floatingConfig?.isDisableDismiss)&&(
+                                                            <IconButton
+                                                                className='x-button'
+                                                                icon={<PiXBold className='global-icon x-icon'/>}
+                                                                txtLabel='Close Modal'
+                                                                appearance='subtle'
+                                                                isShowtooltip={false}
+                                                                onClick={()=>{ctrl.doChangeSnappoint('HIDDEN', setSnapPoint, floatingConfig)}}
+                                                            />
+                                                        )
                                                     }
-                                                )}
-                                            >
-                                                <div className='drag-handle'/>
-                                                {
-                                                    (titleIcon || title)&&(
-                                                        <div className='header-box'>
-                                                            {
-                                                                (titleIcon)&&(
-                                                                    <div className='title-icon'>{titleIcon}</div>
-                                                                )
-                                                            }
-                                                            {
-                                                                (title)&&(
-                                                                    <p className='title-box'>{title}</p>
-                                                                )
-                                                            }
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
-                                        
-                                            {/* Content */}
-                                            <div className='content-box'>
-                                                {
-                                                    elementHeader&&(
-                                                        <div className='element-header-box'>
-                                                            {
-                                                                elementHeader
-                                                            }
-                                                        </div>
-                                                    )
-                                                }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                
+                                    {/* Content */}
+                                    <div 
+                                        className='content-box'
+                                        style={{
+                                            gridTemplateRows:modalGridStyle
+                                        }}
+                                    >
+                                        {
+                                            elementHeader&&(
                                                 <div 
-                                                    className='bottom-sheet-body-box'
+                                                    className='element-header-box'
                                                     onTouchStart={(e)=>{
                                                         ctrl.handleTouchStart(e, setTouchStart)
                                                     }}
                                                     onTouchMove={(e)=>{
-                                                        ctrl.onTouchMove(e, touchStart, setTouchStart, snapPoint, setSnapPoint, floatingConfig, onClose)
+                                                        ctrl.onTouchMove(e, touchStart, setTouchStart, snapPoint, setSnapPoint, floatingConfig, setIsOpen)
                                                     }}
                                                 >
-                                                    {children}
+                                                    {
+                                                        elementHeader
+                                                    }
                                                 </div>
-                                                {
-                                                    elementFooter&&(
-                                                        <div className='element-footer-box'>
-                                                            {
-                                                                elementFooter
-                                                            }
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
+                                            )
+                                        }
+                                        <div 
+                                            className='bottom-sheet-body-box'
+                                            onTouchStart={(e)=>{
+                                                ctrl.handleTouchStart(e, setTouchStart)
+                                            }}
+                                            onTouchMove={(e)=>{
+                                                ctrl.onTouchMove(e, touchStart, setTouchStart, snapPoint, setSnapPoint, floatingConfig, setIsOpen)
+                                            }}
+                                        >
+                                            {children}
                                         </div>
+                                        {
+                                            elementFooter&&(
+                                                <div 
+                                                    className='element-footer-box'
+                                                    onTouchStart={(e)=>{
+                                                        ctrl.handleTouchStart(e, setTouchStart)
+                                                    }}
+                                                    onTouchMove={(e)=>{
+                                                        ctrl.onTouchMove(e, touchStart, setTouchStart, snapPoint, setSnapPoint, floatingConfig, setIsOpen)
+                                                    }}
+                                                >
+                                                    {
+                                                        elementFooter
+                                                    }
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 </div>
-                            </FloatingFocusManager>
-                        </FloatingOverlay>
-                    </FloatingPortal>
-                )
-            }
-            
-        </>
-    );
+                            </div>
+                        </div>
+                    </FloatingFocusManager>
+                </FloatingOverlay>
+            </FloatingPortal>
+        )
+    }else{
+        return null
+    }
 }
 
 export default BottomSheet;
 
 interface _BottomSheet{
+    isOpen?:boolean;
+    setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+
     className?:string
     
-    trigger:JSX.Element | ((
-        triggerRef: React.RefCallback<HTMLElement>, 
-        getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>,
-        isDropdownOpen:boolean, 
-        trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>,
-    ) => JSX.Element);
-    titleIcon?:JSX.Element,
-    title?:string,
+    iconTitle?:JSX.Element,
+    txtTitle?:string,
     children: JSX.Element,
-    isDisabled?:boolean
 
     onOpen?: () => void;
     onClose?: () => void;
@@ -298,9 +349,9 @@ interface _BottomSheet{
 }
 
 export type bottomSheetFloatingConfig = {
-    isLockScroll?:boolean
-    isShowDropdown?:boolean
-    isChildOpen?:boolean,
+    defaultSnapPoint?:'FULL'|'HALF'
+    isDisableDismiss?:boolean
+    isChildOpen?:boolean
     level?:number
 }
 type bottomSheetStyleType = {

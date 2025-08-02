@@ -2,10 +2,11 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType } from '../_types';
-import React, { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import { PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
+import { debounce } from 'lodash';
 
 const InputText = ({
     ref = undefined,
@@ -36,7 +37,9 @@ const InputText = ({
     //Context end ====
 
     //States start ====
+    const [tampValue, setTampValue] = useState(value)
     const [isDirty, setIsDirty] = useState(false)
+    const [isFocus, setIsFocus] = useState(false)
     const isDisabled = useMemo(()=>{
         return config?.isDisabled??false
     },[config?.isDisabled])
@@ -57,6 +60,21 @@ const InputText = ({
             }
         }
     }, [ref]);
+
+    const debouncedOnChange = useCallback(
+        debounce((newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined) => {
+            if (onChange) {
+                onChange(newValue, e);
+            }
+        }, 300),
+    [onChange]);
+    
+    //detect if value change/setted outsite of component
+    useEffect(()=>{
+        if((value !== tampValue) && !isFocus){
+            setTampValue(value)
+        }
+    },[value])
 
     return(
         <div className={clsx(
@@ -87,21 +105,23 @@ const InputText = ({
                     className={clsx('input-text')}
                     style={style?.input}
                     placeholder={txtPlaceholder}
-                    value={ctrl.getDisplayValue(value, type)}
+                    value={ctrl.getDisplayValue(tampValue, type)}
                     onChange={(e)=>{
                         if(!isDisabled){
-                            ctrl.onInputChange(e, value, type, isDirty, setIsDirty, config, onChange, error, onValidate)
+                            ctrl.onInputChange(e, value, type, setTampValue, isDirty, setIsDirty, debouncedOnChange, config, error, onValidate)
                         }
                     }}
                     onBlur={(e)=>{
                         if(!isDisabled){
-                            ctrl.onInputBlur(e, value, type, isDirty, config, onChange, onValidate, onBlur)
+                            ctrl.onInputBlur(e, value, type, setTampValue, isDirty, debouncedOnChange, config, onValidate, onBlur)
                         }
+                        setIsFocus(false)
                     }}
                     onFocus={(e)=>{
                         if(!isDisabled){
                             ctrl.onInputFocus(e, value, onFocus)
                         }
+                        setIsFocus(true)
                     }}
                     disabled={isDisabled}
                     type={inputTypeMode.type}
@@ -122,7 +142,7 @@ const InputText = ({
                             txtLabel='Clear'
                             appearance='subtle'
                             isShowtooltip={false}
-                            onClick={(e)=>{ctrl.onClearButtonClick(e, type, config, onChange, onValidate, inputRef)}}
+                            onClick={(e)=>{ctrl.onClearButtonClick(e, type, setTampValue, debouncedOnChange, config, onValidate, inputRef)}}
                         />
                     )
                 }
@@ -174,7 +194,7 @@ export interface _InputText {
     type:inputTextType
     txtPlaceholder?:string;
     value?:string;
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
     onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
     onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
     error?:fieldErrorType;

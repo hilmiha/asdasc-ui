@@ -58,7 +58,7 @@ const SplitButton = ({
                 style={style?.dropdownMenu}
                 shape={(shape)?(shape):(globalShape)}
                 trigger={(triggerRef, getReferenceProps, isDropdownOpen)=>(
-                    <div {...getReferenceProps()}>
+                    <div {...(getReferenceProps?.() ?? {})}>
                         <IconButton
                             ref={triggerRef} 
                             className='button-more'

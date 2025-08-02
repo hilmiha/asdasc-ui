@@ -11,11 +11,11 @@
 
 :root {
     // Font weights
-    --font-weight-subtext: #{$font-weight-subtext};           
-    --font-weight-text: #{$font-weight-text};
-    --font-weight-subtitle: #{$font-weight-subtitle};
-    --font-weight-title: #{$font-weight-title};
-    --font-weight-xtitle: #{$font-weight-xtitle};
+    --font-weight-light: #{$font-weight-light};           
+    --font-weight-normal: #{$font-weight-normal};
+    --font-weight-semi-bold: #{$font-weight-semi-bold};
+    --font-weight-bold: #{$font-weight-bold};
+    --font-weight-bolder: #{$font-weight-bolder};
 
     // Spacing
     --space-0: #{$space-0};
@@ -32,9 +32,9 @@
     --space-800: #{$space-800};
     --space-1000: #{$space-1000};
 
-    --text-size: #{$text-size};
-    --text-size-sm: #{$text-size-sm};
-    --text-size-lg: #{$text-size-lg};
+    --font-size: #{$font-size};
+    --font-size-sm: #{$font-size-sm};
+    --font-size-lg: #{$font-size-lg};
 
 
     @include generate-global-color-variable(false)
@@ -46,11 +46,11 @@
 
 * {
     font-family: 'Inter', monospace;
-    font-size: var(--text-size);
+    font-size: var(--font-size);
 }
 
 html {
-    font-weight: var(--font-weight-text);
+    font-weight: var(--font-weight-normal);
     background-color: var(--clr-surface-1);
     color: var(--clr-text);
 

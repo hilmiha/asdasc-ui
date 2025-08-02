@@ -29,6 +29,20 @@ const Dropdown = ({
 
     //States start ====
     const [isShowOption, setIsShowOption] = useState<boolean>(false)
+    const modalGridStyle = useMemo(()=>{
+        const gridTamp:string[] = [] //initial for title box
+        if(elementHeader){
+            gridTamp.push('min-content')
+        }
+        if(children){
+            gridTamp.push('1fr')
+        }
+        if(elementFooter){
+            gridTamp.push('min-content')
+        }
+
+        return gridTamp.join(' ')
+    },[])
     //States end ====
     
     //FloatingUi Config ====
@@ -141,30 +155,38 @@ const Dropdown = ({
                                             'dropdown-container',
                                             (shape)?(shape):(globalShape),
                                         )}
-                                        style={style?.container}
-                                    >
-                                        {
-                                            elementHeader&&(
-                                                <div className='element-header-box'>
-                                                    {
-                                                        elementHeader
-                                                    }
-                                                </div>
-                                            )
-                                        }
-                                        <div className='dropdown-body-box'>
-                                            {children}
-                                        </div>
                                         
-                                        {
-                                            elementFooter&&(
-                                                <div className='element-footer-box'>
-                                                    {
-                                                        elementFooter
-                                                    }
-                                                </div>
-                                            )
-                                        }
+                                    >
+                                        <div 
+                                            className='content-box'
+                                            style={{
+                                                ...style?.container,
+                                                gridTemplateRows:modalGridStyle,
+                                            }}
+                                        >
+                                            {
+                                                elementHeader&&(
+                                                    <div className='element-header-box'>
+                                                        {
+                                                            elementHeader
+                                                        }
+                                                    </div>
+                                                )
+                                            }
+                                            <div className='dropdown-body-box'>
+                                                {children}
+                                            </div>
+                                            
+                                            {
+                                                elementFooter&&(
+                                                    <div className='element-footer-box'>
+                                                        {
+                                                            elementFooter
+                                                        }
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </FloatingFocusManager>

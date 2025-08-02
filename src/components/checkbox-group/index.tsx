@@ -74,7 +74,6 @@ const CheckboxGroup = ({
                                         </div>
                                     )
                                 }
-                                
                             </div>
                         )
                     })
@@ -101,11 +100,13 @@ interface _CheckboxGroup{
     onChange?:(newValue:string[], option:checkboxGroupOptionType|checkboxGroupChildOptionType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
-    config?:checkboxGroupConfigType;
-    style?:{
-        checkboxGroupContainer?:React.CSSProperties,
-        childOptionBox?:React.CSSProperties
-    }
+    config?:checkboxGroupConfigType
+    style?:checkboxGroupStyleType
+}
+
+export type checkboxGroupStyleType = {
+    checkboxGroupContainer?:React.CSSProperties,
+    childOptionBox?:React.CSSProperties
 }
 
 export type checkboxGroupOptionType = {

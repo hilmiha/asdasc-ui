@@ -108,7 +108,7 @@ const OptionsComponent = ({
                                     }}
                                     trigger={
                                         (triggerRef, getReferenceProps, isDropdownOpen, )=>(
-                                            <div style={{display:'flex'}} {...getReferenceProps()}>
+                                            <div style={{display:'flex'}} {...(getReferenceProps?.() ?? {})}>
                                                 <Button
                                                     ref={triggerRef}
                                                     key={option.id}

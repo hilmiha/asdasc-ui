@@ -2,18 +2,18 @@ import type { bottomSheetFloatingConfig, snapPointType } from "."
 
 export const doChangeSnappoint = (
     newPoint:snapPointType,
-    currentSnapPoint:snapPointType,
     setSnapPoint: React.Dispatch<React.SetStateAction<snapPointType>>,
     floatingConfig?:bottomSheetFloatingConfig,
-    onClose?: () => void
+    setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>
 ) =>{
     if(floatingConfig?.isChildOpen){
         return null
     }
 
     setSnapPoint(newPoint)
-    if(newPoint==='HIDDEN' && onClose && currentSnapPoint!=='HIDDEN'){
-        onClose()
+
+    if(setIsOpen && newPoint==='HIDDEN'){
+        setIsOpen(false)
     }
 }
 
@@ -22,10 +22,10 @@ export const handleBackdropClick = (
     currentSnapPoint:snapPointType,
     setSnapPoint: React.Dispatch<React.SetStateAction<snapPointType>>,
     floatingConfig?:bottomSheetFloatingConfig,
-    onClose?: () => void
+    setIsOpen?:React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     if (currentSnapPoint !== 'HIDDEN') {
-        doChangeSnappoint('HIDDEN', currentSnapPoint, setSnapPoint, floatingConfig, onClose);
+        doChangeSnappoint('HIDDEN', setSnapPoint, floatingConfig, setIsOpen);
     }
 };
 
@@ -36,6 +36,17 @@ export const handlePointerDown = (
     setIsDragging: React.Dispatch<React.SetStateAction<boolean>>,
     setDragStart: React.Dispatch<React.SetStateAction<{y: number; height: number;}>>
 ) => {
+    const target = e.target as HTMLElement;
+    
+    //Prevent dragging when click on button x
+    if(
+        target.tagName === 'path' ||
+        target.classList.contains('x-icon')||
+        target.classList.contains('x-button')
+    ){
+        return null
+    }
+
     setIsDragging(true);
     setDragStart({
         y: e.clientY,
@@ -65,14 +76,13 @@ export const handlePointerMove = (
 
 export const handlePointerUp = (
     e:PointerEvent,
-    currentSnapPoint:snapPointType,
     setSnapPoint: React.Dispatch<React.SetStateAction<snapPointType>>,
     snapPointConfig:Record<snapPointType, number>,
     isDragging:boolean,
     setIsDragging: React.Dispatch<React.SetStateAction<boolean>>,
     dragStart:{y: number;height: number;},
-    onClose?:()=>void,
     floatingConfig?:bottomSheetFloatingConfig,
+    setIsOpen?:React.Dispatch<React.SetStateAction<boolean>>
 ) => {
     if (!isDragging) return;
     
@@ -115,7 +125,16 @@ export const handlePointerUp = (
             }
         }
     }
-    doChangeSnappoint(closestSnapPoint, currentSnapPoint, setSnapPoint, floatingConfig, onClose);
+
+    //if disable dismiss, bottom sheet cant be hidden
+    if(
+        floatingConfig?.isDisableDismiss&&
+        closestSnapPoint === 'HIDDEN'
+    ){
+        closestSnapPoint = 'HALF'
+    }
+
+    doChangeSnappoint(closestSnapPoint, setSnapPoint, floatingConfig, setIsOpen);
 };
 
 //Content touch drag
@@ -139,7 +158,7 @@ export const onTouchMove = (
     currentSnapPoint:snapPointType,
     setSnapPoint: React.Dispatch<React.SetStateAction<snapPointType>>,
     floatingConfig?:bottomSheetFloatingConfig,
-    onClose?: () => void
+    setIsOpen?:React.Dispatch<React.SetStateAction<boolean>>
 ) =>{
     if(!touchStart){
         return
@@ -162,7 +181,7 @@ export const onTouchMove = (
             // }
 
             if (currentSnapPoint === 'HALF') {
-                doChangeSnappoint('FULL', currentSnapPoint, setSnapPoint, floatingConfig, onClose);
+                doChangeSnappoint('FULL', setSnapPoint, floatingConfig, setIsOpen);
             }
         } else if (deltaY < 0) {
             // Drag down - collapse
@@ -171,9 +190,9 @@ export const onTouchMove = (
                 return
             }
             if (currentSnapPoint === 'FULL') {
-                doChangeSnappoint('HALF', currentSnapPoint, setSnapPoint, floatingConfig, onClose);
+                doChangeSnappoint('HALF', setSnapPoint, floatingConfig, setIsOpen);
             } else if (currentSnapPoint === 'HALF') {
-                doChangeSnappoint('HIDDEN', currentSnapPoint, setSnapPoint, floatingConfig, onClose);
+                doChangeSnappoint('HIDDEN', setSnapPoint, floatingConfig, setIsOpen);
             }
         }
 
