@@ -1,8 +1,8 @@
 import './styles.scss';
 import clsx from 'clsx';
-import React, { useContext, useMemo, useState, type JSX } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import { autoUpdate, flip, FloatingFocusManager, FloatingOverlay, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, type Placement } from '@floating-ui/react';
+import { autoUpdate, flip, FloatingFocusManager, FloatingOverlay, FloatingPortal, offset, shift, size, useClick, useDismiss, useFloating, useInteractions, useRole, useTransitionStyles, type Placement } from '@floating-ui/react';
 import type { globalShapeType } from '../_types';
 
 const Dropdown = ({
@@ -28,6 +28,7 @@ const Dropdown = ({
     //Context end ====
 
     //States start ====
+    const mountedOnce = useRef(false);
     const [isShowOption, setIsShowOption] = useState<boolean>(false)
     const modalGridStyle = useMemo(()=>{
         const gridTamp:string[] = [] //initial for title box
@@ -50,14 +51,6 @@ const Dropdown = ({
         open: isShowOption,
         onOpenChange: (open)=>{
             setIsShowOption(open)
-            
-            if(onOpen && open){
-                onOpen()
-            }
-
-            if(onClose && !open){
-                onClose()
-            }
         },
         placement: (floatingConfig?.placement)??('bottom-start'),
         middleware: [
@@ -94,12 +87,29 @@ const Dropdown = ({
         ancestorScroll: false,
     });
     const role = useRole(context);
+    const {isMounted} = useTransitionStyles(context,{
+        duration: {
+            open: 0,
+            close: 300,
+        },
+    });
     const { getReferenceProps, getFloatingProps } = useInteractions([
         click,
         dismiss,
         role
     ]);
     //FloatingUi Config ====
+
+    //run onOpen and onClose props function
+    useEffect(()=>{
+        if(isMounted && onOpen){
+            mountedOnce.current = true
+            onOpen()
+        }
+        if(!isMounted && onClose && mountedOnce.current){
+            onClose()
+        }
+    },[isMounted])
 
     //Build trigger component ====
     const triggerComponent = useMemo(()=>{
@@ -131,7 +141,7 @@ const Dropdown = ({
                 triggerComponent
             }
             {
-                (isShowOption && floatingConfig?.isShowDropdown !== false)&&(
+                (isMounted)&&(
                     <FloatingPortal>
                         <FloatingOverlay
                             lockScroll={floatingConfig?.isLockScroll}
@@ -154,6 +164,9 @@ const Dropdown = ({
                                         className={clsx(
                                             'dropdown-container',
                                             (shape)?(shape):(globalShape),
+                                            {
+                                                ['closing']:(!isShowOption)
+                                            }
                                         )}
                                         
                                     >
@@ -228,7 +241,6 @@ export type dropdownFloatingConfigType = {
     isLockScroll?:boolean
     isShowDropdown?:boolean
     level?:number,
-    isDropdownModeOnly?:boolean
 }
 
 export type dropdownStyleType = {

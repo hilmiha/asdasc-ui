@@ -4,15 +4,42 @@
     height: fit-content
 }
 .dropdown-box{
-    background-color: var(--clr-surface-2);
 
     .dropdown-container{
+        background-color: var(--clr-surface-2);
         border: 1px solid var(--clr-border);
         min-width: inherit;
         max-width: inherit;
         max-height: inherit;
         overflow: hidden;
         box-shadow: var(--box-shadow);
+
+        animation: opening-dropdown 300ms ease 0s 1 normal forwards;
+        &.closing{
+            animation: closing-dropdown 300ms ease 0s 1 normal forwards;
+        }
+        @keyframes opening-dropdown {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes closing-dropdown {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-25px);
+            }
+        }
 
         &.rounded{
             border-radius: var(--space-100);
