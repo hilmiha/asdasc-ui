@@ -17,6 +17,7 @@ import CheckboxGroup, { type checkboxGroupOptionType } from './components/checkb
 import BottomSheet from './components/bottom-sheet';
 import Dropdown from './components/dropdown';
 import Modal from './components/modal';
+import InputTextarea from './components/input-textarea';
 
 function App() {
     const {
@@ -43,6 +44,7 @@ function App() {
         testTextNoSpace:'',
         testTextNumber:'',
         testTextNumberText:'',
+        testTextArea:'',
         testSelection:[],
         testSelectionComboBox:[],
         testSelectionMulti:[],
@@ -57,6 +59,7 @@ function App() {
         testTextNoSpace:{isError:false, errorMessage:''},
         testTextNumber:{isError:false, errorMessage:''},
         testTextNumberText:{isError:false, errorMessage:''},
+        testTextArea:{isError:false, errorMessage:''},
         testSelection:{isError:false, errorMessage:''},
         testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
@@ -301,6 +304,19 @@ function App() {
                         config={{
                             isDisabled:false,
                             maxLength:42
+                        }}
+                    />
+                    <InputTextarea
+                        type='text'
+                        txtPlaceholder='Enter test text...'
+                        value={form['testTextArea']}
+                        onChange={(newValue)=>{onChange('testTextArea', newValue)}}
+                        onValidate={(error)=>{onValidate('testTextArea', error)}}
+                        error={formError['testTextArea']}
+                        config={{
+                            isRequired:true,
+                            isDisabled:false,
+                            maxLines:5,
                         }}
                     />
                     <InputSelection
