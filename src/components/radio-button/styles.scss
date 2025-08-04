@@ -12,7 +12,7 @@
         outline-offset: 2px;
         z-index: 1;
         .circle-indicator{
-            background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
+            background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
         }
         
     }
@@ -26,7 +26,7 @@
 
     &:hover{
         .circle-indicator{
-            background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
+            background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
         }
     }
     &.disabled, &:disabled{

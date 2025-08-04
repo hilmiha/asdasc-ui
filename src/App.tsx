@@ -1,7 +1,7 @@
 import './App.scss'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
+import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -18,6 +18,8 @@ import BottomSheet from './components/bottom-sheet';
 import Dropdown from './components/dropdown';
 import Modal from './components/modal';
 import InputTextarea from './components/input-textarea';
+import Accordion from './components/accordion';
+import AccordionGroup from './components/accordion-group';
 
 function App() {
     const {
@@ -120,9 +122,9 @@ function App() {
 
     const [isShow, setIsShow] = useState(false)
     const [modalSize, setModalSize] = useState<'small' | 'medium' | 'large'>('small')
-
     const [isShowBottomSheet, setIsShowBottomSheet] = useState(false)
 
+    const [listAccordionOpen, setListAccordionOpen] = useState<string[]>([])
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -600,6 +602,55 @@ function App() {
                     </p>
                 </BottomSheet>
             </div>
+            <AccordionGroup
+                listOpen={listAccordionOpen}
+                setListOpen={setListAccordionOpen}
+            >
+                <Accordion
+                    id='1'
+                    onClose={()=>{console.log('accordion close 1')}}
+                    onOpen={()=>{console.log('accordion open 1')}}
+                    iconBefore={<PiStarFourBold className='global-icon'/>}
+                    txtLabel='Accordion One'
+                >
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                    </p>
+                </Accordion>
+                <Accordion
+                    id='2'
+                    onClose={()=>{console.log('accordion close 2')}}
+                    onOpen={()=>{console.log('accordion open 2')}}
+                    iconBefore={<PiStarFourBold className='global-icon'/>}
+                    txtLabel='Accordion Two'
+                    isDisabled={true}
+                >
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                    </p>
+                </Accordion>
+                <Accordion
+                    id='3'
+                    onClose={()=>{console.log('accordion close 3')}}
+                    onOpen={()=>{console.log('accordion open 3')}}
+                    iconBefore={<PiStarFourBold className='global-icon'/>}
+                    txtLabel='Accordion Three'
+                >
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam recusandae non ullam adipisci rem sequi eum libero numquam animi facilis, porro asperiores, vero corporis. Ipsa repudiandae delectus eveniet mollitia sint.
+                    </p>
+                </Accordion>
+            </AccordionGroup>
             <div
                 style={{
                     backgroundColor:'var(--clr-surface-2)',

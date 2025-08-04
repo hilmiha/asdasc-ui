@@ -1,0 +1,103 @@
+.accordion-box {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    margin: var(--space-50);
+
+    .accordion-content-box{
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.3s ease-out;
+        .content{
+            transition: opacity 0.3s ease-out, padding 0.3s ease-in-out;
+            overflow: hidden;
+            opacity: 0%;
+            padding: 0px var(--space-100);;
+        }
+
+        &.open {
+            grid-template-rows: 1fr;
+
+            .content{
+                opacity: 100%;
+                padding: var(--space-100);
+            }
+        }
+    }
+
+    .accordion-button{
+        display: flex;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        padding: var(--space-250) var(--space-200);
+        border-bottom: 1px solid var(--clr-border);
+        cursor: pointer;
+
+        &:focus-visible{
+            outline: 2px solid var(--clr-focus-ouline);
+            outline-offset: 2px;
+            z-index: 1;
+        }
+        
+        &:hover{
+            background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
+        }
+
+        &:active{
+            background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
+
+            .text-label{
+                text-decoration: underline;
+                text-underline-offset: 2px;
+            }
+        }
+
+        &.open{
+            .title-box{
+                color: var(--clr-primary-800);
+            }
+        }
+
+        &.disabled, &:disabled{
+            cursor: not-allowed;
+            background-color: hsl(from var(--clr-surface-2) h s l / 0.5);
+            border: 1px dashed var(--clr-border);
+
+            color: hsl(from var(--clr-text) h s l / 0.5);
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                hsl(from var(--clr-surface-4) h s l / 0.2) 4px
+            );
+
+            &:active{
+                .text-label{
+                    text-decoration: none;
+                }
+            }
+            
+            &:hover, &:focus-visible, &:active{
+                background-color: hsl(from var(--clr-surface-2) h s l / 0.5);
+            }
+        }
+
+        .title-box{
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: var(--space-100);
+            .icon-before{
+                display: flex;
+                align-items: center;
+            }
+        }
+        .caret-box{
+            display: flex;
+            align-items: center;
+            color: var(--clr-surface-4);
+        }
+    }
+
+
+}
