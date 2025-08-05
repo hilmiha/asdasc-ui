@@ -16,7 +16,7 @@ const Dropdown = ({
 
     elementHeader = undefined,
     elementFooter = undefined,
-    children = <></>,
+    children = undefined,
     
     floatingConfig = undefined
 }:_Dropdown) =>{
@@ -102,9 +102,11 @@ const Dropdown = ({
 
     //run onOpen and onClose props function
     useEffect(()=>{
-        if(isMounted && onOpen){
+        if(isMounted){
             mountedOnce.current = true
-            onOpen()
+            if(onOpen){
+                onOpen()
+            }
         }
         if(!isMounted && onClose && mountedOnce.current){
             onClose()
@@ -229,7 +231,7 @@ interface _Dropdown {
 
     elementHeader?:JSX.Element
     elementFooter?:JSX.Element
-    children:JSX.Element
+    children?:JSX.Element | JSX.Element[]
 
     floatingConfig?:dropdownFloatingConfigType
 }

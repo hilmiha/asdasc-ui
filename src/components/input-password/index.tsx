@@ -65,7 +65,7 @@ interface _InputPassword {
     shape?:globalShapeType;
     txtPlaceholder?:string;
     value?:string;
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void;
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void;
     config?:inputTextConfigType;

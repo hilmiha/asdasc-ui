@@ -135,7 +135,7 @@ const InputText = ({
                     )
                 }
                 {
-                    (value.length > 0 && !isDisabled)&&(
+                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
                         <IconButton
                             className='clear-button'
                             icon={<PiXBold/>}
@@ -214,6 +214,7 @@ export type inputTextConfigType = {
     validRegex?:[RegExp, string][]
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
+    isHideClear?:boolean
 }
 
 export type inputTextStyleType = {

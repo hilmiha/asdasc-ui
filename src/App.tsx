@@ -20,6 +20,7 @@ import Modal from './components/modal';
 import InputTextarea from './components/input-textarea';
 import Accordion from './components/accordion';
 import AccordionGroup from './components/accordion-group';
+import Wysiwyg from './components/wysiwyg';
 
 function App() {
     const {
@@ -125,6 +126,33 @@ function App() {
     const [isShowBottomSheet, setIsShowBottomSheet] = useState(false)
 
     const [listAccordionOpen, setListAccordionOpen] = useState<string[]>([])
+
+    const [content, setContent] = useState<string>('');
+    // const [readOnly, setReadOnly] = useState<boolean>(false);
+
+    const handleContentChange = (newContent: string) => {
+        setContent(newContent);
+        console.log('Content updated:', newContent);
+    };
+
+    // const presetContent = () => {
+    //     const sampleContent = `
+    //     <h1>Welcome to Custom Quill Editor</h1>
+    //     <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
+    //     <ul>
+    //         <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
+    //         <li><u>Headers</u> and paragraph styles</li>
+    //         <li>Lists and alignment options</li>
+    //         <li>Color customization for text and background</li>
+    //         <li>Links, images, and special blocks</li>
+    //     </ul>
+    //     <blockquote>
+    //         The toolbar shows active formatting states and selected text information!
+    //     </blockquote>
+    //     <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
+    //     `;
+    //     setContent(sampleContent);
+    // };
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -234,6 +262,14 @@ function App() {
                             />
                         }
                         onClick={(idButton)=>{console.log(idButton)}}
+                    />
+                </div>
+                <div>
+                    <Wysiwyg
+                        value={content}
+                        onChange={handleContentChange}
+                        readOnly={false}
+                        placeholder="Start typing with your custom toolbar..."
                     />
                 </div>
                 <div>
@@ -844,3 +880,156 @@ const menues:checkboxGroupOptionType[] =  [
         txtSublabel:'This is sublabel text.'
     }
 ]
+
+// import React, { useState } from 'react';
+// import CustomQuillEditor from './components/text-editor';
+
+// const App: React.FC = () => {
+//   const [content, setContent] = useState<string>('');
+//   const [readOnly, setReadOnly] = useState<boolean>(false);
+
+//   const handleContentChange = (newContent: string) => {
+//     setContent(newContent);
+//     console.log('Content updated:', newContent);
+//   };
+
+//   const presetContent = () => {
+//     const sampleContent = `
+//       <h1>Welcome to Custom Quill Editor</h1>
+//       <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
+//       <ul>
+//         <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
+//         <li><u>Headers</u> and paragraph styles</li>
+//         <li>Lists and alignment options</li>
+//         <li>Color customization for text and background</li>
+//         <li>Links, images, and special blocks</li>
+//       </ul>
+//       <blockquote>
+//         The toolbar shows active formatting states and selected text information!
+//       </blockquote>
+//       <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
+//     `;
+//     setContent(sampleContent);
+//   };
+
+//   return (
+//     <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
+//       <h1>Custom Quill Toolbar Demo</h1>
+      
+//       <div style={{ 
+//         marginBottom: '20px', 
+//         display: 'flex', 
+//         gap: '10px', 
+//         alignItems: 'center',
+//         flexWrap: 'wrap'
+//       }}>
+//         <button 
+//           onClick={() => setContent('')}
+//           style={{
+//             padding: '8px 16px',
+//             backgroundColor: '#f44336',
+//             color: 'white',
+//             border: 'none',
+//             borderRadius: '4px',
+//             cursor: 'pointer'
+//           }}
+//         >
+//           Clear Content
+//         </button>
+        
+//         <button 
+//           onClick={presetContent}
+//           style={{
+//             padding: '8px 16px',
+//             backgroundColor: '#2196f3',
+//             color: 'white',
+//             border: 'none',
+//             borderRadius: '4px',
+//             cursor: 'pointer'
+//           }}
+//         >
+//           Load Sample Content
+//         </button>
+        
+//         <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+//           <input 
+//             type="checkbox" 
+//             checked={readOnly} 
+//             onChange={(e) => setReadOnly(e.target.checked)}
+//           />
+//           Read Only Mode
+//         </label>
+//       </div>
+
+//       <div style={{ marginBottom: '20px' }}>
+//         <CustomQuillEditor
+        //   value={content}
+        //   onChange={handleContentChange}
+        //   readOnly={readOnly}
+        //   placeholder="Start typing with your custom toolbar..."
+        //   style={{ 
+        //     border: '2px solid #e0e0e0',
+        //     borderRadius: '8px',
+        //     overflow: 'hidden'
+        //   }}
+//         />
+//       </div>
+
+//       <div style={{ marginTop: '30px' }}>
+//         <h3>Features of the Custom Toolbar:</h3>
+//         <div style={{ 
+//           display: 'grid', 
+//           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+//           gap: '15px',
+//           marginTop: '15px'
+//         }}>
+//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>✨ Real-time State</h4>
+//             <p style={{ margin: 0, fontSize: '14px' }}>
+//               Toolbar buttons show active formatting states and update as you move the cursor or change selection.
+//             </p>
+//           </div>
+          
+//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>🎨 Custom Styling</h4>
+//             <p style={{ margin: 0, fontSize: '14px' }}>
+//               Complete control over toolbar appearance, layout, and behavior with your own CSS and logic.
+//             </p>
+//           </div>
+          
+//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>🔧 Extended Features</h4>
+//             <p style={{ margin: 0, fontSize: '14px' }}>
+//               Easy to add custom buttons, dropdowns, and functionality that integrates seamlessly with Quill.
+//             </p>
+//           </div>
+          
+//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>📱 Responsive Design</h4>
+//             <p style={{ margin: 0, fontSize: '14px' }}>
+//               Toolbar wraps and adapts to different screen sizes with flexible layout options.
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div style={{ marginTop: '30px' }}>
+//         <h3>Current Content Preview:</h3>
+//         <div 
+//           style={{ 
+//             border: '1px solid #ccc', 
+//             padding: '15px', 
+//             backgroundColor: '#fafafa',
+//             borderRadius: '8px',
+//             minHeight: '100px',
+//             maxHeight: '300px',
+//             overflow: 'auto'
+//           }}
+//           dangerouslySetInnerHTML={{ __html: content || '<em>No content yet...</em>' }}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default App;

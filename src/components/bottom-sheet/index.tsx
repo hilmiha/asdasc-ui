@@ -139,12 +139,15 @@ const BottomSheet = ({
     ]);
     //FloatingUi Config ====
     
-     //run onOpen and onClose props function
+    //run onOpen and onClose props function
     useEffect(()=>{
-        if(isMounted && onOpen){
+        if(isMounted){
             mountedOnce.current = true;
-            onOpen()
+            if(onOpen){
+                onOpen()
+            }
         }
+
         if(!isMounted && onClose && mountedOnce.current){
             onClose()
         }
@@ -334,7 +337,7 @@ interface _BottomSheet{
     
     iconTitle?:JSX.Element,
     txtTitle?:string,
-    children: JSX.Element,
+    children?: JSX.Element | JSX.Element[],
 
     onOpen?: () => void;
     onClose?: () => void;

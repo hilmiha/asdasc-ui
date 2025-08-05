@@ -10,5 +10,8 @@ export default defineConfig({
         additionalData: `@use '/src/styles/variables.scss' as *;`
       }
     }
+  },
+  define: {
+    global: 'globalThis',
   }
 })

@@ -141,7 +141,7 @@ const InputTags = ({
                     )
                 }
                 {
-                    (value.length > 0 && !isDisabled)&&(
+                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
                         <IconButton
                             className='clear-button'
                             icon={<PiXBold/>}
@@ -284,4 +284,5 @@ export type inputTagConfigType = {
     maxValue?:number
     prefixElement?:JSX.Element|string
     sufixElement?:JSX.Element|string
+    isHideClear?:boolean
 }

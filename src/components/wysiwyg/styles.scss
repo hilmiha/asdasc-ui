@@ -1,0 +1,100 @@
+
+.wysiwyg-box {
+    .toolbar-container{
+        background-color: var(--clr-surface-2);
+        border: 1px solid var(--clr-border);
+        border-bottom: 0px;
+        padding: var(--space-100);
+        display: flex;
+        flex-wrap: wrap;
+
+        &.rounded{
+            border-top-left-radius: var(--space-100);
+            border-top-right-radius: var(--space-100);
+        }
+        &.box{
+            border-top-left-radius: var(--space-0);
+            border-top-right-radius: var(--space-0);
+        }
+        &.circle{
+            border-top-left-radius: var(--space-200);
+            border-top-right-radius: var(--space-200);
+        }
+
+        .header-dropdown-box{
+            width: 140px;
+            max-width: 140px;
+            .dropdown-trigger-box, .bottom-sheet-trigger-box{
+                width: 100%;
+                .button{
+                    padding: var(--space-0) var(--space-150) var(--space-0) var(--space-200);
+                    width: inherit;
+                    .text-label-box{
+                        flex-grow: 1;
+                        font-weight: var(--font-weight-normal);
+                    }
+                }
+            }
+        }
+    }
+    .editor-box{
+        &.rounded{
+            border-bottom-left-radius: var(--space-100);
+            border-bottom-right-radius: var(--space-100);
+        }
+        &.box{
+            border-bottom-left-radius: var(--space-0);
+            border-bottom-right-radius: var(--space-0);
+        }
+        &.circle{
+            border-bottom-left-radius: var(--space-200);
+            border-bottom-right-radius: var(--space-200);
+        }
+        overflow: hidden;
+        border: 1px solid var(--clr-border);
+        background-color: white;
+        color: black;
+
+        .ql-editor{
+            padding: var(--space-200);
+            &.ql-blank::before {
+                color: hsl(from var(--clr-surface-5) h s l / 1);
+            }
+
+            blockquote {
+                border-left: 4px solid #ccc;
+                margin: 16px 0;
+                padding: 8px 16px;
+                background-color: #f9f9f9;
+                font-style: italic;
+            }
+
+            .ql-code-block-container {
+                background-color: #f4f4f4;
+                padding: 8px 16px;
+                border: 1px solid #e1e1e1;
+                border-radius: 4px;
+                font-family: monospace;
+                margin: 8px 0;
+            }
+        }
+    }
+    
+}
+
+.color-swatch{
+    outline: var(--space-0);
+    width: var(--space-300);
+    height: var(--space-300);
+    margin: var(--space-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+
+    &:focus-visible{
+        outline: 2px solid var(--clr-focus-ouline);
+        outline-offset: 2px;
+        z-index: 1;
+    }
+}

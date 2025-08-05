@@ -44,7 +44,7 @@
     @include generate-global-color-variable(true)
 }
 
-* {
+*:not(.ql-editor):not(.ql-editor *) {
     font-family: 'Inter', monospace;
     font-size: var(--font-size);
 }

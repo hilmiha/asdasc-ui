@@ -136,7 +136,7 @@ const InputSelection = ({
                                     )
                                 }
                                 {
-                                    (value.length > 0 && !isDisabled)&&(
+                                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
                                         <IconButton
                                             className='clear-button'
                                             icon={<PiXBold/>}
@@ -199,15 +199,19 @@ const InputSelection = ({
                                 </div>
                             ):undefined
                         }
-                        <div className='reset-box'>
-                            <Button
-                                shape='box'
-                                className='reset-button'
-                                txtLabel={'Clear Selection'}
-                                appearance='subtle'
-                                onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange)}}
-                            />
-                        </div>
+                        {
+                            (!config?.isHideClear)&&(
+                                <div className='reset-box'>
+                                    <Button
+                                        shape='box'
+                                        className='reset-button'
+                                        txtLabel={'Clear Selection'}
+                                        appearance='subtle'
+                                        onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange)}}
+                                    />
+                                </div>
+                            )
+                        }
                     </>
                 }
                 elementFooter={
@@ -288,6 +292,7 @@ export type inputSelectConfigType = {
     maxValue?:number
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
+    isHideClear?:boolean
 }
 
 export type inputSelectionStyleType = {

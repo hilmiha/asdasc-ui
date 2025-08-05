@@ -89,9 +89,11 @@ const Modal = ({
 
     //run onOpen and onClose props function
     useEffect(()=>{
-        if(isMounted && onOpen){
+        if(isMounted){
             mountedOnce.current = true
-            onOpen()
+            if(onOpen){
+                onOpen()
+            }
         }
         if(!isMounted && onClose && mountedOnce.current){
             onClose()
