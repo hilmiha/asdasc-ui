@@ -37,16 +37,14 @@ const ToolbarComponent = ({
         }
     }, [quill]);
     
-    const insertLink = useCallback((link:string, text:string) => {
+    const insertLink = useCallback((selection:{index:number, length:number}, link:string, text:string) => {
         if (!quill) return;
-        const selection = quill.getSelection() || { index: 0, length: 0 };
         quill.insertText(selection.index, text, 'link', link);
         quill.focus();
     }, [quill]);
 
-    const insertImage = useCallback((link:string) => {
+    const insertImage = useCallback((selection:{index:number, length:number}, link:string) => {
         if (!quill) return;
-        const selection = quill.getSelection() || { index: 0, length: 0 };
         quill.insertEmbed(selection.index, 'image', link);
         quill.focus();
     }, [quill]);
@@ -312,10 +310,12 @@ const ToolbarComponent = ({
                 onApply={(value) => formatText('background', value)}
             />
             <InsertLinkModule
-                onInsert={(link, text)=>{insertLink(link, text)}}
+                quill={quill}
+                onInsert={(selection, link, text)=>{insertLink(selection, link, text)}}
             />
             <InsertImageModule
-                onInsert={(link)=>{insertImage(link)}}
+                quill={quill}
+                onInsert={(selection, link)=>{insertImage(selection, link)}}
             />
             <IconButton
                 icon={<PiQuotesBold className="global-icon"/>}

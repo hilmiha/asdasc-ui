@@ -6,11 +6,14 @@ import { GlobalContext, type _GlobalContextType } from "../../../context/global-
 import BottomSheet from "../../bottom-sheet"
 import InputText from "../../input-text"
 import Button from "../../button"
+import Quill from "quill"
 
 const InsertLinkModule = ({
+    quill,
     onInsert
 }:{
-    onInsert:(link:string, text:string)=>void
+    quill: Quill | null,
+    onInsert:(selection:{index:number, length:number}, link:string, text:string)=>void
 }) =>{
     const {
         screenSize
@@ -18,6 +21,7 @@ const InsertLinkModule = ({
     const [isOpen, setIsOpen] = useState(false)
     const [linkTxt, setLinkTxt] = useState('')
     const [link, setLink] = useState('')
+    const [selection, setSelection] = useState({index: 0, length: 0})
 
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
     
@@ -42,6 +46,9 @@ const InsertLinkModule = ({
                         <BottomSheet
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
+                            onOpen={()=>{
+                                setSelection(quill?.getSelection()||{index: 0, length: 0})
+                            }}
                             onClose={()=>{
                                 setLink('')
                                 setLinkTxt('')
@@ -67,7 +74,7 @@ const InsertLinkModule = ({
                                     isDisabled={!linkTxt && !link}
                                     onClick={()=>{
                                         setIsOpen(false)
-                                        onInsert(link, linkTxt)
+                                        onInsert(selection, link, linkTxt)
                                     }}
                                 />
                             </div>
@@ -92,6 +99,9 @@ const InsertLinkModule = ({
                                 )
                             }
                         }
+                        onOpen={()=>{
+                            setSelection(quill?.getSelection()||{index: 0, length: 0})
+                        }}
                         onClose={()=>{
                             setLink('')
                             setLinkTxt('')
@@ -119,7 +129,7 @@ const InsertLinkModule = ({
                                     if(triggerButtonRef.current){
                                         triggerButtonRef.current.click()
                                     }
-                                    onInsert(link, linkTxt)
+                                    onInsert(selection, link, linkTxt)
                                 }}
                             />
                         </div>

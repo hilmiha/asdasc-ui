@@ -135,24 +135,24 @@ function App() {
         console.log('Content updated:', newContent);
     };
 
-    // const presetContent = () => {
-    //     const sampleContent = `
-    //     <h1>Welcome to Custom Quill Editor</h1>
-    //     <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
-    //     <ul>
-    //         <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
-    //         <li><u>Headers</u> and paragraph styles</li>
-    //         <li>Lists and alignment options</li>
-    //         <li>Color customization for text and background</li>
-    //         <li>Links, images, and special blocks</li>
-    //     </ul>
-    //     <blockquote>
-    //         The toolbar shows active formatting states and selected text information!
-    //     </blockquote>
-    //     <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
-    //     `;
-    //     setContent(sampleContent);
-    // };
+    const presetContent = () => {
+        const sampleContent = `
+        <h1>Welcome to Custom Quill Editor</h1>
+        <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
+        <ul>
+            <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
+            <li><u>Headers</u> and paragraph styles</li>
+            <li>Lists and alignment options</li>
+            <li>Color customization for text and background</li>
+            <li>Links, images, and special blocks</li>
+        </ul>
+        <blockquote>
+            The toolbar shows active formatting states and selected text information!
+        </blockquote>
+        <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
+        `;
+        setContent(sampleContent);
+    };
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -265,12 +265,33 @@ function App() {
                     />
                 </div>
                 <div>
+                    <Button txtLabel={'Preset'} onClick={()=>{presetContent()}}/>
                     <Wysiwyg
                         value={content}
                         onChange={handleContentChange}
                         readOnly={false}
-                        placeholder="Start typing with your custom toolbar..."
+                        placeholder="Start typing..."
                     />
+                    <iframe 
+                        style={{
+                            backgroundColor:"white",
+                            width:"100%",
+                            marginTop:'var(--space-300)',
+                            height:"300px"
+                        }}
+                        srcDoc={content}
+                    ></iframe>
+                    {/* <div 
+                        style={{ 
+                            border: '1px solid var(--clr-border)', 
+                            padding: 'var(--space-200)', 
+                            marginTop:"var(--space-300)",
+                            backgroundColor: 'white',
+                            maxHeight: '300px',
+                            overflow: 'auto',
+                        }}
+                        dangerouslySetInnerHTML={{ __html: content || '<em>No content yet...</em>' }}
+                    /> */}
                 </div>
                 <div>
                     <InputText

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 export const GlobalContext = React.createContext<_GlobalContextType | null>(null);
 
 const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-    const [globalTheme, setGlobalTheme] = useState<string>('light');
+    const [globalTheme, setGlobalTheme] = useState<string>('dark');
     const [globalTone, setGlobalTone] = useState<string>('tonal_blue');
     const [globalPrimary, setGlobalPrimary] = useState<string>('primary_emerald');
     const [globalShape, setGlobalShape] = useState<globalShapeType>('rounded');

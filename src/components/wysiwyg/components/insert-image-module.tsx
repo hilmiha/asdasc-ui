@@ -6,11 +6,14 @@ import { GlobalContext, type _GlobalContextType } from "../../../context/global-
 import BottomSheet from "../../bottom-sheet"
 import InputText from "../../input-text"
 import Button from "../../button"
+import type Quill from "quill"
 
 const InsertImageModule = ({
+    quill,
     onInsert
 }:{
-    onInsert:(link:string, height:string, width:string)=>void
+    quill: Quill | null,
+    onInsert:(selection:{index:number, length:number}, link:string, height:string, width:string)=>void
 }) =>{
     const {
         screenSize
@@ -19,6 +22,7 @@ const InsertImageModule = ({
     const [link, setLink] = useState('')
     const [height, setHeight] = useState('')
     const [width, setWidth] = useState('')
+    const [selection, setSelection] = useState({index: 0, length: 0})
 
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
     
@@ -43,6 +47,9 @@ const InsertImageModule = ({
                         <BottomSheet
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
+                            onOpen={()=>{
+                                setSelection(quill?.getSelection()||{index: 0, length: 0})
+                            }}
                             onClose={()=>{
                                 setLink('')
                                 setHeight('')
@@ -75,7 +82,7 @@ const InsertImageModule = ({
                                     isDisabled={!link}
                                     onClick={()=>{
                                         setIsOpen(false)
-                                        onInsert(link, height, width)
+                                        onInsert(selection, link, height, width)
                                     }}
                                 />
                             </div>
@@ -100,6 +107,9 @@ const InsertImageModule = ({
                                 )
                             }
                         }
+                        onOpen={()=>{
+                            setSelection(quill?.getSelection()||{index: 0, length: 0})
+                        }}
                         onClose={()=>{
                             setLink('')
                             setHeight('')
@@ -134,7 +144,7 @@ const InsertImageModule = ({
                                     if(triggerButtonRef.current){
                                         triggerButtonRef.current.click()
                                     }
-                                    onInsert(link, height, width)
+                                    onInsert(selection, link, height, width)
                                 }}
                             />
                         </div>
