@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useContext } from 'react';
-import Quill from 'quill';
+import Quill, { Delta } from 'quill';
 import 'quill/dist/quill.core.css'; // Import only core styles, no default toolbar
 import './styles.scss';
 import ToolbarComponent from './components/toolbar-component';
@@ -10,8 +10,8 @@ import type { globalShapeType } from '../_types';
 
 // Enhanced Quill Editor with Custom Toolbar
 interface CustomQuillEditorProps {
-	value?: string;
-	onChange?: (content: string) => void;
+	value?: Delta;
+	onChange?: (content: Delta) => void;
 	placeholder?: string;
 	readOnly?: boolean;
 	className?: string;
@@ -20,8 +20,8 @@ interface CustomQuillEditorProps {
 }
 
 const Wysiwyg: React.FC<CustomQuillEditorProps> = ({
-	value = '',
-	onChange,
+	value = undefined,
+	onChange = undefined,
 	placeholder = 'Write something...',
 	readOnly = false,
 	className = '',
@@ -37,17 +37,11 @@ const Wysiwyg: React.FC<CustomQuillEditorProps> = ({
 	const [quillInstance, setQuillInstance] = useState<Quill | null>(null);
 	const [isFocus, setIsFocus] = useState(false)
 
-	// useEffect(()=>{
-	// 	console.log(quillInstance?.getContents())
-	// },[quillInstance?.getContents()])
-
 	const handleFocus = () => {
-		console.log('Quill editor focused!');
 		setIsFocus(true)
 	};
 
 	const handleBlur = () => {
-		console.log('Quill editor blurred!');
 		setIsFocus(false)
 	};
 	useEffect(() => {
@@ -56,28 +50,29 @@ const Wysiwyg: React.FC<CustomQuillEditorProps> = ({
 			quillRef.current = new Quill(editorRef.current, {
 				theme: 'snow',
 				modules: {
-					toolbar: false, // Disable default toolbar
+					toolbar: false
 				},
 				formats: [
 					'header', 'bold', 'italic', 'underline', 'strike',
-					'list', 'bullet', 'indent', 'align', 'color', 'background',
-					'link', 'image', 'blockquote', 'code', 'code-block'
+					'list', 'indent', 'align', 'color', 'background',
+					'link', 'image', 'blockquote', 'code', 'code-block', 'script'
 				],
 				placeholder,
-				readOnly
+				readOnly,
 			});
 
 			setQuillInstance(quillRef.current);
 
 			// Set initial content
 			if (value) {
-				quillRef.current.clipboard.dangerouslyPasteHTML(value);
+				// quillRef.current.clipboard.dangerouslyPasteHTML(value);
+				quillRef.current.setContents(value)
 			}
 
 			// Handle content changes
 			quillRef.current.on('text-change', () => {
 				if(quillRef.current){
-					debouncedOnChange(quillRef.current.root.innerHTML)
+					debouncedOnChange(quillRef.current.getContents())
 				}
 			});
 
@@ -97,7 +92,7 @@ const Wysiwyg: React.FC<CustomQuillEditorProps> = ({
 	}, []);
 
 	const debouncedOnChange = useCallback(
-		debounce((newValue:string) => {
+		debounce((newValue:Delta) => {
 			if (onChange) {
 				onChange(newValue);
 			}
@@ -106,15 +101,16 @@ const Wysiwyg: React.FC<CustomQuillEditorProps> = ({
 
   	// Update content when value prop changes
 	useEffect(() => {
-		if (quillRef.current) {
-			const currentContent = quillRef.current.root.innerHTML;
-			if (currentContent !== value && !isFocus) {
-				quillRef.current.clipboard.dangerouslyPasteHTML(value || '');
+		if (quillRef && quillRef.current) {
+			const currentContent = quillRef.current.getContents()
+			
+			if (JSON.stringify(currentContent) !== JSON.stringify(value) && !isFocus) {
+				quillRef.current.setContents(value??[])
 			}
 		}
 	}, [value]);
 
-  // Update readOnly state
+  	// Update readOnly state
 	useEffect(() => {
 		if (quillRef.current) {
 			quillRef.current.enable(!readOnly);

@@ -1,5 +1,6 @@
 
 .wysiwyg-box {
+    margin: var(--space-50);
     .toolbar-container{
         background-color: var(--clr-surface-2);
         border: 1px solid var(--clr-border);
@@ -50,15 +51,24 @@
             border-bottom-left-radius: var(--space-200);
             border-bottom-right-radius: var(--space-200);
         }
-        overflow: hidden;
+        max-height: 320px;
+        overflow: auto;
         border: 1px solid var(--clr-border);
         background-color: white;
         color: black;
 
         .ql-editor{
             padding: var(--space-200);
+            p{
+                margin: 0px;
+                margin-bottom: 16px;
+            }
             &.ql-blank::before {
                 color: hsl(from var(--clr-surface-5) h s l / 1);
+            }
+
+            ol {
+                padding-left: 0em;
             }
 
             blockquote {
@@ -68,6 +78,16 @@
                 background-color: #f9f9f9;
                 font-style: italic;
             }
+            
+            blockquote + blockquote {
+                margin-top: 0;
+                padding-top: 0;
+            }
+            
+            blockquote:has(+ blockquote) {
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
 
             .ql-code-block-container {
                 background-color: #f4f4f4;
@@ -75,7 +95,7 @@
                 border: 1px solid #e1e1e1;
                 border-radius: 4px;
                 font-family: monospace;
-                margin: 8px 0;
+                margin: 16px 0;
             }
         }
     }

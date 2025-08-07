@@ -1,7 +1,7 @@
 import { useContext, useState, type JSX } from 'react';
 import './styles.scss';
 import clsx from 'clsx';
-import { autoUpdate, flip, FloatingPortal, offset, safePolygon, shift, useDismiss, useFloating, useFocus, useHover, useInteractions } from '@floating-ui/react';
+import { autoUpdate, flip, FloatingPortal, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions } from '@floating-ui/react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 // import * as ctrl from './controller';
 
@@ -41,7 +41,6 @@ const Tooltip = ({
     });
     const hover = useHover(context, { 
         move: false, 
-        handleClose: safePolygon()
     });
     const focus = useFocus(context);
     const dismiss = useDismiss(context);

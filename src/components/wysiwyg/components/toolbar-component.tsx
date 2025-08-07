@@ -1,7 +1,7 @@
 import type Quill from "quill";
 import { useCallback, useEffect, useState } from "react";
 import IconButton from "../../icon-button";
-import { PiCodeBlockBold, PiEraserBold, PiListBulletsBold, PiListNumbersBold, PiQuotesBold, PiTextAlignCenterBold, PiTextAlignJustifyBold, PiTextAlignLeftBold, PiTextAlignRightBold, PiTextBBold, PiTextIndentBold, PiTextItalicBold, PiTextOutdentBold, PiTextStrikethroughBold, PiTextUnderlineBold } from "react-icons/pi";
+import { PiCodeBlockBold, PiCodeBold, PiEraserBold, PiListBulletsBold, PiListNumbersBold, PiQuotesBold, PiTextAlignCenterBold, PiTextAlignJustifyBold, PiTextAlignLeftBold, PiTextAlignRightBold, PiTextBBold, PiTextIndentBold, PiTextItalicBold, PiTextOutdentBold, PiTextStrikethroughBold, PiTextSubscriptBold, PiTextSuperscriptBold, PiTextUnderlineBold } from "react-icons/pi";
 import InsertLinkModule from "./insert-link-module";
 import InsertImageModule from "./insert-image-module";
 import FormatTextColorModule from "./format-text-color-module";
@@ -31,7 +31,9 @@ const ToolbarComponent = ({
                 const newValue = currentFormat[format] ? false : true;
                 quill.format(format, newValue);
             } else {
-                quill.format(format, value);
+                const currentFormat = quill.getFormat(selection);
+                const newValue = currentFormat[format]===value?(false):value;
+                quill.format(format, newValue);
             }
             quill.focus();
         }
@@ -43,9 +45,19 @@ const ToolbarComponent = ({
         quill.focus();
     }, [quill]);
 
-    const insertImage = useCallback((selection:{index:number, length:number}, link:string) => {
+    const insertImage = useCallback((selection:{index:number, length:number}, link:string, width:string, height:string) => {
         if (!quill) return;
         quill.insertEmbed(selection.index, 'image', link);
+        // Then apply dimensions if provided
+
+        // Format the inserted image
+        if (width || height) {
+            quill.formatText(selection.index, 1, {
+                width: width ? `${width}px` : undefined,
+                height: height ? `${height}px` : undefined
+            });
+        }
+
         quill.focus();
     }, [quill]);
 
@@ -221,30 +233,31 @@ const ToolbarComponent = ({
                 onClick={() => formatText('strike')}
                 isSelected={activeFormats.strike}
             />
+            <IconButton
+                icon={<PiCodeBold className="global-icon"/>}
+                appearance="subtle"
+                txtLabel="Code"
+                onClick={() => formatText('code')}
+                isSelected={activeFormats.code}
+            />
+            <IconButton
+                icon={<PiTextSubscriptBold className="global-icon"/>}
+                appearance="subtle"
+                txtLabel="Subscript"
+                onClick={() => formatText('script', 'sub')}
+                isSelected={activeFormats.script==='sub'}
+            />
+            <IconButton
+                icon={<PiTextSuperscriptBold className="global-icon"/>}
+                appearance="subtle"
+                txtLabel="Superscript"
+                onClick={() => formatText('script', 'super')}
+                isSelected={activeFormats.script==='super'}
+            />
             <FormatTextTypeModule
                 selected={activeFormats.header}
                 onClickOption={(value)=>{applyBlock('header', value || false)}}
             />
-            {/* <div className="header-dropdown-box">
-                <DropdownMenu
-                    trigger={
-                        <Button 
-                            txtLabel={`${activeFormats.header?('Header '):('')}${activeFormats.header || 'Normal'}`}
-                            iconAfter={<PiCaretDownBold/>}
-                        />
-                    }
-                    options={[
-                        {id:'', txtLabel:'Normal'},
-                        {id:'1', txtLabel:'Header 1'},
-                        {id:'2', txtLabel:'Header 2'},
-                        {id:'3', txtLabel:'Header 3'},
-                        {id:'4', txtLabel:'Header 4'},
-                        {id:'5', txtLabel:'Header 5'},
-                        {id:'6', txtLabel:'Header 6'},
-                    ]}
-                    onClick={(value)=>{applyBlock('header', value || false)}}
-                />
-            </div> */}
             <IconButton
                 icon={<PiListNumbersBold className="global-icon"/>}
                 appearance="subtle"
@@ -315,7 +328,7 @@ const ToolbarComponent = ({
             />
             <InsertImageModule
                 quill={quill}
-                onInsert={(selection, link)=>{insertImage(selection, link)}}
+                onInsert={(selection, link, height, width)=>{insertImage(selection, link, width, height)}}
             />
             <IconButton
                 icon={<PiQuotesBold className="global-icon"/>}

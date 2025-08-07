@@ -1,6 +1,7 @@
 import { PiCaretDownBold } from "react-icons/pi"
 import Button from "../../button"
 import DropdownMenu from "../../dropdown-menu"
+import Tooltip from "../../tooltip"
 
 const FormatTextTypeModule = ({
     selected,
@@ -10,7 +11,10 @@ const FormatTextTypeModule = ({
     onClickOption:(value:string)=>void
 }) =>{
     return(
-        <div className="header-dropdown-box">
+        <Tooltip
+            className="header-dropdown-box"
+            content={'Text Type'}
+        >
             <DropdownMenu
                 trigger={
                     <Button 
@@ -29,7 +33,7 @@ const FormatTextTypeModule = ({
                 ]}
                 onClick={(value)=>{onClickOption(value)}}
             />
-        </div>
+        </Tooltip>
     )
 }
 

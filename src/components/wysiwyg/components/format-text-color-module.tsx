@@ -95,12 +95,12 @@ const FormatTextColorModule = ({
                                     className="color-swatch"
                                     style={{
                                         background:'repeating-conic-gradient(var(--clr-border) 0 25%, #0000 0 50%) 50% / 10px 10px',
-                                        border:`1px solid ${(selected.toLowerCase()==='transparent')?'var(--clr-surface-2)':'var(--clr-border)'}`
+                                        border:`1px solid ${(`${selected}`.toLowerCase()==='transparent')?'var(--clr-surface-2)':'var(--clr-border)'}`
                                     }}
                                     onClick={()=>{onClickSwatches('transparent')}}
                                 >
                                     {
-                                        (selected.toLowerCase()==='transparent')&&(
+                                        (`${selected}`.toLowerCase()==='transparent')&&(
                                             <PiCheckCircleBold
                                                 style={{color:'var(--clr-grey-200)'}}
                                             />
@@ -114,12 +114,12 @@ const FormatTextColorModule = ({
                                             key={itm.id}
                                             style={{
                                                 background:itm.color,
-                                                border:`2px solid ${(selected.toLowerCase()===itm.value.toLowerCase())?'var(--clr-surface-2)':itm.border}`
+                                                border:`2px solid ${(`${selected}`.toLowerCase()===itm.value.toLowerCase())?'var(--clr-surface-2)':itm.border}`
                                             }}
                                             onClick={()=>{onClickSwatches(itm.value)}}
                                         >
                                             {
-                                                (selected.toLowerCase()===itm.value.toLowerCase())&&(
+                                                (`${selected}`.toLowerCase()===itm.value.toLowerCase())&&(
                                                     <PiCheckCircleBold
                                                         style={{color:'var(--clr-grey-200)'}}
                                                     />
@@ -177,12 +177,12 @@ const FormatTextColorModule = ({
                                 className="color-swatch"
                                 style={{
                                     background:'repeating-conic-gradient(var(--clr-border) 0 25%, #0000 0 50%) 50% / 10px 10px',
-                                    border:`1px solid ${(selected.toLowerCase()==='transparent')?'var(--clr-surface-2)':'var(--clr-border)'}`
+                                    border:`1px solid ${(`${selected}`.toLowerCase()==='transparent')?'var(--clr-surface-2)':'var(--clr-border)'}`
                                 }}
                                 onClick={()=>{onClickSwatches('transparent')}}
                             >
                                 {
-                                    (selected.toLowerCase()==='transparent')&&(
+                                    (`${selected}`.toLowerCase()==='transparent')&&(
                                         <PiCheckCircleBold
                                             style={{color:'var(--clr-grey-200)'}}
                                         />
@@ -196,12 +196,12 @@ const FormatTextColorModule = ({
                                         key={itm.id}
                                         style={{
                                             background:itm.color,
-                                            border:`2px solid ${(selected.toLowerCase()===itm.value.toLowerCase())?'var(--clr-surface-2)':itm.border}`
+                                            border:`2px solid ${(`${selected}`.toLowerCase()===itm.value.toLowerCase())?'var(--clr-surface-2)':itm.border}`
                                         }}
                                         onClick={()=>{onClickSwatches(itm.value)}}
                                     >
                                         {
-                                            (selected.toLowerCase()===itm.value.toLowerCase())&&(
+                                            (`${selected}`.toLowerCase()===itm.value.toLowerCase())&&(
                                                 <PiCheckCircleBold
                                                     style={{color:'var(--clr-grey-200)'}}
                                                 />

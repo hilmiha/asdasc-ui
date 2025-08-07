@@ -1,5 +1,5 @@
 import './App.scss'
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
 import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
@@ -21,6 +21,8 @@ import InputTextarea from './components/input-textarea';
 import Accordion from './components/accordion';
 import AccordionGroup from './components/accordion-group';
 import Wysiwyg from './components/wysiwyg';
+import type { Delta } from 'quill';
+import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 
 function App() {
     const {
@@ -127,31 +129,16 @@ function App() {
 
     const [listAccordionOpen, setListAccordionOpen] = useState<string[]>([])
 
-    const [content, setContent] = useState<string>('');
-    // const [readOnly, setReadOnly] = useState<boolean>(false);
-
-    const handleContentChange = (newContent: string) => {
-        setContent(newContent);
-        console.log('Content updated:', newContent);
-    };
+    const [content, setContent] = useState<Delta | undefined>(undefined);
+    const contentHtml = useMemo(()=>{
+        if(content){
+            console.log(content)
+            return QuillHtmlUtils.deltaToHtml(content)
+        }
+    },[content])
 
     const presetContent = () => {
-        const sampleContent = `
-        <h1>Welcome to Custom Quill Editor</h1>
-        <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
-        <ul>
-            <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
-            <li><u>Headers</u> and paragraph styles</li>
-            <li>Lists and alignment options</li>
-            <li>Color customization for text and background</li>
-            <li>Links, images, and special blocks</li>
-        </ul>
-        <blockquote>
-            The toolbar shows active formatting states and selected text information!
-        </blockquote>
-        <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
-        `;
-        setContent(sampleContent);
+        setContent(sampleContent as Delta);
     };
     return (
         <div>
@@ -263,35 +250,6 @@ function App() {
                         }
                         onClick={(idButton)=>{console.log(idButton)}}
                     />
-                </div>
-                <div>
-                    <Button txtLabel={'Preset'} onClick={()=>{presetContent()}}/>
-                    <Wysiwyg
-                        value={content}
-                        onChange={handleContentChange}
-                        readOnly={false}
-                        placeholder="Start typing..."
-                    />
-                    <iframe 
-                        style={{
-                            backgroundColor:"white",
-                            width:"100%",
-                            marginTop:'var(--space-300)',
-                            height:"300px"
-                        }}
-                        srcDoc={content}
-                    ></iframe>
-                    {/* <div 
-                        style={{ 
-                            border: '1px solid var(--clr-border)', 
-                            padding: 'var(--space-200)', 
-                            marginTop:"var(--space-300)",
-                            backgroundColor: 'white',
-                            maxHeight: '300px',
-                            overflow: 'auto',
-                        }}
-                        dangerouslySetInnerHTML={{ __html: content || '<em>No content yet...</em>' }}
-                    /> */}
                 </div>
                 <div>
                     <InputText
@@ -465,6 +423,40 @@ function App() {
                             txtLabel={'Cancel'}
                         />
                     </div>
+                </div>
+            </div>
+            <div style={{padding:'var(--space-300)'}}>
+                <Button txtLabel={'Preset'} onClick={()=>{presetContent()}}/>
+                <Wysiwyg
+                    value={content}
+                    onChange={(newValue)=>{setContent(newValue)}}
+                    readOnly={false}
+                    placeholder="Start typing..."
+                />
+                <div>
+                    <p>Value:</p>
+                    <div
+                        style={{
+                            maxHeight:"300px",
+                            width:"100%",
+                            overflow:'auto',
+                            whiteSpace:'pre'
+                        }}
+                    >
+                        {JSON.stringify(content, null, 4)}
+                    </div>
+                </div>
+                <div>
+                    <p>Value HTML inside iframe:</p>
+                    <iframe 
+                        style={{
+                            backgroundColor:"white",
+                            width:"100%",
+                            marginTop:'var(--space-300)',
+                            height:"300px"
+                        }}
+                        srcDoc={contentHtml}
+                    ></iframe>
                 </div>
             </div>
             <div>
@@ -902,155 +894,1066 @@ const menues:checkboxGroupOptionType[] =  [
     }
 ]
 
-// import React, { useState } from 'react';
-// import CustomQuillEditor from './components/text-editor';
-
-// const App: React.FC = () => {
-//   const [content, setContent] = useState<string>('');
-//   const [readOnly, setReadOnly] = useState<boolean>(false);
-
-//   const handleContentChange = (newContent: string) => {
-//     setContent(newContent);
-//     console.log('Content updated:', newContent);
-//   };
-
-//   const presetContent = () => {
-//     const sampleContent = `
-//       <h1>Welcome to Custom Quill Editor</h1>
-//       <p>This editor features a <strong>completely custom toolbar</strong> with all the functionality you need:</p>
-//       <ul>
-//         <li><em>Text formatting</em> (bold, italic, underline, strikethrough)</li>
-//         <li><u>Headers</u> and paragraph styles</li>
-//         <li>Lists and alignment options</li>
-//         <li>Color customization for text and background</li>
-//         <li>Links, images, and special blocks</li>
-//       </ul>
-//       <blockquote>
-//         The toolbar shows active formatting states and selected text information!
-//       </blockquote>
-//       <p style="text-align: center; color: #1976d2;">Try selecting text to see the toolbar update in real-time.</p>
-//     `;
-//     setContent(sampleContent);
-//   };
-
-//   return (
-//     <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
-//       <h1>Custom Quill Toolbar Demo</h1>
-      
-//       <div style={{ 
-//         marginBottom: '20px', 
-//         display: 'flex', 
-//         gap: '10px', 
-//         alignItems: 'center',
-//         flexWrap: 'wrap'
-//       }}>
-//         <button 
-//           onClick={() => setContent('')}
-//           style={{
-//             padding: '8px 16px',
-//             backgroundColor: '#f44336',
-//             color: 'white',
-//             border: 'none',
-//             borderRadius: '4px',
-//             cursor: 'pointer'
-//           }}
-//         >
-//           Clear Content
-//         </button>
-        
-//         <button 
-//           onClick={presetContent}
-//           style={{
-//             padding: '8px 16px',
-//             backgroundColor: '#2196f3',
-//             color: 'white',
-//             border: 'none',
-//             borderRadius: '4px',
-//             cursor: 'pointer'
-//           }}
-//         >
-//           Load Sample Content
-//         </button>
-        
-//         <label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-//           <input 
-//             type="checkbox" 
-//             checked={readOnly} 
-//             onChange={(e) => setReadOnly(e.target.checked)}
-//           />
-//           Read Only Mode
-//         </label>
-//       </div>
-
-//       <div style={{ marginBottom: '20px' }}>
-//         <CustomQuillEditor
-        //   value={content}
-        //   onChange={handleContentChange}
-        //   readOnly={readOnly}
-        //   placeholder="Start typing with your custom toolbar..."
-        //   style={{ 
-        //     border: '2px solid #e0e0e0',
-        //     borderRadius: '8px',
-        //     overflow: 'hidden'
-        //   }}
-//         />
-//       </div>
-
-//       <div style={{ marginTop: '30px' }}>
-//         <h3>Features of the Custom Toolbar:</h3>
-//         <div style={{ 
-//           display: 'grid', 
-//           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-//           gap: '15px',
-//           marginTop: '15px'
-//         }}>
-//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>✨ Real-time State</h4>
-//             <p style={{ margin: 0, fontSize: '14px' }}>
-//               Toolbar buttons show active formatting states and update as you move the cursor or change selection.
-//             </p>
-//           </div>
-          
-//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>🎨 Custom Styling</h4>
-//             <p style={{ margin: 0, fontSize: '14px' }}>
-//               Complete control over toolbar appearance, layout, and behavior with your own CSS and logic.
-//             </p>
-//           </div>
-          
-//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>🔧 Extended Features</h4>
-//             <p style={{ margin: 0, fontSize: '14px' }}>
-//               Easy to add custom buttons, dropdowns, and functionality that integrates seamlessly with Quill.
-//             </p>
-//           </div>
-          
-//           <div style={{ padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-//             <h4 style={{ margin: '0 0 10px 0', color: '#1976d2' }}>📱 Responsive Design</h4>
-//             <p style={{ margin: 0, fontSize: '14px' }}>
-//               Toolbar wraps and adapts to different screen sizes with flexible layout options.
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div style={{ marginTop: '30px' }}>
-//         <h3>Current Content Preview:</h3>
-//         <div 
-//           style={{ 
-//             border: '1px solid #ccc', 
-//             padding: '15px', 
-//             backgroundColor: '#fafafa',
-//             borderRadius: '8px',
-//             minHeight: '100px',
-//             maxHeight: '300px',
-//             overflow: 'auto'
-//           }}
-//           dangerouslySetInnerHTML={{ __html: content || '<em>No content yet...</em>' }}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;
+const sampleContent = {
+    "ops": [
+        {
+            "attributes": {
+                "height": "50px",
+                "width": "50px",
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": {
+                "image": "https://quilljs.com/assets/images/brand-asset.png"
+            }
+        },
+        {
+            "attributes": {
+                "align": "center"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "Delta"
+        },
+        {
+            "attributes": {
+                "header": 1
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "Deltas are a simple, yet expressive format that can be used to describe Quill's contents and changes. The format is a strict subset of JSON, is human readable, and easily parsible by machines. Deltas can describe any Quill document, includes all text and formatting information, without the ambiguity and complexity of HTML."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "italic": true,
+                "background": "transparent",
+                "color": "#2e96ba",
+                "bold": true
+            },
+            "insert": "Note"
+        },
+        {
+            "attributes": {
+                "blockquote": true
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "Don't be confused by its name "
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c",
+                "italic": true
+            },
+            "insert": "Delta"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "—Deltas represents both documents and changes to documents. If you think of Deltas as the instructions from going from one document to another, the way Deltas represent a document is by expressing the instructions starting from an empty document."
+        },
+        {
+            "attributes": {
+                "blockquote": true
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "Deltas are implemented as a separate "
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#f46b0c",
+                "link": "https://github.com/quilljs/delta/"
+            },
+            "insert": "standalone library"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": ", allowing its use outside of Quill. It is suitable for "
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#f46b0c",
+                "link": "https://en.wikipedia.org/wiki/Operational_transformation"
+            },
+            "insert": "Operational Transform"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": " and can be used in realtime, Google Docs like applications. For a more in depth explanation behind Deltas, see "
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#f46b0c",
+                "link": "https://quilljs.com/guides/designing-the-delta-format"
+            },
+            "insert": "Designing the Delta Format"
+        },
+        {
+            "attributes": {
+                "background": "transparent",
+                "color": "#21201c"
+            },
+            "insert": "."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "italic": true,
+                "background": "transparent",
+                "color": "#2e96ba",
+                "bold": true
+            },
+            "insert": "Note"
+        },
+        {
+            "attributes": {
+                "blockquote": true
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "transparent"
+            },
+            "insert": "It is not recommended to construct Deltas by hand—rather use the chainable insert(), delete(), and retain() methods to create new Deltas. You can use import() to access Delta from Quill."
+        },
+        {
+            "attributes": {
+                "blockquote": true
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Document"
+        },
+        {
+            "attributes": {
+                "header": 2
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "The Delta format is almost entirely self-explanatory—the example below describes the string \"Gandalf the Grey\" where \"Gandalf\" is bolded and \"Grey\" is colored #cccccc."
+        },
+        {
+            "insert": "\n{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ops: ["
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: 'Gandalf', attributes: { bold: true } },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: ' the ' },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: 'Grey', attributes: { color: '#cccccc' } }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "}"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "As its name would imply, describing content is actually a special case for Deltas. The above example is more specifically instructions to insert a bolded string \"Gandalf\", an unformatted string \" the \", followed by the string \"Grey\" colored #cccccc. When Deltas are used to describe content, it can be thought of as the content that would be created if the Delta was applied to an empty document."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Since Deltas are a data format, there is no inherent meaning to the values of "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "attribute"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " keypairs. For example, there is nothing in the Delta format that dictates color value must be in hex—this is a choice that Quill makes, and can be modified if desired with "
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#f46b0c",
+                "link": "https://github.com/quilljs/parchment/"
+            },
+            "insert": "Parchment"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Embeds"
+        },
+        {
+            "attributes": {
+                "header": 3
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "For non-text content such as images or formulas, the insert key can be an object. The object should have one key, which will be used to determine its type. This is the "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "blotName"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " if you are building custom content with "
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#f46b0c",
+                "link": "https://github.com/quilljs/parchment/"
+            },
+            "insert": "Parchment"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": ". Like text, embeds can still have an "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "attributes"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " key to describe formatting to be applied to the embed. All embeds have a length of one."
+        },
+        {
+            "insert": "\n{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ops: [{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    // An image link"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    insert: {"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "      image: 'https://quilljs.com/assets/images/icon.png'"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    attributes: {"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "      link: 'https://quilljs.com'"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  }]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "}"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": "Line Formatting"
+        },
+        {
+            "attributes": {
+                "header": 3
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": "Attributes associated with a newline character describes formatting for that line."
+        },
+        {
+            "insert": "\n{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ops: ["
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: 'The Two Towers' },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: '\\n', attributes: { header: 1 } },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: 'Aragorn sped on up the hill.\\n' }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "}"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Changes"
+        },
+        {
+            "attributes": {
+                "header": 2
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": "When you register a listener for Quill's "
+        },
+        {
+            "insert": "text-change"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": " event, one of the arguments you will get is a Delta describing what changed. In addition to "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#000000",
+                "code": true
+            },
+            "insert": "insert"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": " operations, this Delta might also have "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#000000",
+                "code": true
+            },
+            "insert": "delete"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": " or "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#000000",
+                "code": true
+            },
+            "insert": "retain"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#000000"
+            },
+            "insert": " operations."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Delete"
+        },
+        {
+            "attributes": {
+                "header": 3
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "The "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "delete"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " operation instructs exactly what it implies: delete the next number of characters."
+        },
+        {
+            "insert": "\n{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ops: ["
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { delete: 10 } // Delete the next 10 characters"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "}"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Since "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "delete"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " operations do not include "
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c",
+                "italic": true
+            },
+            "insert": "what"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " was deleted, a Delta is not reversible."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Retain"
+        },
+        {
+            "attributes": {
+                "header": 3
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "A "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "retain"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " operation simply means keep the next number of characters, without modification. If "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "attributes"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " is specified, it still means keep those characters, but apply the formatting specified by the "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "attributes"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " object. A "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "null"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " value for an attributes key is used to specify format removal."
+        },
+        {
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Starting with the above \"Gandalf the Grey\" example:"
+        },
+        {
+            "insert": "\n// {"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "//   ops: ["
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "//     { insert: 'Gandalf', attributes: { bold: true } },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "//     { insert: ' the ' },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "//     { insert: 'Grey', attributes: { color: '#cccccc' } }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "//   ]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "// }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n\n"
+        },
+        {
+            "insert": "{"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ops: ["
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    // Unbold and italicize \"Gandalf\""
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { retain: 7, attributes: { bold: null, italic: true } },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n\n"
+        },
+        {
+            "insert": "    // Keep \" the \" as is"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { retain: 5 },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n\n"
+        },
+        {
+            "insert": "    // Insert \"White\" formatted with color #fff"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { insert: 'White', attributes: { color: '#fff' } },"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n\n"
+        },
+        {
+            "insert": "    // Delete \"Grey\""
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "    { delete: 4 }"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "  ]"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "insert": "}"
+        },
+        {
+            "attributes": {
+                "code-block": "plain"
+            },
+            "insert": "\n"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": "Note that a Delta's instructions always starts at the beginning of the document. And because of plain "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "retain"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " operations, we never need to specify an index for a "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "delete"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " or "
+        },
+        {
+            "attributes": {
+                "background": "#f1f1f1",
+                "color": "#21201c",
+                "code": true
+            },
+            "insert": "insert"
+        },
+        {
+            "attributes": {
+                "background": "#ffffff",
+                "color": "#21201c"
+            },
+            "insert": " operation."
+        },
+        {
+            "insert": "\n"
+        }
+    ]
+};

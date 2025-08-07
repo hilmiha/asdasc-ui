@@ -62,24 +62,32 @@ const InsertImageModule = ({
                                 value={link}
                                 onChange={(newValue)=>{setLink(newValue)}}
                             />
-                            {/* <InputText
-                                type="text-no-space"
+                            <InputText
+                                type="number"
                                 txtPlaceholder="Enter height..."
                                 value={height}
                                 onChange={(newValue)=>{setHeight(newValue)}}
+                                config={{
+                                    sufixElement:'px',
+                                    isHideClear:true
+                                }}
                             />
                             <InputText
-                                type="text-no-space"
+                                type="number"
                                 txtPlaceholder="Enter width..."
                                 value={width}
                                 onChange={(newValue)=>{setWidth(newValue)}}
-                            /> */}
+                                config={{
+                                    sufixElement:'px',
+                                    isHideClear:true
+                                }}
+                            />
                             <div style={{display:'flex', justifyContent:'end'}}>
                                 <Button
                                     iconAfter={<PiArrowRightBold className="global-icon"/>}
                                     txtLabel={'Insert'}
                                     appearance="primary"
-                                    isDisabled={!link}
+                                    isDisabled={!link && !height && !width}
                                     onClick={()=>{
                                         setIsOpen(false)
                                         onInsert(selection, link, height, width)
@@ -122,24 +130,32 @@ const InsertImageModule = ({
                             value={link}
                             onChange={(newValue)=>{setLink(newValue)}}
                         />
-                        {/* <InputText
-                            type="text-no-space"
+                        <InputText
+                            type="number"
                             txtPlaceholder="Enter height..."
                             value={height}
                             onChange={(newValue)=>{setHeight(newValue)}}
+                            config={{
+                                sufixElement:'px',
+                                isHideClear:true
+                            }}
                         />
                         <InputText
-                            type="text-no-space"
+                            type="number"
                             txtPlaceholder="Enter width..."
                             value={width}
                             onChange={(newValue)=>{setWidth(newValue)}}
-                        /> */}
+                            config={{
+                                sufixElement:'px',
+                                isHideClear:true
+                            }}
+                        />
                         <div style={{display:'flex', justifyContent:'end'}}>
                             <Button
                                 iconAfter={<PiArrowRightBold className="global-icon"/>}
                                 txtLabel={'Insert'}
                                 appearance="primary"
-                                isDisabled={!link}
+                                isDisabled={!link && !height && !width}
                                 onClick={()=>{
                                     if(triggerButtonRef.current){
                                         triggerButtonRef.current.click()
