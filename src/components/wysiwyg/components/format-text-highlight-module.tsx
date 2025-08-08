@@ -7,10 +7,12 @@ import BottomSheet from "../../bottom-sheet"
 
 const FormatTextHighlightModule = ({
     selected,
-    onApply
+    onApply,
+    isDisabled = false
 }:{
     selected:string,
     onApply:(value:string)=>void
+    isDisabled:boolean
 }) =>{
     const {
         screenSize
@@ -51,9 +53,6 @@ const FormatTextHighlightModule = ({
         }
     },[screenSize])
 
-    useEffect(()=>{
-        console.log(selected)
-    },[selected])
     return(
         <>
             {
@@ -79,6 +78,7 @@ const FormatTextHighlightModule = ({
                             appearance="subtle"
                             onClick={()=>{setIsOpen(true)}}
                             isSelected={isOpen}
+                            isDisabled={isDisabled}
                         />
                         <BottomSheet
                             isOpen={isOpen}
@@ -160,6 +160,7 @@ const FormatTextHighlightModule = ({
                                         txtLabel={'Text Highlight'}
                                         appearance="subtle"
                                         isSelected={isDropdownOpen}
+                                        isDisabled={isDisabled}
                                     />
                                 )
                             }

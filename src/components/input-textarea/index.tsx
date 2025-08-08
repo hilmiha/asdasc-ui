@@ -21,6 +21,7 @@ export const InputTextarea = ({
     type = 'text',
     txtPlaceholder = undefined,
     value = '',
+    isDisabled = false,
     onChange = undefined,
     onBlur = undefined,
     onFocus = undefined,
@@ -40,9 +41,6 @@ export const InputTextarea = ({
     const [tampValue, setTampValue] = useState(value)
     const [isDirty, setIsDirty] = useState(false)
     const [isFocus, setIsFocus] = useState(false)
-    const isDisabled = useMemo(()=>{
-        return config?.isDisabled??false
-    },[config?.isDisabled])
 
     const inputTypeMode = useMemo(()=>{
         return ctrl.getInputTypeMode(type)
@@ -223,6 +221,7 @@ export interface _InputTextarea {
     type:inputTextareaType
     txtPlaceholder?:string;
     value?:string;
+    isDisabled?:boolean
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLTextAreaElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
     onBlur?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void
     onFocus?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void
@@ -238,7 +237,6 @@ export type inputTextareaConfigType = {
     initialLines?: number;
     isAllowBreakline?: boolean
 
-    isDisabled?:boolean
     isRequired?:boolean
     maxLength?: number
     minLength?: number

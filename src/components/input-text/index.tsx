@@ -21,6 +21,7 @@ const InputText = ({
     type = 'text',
     txtPlaceholder = undefined,
     value = '',
+    isDisabled = false,
     onChange = undefined,
     onBlur = undefined,
     onFocus = undefined,
@@ -40,9 +41,6 @@ const InputText = ({
     const [tampValue, setTampValue] = useState(value)
     const [isDirty, setIsDirty] = useState(false)
     const [isFocus, setIsFocus] = useState(false)
-    const isDisabled = useMemo(()=>{
-        return config?.isDisabled??false
-    },[config?.isDisabled])
 
     const inputTypeMode = useMemo(()=>{
         return ctrl.getInputTypeMode(type)
@@ -193,6 +191,7 @@ export interface _InputText {
 
     type:inputTextType
     txtPlaceholder?:string;
+    isDisabled?:boolean
     value?:string;
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
     onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
@@ -205,7 +204,6 @@ export interface _InputText {
 export type inputTextType = 'text' | 'text-no-space' | 'number-text' | 'number' | 'password';
 
 export type inputTextConfigType = {
-    isDisabled?:boolean
     isRequired?:boolean
     maxLength?: number
     minLength?: number

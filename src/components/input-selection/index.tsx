@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType } from "../_types";
-import { useContext, useMemo, useRef, useState, type JSX } from 'react';
+import { useContext, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -24,6 +24,7 @@ const InputSelection = ({
     txtPlaceholder = undefined,
     option = [],
     value = [],
+    isDisabled = false,
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
@@ -41,10 +42,6 @@ const InputSelection = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isDirty, setIsDirty] = useState(false)
     const [searchParam, setSearchParam] = useState('')
-    
-    const isDisabled = useMemo(()=>{
-        return config?.isDisabled??false
-    },[config?.isDisabled])
 
     const labelValue = useDeepCompareMemo(()=>{
         return ctrl.getDisplayValue(value, option)
@@ -274,6 +271,7 @@ interface _InputSelection {
 
     type:inputSelectType
     txtPlaceholder?:string;
+    isDisabled?:boolean
     option?:dropdownMenuOptionType[]
     value?:string[];
     onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
@@ -286,7 +284,6 @@ export type inputSelectType = 'single' | 'multiple';
 
 export type inputSelectConfigType = {
     isCombobox?:boolean
-    isDisabled?:boolean
     isRequired?:boolean
     minValue?:number
     maxValue?:number

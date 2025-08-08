@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType } from "../_types";
-import { useContext, useMemo, useRef, useState, type JSX } from 'react';
+import { useContext, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu, { type dropdownMenuOptionType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -22,6 +22,7 @@ const InputTags = ({
     txtPlaceholder = undefined,
     options = [],
     value = [],
+    isDisabled = false,
     onChange = undefined,
     onBlur = undefined,
     onFocus = undefined,
@@ -39,10 +40,6 @@ const InputTags = ({
 
     //States start ====
     const [isDirty, setIsDirty] = useState(false)
-    
-    const isDisabled = useMemo(()=>{
-        return config?.isDisabled??false
-    },[config?.isDisabled])
 
     const [searchParam, setSearchParam] = useState('')
 
@@ -267,6 +264,7 @@ interface _InputTag {
     txtPlaceholder?:string;
     options?:dropdownMenuOptionType[]
     value?:string[];
+    isDisabled?:boolean
     onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
     onBlur?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
     onFocus?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
@@ -278,7 +276,6 @@ interface _InputTag {
 export type inputTagType = 'text' | 'text-no-space';
 
 export type inputTagConfigType = {
-    isDisabled?:boolean
     isRequired?:boolean
     minValue?:number
     maxValue?:number

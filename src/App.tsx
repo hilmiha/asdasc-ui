@@ -1,5 +1,5 @@
 import './App.scss'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import Button from './components/button';
 import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
@@ -130,6 +130,7 @@ function App() {
     const [listAccordionOpen, setListAccordionOpen] = useState<string[]>([])
 
     const [content, setContent] = useState<Delta | undefined>(undefined);
+    const [contentError, setContentError] = useState<fieldErrorType>({isError:false, errorMessage:''})
     const contentHtml = useMemo(()=>{
         if(content){
             console.log(content)
@@ -140,6 +141,7 @@ function App() {
     const presetContent = () => {
         setContent(sampleContent as Delta);
     };
+    
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -261,16 +263,13 @@ function App() {
                         error={formError['testText']}
                         config={{
                             isRequired:true,
-                            isDisabled:false,
                         }}
                     />
                     <InputText
                         type='text'
                         txtPlaceholder='Enter test text...'
                         value={form['testText']}
-                        config={{
-                            isDisabled:true,
-                        }}
+                        isDisabled={true}
                     />
                     <InputPassword
                         txtPlaceholder='Enter password...'
@@ -279,7 +278,6 @@ function App() {
                         onValidate={(error)=>{onValidate('testPassword', error)}}
                         error={formError['testPassword']}
                         config={{
-                            isDisabled:false,
                             isRequired:true,
                             validRegex: [
                                 [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
@@ -292,7 +290,6 @@ function App() {
                         value={form['testTextNoSpace']}
                         onChange={(newValue)=>{onChange('testTextNoSpace', newValue)}}
                         config={{
-                            isDisabled:false,
                             maxLength:42
                         }}
                     />
@@ -304,7 +301,6 @@ function App() {
                         onValidate={(error)=>{onValidate('testTextNumber', error)}}
                         error={formError['testTextNumber']}
                         config={{
-                            isDisabled:false,
                             maxLength:42,
                             minValue:10,
                             maxValue:1000,
@@ -319,7 +315,6 @@ function App() {
                         onValidate={(error)=>{onValidate('testTextNumberText', error)}}
                         error={formError['testTextNumberText']}
                         config={{
-                            isDisabled:false,
                             maxLength:42
                         }}
                     />
@@ -332,7 +327,6 @@ function App() {
                         error={formError['testTextArea']}
                         config={{
                             isRequired:true,
-                            isDisabled:false,
                             maxLines:5,
                         }}
                     />
@@ -348,7 +342,6 @@ function App() {
                         option={listSelection}
                         config={{
                             isCombobox:true,
-                            isDisabled:false,
                             isRequired:true,
                             prefixElement:<PiCityBold className='global-icon'/>
                         }}
@@ -365,7 +358,6 @@ function App() {
                             isCombobox:true,
                             maxValue:10,
                             isRequired:true,
-                            isDisabled:false,
                         }}
                     />
                     <InputTag
@@ -378,7 +370,6 @@ function App() {
                         options={listTag}
                         config={{
                             isRequired:true,
-                            isDisabled:false,
                         }}
                     />
                     <div>
@@ -396,7 +387,6 @@ function App() {
                             ]}
                             config={{
                                 isRequired:true,
-                                isDisabled:false,
                             }}
                         />
                     </div>
@@ -409,7 +399,6 @@ function App() {
                             options={listCheckbox}
                             config={{
                                 isRequired:true,
-                                isDisabled:false,
                                 maxValue:5
                             }}
                         />
@@ -430,8 +419,14 @@ function App() {
                 <Wysiwyg
                     value={content}
                     onChange={(newValue)=>{setContent(newValue)}}
-                    readOnly={false}
+                    onValidate={(error)=>{setContentError(error)}}
+                    onBlur={()=>{console.log('here')}}
+                    isDisabled={false}
                     placeholder="Start typing..."
+                    error={contentError}
+                    config={{
+                        isRequired:true,
+                    }}
                 />
                 <div>
                     <p>Value:</p>
@@ -916,7 +911,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Delta"
         },
@@ -929,7 +924,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Deltas are a simple, yet expressive format that can be used to describe Quill's contents and changes. The format is a strict subset of JSON, is human readable, and easily parsible by machines. Deltas can describe any Quill document, includes all text and formatting information, without the ambiguity and complexity of HTML."
         },
@@ -954,14 +949,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Don't be confused by its name "
         },
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c",
+                "color": "#000000",
                 "italic": true
             },
             "insert": "Delta"
@@ -969,7 +964,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "—Deltas represents both documents and changes to documents. If you think of Deltas as the instructions from going from one document to another, the way Deltas represent a document is by expressing the instructions starting from an empty document."
         },
@@ -982,7 +977,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Deltas are implemented as a separate "
         },
@@ -997,7 +992,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": ", allowing its use outside of Quill. It is suitable for "
         },
@@ -1012,7 +1007,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " and can be used in realtime, Google Docs like applications. For a more in depth explanation behind Deltas, see "
         },
@@ -1027,7 +1022,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "transparent",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "."
         },
@@ -1051,7 +1046,8 @@ const sampleContent = {
         },
         {
             "attributes": {
-                "background": "transparent"
+                "background": "transparent",
+                "color": "#000000"
             },
             "insert": "It is not recommended to construct Deltas by hand—rather use the chainable insert(), delete(), and retain() methods to create new Deltas. You can use import() to access Delta from Quill."
         },
@@ -1064,7 +1060,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Document"
         },
@@ -1077,7 +1073,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "The Delta format is almost entirely self-explanatory—the example below describes the string \"Gandalf the Grey\" where \"Gandalf\" is bolded and \"Grey\" is colored #cccccc."
         },
@@ -1147,7 +1143,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "As its name would imply, describing content is actually a special case for Deltas. The above example is more specifically instructions to insert a bolded string \"Gandalf\", an unformatted string \" the \", followed by the string \"Grey\" colored #cccccc. When Deltas are used to describe content, it can be thought of as the content that would be created if the Delta was applied to an empty document."
         },
@@ -1157,14 +1153,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Since Deltas are a data format, there is no inherent meaning to the values of "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "attribute"
@@ -1172,7 +1168,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " keypairs. For example, there is nothing in the Delta format that dictates color value must be in hex—this is a choice that Quill makes, and can be modified if desired with "
         },
@@ -1187,7 +1183,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "."
         },
@@ -1197,7 +1193,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Embeds"
         },
@@ -1210,14 +1206,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "For non-text content such as images or formulas, the insert key can be an object. The object should have one key, which will be used to determine its type. This is the "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "blotName"
@@ -1225,7 +1221,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " if you are building custom content with "
         },
@@ -1240,14 +1236,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": ". Like text, embeds can still have an "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "attributes"
@@ -1255,7 +1251,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " key to describe formatting to be applied to the embed. All embeds have a length of one."
         },
@@ -1444,7 +1440,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Changes"
         },
@@ -1462,6 +1458,9 @@ const sampleContent = {
             "insert": "When you register a listener for Quill's "
         },
         {
+            "attributes": {
+                "color": "#000000"
+            },
             "insert": "text-change"
         },
         {
@@ -1522,7 +1521,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Delete"
         },
@@ -1535,14 +1534,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "The "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "delete"
@@ -1550,7 +1549,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " operation instructs exactly what it implies: delete the next number of characters."
         },
@@ -1602,14 +1601,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Since "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "delete"
@@ -1617,14 +1616,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " operations do not include "
         },
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c",
+                "color": "#000000",
                 "italic": true
             },
             "insert": "what"
@@ -1632,7 +1631,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " was deleted, a Delta is not reversible."
         },
@@ -1642,7 +1641,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Retain"
         },
@@ -1655,14 +1654,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "A "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "retain"
@@ -1670,14 +1669,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " operation simply means keep the next number of characters, without modification. If "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "attributes"
@@ -1685,14 +1684,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " is specified, it still means keep those characters, but apply the formatting specified by the "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "attributes"
@@ -1700,14 +1699,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " object. A "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "null"
@@ -1715,7 +1714,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " value for an attributes key is used to specify format removal."
         },
@@ -1725,7 +1724,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Starting with the above \"Gandalf the Grey\" example:"
         },
@@ -1903,14 +1902,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": "Note that a Delta's instructions always starts at the beginning of the document. And because of plain "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "retain"
@@ -1918,14 +1917,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " operations, we never need to specify an index for a "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "delete"
@@ -1933,14 +1932,14 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " or "
         },
         {
             "attributes": {
                 "background": "#f1f1f1",
-                "color": "#21201c",
+                "color": "#000000",
                 "code": true
             },
             "insert": "insert"
@@ -1948,7 +1947,7 @@ const sampleContent = {
         {
             "attributes": {
                 "background": "#ffffff",
-                "color": "#21201c"
+                "color": "#000000"
             },
             "insert": " operation."
         },

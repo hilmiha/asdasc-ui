@@ -1,6 +1,94 @@
 
 .wysiwyg-box {
     margin: var(--space-50);
+
+    &.has-error{
+        .toolbar-container{
+            border-color: var(--clr-danger-700);
+        }
+        .editor-box{
+            border-color: var(--clr-danger-700);
+        }
+        .footer-box{
+            border-color: var(--clr-danger-700);
+        }
+    }
+    
+    // Styles when it HAS a .footer-box child
+    &:has(.footer-box) {
+        .editor-box{
+            border-bottom: 0px;
+        }
+        &.rounded .footer-box{
+            border-bottom-left-radius: var(--space-100);
+            border-bottom-right-radius: var(--space-100);
+        }
+        &.box .footer-box{
+            border-bottom-left-radius: var(--space-0);
+            border-bottom-right-radius: var(--space-0);
+        }
+        &.circle .footer-box{
+            border-bottom-left-radius: var(--space-200);
+            border-bottom-right-radius: var(--space-200);
+        }
+    }
+    
+    // Styles when it does NOT have a .footer-box child
+    &:not(:has(.footer-box)) {
+        &.rounded .editor-box{
+            border-bottom-left-radius: var(--space-100);
+            border-bottom-right-radius: var(--space-100);
+        }
+        &.box .editor-box{
+            border-bottom-left-radius: var(--space-0);
+            border-bottom-right-radius: var(--space-0);
+        }
+        &.circle .editor-box{
+            border-bottom-left-radius: var(--space-200);
+            border-bottom-right-radius: var(--space-200);
+        }
+    }
+
+    // Styles when it does NOT have a .footer-box child
+    &:not(:has(.toolbar-container)) {
+        &.rounded .editor-box{
+            border-top-left-radius: var(--space-100);
+            border-top-right-radius: var(--space-100);
+        }
+        &.box .editor-box{
+            border-top-left-radius: var(--space-0);
+            border-top-right-radius: var(--space-0);
+        }
+        &.circle .editor-box{
+            border-top-left-radius: var(--space-200);
+            border-top-right-radius: var(--space-200);
+        }
+    }
+
+    &.disabled{
+        .toolbar-container{
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                hsl(from var(--clr-surface-4) h s l / 0.2) 4px
+            );
+            border-style: dashed;
+        }
+        .editor-box{
+            border-style: dashed;
+        }
+        .footer-box{
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 2px,
+                hsl(from var(--clr-surface-4) h s l / 0.2) 4px
+            );
+            border-style: dashed;
+        }
+    }
+
     .toolbar-container{
         background-color: var(--clr-surface-2);
         border: 1px solid var(--clr-border);
@@ -39,18 +127,6 @@
         }
     }
     .editor-box{
-        &.rounded{
-            border-bottom-left-radius: var(--space-100);
-            border-bottom-right-radius: var(--space-100);
-        }
-        &.box{
-            border-bottom-left-radius: var(--space-0);
-            border-bottom-right-radius: var(--space-0);
-        }
-        &.circle{
-            border-bottom-left-radius: var(--space-200);
-            border-bottom-right-radius: var(--space-200);
-        }
         max-height: 320px;
         overflow: auto;
         border: 1px solid var(--clr-border);
@@ -97,6 +173,26 @@
                 font-family: monospace;
                 margin: 16px 0;
             }
+        }
+    }
+    .footer-box{
+        background-color: var(--clr-surface-2);
+        border: 1px solid var(--clr-border);
+        display: flex;
+        align-items: center;
+        padding: var(--space-100) var(--space-200);
+        min-height: 17px;
+
+        .count-box{
+            flex-grow: 1;
+            text-align: end;
+            color: var(--clr-surface-5);
+        }
+        .error-box{
+            display: flex;
+            align-items: center;
+            gap: var(--space-100);
+            color: var(--clr-danger-700);
         }
     }
     

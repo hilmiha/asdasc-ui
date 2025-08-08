@@ -12,6 +12,7 @@ const CheckboxGroup = ({
     style = undefined,
     options = [],
     value = [],
+    isDisabled = false,
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
@@ -50,7 +51,7 @@ const CheckboxGroup = ({
                                             ctrl.onCheckboxClicked(i, value, e, onChange, config, onValidate)
                                         }
                                     }}
-                                    isDisabled={(i.isDisabled)??(config?.isDisabled)}
+                                    isDisabled={(i.isDisabled)??(isDisabled)}
                                     isIndeterminate={isIndeterminate}
                                 />
                                 {
@@ -67,7 +68,7 @@ const CheckboxGroup = ({
                                                         txtLabel={k.txtLabel}
                                                         txtSublabel={k.txtSublabel}
                                                         onClick={(_, e)=>{ctrl.onCheckboxClicked(k, value, e, onChange, config, onValidate)}}
-                                                        isDisabled={(k.isDisabled)??(config?.isDisabled)}
+                                                        isDisabled={(k.isDisabled)??(isDisabled)}
                                                     />
                                                 ))
                                             }
@@ -97,6 +98,7 @@ interface _CheckboxGroup{
     className?:string
     options:checkboxGroupOptionType[]
     value?:string[],
+    isDisabled?:boolean
     onChange?:(newValue:string[], option:checkboxGroupOptionType|checkboxGroupChildOptionType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
@@ -125,7 +127,6 @@ export type checkboxGroupChildOptionType = {
 }
 
 export type checkboxGroupConfigType = {
-    isDisabled?:boolean
     isRequired?:boolean
     maxValue?:number
 }

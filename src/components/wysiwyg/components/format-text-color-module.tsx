@@ -7,10 +7,12 @@ import BottomSheet from "../../bottom-sheet"
 
 const FormatTextColorModule = ({
     selected,
-    onApply
+    onApply,
+    isDisabled = false
 }:{
     selected:string,
     onApply:(value:string)=>void
+    isDisabled:boolean
 }) =>{
     const {
         screenSize
@@ -49,10 +51,7 @@ const FormatTextColorModule = ({
             setIsOpen(false)
         }
     },[screenSize])
-
-    useEffect(()=>{
-        console.log(selected)
-    },[selected])
+    
     return(
         <>
             {
@@ -79,6 +78,7 @@ const FormatTextColorModule = ({
                             appearance="subtle"
                             onClick={()=>{setIsOpen(true)}}
                             isSelected={isOpen}
+                            isDisabled={isDisabled}
                         />
                         <BottomSheet
                             isOpen={isOpen}
@@ -161,6 +161,7 @@ const FormatTextColorModule = ({
                                         txtLabel={'Text Color'}
                                         appearance="subtle"
                                         isSelected={isDropdownOpen}
+                                        isDisabled={isDisabled}
                                     />
                                 )
                             }

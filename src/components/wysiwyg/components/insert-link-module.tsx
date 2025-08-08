@@ -10,10 +10,12 @@ import Quill from "quill"
 
 const InsertLinkModule = ({
     quill,
-    onInsert
+    onInsert,
+    isDisabled = false
 }:{
     quill: Quill | null,
-    onInsert:(selection:{index:number, length:number}, link:string, text:string)=>void
+    onInsert:(selection:{index:number, length:number}, link:string, text:string)=>void,
+    isDisabled:boolean
 }) =>{
     const {
         screenSize
@@ -42,6 +44,7 @@ const InsertLinkModule = ({
                             appearance="subtle"
                             onClick={()=>{setIsOpen(true)}}
                             isSelected={isOpen}
+                            isDisabled={isDisabled}
                         />
                         <BottomSheet
                             isOpen={isOpen}
@@ -95,6 +98,7 @@ const InsertLinkModule = ({
                                         txtLabel={'Insert Link'}
                                         appearance="subtle"
                                         isSelected={isDropdownOpen}
+                                        isDisabled={isDisabled}
                                     />
                                 )
                             }

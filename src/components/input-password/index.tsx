@@ -14,6 +14,7 @@ const InputPassword = ({
     shape = undefined,
     txtPlaceholder = undefined,
     value = '',
+    isDisabled = false,
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
@@ -35,6 +36,7 @@ const InputPassword = ({
             style={style?.input}
             type={(isShowPassword)?("text"):('password')}
             txtPlaceholder={txtPlaceholder}
+            isDisabled={isDisabled}
             onChange={onChange}
             onValidate={onValidate}
             config={config}
@@ -65,6 +67,7 @@ interface _InputPassword {
     shape?:globalShapeType;
     txtPlaceholder?:string;
     value?:string;
+    isDisabled?:boolean
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void;

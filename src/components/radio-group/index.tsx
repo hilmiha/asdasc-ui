@@ -10,6 +10,7 @@ const RadioGroup = ({
     style = undefined,
     options = [],
     value = '',
+    isDisabled = false,
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
@@ -35,7 +36,7 @@ const RadioGroup = ({
                             txtLabel={i.txtLabel}
                             txtSublabel={i.txtSublabel}
                             onClick={(_, e)=>{ctrl.onRadioClicked(i, value, e, onChange, config, onValidate)}}
-                            isDisabled={(i.isDisabled)??(config?.isDisabled)}
+                            isDisabled={(i.isDisabled)??(isDisabled)}
                         />
                     ))
                 }
@@ -58,6 +59,7 @@ interface _RadioGroup{
     className?:string
     options:radioGroupOptionType[]
     value?:string,
+    isDisabled?:boolean
     onChange?:(newValue:string, option:radioGroupOptionType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void
@@ -75,6 +77,5 @@ export type radioGroupOptionType = {
 };
 
 export type radioGroupConfigType = {
-    isDisabled?:boolean
     isRequired?:boolean
 }

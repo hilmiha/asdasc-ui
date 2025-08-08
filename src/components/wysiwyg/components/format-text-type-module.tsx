@@ -5,10 +5,12 @@ import Tooltip from "../../tooltip"
 
 const FormatTextTypeModule = ({
     selected,
-    onClickOption
+    onClickOption,
+    isDisabled = false
 }:{
     selected:string
     onClickOption:(value:string)=>void
+    isDisabled:boolean
 }) =>{
     return(
         <Tooltip
@@ -20,6 +22,7 @@ const FormatTextTypeModule = ({
                     <Button 
                         txtLabel={`${selected?('Header '):('')}${selected || 'Normal'}`}
                         iconAfter={<PiCaretDownBold/>}
+                        isDisabled={isDisabled}
                     />
                 }
                 options={[

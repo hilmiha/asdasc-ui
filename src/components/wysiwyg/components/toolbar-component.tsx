@@ -12,10 +12,14 @@ import clsx from "clsx";
 
 const ToolbarComponent = ({
     quill,
-    shape
+    shape,
+    moduleList = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block'],
+    isDisabled = false
 }:{
     quill: Quill | null,
     shape?:globalShapeType
+    moduleList:wysiwygModulesType[]
+    isDisabled:boolean
 }) =>{
     const [activeFormats, setActiveFormats] = useState<{[key: string]: any}>({});
     // const [selectedText, setSelectedText] = useState<string>('');
@@ -188,6 +192,7 @@ const ToolbarComponent = ({
     
         // Listen for selection changes
         quill.on('selection-change', updateFormats);
+        
         // Listen for text changes to update formats
         quill.on('text-change', updateFormats);
         
@@ -205,153 +210,252 @@ const ToolbarComponent = ({
             "toolbar-container",
             shape
         )}>
-            <IconButton
-                icon={<PiTextBBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Bold"
-                onClick={() => formatText('bold')}
-                isSelected={activeFormats.bold}
-            />
-            <IconButton
-                icon={<PiTextItalicBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Italic"
-                onClick={() => formatText('italic')}
-                isSelected={activeFormats.italic}
-            />
-            <IconButton
-                icon={<PiTextUnderlineBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Underline"
-                onClick={() => formatText('underline')}
-                isSelected={activeFormats.underline}
-            />
-            <IconButton
-                icon={<PiTextStrikethroughBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Strikethrough"
-                onClick={() => formatText('strike')}
-                isSelected={activeFormats.strike}
-            />
-            <IconButton
-                icon={<PiCodeBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Code"
-                onClick={() => formatText('code')}
-                isSelected={activeFormats.code}
-            />
-            <IconButton
-                icon={<PiTextSubscriptBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Subscript"
-                onClick={() => formatText('script', 'sub')}
-                isSelected={activeFormats.script==='sub'}
-            />
-            <IconButton
-                icon={<PiTextSuperscriptBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Superscript"
-                onClick={() => formatText('script', 'super')}
-                isSelected={activeFormats.script==='super'}
-            />
-            <FormatTextTypeModule
-                selected={activeFormats.header}
-                onClickOption={(value)=>{applyBlock('header', value || false)}}
-            />
-            <IconButton
-                icon={<PiListNumbersBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Numbered List"
-                onClick={() => applyBlock('list', 'ordered')}
-                isSelected={activeFormats.list === 'ordered'}
-            />
-            <IconButton
-                icon={<PiListBulletsBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Bullet List"
-                onClick={() => applyBlock('list', 'bullet')}
-                isSelected={activeFormats.list === 'bullet'}
-            />
-            <IconButton
-                icon={<PiTextOutdentBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Decrease Indent"
-                onClick={() => applyBlock('indent', '-1')}
-                isDisabled={!activeFormats.indent && activeFormats.indent !== 0}
-            />
-            <IconButton
-                icon={<PiTextIndentBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Increase Indent"
-                onClick={() => applyBlock('indent', '+1')}
-                isDisabled={activeFormats.indent === 8}
-            />
-            <IconButton
-                icon={<PiTextAlignLeftBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Align Left"
-                onClick={() => applyBlock('align', '')}
-                isSelected={!activeFormats.align}
-            />
-            <IconButton
-                icon={<PiTextAlignCenterBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Align Center"
-                onClick={() => applyBlock('align', 'center')}
-                isSelected={activeFormats.align === 'center'}
-            />
-            <IconButton
-                icon={<PiTextAlignRightBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Align Right"
-                onClick={() => applyBlock('align', 'right')}
-                isSelected={activeFormats.align === 'right'}
-            />
-            <IconButton
-                icon={<PiTextAlignJustifyBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Align Justify"
-                onClick={() => applyBlock('align', 'justify')}
-                isSelected={activeFormats.align === 'justify'}
-            />
-            <FormatTextColorModule
-                selected={activeFormats.color || '#000000'}
-                onApply={(value) => formatText('color', value)}
-            />
-            <FormatTextHighlightModule
-                selected={activeFormats.background || 'transparent'}
-                onApply={(value) => formatText('background', value)}
-            />
-            <InsertLinkModule
-                quill={quill}
-                onInsert={(selection, link, text)=>{insertLink(selection, link, text)}}
-            />
-            <InsertImageModule
-                quill={quill}
-                onInsert={(selection, link, height, width)=>{insertImage(selection, link, width, height)}}
-            />
-            <IconButton
-                icon={<PiQuotesBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Blockquote"
-                onClick={() => applyBlock('blockquote')}
-                isSelected={activeFormats.blockquote}
-            />
-            <IconButton
-                icon={<PiCodeBlockBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Code Block"
-                onClick={() => applyBlock('code-block')}
-                isSelected={activeFormats['code-block']}
-            />
+            {
+                moduleList.includes('bold')&&(
+                    <IconButton
+                        icon={<PiTextBBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Bold"
+                        onClick={() => formatText('bold')}
+                        isSelected={activeFormats.bold}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('italic')&&(
+                    <IconButton
+                        icon={<PiTextItalicBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Italic"
+                        onClick={() => formatText('italic')}
+                        isSelected={activeFormats.italic}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('underline')&&(
+                    <IconButton
+                        icon={<PiTextUnderlineBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Underline"
+                        onClick={() => formatText('underline')}
+                        isSelected={activeFormats.underline}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('strike')&&(
+                    <IconButton
+                        icon={<PiTextStrikethroughBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Strikethrough"
+                        onClick={() => formatText('strike')}
+                        isSelected={activeFormats.strike}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('code')&&(
+                    <IconButton
+                        icon={<PiCodeBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Code"
+                        onClick={() => formatText('code')}
+                        isSelected={activeFormats.code}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('subscript')&&(
+                    <IconButton
+                        icon={<PiTextSubscriptBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Subscript"
+                        onClick={() => formatText('script', 'sub')}
+                        isSelected={activeFormats.script==='sub'}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('superscript')&&(
+                    <IconButton
+                        icon={<PiTextSuperscriptBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Superscript"
+                        onClick={() => formatText('script', 'super')}
+                        isSelected={activeFormats.script==='super'}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('text-type')&&(
+                    <FormatTextTypeModule
+                        selected={activeFormats.header}
+                        onClickOption={(value)=>{applyBlock('header', value || false)}}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('order-list')&&(
+                    <IconButton
+                        icon={<PiListNumbersBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Ordered List"
+                        onClick={() => applyBlock('list', 'ordered')}
+                        isSelected={activeFormats.list === 'ordered'}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('unorder-list')&&(
+                    <IconButton
+                        icon={<PiListBulletsBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Bullet List"
+                        onClick={() => applyBlock('list', 'bullet')}
+                        isSelected={activeFormats.list === 'bullet'}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('indent')&&(
+                    <>
+                        <IconButton
+                            icon={<PiTextOutdentBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Decrease Indent"
+                            onClick={() => applyBlock('indent', '-1')}
+                            isDisabled={(!activeFormats.indent && activeFormats.indent !== 0) || isDisabled}
+                        />
+                        <IconButton
+                            icon={<PiTextIndentBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Increase Indent"
+                            onClick={() => applyBlock('indent', '+1')}
+                            isDisabled={(activeFormats.indent === 8) || isDisabled}
+                        />
+                    </>
+                )
+            }
+            {
+                moduleList.includes('align')&&(
+                    <>
+                        <IconButton
+                            icon={<PiTextAlignLeftBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Align Left"
+                            onClick={() => applyBlock('align', '')}
+                            isSelected={!activeFormats.align}
+                            isDisabled={isDisabled}
+                        />
+                        <IconButton
+                            icon={<PiTextAlignCenterBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Align Center"
+                            onClick={() => applyBlock('align', 'center')}
+                            isSelected={activeFormats.align === 'center'}
+                            isDisabled={isDisabled}
+                        />
+                        <IconButton
+                            icon={<PiTextAlignRightBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Align Right"
+                            onClick={() => applyBlock('align', 'right')}
+                            isSelected={activeFormats.align === 'right'}
+                            isDisabled={isDisabled}
+                        />
+                        <IconButton
+                            icon={<PiTextAlignJustifyBold className="global-icon"/>}
+                            appearance="subtle"
+                            txtLabel="Align Justify"
+                            onClick={() => applyBlock('align', 'justify')}
+                            isSelected={activeFormats.align === 'justify'}
+                            isDisabled={isDisabled}
+                        />
+                    </>
+                )
+            }
+            {
+                moduleList.includes('color')&&(
+                    <FormatTextColorModule
+                        selected={activeFormats.color || '#000000'}
+                        onApply={(value) => formatText('color', value)}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('highlight')&&(
+                    <FormatTextHighlightModule
+                        selected={activeFormats.background || 'transparent'}
+                        onApply={(value) => formatText('background', value)}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('link')&&(
+                    <InsertLinkModule
+                        quill={quill}
+                        onInsert={(selection, link, text)=>{insertLink(selection, link, text)}}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('image')&&(
+                    <InsertImageModule
+                        quill={quill}
+                        onInsert={(selection, link, height, width)=>{insertImage(selection, link, width, height)}}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('quote-block')&&(
+                    <IconButton
+                        icon={<PiQuotesBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Blockquote"
+                        onClick={() => applyBlock('blockquote')}
+                        isSelected={activeFormats.blockquote}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
+            {
+                moduleList.includes('code-block')&&(
+                    <IconButton
+                        icon={<PiCodeBlockBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Code Block"
+                        onClick={() => applyBlock('code-block')}
+                        isSelected={activeFormats['code-block']}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
             <IconButton
                 icon={<PiEraserBold className="global-icon"/>}
                 appearance="subtle"
                 txtLabel="Clear Formatting"
                 onClick={() => clearFormats()}
+                isDisabled={isDisabled}
             />
         </div>
     )
 }
 
 export default ToolbarComponent
+
+export type wysiwygModulesType = 'bold' | 'italic' | 'underline' | 'strike' | 'code' | 'subscript' | 'superscript' | 'text-type' | 'order-list' | 'unorder-list' | 'indent' | 'align' | 'color' | 'highlight' | 'link' | 'image' | 'quote-block' | 'code-block'

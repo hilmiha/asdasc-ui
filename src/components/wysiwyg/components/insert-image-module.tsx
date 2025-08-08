@@ -10,10 +10,12 @@ import type Quill from "quill"
 
 const InsertImageModule = ({
     quill,
-    onInsert
+    onInsert,
+    isDisabled
 }:{
     quill: Quill | null,
     onInsert:(selection:{index:number, length:number}, link:string, height:string, width:string)=>void
+    isDisabled:boolean
 }) =>{
     const {
         screenSize
@@ -43,6 +45,7 @@ const InsertImageModule = ({
                             appearance="subtle"
                             onClick={()=>{setIsOpen(true)}}
                             isSelected={isOpen}
+                            isDisabled={isDisabled}
                         />
                         <BottomSheet
                             isOpen={isOpen}
@@ -111,6 +114,7 @@ const InsertImageModule = ({
                                         txtLabel={'Insert Link'}
                                         appearance="subtle"
                                         isSelected={isDropdownOpen}
+                                        isDisabled={isDisabled}
                                     />
                                 )
                             }
