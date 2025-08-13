@@ -2,20 +2,14 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import RadioButton from '../radio-button';
-import type { fieldErrorType } from '../_types';
-import { PiWarningBold } from 'react-icons/pi';
+import type { optionItemType } from '../_types';
 
 const RadioGroup = ({
     className = undefined,
-    style = undefined,
     options = [],
-    value = '',
+    selectedId = '',
     isDisabled = false,
     onChange = undefined,
-    error = undefined,
-    onValidate = undefined,
-
-    config = undefined
 }:_RadioGroup) =>{
     return(
         <div
@@ -24,30 +18,17 @@ const RadioGroup = ({
                 className
             )}
         >
-            <div 
-                className='checkbox-group-container'
-                style={style?.radioGroupContainer}
-            >
-                {
-                    options.map((i)=>(
-                        <RadioButton
-                            key={i.id}
-                            isSelected={i.id===value}
-                            txtLabel={i.txtLabel}
-                            txtSublabel={i.txtSublabel}
-                            onClick={(_, e)=>{ctrl.onRadioClicked(i, value, e, onChange, config, onValidate)}}
-                            isDisabled={(i.isDisabled)??(isDisabled)}
-                        />
-                    ))
-                }
-            </div>
             {
-                (error&& error.isError && error.errorMessage)&&(
-                    <div className='error-box'>
-                        <PiWarningBold className='global-icon'/>
-                        <p>{error.errorMessage}</p>
-                    </div>
-                )
+                options.map((i)=>(
+                    <RadioButton
+                        key={i.id}
+                        isSelected={selectedId===i.id}
+                        txtLabel={i.txtLabel}
+                        txtSublabel={i.txtSublabel}
+                        onClick={(_, e)=>{ctrl.onRadioClicked(i, selectedId, e, onChange)}}
+                        isDisabled={(i.isDisabled)??(isDisabled)}
+                    />
+                ))
             }
         </div>
     )
@@ -57,25 +38,8 @@ export default RadioGroup
 
 interface _RadioGroup{
     className?:string
-    options:radioGroupOptionType[]
-    value?:string,
+    options:optionItemType[]
+    selectedId?: string; 
     isDisabled?:boolean
-    onChange?:(newValue:string, option:radioGroupOptionType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
-    error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:string)=>void
-    config?:radioGroupConfigType;
-    style?:{
-        radioGroupContainer?:React.CSSProperties,
-    }
-}
-
-export type radioGroupOptionType = {
-    id:string,
-    txtLabel:string,
-    txtSublabel?:string,
-    isDisabled?:boolean,
-};
-
-export type radioGroupConfigType = {
-    isRequired?:boolean
+    onChange?:(newValue:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
 }

@@ -23,8 +23,8 @@ import Wysiwyg from './components/wysiwyg';
 import type { Delta } from 'quill';
 import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 import CheckboxButton from './components/checkbox-button';
-import CheckboxGroup from './components/checkbox-group';
 import RadioButton from './components/radio-button';
+import CheckboxGroup from './components/checkbox-group';
 
 function App() {
     const {
@@ -399,20 +399,15 @@ function App() {
                     </div>
                     <div>
                         <RadioGroup
-                            value={form['radioStatus']}
+                            selectedId={form['radioStatus']}
                             onChange={(newValue)=>{onChange('radioStatus', newValue)}}
-                            onValidate={(error)=>{onValidate('radioStatus', error)}}
-                            error={formError['radioStatus']}
                             options={[
-                                {id:'new', txtLabel:'New', txtSublabel:'Newly created backlog.'},
-                                {id:'pending', txtLabel:'Pending', txtSublabel:'Backlog that need to be reviewed.'},
-                                {id:'in-progress', txtLabel:'In Progress', txtSublabel:'Backlog that on progress of development.'},
-                                {id:'done', txtLabel:'Done', txtSublabel:'Backlog that have finish its development.'},
-                                {id:'closed', txtLabel:'Closed', txtSublabel:'Backlog that not needed anymore or canceled on its development.', isDisabled:true},
+                                {id:'new', txtLabel:'New'},
+                                {id:'pending', txtLabel:'Pending'},
+                                {id:'in-progress', txtLabel:'In Progress'},
+                                {id:'done', txtLabel:'Done'},
+                                {id:'closed', txtLabel:'Closed', isDisabled:true},
                             ]}
-                            config={{
-                                isRequired:true,
-                            }}
                         />
                     </div>
                     <div>
