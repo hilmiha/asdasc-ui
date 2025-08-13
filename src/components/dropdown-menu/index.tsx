@@ -97,6 +97,10 @@ const DropdownMenu = ({
                 onOpen={onOpen}
                 isDisabled={isDisabled}
                 floatingConfig={floatingConfig}
+                style={{
+                    container:style?.container,
+                    triggerBox:style?.triggerBox
+                }}
             >
                 <OptionsComponent
                     style={style}
@@ -128,6 +132,10 @@ const DropdownMenu = ({
                     floatingConfig={{
                         ...floatingConfig,
                         isChildOpen:isChildOpen
+                    }}
+                    style={{
+                        container:style?.container,
+                        triggerBox:style?.triggerBox
                     }}
                 >
                     <OptionsComponent

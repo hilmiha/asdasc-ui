@@ -170,12 +170,11 @@ const Dropdown = ({
                                                 ['closing']:(!isShowOption)
                                             }
                                         )}
-                                        
+                                        style={style?.container}
                                     >
                                         <div 
                                             className='content-box'
                                             style={{
-                                                ...style?.container,
                                                 gridTemplateRows:modalGridStyle,
                                             }}
                                         >

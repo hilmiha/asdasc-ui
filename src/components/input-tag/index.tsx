@@ -202,6 +202,10 @@ const InputTags = ({
                                 textLabel:{
                                     fontWeight:'var(--font-weight-normal)'
                                 }
+                            },
+                            container:{
+                                display:filteredOptions.length===0?('none'):(undefined),
+                                border:'0px'
                             }
                         }}
                         onClick={(_, option, e)=>{
