@@ -6,8 +6,8 @@ import Button, { type buttonStyleType } from "../button";
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import IconButton, { type iconButtonStyleType } from '../icon-button';
 import { PiCaretDownBold, PiCaretUpBold } from 'react-icons/pi';
-import type { globalShapeType } from '../_types';
-import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
+import type { globalShapeType, optionItemType } from '../_types';
+import DropdownMenu, { type dropdownMenuStyleType } from '../dropdown-menu';
 
 const SplitButton = ({
     ref = undefined,
@@ -89,7 +89,7 @@ interface _SplitButton {
     appearance?: 'neutral' | 'primary';
     shape?:globalShapeType;
     txtLabel:string;
-    options:dropdownMenuOptionType[]
+    options:optionItemType[]
     optionSelected?:string[]
     iconBefore?:JSX.Element;
     iconAfter?:JSX.Element;

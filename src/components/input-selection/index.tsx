@@ -1,10 +1,10 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import type { fieldErrorType, globalShapeType } from "../_types";
+import type { fieldErrorType, globalShapeType, optionItemType } from "../_types";
 import { useContext, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import DropdownMenu, { type dropdownMenuOptionType, type dropdownMenuStyleType } from '../dropdown-menu';
+import DropdownMenu, { type dropdownMenuStyleType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import InputText from '../input-text';
@@ -272,9 +272,9 @@ interface _InputSelection {
     type:inputSelectType
     txtPlaceholder?:string;
     isDisabled?:boolean
-    option?:dropdownMenuOptionType[]
+    option?:optionItemType[]
     value?:string[];
-    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void
     config?:inputSelectConfigType

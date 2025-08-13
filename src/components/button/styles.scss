@@ -148,7 +148,8 @@
     }
     &.circle{
         border-radius: var(--space-200);
-        padding: var(--space-50) var(--space-300);
+        padding-left: var(--space-300);
+        padding-right: var(--space-300);
 
         &:has(.icon-before){
             padding-left: var(--space-250);

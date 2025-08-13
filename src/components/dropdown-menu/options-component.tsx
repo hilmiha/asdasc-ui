@@ -3,10 +3,11 @@ import * as ctrl from './controller';
 import { useContext } from "react";
 import Button from "../button"
 import DropdownMenu from ".";
-import { PiCaretRightBold, PiCheckBold, PiCircleBold } from "react-icons/pi";
+import { PiCaretRightBold, PiCircleBold } from "react-icons/pi";
 import { GlobalContext, type _GlobalContextType } from "../../context/global-context";
-import type { globalShapeType } from "../_types";
-import type { dropdownFloatingConfigType, dropdownMenuOptionType, dropdownMenuStyleType } from "."
+import type { globalShapeType, optionItemType } from "../_types";
+import type { dropdownFloatingConfigType, dropdownMenuStyleType } from "."
+import CheckboxButton from "../checkbox-button";
 
 const OptionsComponent = ({
     style,
@@ -19,9 +20,9 @@ const OptionsComponent = ({
 }:{
     style?:dropdownMenuStyleType;
     shape?:globalShapeType;
-    onClick?:(idOption:string, option:dropdownMenuOptionType, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onClick?:(idOption:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     setIsChildOpen?:React.Dispatch<React.SetStateAction<boolean>>,
-    options:dropdownMenuOptionType[]
+    options:optionItemType[]
     optionSelected?:string[],
     floatingConfig?:dropdownFloatingConfigType
 }) =>{
@@ -33,56 +34,60 @@ const OptionsComponent = ({
             {
                 options.map((option)=>{
                     if(option.type!=='separator'){
-                        if(option.childMenu===undefined){
-                            return (
-                                <Button
-                                    key={option.id}
-                                    id={option.id}
-                                    className={clsx('dropdown-item')}
-                                    style={style?.optionButton}
-                                    shape={shape}
-                                    txtLabel={<div className='text-label-box'>
-                                        <p className='text-label'>{option.txtLabel}</p>
-                                        {
-                                            (option.txtSublabel)&&(
-                                                <p className='text-sublabel'>{option.txtSublabel??''}</p>
+                        if(option.childOption===undefined){
+                            if(floatingConfig?.isWithCheckmark && option.type==='option'){
+                                return(
+                                    <CheckboxButton
+                                        className={clsx('dropdown-item')}
+                                        style={style?.optionButton}
+                                        shape={shape}
+                                        key={option.id}
+                                        txtLabel={option.txtLabel}
+                                        txtSublabel={option.txtSublabel}
+                                        icon={option.icon}
+                                        isSelected={optionSelected?.includes(option.id)||false}
+                                        onClick={(_, e)=>{ctrl.onOptionClick(option, e, onClick)}}
+                                        isDisabled={option.isDisabled}
+                                    />
+                                )
+                            }else{
+                                return(
+                                    <Button
+                                        key={option.id}
+                                        id={option.id}
+                                        className={clsx('dropdown-item')}
+                                        style={style?.optionButton}
+                                        shape={shape}
+                                        txtLabel={<div className='text-label-box'>
+                                            <p className='text-label'>{option.txtLabel}</p>
+                                            {
+                                                (option.txtSublabel)&&(
+                                                    <p className='text-sublabel'>{option.txtSublabel??''}</p>
+                                                )
+                                            }
+                                        </div>}
+                                        iconBefore={
+                                            (floatingConfig?.isWithCheckmark)?(
+                                                <div className='check-icon-container'>
+                                                    <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
+                                                    {option.icon}
+                                                </div>
+                                            ):(
+                                                option.icon
                                             )
                                         }
-                                    </div>}
-                                    iconBefore={
-                                        (optionSelected)?(
-                                            <div className='check-icon-container'>
-                                                {
-                                                    (!(floatingConfig?.isWithCheckmark))?(
-                                                        <></>
-                                                    ):(optionSelected?.includes(option.id))?(
-                                                        <PiCheckBold className='global-icon'/>
-                                                    ):(
-                                                        <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
-                                                    )
-                                                }
-                                                {option.icon}
-                                            </div>
-                                        ):(
-                                            option.icon
-                                        )
-                                    }
-                                    iconAfter={
-                                        <div className='check-icon-container'>
-                                            {option.iconAfter}
-                                        </div>
-                                    }
-                                    isSelected={optionSelected?.includes(option.id)}
-                                    appearance={'subtle'}
-                                    onClick={(e)=>{ctrl.onOptionClick(option, e, onClick)}}
-                                    isDisabled={option.isDisabled}
-                                />
-                            )
+                                        isSelected={optionSelected?.includes(option.id)}
+                                        appearance={'subtle'}
+                                        onClick={(e)=>{ctrl.onOptionClick(option, e, onClick)}}
+                                        isDisabled={option.isDisabled}
+                                    />
+                                )
+                            }
                         }else{
                             return(
                                 <DropdownMenu
                                     key={option.id}
-                                    options={option.childMenu}
+                                    options={option.childOption}
                                     optionSelected={optionSelected}
                                     style={{
                                         ...style,
@@ -94,7 +99,8 @@ const OptionsComponent = ({
                                     onClick={(_, option, e)=>{ctrl.onOptionClick(option, e, onClick)}}
                                     floatingConfig={{
                                         placement:'right-start',
-                                        level:((floatingConfig?.level)??0)+1
+                                        level:((floatingConfig?.level)??0)+1,
+                                        isWithCheckmark:floatingConfig?.isWithCheckmark,
                                     }}
                                     onOpen={()=>{
                                         if(setIsChildOpen){
@@ -122,7 +128,7 @@ const OptionsComponent = ({
                                                     shape={shape}
                                                     txtLabel={option.txtLabel??''}
                                                     iconBefore={
-                                                        (optionSelected)?(
+                                                        (floatingConfig?.isWithCheckmark)?(
                                                             <div className='check-icon-container'>
                                                                 <PiCircleBold className='global-icon' style={{color:'transparent'}}/>
                                                                 {option.icon}
@@ -133,7 +139,6 @@ const OptionsComponent = ({
                                                     }
                                                     iconAfter={
                                                         <div className='check-icon-container'>
-                                                            {option.iconAfter}
                                                             <PiCaretRightBold className='global-icon' style={{color:`var(--clr-surface${isDropdownOpen?'-primary':''}-4)`}}/>
                                                         </div>
                                                     }

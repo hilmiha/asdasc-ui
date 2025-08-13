@@ -1,19 +1,18 @@
 import './App.scss'
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
 import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
 import SplitButton from './components/split-button';
-import DropdownMenu, { type dropdownMenuOptionType } from './components/dropdown-menu';
+import DropdownMenu from './components/dropdown-menu';
 import InputText from './components/input-text';
-import type { fieldErrorType, globalShapeType } from './components/_types';
+import type { fieldErrorType, globalShapeType, optionItemType } from './components/_types';
 import InputPassword from './components/input-password';
 import InputSelection from './components/input-selection';
 import InputTag from './components/input-tag';
 import RadioGroup from './components/radio-group';
-import CheckboxGroup, { type checkboxGroupOptionType } from './components/checkbox-group';
 import BottomSheet from './components/bottom-sheet';
 import Dropdown from './components/dropdown';
 import Modal from './components/modal';
@@ -23,6 +22,8 @@ import AccordionGroup from './components/accordion-group';
 import Wysiwyg from './components/wysiwyg';
 import type { Delta } from 'quill';
 import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
+import CheckboxButton from './components/checkbox-button';
+import CheckboxTree from './components/checkbox-tree';
 
 function App() {
     const {
@@ -141,7 +142,11 @@ function App() {
     const presetContent = () => {
         setContent(sampleContent as Delta);
     };
-    
+
+    const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
+    useEffect(()=>{
+        console.log(valueCheckbox)
+    },[valueCheckbox])
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -218,32 +223,38 @@ function App() {
                 </div>
                 <div>
                     <DropdownMenu
+                        optionSelected={['modified']}
                         options={[
                             {id:'duplicate', txtLabel:'Duplicate', icon:<PiCopyBold className='global-icon'/>, isDisabled:true},
                             {id:'edit', txtLabel:'Edit', icon:<PiPencilBold className='global-icon'/>},
                             {id:'hide', txtLabel:'Hide', icon:<PiCircleDashedBold className='global-icon'/>},
 
-                            {id:"modified", type:"separator", txtLabel:''},
+                            {id:"separator", type:"separator", txtLabel:''},
                             {id:'delete', txtLabel:'Delete', icon:<PiXCircleBold className='global-icon'/>},
                             {
                                 id:'other', 
                                 txtLabel:'Others', 
                                 icon:<PiDotsThreeBold className='global-icon'/>, 
-                                childMenu:[
+                                childOption:[
                                     {id:'a', txtLabel:'A'},
                                     {id:'b', txtLabel:'B'},
                                     {id:'c', txtLabel:'C'},
                                     {
                                         id:'d', 
                                         txtLabel:'D',
-                                        childMenu:[
+                                        childOption:[
                                             {id:'a', txtLabel:'A'},
                                             {id:'b', txtLabel:'B'},
                                             {id:'c', txtLabel:'C'},
                                         ]
                                     },
                                 ]
-                            }
+                            },
+                            {id:"separator2", type:"separator", txtLabel:''},
+                            {id:'modified', type:'option', txtLabel:'Modified', icon:<PiCircleDashedBold className='global-icon'/>},
+                            {id:'modified', type:'option', txtLabel:'Modified', icon:<PiCircleDashedBold className='global-icon'/>},
+                            {id:'modified', type:'option', txtLabel:'Modified', icon:<PiCircleDashedBold className='global-icon'/>},
+                            
                         ]}
                         trigger={
                             <Button
@@ -251,6 +262,9 @@ function App() {
                             />
                         }
                         onClick={(idButton)=>{console.log(idButton)}}
+                        floatingConfig={{
+                            isWithCheckmark:true
+                        }}
                     />
                 </div>
                 <div>
@@ -391,16 +405,21 @@ function App() {
                         />
                     </div>
                     <div>
-                        <CheckboxGroup
-                            value={form['checkboxStatus']}
-                            onChange={(newValue)=>{onChange('checkboxStatus', newValue)}}
-                            onValidate={(error)=>{onValidate('checkboxStatus', error)}}
-                            error={formError['checkboxStatus']}
+                        <CheckboxButton
+                            isSelected={true}
+                        />
+                        <CheckboxButton
+                            isSelected={true}
+                            txtLabel='Hello World'
+                            txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
+                        />
+                    </div>
+                    <div>
+                        <CheckboxTree
+                            isDisabled={false}
                             options={listCheckbox}
-                            config={{
-                                isRequired:true,
-                                maxValue:5
-                            }}
+                            selectedList={valueCheckbox}
+                            onChange={(newValue) => setValueCheckbox(newValue)}
                         />
                     </div>
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
@@ -793,7 +812,7 @@ function App() {
 export default App
 
 
-const indonesiaProvinces:dropdownMenuOptionType[] = [
+const indonesiaProvinces:optionItemType[] = [
     {id:'aceh', txtLabel:'Aceh', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-utara', txtLabel:'Sumatera Utara', type:'option', icon:<PiCityBold/>},
     {id:'sumatera-barat', txtLabel:'Sumatera Barat', type:'option', icon:<PiCityBold/>},
@@ -834,7 +853,7 @@ const indonesiaProvinces:dropdownMenuOptionType[] = [
     {id:'papua-selatan', txtLabel:'Papua Selatan', type:'option', icon:<PiCityBold/>}
 ];
 
-const contentTags: dropdownMenuOptionType[] = [
+const contentTags: optionItemType[] = [
     {id:'1', txtLabel:'Content Management System', type:'option', icon:<PiTagBold/>, alias:'cms'},
     {id:'2', txtLabel:'Digital Asset Management', type:'option', icon:<PiTagBold/>},
     {id:'3', txtLabel:'Content Strategy', type:'option', icon:<PiTagBold/>},
@@ -857,38 +876,27 @@ const contentTags: dropdownMenuOptionType[] = [
     {id:'20', txtLabel:'Content Archiving', type:'option', icon:<PiTagBold/>},
 ];
 
-const menues:checkboxGroupOptionType[] =  [
+const menues:optionItemType[] =  [
     {
-        id:'user-management',
-        txtLabel:'User Management',
+        id:'1', 
+        txtLabel:'Sumatera',
+        icon:<PiCityBold className='global-icon'/>,
         childOption:[
-            {id:'domain', txtLabel:'Domain',txtSublabel:'This is sublabel text.'},
-            {id:'user-group', txtLabel:'User Group',txtSublabel:'This is sublabel text.'},
-            {id:'menu-access', txtLabel:'Menu Access',txtSublabel:'This is sublabel text.'},
-            {id:'user', txtLabel:'User',txtSublabel:'This is sublabel text.'},
+            {id:'1.1', icon:<PiCityBold className='global-icon'/>, txtLabel:'Aceh'},
+            {id:'1.2', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Utara'},
+            {id:'1.3', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Barat'},
+            {id:'1.4', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Selatan'},
+            {id:'1.5', icon:<PiCityBold className='global-icon'/>, txtLabel:'Riau'},
+            {id:'1.6', icon:<PiCityBold className='global-icon'/>, txtLabel:'Jambi'},
+            {id:'1.7', icon:<PiCityBold className='global-icon'/>, txtLabel:'Lampung'},
         ]
     },
-    {
-        id:'content-management',
-        txtLabel:'Content Management',
-        childOption:[
-            {id:"assets", txtLabel:'Assets',txtSublabel:'This is sublabel text.'},
-            {id:"category", txtLabel:'Content Category',txtSublabel:'This is sublabel text.'},
-            {id:"pages", txtLabel:'Pages',txtSublabel:'This is sublabel text.'},
-        ]
-    },
-    {
-        id:'reporting',
-        txtLabel:'Reporting',
-        txtSublabel:'This is sublabel text.'
-    },
-    {
-        id:'audit-trail',
-        txtLabel:'Audit Trail',
-        txtSublabel:'This is sublabel text.'
-    }
+    {id:'2', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'3', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'4', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'5', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'6', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
 ]
-
 const sampleContent = {
     "ops": [
         {

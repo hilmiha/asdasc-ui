@@ -1,17 +1,19 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import { useContext } from 'react';
+import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import type { globalShapeType } from '../_types';
 import { FaCheck, FaMinus } from 'react-icons/fa';
+import Button from '../button';
 
 const CheckboxButton = ({
     className = undefined,
     shape = undefined,
     txtLabel = undefined,
     txtSublabel = undefined,
-    value = false,
+    icon = undefined,
+    isSelected = false,
     onClick = undefined,
     isDisabled = false,
     isIndeterminate = false
@@ -22,48 +24,57 @@ const CheckboxButton = ({
     } = useContext(GlobalContext) as _GlobalContextType
     //Context end ====
     return(
-        <button 
+        <Button
             className={clsx(
                 "checkbox-button",
                 (shape)?(shape):(globalShape),
-                {
-                    ['disabled']:(isDisabled),
-                    ['selected']:(value)
-                },
                 className
             )}
+            isSelected={isSelected||isIndeterminate}
+            isDisabled={isDisabled}
             onClick={(e)=>{
-                ctrl.onCheckboxClicked(!value, e, onClick)
+                ctrl.onCheckboxClicked(!isSelected, e, onClick)
             }}
-            disabled={isDisabled}
-        >
-            <div 
-                className={clsx(
-                    'square-indicator',
-                    (value)?('square-on'):('square-off')
-                )}
-            >
-                {
-                    (value&&isIndeterminate)?(
-                        <FaMinus className='icon-check' size={8}/>
-                    ):(value)?(
-                        <FaCheck className='icon-check' size={8}/>
-                    ):(<></>)
-                }
-            </div>
-            {
-                (txtLabel || txtSublabel)&&(
-                    <div className='label-box'>
-                        <p className='text-label'>{txtLabel}</p>
+            txtLabel={
+                <>
+                    {
+                        (txtLabel || txtSublabel)&&(
+                            <div className='text-label-box'>
+                                <p className='text-label'>{txtLabel}</p>
+                                {
+                                    (txtSublabel)&&(
+                                        <p className='text-sublabel'>{txtSublabel??''}</p>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+                </>
+            }
+            iconBefore={
+                <div style={{display:'flex', gap:'var(--space-200)'}}>
+                    <div
+                        className={clsx(
+                            'square-indicator',
+                            (isSelected||isIndeterminate)?('square-on'):('square-off'),
+                            {
+                                ['full-on']:(isSelected)
+                            }
+                        )}
+                    >
                         {
-                            (txtSublabel)&&(
-                                <p className='text-sublabel'>{txtSublabel}</p>
-                            )
+                            (isIndeterminate)?(
+                                <FaMinus className='icon-check' size={8}/>
+                            ):(isSelected)?(
+                                <FaCheck className='icon-check' size={8}/>
+                            ):(<></>)
                         }
                     </div>
-                )
+                    {icon}
+                </div>
             }
-        </button>
+            appearance='subtle'
+        />
     )
 }
 
@@ -75,7 +86,8 @@ interface _CheckboxButton {
     shape?:globalShapeType;
     txtLabel?:string
     txtSublabel?:string,
-    value:boolean,
+    icon?:JSX.Element,
+    isSelected:boolean,
     onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void
     isDisabled?:boolean
     isIndeterminate?:boolean

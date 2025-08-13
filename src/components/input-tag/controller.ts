@@ -1,7 +1,6 @@
 import type { inputTagConfigType, inputTagType } from ".";
 import { getFormatedNumberForDisplay } from "../../helper/helper";
-import type { fieldErrorType } from "../_types";
-import type { dropdownMenuOptionType } from "../dropdown-menu";
+import type { fieldErrorType, optionItemType } from "../_types";
 
 export const triggerOptionDropdown = (inputTagRef:React.RefObject<HTMLInputElement | null>) =>{
     setTimeout(() => {
@@ -10,7 +9,7 @@ export const triggerOptionDropdown = (inputTagRef:React.RefObject<HTMLInputEleme
 }
 
 export const getFilteredOptions = (
-    options:dropdownMenuOptionType[],
+    options:optionItemType[],
     value:string[], 
     searchParam:string, 
     config?:inputTagConfigType,
@@ -92,7 +91,7 @@ export const doValidateValue = (
 
 export const onOptionClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    option:dropdownMenuOptionType,
+    option:optionItemType,
     oldValue:string[],
     setSearchParam:React.Dispatch<React.SetStateAction<string>>,
     inputTagRef:React.RefObject<HTMLInputElement | null>,
@@ -185,7 +184,7 @@ export const onInputTagBlur = (
     searchParam:string,
     setSearchParam:React.Dispatch<React.SetStateAction<string>>,
     isDropdownOpen:boolean,
-    option: dropdownMenuOptionType[],
+    option: optionItemType[],
     isDirty:boolean, 
     onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string[])=>void,
     config?:inputTagConfigType,

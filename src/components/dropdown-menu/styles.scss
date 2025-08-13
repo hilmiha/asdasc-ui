@@ -20,6 +20,7 @@
         grid-auto-rows: max-content;
         .dropdown-item {
             flex-grow: 1;
+            width: auto;
             margin: var(--space-25) var(--space-50);
 
             .text-label-box{
@@ -77,6 +78,7 @@
             grid-auto-rows: max-content;
             .dropdown-item {
                 flex-grow: 1;
+                width: auto;
                 margin: var(--space-25) var(--space-50);
 
                 .text-label-box{

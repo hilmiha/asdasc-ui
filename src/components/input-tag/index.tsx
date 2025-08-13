@@ -1,10 +1,10 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import type { fieldErrorType, globalShapeType } from "../_types";
+import type { fieldErrorType, globalShapeType, optionItemType } from "../_types";
 import { useContext, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
-import DropdownMenu, { type dropdownMenuOptionType } from '../dropdown-menu';
+import DropdownMenu from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import Tag from '../tag';
@@ -262,7 +262,7 @@ interface _InputTag {
 
     type:inputTagType
     txtPlaceholder?:string;
-    options?:dropdownMenuOptionType[]
+    options?:optionItemType[]
     value?:string[];
     isDisabled?:boolean
     onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,

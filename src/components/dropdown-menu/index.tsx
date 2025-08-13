@@ -2,7 +2,7 @@ import './styles.scss';
 import React, { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
 import type { buttonStyleType } from "../button";
 import { type Placement } from '@floating-ui/react';
-import type { globalShapeType } from '../_types';
+import type { globalShapeType, optionItemType } from '../_types';
 import BottomSheet from '../bottom-sheet';
 import OptionsComponent from './options-component';
 import Dropdown from '../dropdown';
@@ -77,7 +77,7 @@ const DropdownMenu = ({
         }else{
             return(<></>)
         }
-    },[trigger, isDisabled])
+    },[trigger, isDisabled, bottomSheetOpen])
 
     useEffect(()=>{
         setBottomSheetOpen(false)
@@ -157,10 +157,10 @@ interface _DropdownMenu {
     ) => JSX.Element);
     style?:dropdownMenuStyleType;
     shape?:globalShapeType;
-    options:dropdownMenuOptionType[]
+    options:optionItemType[]
     optionSelected?:string[]
     isDisabled?:boolean
-    onClick?:(idOption:string, option:dropdownMenuOptionType, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    onClick?:(idOption:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOpen?: () => void;
     onClose?: () => void;
 
@@ -188,15 +188,3 @@ export type dropdownMenuStyleType = {
     container?:React.CSSProperties,
     optionButton?:buttonStyleType,
 }
-
-export type dropdownMenuOptionType = {
-    id:string,
-    type?: 'option' | 'separator',
-    txtLabel:string,
-    txtSublabel?:string,
-    alias?:string, 
-    icon?:JSX.Element,
-    iconAfter?:JSX.Element,
-    isDisabled?:boolean,
-    childMenu?:dropdownMenuOptionType[]
-};

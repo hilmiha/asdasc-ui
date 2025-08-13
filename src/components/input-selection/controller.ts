@@ -1,9 +1,8 @@
 import type { inputSelectConfigType, inputSelectType } from ".";
 import { getFormatedNumberForDisplay } from "../../helper/helper";
-import type { fieldErrorType } from "../_types";
-import type { dropdownMenuOptionType } from "../dropdown-menu";
+import type { fieldErrorType, optionItemType } from "../_types";
 
-export const getDisplayValue = (value:string[], option:dropdownMenuOptionType[]): string[] => {
+export const getDisplayValue = (value:string[], option:optionItemType[]): string[] => {
     return value.map((i)=>{
         const tamp = option.find(j=>j.id===i)
         if(tamp){
@@ -14,7 +13,7 @@ export const getDisplayValue = (value:string[], option:dropdownMenuOptionType[])
     });
 };
 
-export const getProcessedOption = (value:string[], option:dropdownMenuOptionType[], searchParam:string, maxValue?:number): dropdownMenuOptionType[] => {
+export const getProcessedOption = (value:string[], option:optionItemType[], searchParam:string, maxValue?:number): optionItemType[] => {
     let tampOptions = [...option]
 
     if(searchParam){
@@ -41,8 +40,8 @@ export const getProcessedOption = (value:string[], option:dropdownMenuOptionType
 //send new value
 export const doChangeValue = (
     newValue:string[],
-    option:dropdownMenuOptionType|undefined,
-    onChange:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    option:optionItemType|undefined,
+    onChange:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
 ) =>{
     onChange(newValue, option, event)
@@ -89,13 +88,13 @@ export const doValidateValue = (
 
 export const onOptionClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    option:dropdownMenuOptionType,
+    option:optionItemType,
     oldValue:string[],
     type:inputSelectType,
     isDirty:boolean, 
     setIsDirty:(x:boolean)=>void,
     config?:inputSelectConfigType,
-    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     error?:fieldErrorType,
     onValidate?:(error: fieldErrorType, newValue: string[]) => void,
 ) =>{
@@ -134,7 +133,7 @@ export const onOptionClick = (
 export const onClearButtonClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
     config?:inputSelectConfigType,
-    onChange?:(newValue:string[], option:dropdownMenuOptionType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     onValidate?:(error: fieldErrorType, newValue: string[]) => void,
     triggerRef?:React.RefObject<HTMLButtonElement | null>
 ) =>{

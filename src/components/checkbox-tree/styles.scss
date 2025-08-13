@@ -1,0 +1,21 @@
+.checkbox-tree-box{
+    .checkbox-button{
+        margin: var(--space-25);
+    }
+    .parent-box{
+        display: flex;
+        align-items: start;
+        gap: var(--space-0);
+
+        .collapse-button{
+            margin-top: var(--space-100);
+            height: fit-content;
+            width: fit-content;
+            padding: var(--space-0);
+
+            .global-icon{
+                color: var(--clr-surface-4);
+            }
+        }
+    }
+}
