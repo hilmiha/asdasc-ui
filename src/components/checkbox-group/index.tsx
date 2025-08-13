@@ -5,22 +5,20 @@ import CheckboxButton from '../checkbox-button';
 import { PiCaretDownBold, PiCaretUpBold, PiCircleBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import type { optionItemType } from '../_types';
+import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
 
-interface _CheckboxTree {
-    options: optionItemType[];
-    selectedList?: string[]; 
-    isDisabled?: boolean;
-    onChange?: (checkedLeafIds: string[]) => void;
-}
-
-const CheckboxTree = ({ 
+const CheckboxGroup = ({ 
     options, 
     selectedList, 
     isDisabled,
     onChange
-}:_CheckboxTree) => {
+}:_CheckboxGroup) => {
     const checkedLeaves = new Set(selectedList);
     const [collapsed, setCollapsed] = useState<Set<string>>(new Set()); 
+
+    const isTree = useDeepCompareMemo(()=>{
+        return JSON.stringify(options).includes('childOption')
+    },[options])
 
     const renderTree = (option: optionItemType) => {
         const state = ctrl.getNodeState(option, checkedLeaves);
@@ -46,8 +44,10 @@ const CheckboxTree = ({
                                 txtLabel={isCollapsed ? 'Expand Option' : 'Collapse Option'}
                                 isShowtooltip={false}
                             />
-                        ) : (
+                        ) : (isTree) ? (
                             <PiCircleBold className='global-icon' color='transparent' style={{margin:'calc(var(--space-50) + 1px)'}}/> // spacer for child alignment
+                        ):(
+                            <></>
                         )
                     }
                     <CheckboxButton
@@ -57,7 +57,7 @@ const CheckboxTree = ({
                         txtSublabel={option.txtSublabel}
                         icon={option.icon}
                         onClick={(isCheck) => ctrl.onOptionItemClick(option, isCheck, checkedLeaves, onChange)}
-                        isDisabled={isDisabled}
+                        isDisabled={isDisabled || option.isDisabled}
                     />
                 </div>
 
@@ -85,4 +85,11 @@ const CheckboxTree = ({
     );
 };
 
-export default CheckboxTree;
+export default CheckboxGroup;
+
+interface _CheckboxGroup {
+    options: optionItemType[];
+    selectedList?: string[]; 
+    isDisabled?: boolean;
+    onChange?: (checkedLeafIds: string[]) => void;
+}

@@ -32,7 +32,7 @@ const RadioGroup = ({
                     options.map((i)=>(
                         <RadioButton
                             key={i.id}
-                            value={i.id===value}
+                            isSelected={i.id===value}
                             txtLabel={i.txtLabel}
                             txtSublabel={i.txtSublabel}
                             onClick={(_, e)=>{ctrl.onRadioClicked(i, value, e, onChange, config, onValidate)}}

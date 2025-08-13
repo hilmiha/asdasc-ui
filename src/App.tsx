@@ -23,7 +23,8 @@ import Wysiwyg from './components/wysiwyg';
 import type { Delta } from 'quill';
 import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 import CheckboxButton from './components/checkbox-button';
-import CheckboxTree from './components/checkbox-tree';
+import CheckboxGroup from './components/checkbox-group';
+import RadioButton from './components/radio-button';
 
 function App() {
     const {
@@ -387,6 +388,16 @@ function App() {
                         }}
                     />
                     <div>
+                        <RadioButton
+                            isSelected={true}
+                        />
+                        <RadioButton
+                            isSelected={true}
+                            txtLabel='Hello World'
+                            txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
+                        />
+                    </div>
+                    <div>
                         <RadioGroup
                             value={form['radioStatus']}
                             onChange={(newValue)=>{onChange('radioStatus', newValue)}}
@@ -415,7 +426,7 @@ function App() {
                         />
                     </div>
                     <div>
-                        <CheckboxTree
+                        <CheckboxGroup
                             isDisabled={false}
                             options={listCheckbox}
                             selectedList={valueCheckbox}
@@ -882,20 +893,23 @@ const menues:optionItemType[] =  [
         txtLabel:'Sumatera',
         icon:<PiCityBold className='global-icon'/>,
         childOption:[
-            {id:'1.1', icon:<PiCityBold className='global-icon'/>, txtLabel:'Aceh'},
+            {id:'1.1', icon:<PiCityBold className='global-icon'/>, txtLabel:'Aceh',childOption:[
+                {id:'1.1.1', txtLabel:'Aceh Utara'},
+                {id:'1.1.2', txtLabel:'Aceh Selatan'},
+                {id:'1.1.3', txtLabel:'Aceh Barat', isDisabled:true},
+                {id:'1.1.4', txtLabel:'Aceh Timur'},
+            ]},
             {id:'1.2', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Utara'},
             {id:'1.3', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Barat'},
             {id:'1.4', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Selatan'},
             {id:'1.5', icon:<PiCityBold className='global-icon'/>, txtLabel:'Riau'},
-            {id:'1.6', icon:<PiCityBold className='global-icon'/>, txtLabel:'Jambi'},
+            {id:'1.6', icon:<PiCityBold className='global-icon'/>, txtLabel:'Jambi', isDisabled:true},
             {id:'1.7', icon:<PiCityBold className='global-icon'/>, txtLabel:'Lampung'},
         ]
     },
-    {id:'2', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
-    {id:'3', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
-    {id:'4', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
-    {id:'5', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
-    {id:'6', txtLabel:'Jakarta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'2', txtLabel:'Jawa', icon:<PiCityBold className='global-icon'/>,},
+    {id:'3', txtLabel:'Kalimanta', icon:<PiCityBold className='global-icon'/>,},
+    {id:'4', txtLabel:'Sulawesi', icon:<PiCityBold className='global-icon'/>, isDisabled:true},
 ]
 const sampleContent = {
     "ops": [

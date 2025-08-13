@@ -26,6 +26,18 @@ export const getLeafIds = (option: optionItemType): string[] => {
     return option.childOption.flatMap(getLeafIds);
 };
 
+// Get all disabled leaf IDs under an option
+export const getDisabledLeafIds = (option: optionItemType): string[] => {
+    if (!option.childOption || option.childOption.length === 0) {
+        if(option.isDisabled){
+            return [option.id];
+        }
+        return [];
+    }
+
+    return option.childOption.flatMap(getDisabledLeafIds);
+};
+
 // Determine option state from its leaf children
 export const getNodeState = (option: optionItemType, checkedLeaves:Set<string>) => {
     if (!option.childOption || option.childOption.length === 0) {
@@ -37,7 +49,7 @@ export const getNodeState = (option: optionItemType, checkedLeaves:Set<string>) 
         })
     }
 
-    const leafIds = getLeafIds(option);
+    const leafIds = getLeafIds(option);    
     const checkedCount = leafIds.filter((id) => checkedLeaves.has(id)).length;
 
     return {
@@ -55,14 +67,22 @@ export const onOptionItemClick = (
 ) => {
     const newValue = new Set(checkedLeaves);
     const leafIds = getLeafIds(option);
+    const disabledIds = getDisabledLeafIds(option)
+    const countSelectedLeaf = leafIds.filter((i)=>newValue.has(i))
 
     leafIds.forEach((id) => {
-        if (isChecked) {
+        if (isChecked && ((leafIds.length-disabledIds.length)!==countSelectedLeaf.length)) {
             newValue.add(id);
         } else {
             newValue.delete(id);
         }
     });
+
+    if(isChecked){
+        disabledIds.forEach((i)=>{
+            newValue.delete(i)
+        })
+    }
 
     if(onChange){
         onChange([...newValue]);
