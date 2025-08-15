@@ -1,6 +1,6 @@
 .tag-container{
     display: flex;
-    background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
+    background-color: hsl(from var(--clr-surface-4) h s l / 0.2);
     border: 1px solid var(--clr-border);
     align-items: center;
     gap:var(--space-50);
@@ -37,7 +37,10 @@
         border-left: 1px solid var(--clr-border);
 
         &:hover{
-            background-color: var(--clr-surface-danger-4);
+            background-color: hsl(from var(--clr-surface-danger-4) h s l / 0.4);
+        }
+        &:active{
+            background-color: hsl(from var(--clr-surface-danger-4) h s l / 0.6);;
         }
     }
 }

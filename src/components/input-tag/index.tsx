@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType, optionItemType } from "../_types";
-import { useContext, useRef, useState, type JSX } from 'react';
+import { useContext, useEffect, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -40,6 +40,7 @@ const InputTags = ({
 
     //States start ====
     const [isDirty, setIsDirty] = useState(false)
+    const [isFocus, setIsFocus] = useState(false)
 
     const [searchParam, setSearchParam] = useState('')
 
@@ -69,6 +70,12 @@ const InputTags = ({
         ))
     },[value, isDisabled])
      //States end ====
+
+    useEffect(()=>{
+        if(!isFocus && onValidate && config && isDirty){
+            ctrl.doValidateValue(value, onValidate,config)
+        }
+    },[JSON.stringify(value)])
 
     // Update ref
     const inputTagRef = useRef<HTMLInputElement>(null);
@@ -117,11 +124,13 @@ const InputTags = ({
                                     if(!isDisabled){
                                         ctrl.onInputTagBlur(e, inputTagRef, value, searchParam, setSearchParam, isDropdownOpen, filteredOptions,  isDirty, onBlur, config, onValidate)
                                     }   
+                                    setIsFocus(false)
                                 }}
                                 onFocus={(e)=>{
                                     if(!isDisabled){
                                         ctrl.onInputTagFocus(e, value, onFocus)
                                     }
+                                    setIsFocus(true)
                                 }}
                                 onKeyDown={(e)=>{
                                     ctrl.onInputTagKeyDown(e, inputTagRef, searchParam, setSearchParam, value, onChange, config, onValidate)
@@ -145,7 +154,7 @@ const InputTags = ({
                             txtLabel='Clear'
                             appearance='subtle'
                             isShowtooltip={false}
-                            onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, onChange, config, onValidate)}}
+                            onClick={(e)=>{ctrl.onClearButtonClick(e, inputTagRef, isDirty, setIsDirty, onChange, config, onValidate)}}
                         />
                     )
                 }

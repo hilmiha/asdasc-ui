@@ -1,8 +1,10 @@
 import './styles.scss'
 import clsx from "clsx"
 import * as ctrl from './controller';
-import { useEffect, useRef, useState, type JSX } from "react"
+import { useContext, useEffect, useRef, useState, type JSX } from "react"
 import { PiCaretDownBold, PiCaretUpBold } from "react-icons/pi"
+import type { globalShapeType } from '../_types';
+import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 
 const Accordion = ({
     id = undefined,
@@ -20,8 +22,15 @@ const Accordion = ({
     children = undefined,
 
     maxHeightContent = undefined,
-    style = undefined
+    style = undefined,
+    shape = undefined
 }:_Accordion) =>{
+
+    //Context start ====
+    const {
+        globalShape
+    } = useContext(GlobalContext) as _GlobalContextType
+    //Context end ====
     
     const mountedOnce = useRef(false);
     const [isMounted, setIsMounted] = useState(isOpen)
@@ -57,6 +66,7 @@ const Accordion = ({
                 id={id}
                 className={clsx(
                     "accordion-button",
+                    (shape)?(shape):(globalShape),
                     (isOpen)?('open'):('close'),
                     {
                         ['disabled']:(isDisabled)
@@ -146,6 +156,7 @@ export interface _Accordion {
 
     maxHeightContent?:string | number
     style?:accordionStyleType
+    shape?:globalShapeType
 }
 
 export type accordionStyleType = {

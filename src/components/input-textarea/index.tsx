@@ -71,6 +71,9 @@ export const InputTextarea = ({
     useEffect(()=>{
         if((value !== tampValue) && !isFocus){
             setTampValue(value)
+            if(onValidate && config){
+                ctrl.doValidateValue(type, value, onValidate, config)
+            }
         }
     },[value])
 

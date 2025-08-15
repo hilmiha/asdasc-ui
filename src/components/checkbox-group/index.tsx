@@ -6,12 +6,14 @@ import { PiCaretDownBold, PiCaretUpBold, PiCircleBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
 import type { optionItemType } from '../_types';
 import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
+import clsx from 'clsx';
 
 const CheckboxGroup = ({ 
-    options, 
-    selectedList, 
-    isDisabled,
-    onChange
+    options = [], 
+    selectedList = [], 
+    isDisabled = false,
+    isDefaultCollapse = true,
+    onChange = undefined
 }:_CheckboxGroup) => {
     const checkedLeaves = new Set(selectedList);
     const [collapsed, setCollapsed] = useState<Set<string>>(new Set()); 
@@ -23,7 +25,7 @@ const CheckboxGroup = ({
     const renderTree = (option: optionItemType) => {
         const state = ctrl.getNodeState(option, checkedLeaves);
         const isParent = option.childOption && option.childOption.length > 0;
-        const isCollapsed = collapsed.has(option.id);
+        const isCollapsed = isDefaultCollapse?collapsed.has(option.id):!collapsed.has(option.id);
 
         if(option.type==='separator'){
             return null
@@ -38,7 +40,7 @@ const CheckboxGroup = ({
                                 appearance='subtle'
                                 className='collapse-button'
                                 onClick={() => {
-                                    ctrl.onCollapseButtonClick(option.id, setCollapsed)
+                                    ctrl.onCollapseButtonClick(option, setCollapsed)
                                 }}
                                 icon={isCollapsed ? <PiCaretDownBold className='global-icon' /> : <PiCaretUpBold className='global-icon' />}
                                 txtLabel={isCollapsed ? 'Expand Option' : 'Collapse Option'}
@@ -62,9 +64,18 @@ const CheckboxGroup = ({
                 </div>
 
                 {
-                    (isParent && !isCollapsed) && (
-                        <div style={{marginLeft:'var(--space-400)'}}>
-                            {option.childOption!.map(renderTree)}
+                    (isParent) && (
+                        <div 
+                            className={clsx(
+                                'child-box',
+                                (isCollapsed)?('closed'):('opened')
+                            )}
+                        >
+                            <div>
+                                {
+                                    option.childOption!.map(renderTree)
+                                }
+                            </div>
                         </div>
                     )
                 }
@@ -91,5 +102,6 @@ interface _CheckboxGroup {
     options: optionItemType[];
     selectedList?: string[]; 
     isDisabled?: boolean;
+    isDefaultCollapse?: boolean;
     onChange?: (checkedLeafIds: string[]) => void;
 }

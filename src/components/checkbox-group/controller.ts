@@ -2,20 +2,39 @@ import type { optionItemType } from "../_types";
 
 // Toggle collapse state
 export const onCollapseButtonClick = (
-    nodeId: string,
+    option: optionItemType,
     setCollapsed: React.Dispatch<React.SetStateAction<Set<string>>>
 ) => {
     setCollapsed(prev => {
         const newSet = new Set(prev);
-
+        const nodeId = option.id
+        const parentInsideNode = getParentIds(option)
         if (newSet.has(nodeId)){
             newSet.delete(nodeId)
+            parentInsideNode.forEach((i)=>{
+                newSet.delete(i)
+            })
         }else{
             newSet.add(nodeId);
+            parentInsideNode.forEach((i)=>{
+                newSet.add(i)
+            })
         }
         return newSet;
     });
 };
+
+// Get all parent IDs under an option
+export const getParentIds = (option: optionItemType): string[] => {
+    if (!option.childOption || option.childOption.length === 0) {
+        return [];
+    }
+
+    return option.childOption
+        .filter(child => child.childOption && child.childOption.length > 0)
+        .map(child => child.id);
+};
+
 
 // Get all leaf IDs under an option
 export const getLeafIds = (option: optionItemType): string[] => {

@@ -129,9 +129,19 @@ export const onOptionClick = (
     }
 }
 
+export const clearValue = (
+    event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    onChange:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+) =>{
+    if(onChange){
+        doChangeValue([], undefined, onChange, event)
+    }
+}
 //on clear button clicked
 export const onClearButtonClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    isDirty:boolean, 
+    setIsDirty:(x:boolean)=>void,
     config?:inputSelectConfigType,
     onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
     onValidate?:(error: fieldErrorType, newValue: string[]) => void,
@@ -139,7 +149,7 @@ export const onClearButtonClick = (
 ) =>{
     event.stopPropagation()
     if(onChange){
-        doChangeValue([], undefined, onChange, event)
+        clearValue(event, onChange)
     }
 
     if(onValidate && config){
@@ -148,5 +158,10 @@ export const onClearButtonClick = (
 
     if(triggerRef?.current){
         triggerRef.current.focus()
+    }
+
+    //set input text dirty after user typing something
+    if(!isDirty){
+        setIsDirty(true)
     }
 }

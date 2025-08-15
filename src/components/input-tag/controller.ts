@@ -288,6 +288,8 @@ export const doRemoveValueX = (
 export const onClearButtonClick = (
     event:React.MouseEvent<HTMLButtonElement, MouseEvent>,
     inputTagRef:React.RefObject<HTMLInputElement | null>,
+    isDirty:boolean,
+    setIsDirty:React.Dispatch<React.SetStateAction<boolean>>,
     onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
     config?:inputTagConfigType,
     onValidate?:(error: fieldErrorType, newValue: string[]) => void,
@@ -302,5 +304,9 @@ export const onClearButtonClick = (
 
     if(inputTagRef?.current){
         inputTagRef.current.focus()
+    }
+    
+    if(!isDirty){
+        setIsDirty(true)
     }
 }

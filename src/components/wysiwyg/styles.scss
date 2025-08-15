@@ -127,20 +127,22 @@
         }
     }
     .editor-box{
-        max-height: 320px;
-        overflow: auto;
         border: 1px solid var(--clr-border);
         background-color: white;
         color: black;
+        padding: var(--space-200) var(--space-50);
 
         .ql-editor{
-            padding: var(--space-200);
+            max-height: 420px;
+            overflow: auto;
+            padding: var(--space-0) var(--space-200);
             p{
                 margin: 0px;
                 margin-bottom: 16px;
             }
             &.ql-blank::before {
                 color: hsl(from var(--clr-surface-5) h s l / 1);
+                left: var(--space-250);
             }
 
             ol {

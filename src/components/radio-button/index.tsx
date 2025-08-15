@@ -4,11 +4,12 @@ import * as ctrl from './controller';
 import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import type { globalShapeType } from '../_types';
-import Button from '../button';
+import Button, { type buttonStyleType } from '../button';
 
 const RadioButton = ({
     className = undefined,
     shape = undefined,
+    style = undefined,
     txtLabel = undefined,
     txtSublabel = undefined,
     icon = undefined,
@@ -37,7 +38,7 @@ const RadioButton = ({
                 <>
                     {
                         (txtLabel || txtSublabel)&&(
-                            <div className='text-label-box'>
+                            <div className='text-label-box' style={style?.textLabel}>
                                 <p className='text-label'>{txtLabel}</p>
                                 {
                                     (txtSublabel)&&(
@@ -65,6 +66,7 @@ const RadioButton = ({
                 </div>
             }
             appearance='subtle'
+            style={style}
         />
     )
 }
@@ -73,7 +75,7 @@ export default RadioButton
 
 interface _RadioButton {
     className?:string,
-    style?:radioButtonStyleType;
+    style?:buttonStyleType;
     shape?:globalShapeType;
     txtLabel?:string
     txtSublabel?:string,
@@ -82,8 +84,4 @@ interface _RadioButton {
     onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void
     isDisabled?:boolean
     isIndeterminate?:boolean
-}
-
-type radioButtonStyleType = {
-
 }

@@ -33,6 +33,16 @@
         border-bottom: 1px solid var(--clr-border);
         cursor: pointer;
 
+        &.rounded.disabled{
+            border-radius: var(--space-100);
+        }
+        &.circle{
+            border-radius: var(--space-200);
+        }
+        &.box{
+            border-radius: var(--space-0);
+        }
+
         &:focus-visible{
             outline: 2px solid var(--clr-focus-ouline);
             outline-offset: 2px;
@@ -54,7 +64,11 @@
 
         &.open{
             .title-box{
-                color: var(--clr-primary-800);
+                color: var(--clr-primary-900);
+            }
+
+            .caret-box{
+                color: var(--clr-surface-primary-4);
             }
         }
 

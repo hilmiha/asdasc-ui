@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType, optionItemType } from "../_types";
-import { useContext, useRef, useState, type JSX } from 'react';
+import { useContext, useEffect, useRef, useState, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import DropdownMenu, { type dropdownMenuStyleType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -60,6 +60,12 @@ const InputSelection = ({
     const optionSelectable = useDeepCompareMemo(()=>{
         return option.filter(i=>i.type==='option')
     },[option])
+
+    useEffect(()=>{
+        if(!isDropdownOpen && onValidate && config && isDirty){
+            ctrl.doValidateValue(value, onValidate,config)
+        }
+    },[JSON.stringify(value)])
 
     return(
         <div className={clsx(
@@ -141,7 +147,7 @@ const InputSelection = ({
                                             appearance='subtle'
                                             isShowtooltip={false}
                                             onClick={(e)=>{
-                                                ctrl.onClearButtonClick(e, config, onChange, onValidate, triggerButtonRef)
+                                                ctrl.onClearButtonClick(e, isDirty, setIsDirty, config, onChange, onValidate, triggerButtonRef)
                                             }}
                                         />
                                     )
@@ -204,7 +210,11 @@ const InputSelection = ({
                                         className='reset-button'
                                         txtLabel={'Clear Selection'}
                                         appearance='subtle'
-                                        onClick={(e)=>{ctrl.onClearButtonClick(e, config, onChange)}}
+                                        onClick={(e)=>{
+                                            if(onChange){
+                                                ctrl.clearValue(e, onChange)
+                                            }
+                                        }}
                                     />
                                 </div>
                             )

@@ -162,7 +162,19 @@ function App() {
                     />
                     <Button 
                         txtLabel='Hello World'
-                        onClick={()=>{onChange('testText', 'hello world')}}
+                        onClick={()=>{
+                            onChange('testText', 'hello world')
+                            onChange('testPassword', 'He!!0world')
+                            onChange('testSelectionMulti', [
+                                "aceh",
+                                'sumatera-utara',
+                                'sumatera-barat',
+                            ])
+                            onChange('testTags', [
+                                'helloWorld',
+                                'Content Management System'
+                            ])
+                        }}
                     />
                     <Button 
                         txtLabel='Hello World'
@@ -425,6 +437,7 @@ function App() {
                             isDisabled={false}
                             options={listCheckbox}
                             selectedList={valueCheckbox}
+                            isDefaultCollapse={false}
                             onChange={(newValue) => setValueCheckbox(newValue)}
                         />
                     </div>
@@ -452,6 +465,11 @@ function App() {
                     config={{
                         isRequired:true,
                     }}
+                    // style={{
+                    //     editorBox:{
+                    //         maxHeight:"320px"
+                    //     }
+                    // }}
                 />
                 <div>
                     <p>Value:</p>
@@ -894,7 +912,11 @@ const menues:optionItemType[] =  [
                 {id:'1.1.3', txtLabel:'Aceh Barat', isDisabled:true},
                 {id:'1.1.4', txtLabel:'Aceh Timur'},
             ]},
-            {id:'1.2', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Utara'},
+            {id:'1.2', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Utara', childOption:[
+                {id:'1.2.1', txtLabel:'Sumatera Utara Selatan'},
+                {id:'1.2.2', txtLabel:'Sumatera Utara Barat'},
+                {id:'1.2.3', txtLabel:'Sumatera Utara Timur'},
+            ]},
             {id:'1.3', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Barat'},
             {id:'1.4', icon:<PiCityBold className='global-icon'/>, txtLabel:'Sumatera Selatan'},
             {id:'1.5', icon:<PiCityBold className='global-icon'/>, txtLabel:'Riau'},

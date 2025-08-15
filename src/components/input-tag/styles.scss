@@ -51,7 +51,7 @@
         }
 
         &.selected{
-            background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.3);
+            background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.1);
             border-color:  var(--clr-border-primary);
             
             .value-label-box{
@@ -62,7 +62,7 @@
             }
 
             .input-tag-tag{
-                background-color: hsl(from var(--clr-surface-primary-5) h s l / 0.2);
+                background-color: hsl(from var(--clr-surface-primary-5) h s l / 0.1);
                 .tag-label{
                     color: var(--clr-primary-900);
                 }

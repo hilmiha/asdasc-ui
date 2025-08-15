@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type { globalShapeType } from '../components/_types';
 
 export const GlobalContext = React.createContext<_GlobalContextType | null>(null);
 
@@ -97,5 +98,4 @@ export interface _GlobalContextType {
     screenSize: ScreenSizeType;
 }
 
-export type globalShapeType = 'rounded' | 'box' | 'circle';
 export type ScreenSizeType = 'mobile' | 'tablet' | 'laptop';

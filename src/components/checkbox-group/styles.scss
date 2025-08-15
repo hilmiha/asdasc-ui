@@ -1,4 +1,9 @@
 .checkbox-tree-box{
+    .text-label-box{
+        .text-label{
+            text-align: start;
+        }
+    }
     .checkbox-button{
         margin: var(--space-25);
     }
@@ -16,6 +21,32 @@
             .global-icon{
                 color: var(--clr-surface-4);
             }
+        }
+    }
+
+    .child-box{
+        margin-left: var(--space-400);
+        position: relative;
+        display: grid;
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 0.3s ease-out;
+
+        >div{
+            overflow: hidden;
+        }
+        
+        &.closed{
+            grid-template-rows:  0fr;
+        }
+
+        &::after{
+            content: '';
+            position: absolute;
+            display: block;
+            height: 100%;
+            width: 1px;
+            background-color: var(--clr-border);
+            left: -20px;
         }
     }
 }

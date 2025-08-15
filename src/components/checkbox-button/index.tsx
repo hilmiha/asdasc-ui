@@ -5,11 +5,12 @@ import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import type { globalShapeType } from '../_types';
 import { FaCheck, FaMinus } from 'react-icons/fa';
-import Button from '../button';
+import Button, { type buttonStyleType } from '../button';
 
 const CheckboxButton = ({
     className = undefined,
     shape = undefined,
+    style = undefined,
     txtLabel = undefined,
     txtSublabel = undefined,
     icon = undefined,
@@ -74,6 +75,7 @@ const CheckboxButton = ({
                 </div>
             }
             appearance='subtle'
+            style={style}
         />
     )
 }
@@ -82,7 +84,7 @@ export default CheckboxButton
 
 interface _CheckboxButton {
     className?:string,
-    style?:checkboxButtonStyleType;
+    style?:buttonStyleType;
     shape?:globalShapeType;
     txtLabel?:string
     txtSublabel?:string,
@@ -91,8 +93,4 @@ interface _CheckboxButton {
     onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void
     isDisabled?:boolean
     isIndeterminate?:boolean
-}
-
-type checkboxButtonStyleType = {
-
 }
