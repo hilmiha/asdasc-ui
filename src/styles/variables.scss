@@ -170,7 +170,8 @@ $clr-danger:$clr-red; //defaul danger color
         &[data-theme*="primary_#{$name}"] {
             @include generate-colors('clr-primary', $color, $isDark);
             @include generate-surface-colors('clr-surface-primary', $color, $isDark);
-            @include generate-border-colors('clr-border-primary', $color, $isDark);
+            --clr-border-primary: hsl(from var(--clr-primary-700) h s l / 0.4);
+            // @include generate-border-colors('clr-border-primary', $color, $isDark);
         }
     }
     @each $name, $color in $color-map {

@@ -26,7 +26,7 @@
     &.neutral{
         color: var(--clr-text);
         background-color: hsl(from var(--clr-surface-4) h s l / 0.2);
-        border-color:  var(--clr-border);
+        border-color: var(--clr-border);
 
         &:hover, &:focus-visible{
             background-color: hsl(from var(--clr-surface-4) h s l / 0.4);

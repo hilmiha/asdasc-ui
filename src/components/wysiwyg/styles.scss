@@ -110,12 +110,17 @@
             border-top-right-radius: var(--space-200);
         }
 
+        .icon-button{
+            margin: var(--space-25);
+        }
+
         .header-dropdown-box{
             width: 140px;
             max-width: 140px;
             .dropdown-trigger-box, .bottom-sheet-trigger-box{
                 width: 100%;
                 .button{
+                    margin: var(--space-25);
                     padding: var(--space-0) var(--space-150) var(--space-0) var(--space-200);
                     width: inherit;
                     .text-label-box{

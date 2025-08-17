@@ -79,6 +79,8 @@ const DropdownMenu = ({
         }
     },[trigger, isDisabled, bottomSheetOpen])
 
+    const triggerDropdownRef = useRef< 1 | 0 | null>(0)
+
     useEffect(()=>{
         setBottomSheetOpen(false)
     },[screenSize])
@@ -96,6 +98,7 @@ const DropdownMenu = ({
                 onClose={onClose}
                 onOpen={onOpen}
                 isDisabled={isDisabled}
+                triggerClose={triggerDropdownRef}
                 floatingConfig={floatingConfig}
                 style={{
                     container:style?.container,
@@ -107,7 +110,14 @@ const DropdownMenu = ({
                     shape={shape}
                     options={options}
                     optionSelected={optionSelected}
-                    onClick={onClick}
+                    onClick={(idOption, option, e)=>{
+                        if(onClick){
+                            onClick(idOption, option, e)
+                        }
+                        if(floatingConfig?.isCloseOnItemClicked){
+                            triggerDropdownRef.current = 1
+                        }
+                    }}
                     floatingConfig={floatingConfig}
                 />
             </Dropdown>
@@ -184,6 +194,7 @@ export type dropdownFloatingConfigType = {
     isWithCheckmark?:boolean
     isLockScroll?:boolean
     isShowDropdown?:boolean
+    isCloseOnItemClicked?:boolean
     level?:number,
     mode?:dropdownMenuModeType[]
 }

@@ -23,6 +23,7 @@ const FormatTextTypeModule = ({
                         txtLabel={`${selected?('Header '):('')}${selected || 'Normal'}`}
                         iconAfter={<PiCaretDownBold/>}
                         isDisabled={isDisabled}
+                        appearance="subtle"
                     />
                 }
                 options={[

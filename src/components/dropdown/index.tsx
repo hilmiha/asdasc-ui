@@ -18,6 +18,7 @@ const Dropdown = ({
     elementFooter = undefined,
     children = undefined,
     
+    triggerClose = undefined,
     floatingConfig = undefined
 }:_Dropdown) =>{
 
@@ -137,6 +138,13 @@ const Dropdown = ({
         }
     },[trigger, isShowOption])
 
+    useEffect(()=>{
+        if(triggerClose?.current===1){
+            (refs.domReference.current as HTMLButtonElement).click()
+            triggerClose.current = 0
+        }
+    },[triggerClose?.current])
+
     return(
         <>
             {
@@ -232,6 +240,7 @@ interface _Dropdown {
     elementFooter?:JSX.Element
     children?:JSX.Element | JSX.Element[]
 
+    triggerClose?:React.MutableRefObject<1 | 0 | null>,
     floatingConfig?:dropdownFloatingConfigType
 }
 

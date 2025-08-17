@@ -25,6 +25,9 @@ import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 import CheckboxButton from './components/checkbox-button';
 import RadioButton from './components/radio-button';
 import CheckboxGroup from './components/checkbox-group';
+import Calendar from './components/calendar';
+import type { DateRange } from 'react-day-picker';
+import { addDays, subDays } from 'date-fns';
 
 function App() {
     const {
@@ -33,6 +36,7 @@ function App() {
         toggleGlobalTheme,
         toggleGlobalTone,
         toggleGlobalShape,
+        screenSize
     } = useContext(GlobalContext) as _GlobalContextType
     
     const colors = useMemo(()=>{
@@ -144,10 +148,21 @@ function App() {
         setContent(sampleContent as Delta);
     };
 
-    const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
+    const [valueDt, setValueDt] = useState< Date | undefined>(undefined)
+    const [valueDtRange, setValueDtRange] = useState< DateRange | undefined>(undefined)
+    const [valueDtMultiple, setValueDtMultiple] = useState< Date[] | undefined>(undefined)
     useEffect(()=>{
-        console.log(valueCheckbox)
-    },[valueCheckbox])
+        console.log(valueDt)
+    },[valueDt])
+    useEffect(()=>{
+        console.log(valueDtRange)
+    },[valueDtRange])
+    useEffect(()=>{
+        console.log(valueDtMultiple)
+    },[valueDtMultiple])
+
+    const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
+    
     return (
         <div>
             <div style={{padding:"var(--space-300)"}}>
@@ -179,6 +194,12 @@ function App() {
                     <Button 
                         txtLabel='Hello World'
                         appearance='primary'
+                        onClick={()=>{
+                            const now = new Date()
+                            setValueDt(now)
+                            setValueDtMultiple([now, addDays(now, 4), addDays(now, 8), subDays(now, 5)])
+                            setValueDtRange({from:now, to:addDays(now, 5)})
+                        }}
                     />
                     <Button 
                         txtLabel='Hello World'
@@ -452,6 +473,31 @@ function App() {
                     </div>
                 </div>
             </div>
+            <div style={{
+                display:"grid",
+                padding:'var(--space-100)', 
+                gap:'var(--space-400)',
+                gridTemplateColumns:screenSize!=='laptop'?('1fr'):('1fr 1fr 1fr')
+            }}>
+                <Calendar
+                    type='single'
+                    value={valueDt}
+                    setValue={setValueDt}
+                    isDisabled={false}
+                />
+                <Calendar
+                    type='multiple'
+                    value={valueDtMultiple}
+                    setValue={setValueDtMultiple}
+                    isDisabled={false}
+                />
+                <Calendar
+                    type='range'
+                    value={valueDtRange}
+                    setValue={setValueDtRange}
+                    isDisabled={false}
+                />
+            </div>
             <div style={{padding:'var(--space-300)'}}>
                 <Button txtLabel={'Preset'} onClick={()=>{presetContent()}}/>
                 <Wysiwyg
@@ -465,11 +511,6 @@ function App() {
                     config={{
                         isRequired:true,
                     }}
-                    // style={{
-                    //     editorBox:{
-                    //         maxHeight:"320px"
-                    //     }
-                    // }}
                 />
                 <div>
                     <p>Value:</p>

@@ -17,7 +17,8 @@ const Button = ({
     iconAfter = undefined,
     isSelected = false,
     isDisabled = false,
-    onClick = undefined
+    onClick = undefined,
+    tabIndex = undefined
 }:_Button) =>{
     
     //Context start ====
@@ -29,6 +30,7 @@ const Button = ({
     return(
         <button
             ref={ref}
+            tabIndex={tabIndex}
             id={id}
             className={
                 clsx(
@@ -100,6 +102,7 @@ interface _Button {
     isSelected?:boolean;
     isDisabled?:boolean;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
+    tabIndex?:number
 };
 
 export type buttonStyleType = {
