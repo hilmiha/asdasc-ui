@@ -27,24 +27,36 @@ const MonthPicker = ({
     } = useDayPicker()
     const selected = months[0].date
 
+    const isTodayYear = new Date().getFullYear() == selected.getFullYear()
+    const todayMonth = new Date().getMonth()+1;
+
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [focusIndex, setFocusIndex] = useState(
         monthOption.findIndex((y) => y.id === String(selected.getMonth() + 1))
     );
 
-    useEffect(() => {
-        if (selectedRef.current) {
+    // scroll to keep selected centered
+	useEffect(() => {
+		if (selectedRef.current) {
+			const parent = selectedRef.current.parentElement;
+			if (parent) {
+				parent.scrollTop =
+				selectedRef.current.offsetTop -
+				parent.clientHeight / 2 +
+				selectedRef.current.clientHeight / 2;
+			}
+
 			// ensure selected button is focused on mount
-            selectedRef.current.focus();
-        }
-    }, []);
+			// selectedRef.current.focus();
+		}
+	}, []);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
 		e.preventDefault();
 
-		const cols = 2;
+		const cols = 1;
 		let newIndex = focusIndex;
 
 		if (e.key === "ArrowRight") newIndex = Math.min(focusIndex + 1, monthOption.length - 1);
@@ -71,14 +83,14 @@ const MonthPicker = ({
                         <Button
                             ref={isSelected ? selectedRef : null}
                             tabIndex={isSelected ? 0 : -1} // only selected is tabbable
-                            className="month-button"
+                            className={`month-button ${todayMonth.toString()===i.id&&isTodayYear?('today'):('')}`}
                             key={i.id}
                             txtLabel={i.txtLabel}
                             onClick={()=>{
                                 setFocusIndex(idx);
                                 onClick(i.id)
                             }}
-                            appearance={isSelected?('primary'):('neutral')}
+                            appearance={isSelected?('primary'):('subtle')}
                         />
                     )
                 })

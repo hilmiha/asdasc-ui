@@ -12,10 +12,11 @@ import { isDate } from 'date-fns'
 import TimePicker from './components/time-picker'
 
 interface _Calendar {
-    type:Mode
+    type:Mode | 'single-with-time'
     value?:Date | DateRange | Date[] | undefined
     setValue?: React.Dispatch<React.SetStateAction<Date | undefined>> | React.Dispatch<React.SetStateAction<DateRange | undefined>> | React.Dispatch<React.SetStateAction<Date[] | undefined>>
     isDisabled?:boolean
+    isWithTime?:boolean
     disabledDates?:validCalendarDisabledValue[]
     shape?:globalShapeType
 }
@@ -28,6 +29,7 @@ const Calendar = ({
     value = undefined,
     setValue = undefined,
     isDisabled = false,
+    isWithTime = false, //only applies when type === single
     disabledDates = undefined,
     shape = undefined
 }:_Calendar) =>{
@@ -51,9 +53,23 @@ const Calendar = ({
         }else if(type==='range' && (isDateRange(newValue) || !newValue) && setValue){
             const setFunction = setValue as React.Dispatch<React.SetStateAction<DateRange | undefined>>
             setFunction(newValue)
-        }else if(type==='single' && (isDate(newValue) || !newValue) && setValue){
+        }else if((type==='single' || type==='single-with-time') && (isDate(newValue) || !newValue) && setValue){
+            const tampNewValue = newValue
+
+            if(isWithTime && tampNewValue){
+                const tampOldValue = value as Date | undefined
+                const hour = tampOldValue?(tampOldValue.getHours()):(0)
+                const minute = tampOldValue?(tampOldValue.getMinutes()):(0)
+                const second = tampOldValue?(tampOldValue.getSeconds()):(0)
+
+                tampNewValue.setHours(hour)
+                tampNewValue.setMinutes(minute)
+                tampNewValue.setSeconds(second)
+            }
+            
+
             const setFunction = setValue as React.Dispatch<React.SetStateAction<Date | undefined>>
-            setFunction(newValue)
+            setFunction(tampNewValue)
         }
     }
 
@@ -107,7 +123,7 @@ const Calendar = ({
                         disabled={disabledDates}
                         fixedWeeks={true}
                     />
-                ):(type==='single' && (isDate(value) || !value))?(
+                ):((type==='single' || type==='single-with-time') && (isDate(value) || !value))?(
                     <DayPicker
                         components={{
                             MonthCaption:()=>{
@@ -125,11 +141,9 @@ const Calendar = ({
                         onSelect={(newValue)=>{onChangeValue(newValue)}}
                         disabled={disabledDates}
                         fixedWeeks={true}
-                        footer={(screenSize!=='laptop' && !isDisabled)?(
-                            <TimePickerMobile value={value} setValue={setValue as React.Dispatch<React.SetStateAction<Date | undefined>>} isDisabled={isDisabled}/>
-                        ):(
+                        footer={(type==='single-with-time')?(
                             <TimePicker value={value} setValue={setValue as React.Dispatch<React.SetStateAction<Date | undefined>>} isDisabled={isDisabled}/>
-                        )}
+                        ):(undefined)}
                     />
                 ):(
                     <>type problem</>

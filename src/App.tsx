@@ -25,9 +25,9 @@ import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 import CheckboxButton from './components/checkbox-button';
 import RadioButton from './components/radio-button';
 import CheckboxGroup from './components/checkbox-group';
-import Calendar from './components/calendar';
+import Calendar, { type validCalendarDisabledValue } from './components/calendar';
 import type { DateRange } from 'react-day-picker';
-import { addDays, subDays } from 'date-fns';
+import { addDays, subDays, subMonths } from 'date-fns';
 
 function App() {
     const {
@@ -149,11 +149,20 @@ function App() {
     };
 
     const [valueDt, setValueDt] = useState< Date | undefined>(undefined)
+    const [valueDtTm, setValueDtTm] = useState< Date | undefined>(undefined)
     const [valueDtRange, setValueDtRange] = useState< DateRange | undefined>(undefined)
     const [valueDtMultiple, setValueDtMultiple] = useState< Date[] | undefined>(undefined)
+    const disabledDates = useMemo<validCalendarDisabledValue[]>(()=>{
+        return([
+            {from:subDays(new Date(), 30), to:subDays(new Date(), 27)}
+        ])
+    },[])
     useEffect(()=>{
         console.log(valueDt)
     },[valueDt])
+    useEffect(()=>{
+        console.log(valueDtTm)
+    },[valueDtTm])
     useEffect(()=>{
         console.log(valueDtRange)
     },[valueDtRange])
@@ -477,25 +486,36 @@ function App() {
                 display:"grid",
                 padding:'var(--space-100)', 
                 gap:'var(--space-400)',
-                gridTemplateColumns:screenSize!=='laptop'?('1fr'):('1fr 1fr 1fr')
+                gridTemplateColumns:screenSize!=='laptop'?('fit-content(100%)'):('fit-content(50%) fit-content(50%) fit-content(50%) fit-content(50%)'),
+                justifyContent:'center',
             }}>
                 <Calendar
                     type='single'
                     value={valueDt}
                     setValue={setValueDt}
                     isDisabled={false}
+                    disabledDates={disabledDates}
+                />
+                <Calendar
+                    type='single-with-time'
+                    value={valueDtTm}
+                    setValue={setValueDtTm}
+                    isDisabled={false}
+                    disabledDates={disabledDates}
                 />
                 <Calendar
                     type='multiple'
                     value={valueDtMultiple}
                     setValue={setValueDtMultiple}
                     isDisabled={false}
+                    disabledDates={disabledDates}
                 />
                 <Calendar
                     type='range'
                     value={valueDtRange}
                     setValue={setValueDtRange}
                     isDisabled={false}
+                    disabledDates={disabledDates}
                 />
             </div>
             <div style={{padding:'var(--space-300)'}}>

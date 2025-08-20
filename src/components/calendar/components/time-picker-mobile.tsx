@@ -155,6 +155,7 @@ const ScrollWheel: React.FC<ScrollWheelProps> = ({
     const {
         globalShape
     } = useContext(GlobalContext) as _GlobalContextType
+    
     const [selectedIndex, setSelectedIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
     const isScrolling = useRef(false);

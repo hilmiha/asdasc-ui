@@ -2,7 +2,7 @@ import { useDayPicker } from "react-day-picker"
 import Button from "../../button"
 import { addMonths, format, subMonths } from "date-fns"
 import IconButton from "../../icon-button"
-import { PiCalendarBlankBold, PiCalendarDotBold, PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi"
+import { PiCalendarBlankBold, PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi"
 import type { pickModeType } from ".."
 
 const CalendarNavigation = ({
@@ -23,8 +23,7 @@ const CalendarNavigation = ({
         >
             <div className="month-year-box">
                 <Button
-                    appearance="subtle"
-                    txtLabel={format(months[0].date, 'MMM')}
+                    txtLabel={format(months[0].date, 'MMMM')}
                     isSelected={pickMode==='month'}
                     onClick={()=>{
                         setPickMode((prev)=>{
@@ -37,7 +36,6 @@ const CalendarNavigation = ({
                     }}
                 />
                 <Button
-                    appearance="subtle"
                     txtLabel={format(months[0].date, 'yyyy')}
                     isSelected={pickMode==='year'}
                     onClick={()=>{
@@ -60,19 +58,6 @@ const CalendarNavigation = ({
                             txtLabel="back to date view"
                             isShowtooltip={false}
                             onClick={()=>{
-                                setPickMode('date')
-                            }}
-                        />
-                    )
-                }
-                {
-                    pickMode==='date'&&(
-                        <IconButton
-                            icon={<PiCalendarDotBold className="global-icon"/>}
-                            txtLabel="Go Today"
-                            isShowtooltip={false}
-                            onClick={()=>{
-                                goToMonth(new Date())
                                 setPickMode('date')
                             }}
                         />

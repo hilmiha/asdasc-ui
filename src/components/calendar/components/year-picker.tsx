@@ -24,11 +24,13 @@ const YearPicker = ({
 		return years;
 	}
 
+
 	const years = generateYearOptions();
 	const { 
 		months 
 	} = useDayPicker();
 	const selected = months[0].date;
+    const todayYear = new Date().getFullYear()
 
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
 	const containerRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +52,7 @@ const YearPicker = ({
 			}
 
 			// ensure selected button is focused on mount
-			selectedRef.current.focus();
+			// selectedRef.current.focus();
 		}
 	}, []);
 
@@ -59,7 +61,7 @@ const YearPicker = ({
 		if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
 		e.preventDefault();
 
-		const cols = 3;
+		const cols = 1;
 		let newIndex = focusIndex;
 
 		if (e.key === "ArrowRight") newIndex = Math.min(focusIndex + 1, years.length - 1);
@@ -85,14 +87,14 @@ const YearPicker = ({
 					<Button
 						ref={isSelected ? selectedRef : null}
 						tabIndex={isSelected ? 0 : -1} // only selected is tabbable
-						className="year-button"
+						className={`year-button ${todayYear.toString()===i.id?('today'):('')}`}
 						key={i.id}
 						txtLabel={i.txtLabel}
 						onClick={() => {
 							setFocusIndex(idx);
 							onClick(i.id);
 						}}
-						appearance={isSelected ? "primary" : "neutral"}
+						appearance={isSelected ? "primary" : "subtle"}
 					/>
 				);
 			})}
