@@ -114,6 +114,13 @@ const InputSelection = ({
                                     className
                                 )}
                                 style={style?.triggerButton}
+                                onKeyDown={(e)=>{ //to allow space click to open option bottom sheet
+                                    const isTriggerClicked = !(e.target as HTMLElement).classList.contains('clear-button')
+                                    if((e.keyCode===13 || e.keyCode===32) && isTriggerClicked ){
+                                        e.preventDefault()
+                                        triggerButtonRef.current?.click()
+                                    }
+                                }}
                             >
                                 {
                                     (config?.prefixElement)&&(

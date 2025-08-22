@@ -1,3 +1,4 @@
+import * as ctrl from '../controller';
 import { useDayPicker } from "react-day-picker"
 import Button from "../../button"
 import { addMonths, format, subMonths } from "date-fns"
@@ -26,26 +27,14 @@ const CalendarNavigation = ({
                     txtLabel={format(months[0].date, 'MMMM')}
                     isSelected={pickMode==='month'}
                     onClick={()=>{
-                        setPickMode((prev)=>{
-                            if(prev==='month'){
-                                return 'date'
-                            }else{
-                                return 'month'
-                            }
-                        })
+                        ctrl.onClickMonthYearNavButton('month', setPickMode)
                     }}
                 />
                 <Button
                     txtLabel={format(months[0].date, 'yyyy')}
                     isSelected={pickMode==='year'}
                     onClick={()=>{
-                        setPickMode((prev)=>{
-                            if(prev==='year'){
-                                return 'date'
-                            }else{
-                                return 'year'
-                            }
-                        })
+                        ctrl.onClickMonthYearNavButton('year', setPickMode)
                     }}
                 />
             </div>
@@ -58,7 +47,7 @@ const CalendarNavigation = ({
                             txtLabel="back to date view"
                             isShowtooltip={false}
                             onClick={()=>{
-                                setPickMode('date')
+                                ctrl.onClickMonthYearNavButton('date', setPickMode)
                             }}
                         />
                     )

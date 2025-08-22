@@ -492,28 +492,28 @@ function App() {
                 <Calendar
                     type='single'
                     value={valueDt}
-                    setValue={setValueDt}
+                    onChange={setValueDt}
                     isDisabled={false}
                     disabledDates={disabledDates}
                 />
                 <Calendar
                     type='single-with-time'
                     value={valueDtTm}
-                    setValue={setValueDtTm}
+                    onChange={setValueDtTm}
                     isDisabled={false}
                     disabledDates={disabledDates}
                 />
                 <Calendar
                     type='multiple'
                     value={valueDtMultiple}
-                    setValue={setValueDtMultiple}
+                    onChange={setValueDtMultiple}
                     isDisabled={false}
                     disabledDates={disabledDates}
                 />
                 <Calendar
                     type='range'
                     value={valueDtRange}
-                    setValue={setValueDtRange}
+                    onChange={setValueDtRange}
                     isDisabled={false}
                     disabledDates={disabledDates}
                 />
