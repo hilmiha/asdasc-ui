@@ -1,7 +1,7 @@
 import './App.scss'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiAppWindowFill, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
+import { PiAppWindowFill, PiCheckCircleBold, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -174,6 +174,118 @@ function App() {
     
     return (
         <div>
+            <p>Level one surface</p>
+            <div
+                style={{
+                    backgroundColor:'var(--clr-surface-2)',
+                    border:'0px solid var(--clr-border)',
+                    padding:'20px',
+                    minWidth:'200px',
+                    borderRadius:'10px',
+                    display:'flex',
+                    flexDirection:"column",
+                    gap:"20px",
+                    margin:'var(--space-300)',
+                }}
+            >
+                <p>Level two surface</p>
+                <div
+                    style={{
+                        backgroundColor:'var(--clr-surface-3)',
+                        border:'0px solid var(--clr-border)',
+                        padding:'20px',
+                        minWidth:'200px',
+                        borderRadius:'10px'
+                    }}
+                >
+                    <p style={{marginBottom:'var(--space-300)'}}>Level three surface</p>
+
+                    <SplitButton
+                        txtLabel='Toggle Theme'
+                        options={[
+                            {id:'circle', txtLabel:'Circle', txtSublabel:'Toggle global shape to circle', icon:<PiCircleBold className='global-icon'/>},
+                            {id:'rounded', txtLabel:'Rounded', txtSublabel:'Toggle global shape to rounded', icon:<BiSquareRounded className='global-icon'/>},
+                            {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
+                        ]}
+                        appearance='neutral'
+                        optionSelected={[appTheme.globalShape]}
+                        onClick={()=>{
+                            toggleGlobalTheme()
+                        }}
+                        onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
+                    />
+                    <p className='hello'>{appTheme.globalTheme??'-'}</p>
+                    <p className='hello'>{appTheme.globalTone??'-'}</p>
+                    <p className='hello'>{appTheme.globalPrimary??'-'}</p>
+                    <p className='hello'>{appTheme.globalShape??'-'}</p>
+                    <div
+                        style={{
+                            display:'grid',
+                            gridTemplateColumns:screenSize==='laptop'?('1fr 1fr 1fr'):screenSize==='tablet'?('1fr 1fr'):('1fr'),
+                            gap:'var(--space-500)',
+                            marginTop:"var(--space-300)"
+                        }}
+                    >
+                        <div>
+                            <p>Global Tone Color:</p>
+                            <div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-100)', justifyContent:'center', alignItems:'center'}}>
+                                {
+                                    colors.map((clr)=>(
+                                        <div 
+                                            key={clr} 
+                                            style={{
+                                                display:'flex',
+                                                alignItems:'center',
+                                                justifyContent:'center',
+                                                height:'40px',
+                                                width:'40px',
+                                                background:`var(--clr-${clr}-500)`,
+                                                border:`2px solid ${appTheme.globalTone===`tonal_${clr}`?'var(--surface-3)':'transparent'}`,
+                                                color:`${appTheme.globalTone===`tonal_${clr}`?'var(--clr-text-3)':'transparent'}`
+                                            }}
+                                            onClick={()=>{toggleGlobalTone(clr)}}
+                                        >
+                                            <PiCheckCircleBold size={24}/>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p>Global Primary Color:</p>
+                            <div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-100)', justifyContent:'center', alignItems:'center'}}>
+                                {
+                                    colors.map((clr)=>(
+                                        <div 
+                                            key={clr} 
+                                            style={{
+                                                display:'flex',
+                                                alignItems:'center',
+                                                justifyContent:'center',
+                                                height:'40px',
+                                                width:'40px',
+                                                background:`var(--clr-${clr}-500)`,
+                                                border:`2px solid ${appTheme.globalPrimary===`primary_${clr}`?'var(--surface-3)':'transparent'}`,
+                                                color:`${appTheme.globalPrimary===`primary_${clr}`?'var(--clr-text-3)':'transparent'}`
+                                            }}
+                                            onClick={()=>{toggleGlobalPrimary(clr)}}
+                                        >
+                                            <PiCheckCircleBold size={24}/>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <p>Text Contrast Test:</p>
+                            {
+                                colorPaletComponent
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div style={{padding:"var(--space-300)"}}>
                 <div style={{display:'flex', flexWrap:'wrap'}}>
                     <Button 
@@ -799,97 +911,6 @@ function App() {
                     </p>
                 </Accordion>
             </AccordionGroup>
-            <div
-                style={{
-                    backgroundColor:'var(--clr-surface-2)',
-                    border:'0px solid var(--clr-border)',
-                    padding:'20px',
-                    minWidth:'200px',
-                    borderRadius:'10px',
-                    display:'flex',
-                    flexDirection:"column",
-                    gap:"20px",
-                    margin:'var(--space-300)',
-                    maxWidth:'240px'
-                }}
-            >
-                <div
-                    style={{
-                        backgroundColor:'var(--clr-surface-3)',
-                        border:'0px solid var(--clr-border)',
-                        padding:'20px',
-                        minWidth:'200px',
-                        borderRadius:'10px'
-                    }}
-                >
-                    <SplitButton
-                        txtLabel='Toggle Theme'
-                        options={[
-                            {id:'circle', txtLabel:'Circle', txtSublabel:'Toggle global shape to circle', icon:<PiCircleBold className='global-icon'/>},
-                            {id:'rounded', txtLabel:'Rounded', txtSublabel:'Toggle global shape to rounded', icon:<BiSquareRounded className='global-icon'/>},
-                            {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
-                        ]}
-                        appearance='neutral'
-                        optionSelected={[appTheme.globalShape]}
-                        onClick={()=>{
-                            toggleGlobalTheme()
-                        }}
-                        onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
-                    />
-                    <p className='hello'>{appTheme.globalTheme??'-'}</p>
-                    <p className='hello'>{appTheme.globalTone??'-'}</p>
-                    <p className='hello'>{appTheme.globalPrimary??'-'}</p>
-                    <p className='hello'>{appTheme.globalShape??'-'}</p>
-                    <div
-                        style={{
-                            display:'grid',
-                            gridTemplateColumns:'1fr 1fr'
-                        }}
-                    >
-                        <div>
-                            {
-                                colors.map((clr)=>(
-                                    <div 
-                                        key={clr} 
-                                        style={{
-                                            display:'flex',
-                                            height:'40px',
-                                            width:'40px',
-                                            background:`var(--clr-${clr}-500)`,
-                                            border:`2px solid ${appTheme.globalTone===`tonal_${clr}`?'var(--surface-3)':'transparent'}`
-                                        }}
-                                        onClick={()=>{toggleGlobalTone(clr)}}
-                                    >
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <div>
-                            {
-                                colors.map((clr)=>(
-                                    <div 
-                                        key={clr} 
-                                        style={{
-                                            display:'flex',
-                                            height:'40px',
-                                            width:'40px',
-                                            background:`var(--clr-${clr}-500)`,
-                                            border:`2px solid ${appTheme.globalPrimary===`primary_${clr}`?'var(--surface-3)':'transparent'}`
-                                        }}
-                                        onClick={()=>{toggleGlobalPrimary(clr)}}
-                                    >
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                {
-                    colorPaletComponent
-                }
-            </div>
         </div>
     )
 }
