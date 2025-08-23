@@ -6,11 +6,15 @@ import YearPicker from "./year-picker";
 const CalendarPickerArea = ({
     props,
     pickMode,
-    setPickMode
+    setPickMode,
+    calendarStartValue,
+    calendarEndValue
 }:{ 
     props:MonthGridProps,
     pickMode:pickModeType,
     setPickMode: React.Dispatch<React.SetStateAction<pickModeType>>
+    calendarStartValue:Date
+    calendarEndValue:Date
 }) =>{
     const {
         goToMonth,
@@ -28,6 +32,8 @@ const CalendarPickerArea = ({
                     goToMonth(new Date(`${id}-1-${selected.getFullYear()}`))
                     setPickMode('date')
                 }}
+                calendarStartValue={calendarStartValue}
+                calendarEndValue={calendarEndValue}
             />
         )
     }else if(pickMode==='year'){
@@ -37,6 +43,8 @@ const CalendarPickerArea = ({
                     goToMonth(new Date(`${selected.getMonth() + 1}-1-${id}`))
                     setPickMode('date')
                 }}
+                calendarStartValue={calendarStartValue}
+                calendarEndValue={calendarEndValue}
             />
         )
     }

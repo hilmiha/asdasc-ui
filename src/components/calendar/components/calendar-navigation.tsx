@@ -15,7 +15,9 @@ const CalendarNavigation = ({
 }) =>{
     const {
         goToMonth,
-        months
+        months,
+        nextMonth,
+        previousMonth
     } = useDayPicker()
 
     return(
@@ -59,6 +61,7 @@ const CalendarNavigation = ({
                             txtLabel="previous month"
                             isShowtooltip={false}
                             onClick={()=>{goToMonth(subMonths(months[0].date, 1))}}
+                            isDisabled={!previousMonth}
                         />
                     )
                 }
@@ -70,6 +73,7 @@ const CalendarNavigation = ({
                             txtLabel="next month"
                             isShowtooltip={false}
                             onClick={()=>{goToMonth(addMonths(months[0].date, 1))}}
+                            isDisabled={!nextMonth}
                         />
                     )
                 }

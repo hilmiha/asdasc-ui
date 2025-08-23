@@ -5,31 +5,51 @@ import { useEffect, useRef, useState } from "react";
 
 const YearPicker = ({
 	onClick,
+    calendarStartValue,
+    calendarEndValue
 }: {
 	onClick: (id: string) => void;
+	calendarStartValue:Date
+    calendarEndValue:Date
 }) => {
-	function generateYearOptions(range?: { from: Date; to: Date }): optionItemType[] {
-		const now = new Date();
-		const from = range?.from ?? new Date(now.getFullYear() - 100, 0, 1);
-		const to = range?.to ?? new Date(now.getFullYear() + 5, 11, 31);
+	function generateYearOptionsForMonth(
+		selectedMonth: Date
+	): optionItemType[] {
+		const monthIndex = selectedMonth.getMonth(); // 0 = January
+		const fromYear = calendarStartValue.getFullYear();
+		const toYear = calendarEndValue.getFullYear();
 
 		const years: optionItemType[] = [];
-		for (let y = from.getFullYear(); y <= to.getFullYear(); y++) {
+
+		for (let y = fromYear; y <= toYear; y++) {
+			const isStartYear = y === fromYear;
+			const isEndYear = y === toYear;
+
+			let isDisabled = false;
+
+			if (isStartYear && monthIndex < calendarStartValue.getMonth()) {
+				isDisabled = true;
+			}
+			if (isEndYear && monthIndex > calendarEndValue.getMonth()) {
+				isDisabled = true;
+			}
+
 			years.push({
 				id: String(y),
 				txtLabel: String(y),
+				isDisabled,
 			});
 		}
 
 		return years;
 	}
 
-
-	const years = generateYearOptions();
 	const { 
 		months 
 	} = useDayPicker();
 	const selected = months[0].date;
+	const years = generateYearOptionsForMonth(selected);
+
     const todayYear = new Date().getFullYear()
 
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
@@ -95,6 +115,7 @@ const YearPicker = ({
 							onClick(i.id);
 						}}
 						appearance={isSelected ? "primary" : "subtle"}
+						isDisabled={i.isDisabled}
 					/>
 				);
 			})}

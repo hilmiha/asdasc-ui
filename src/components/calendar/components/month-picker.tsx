@@ -1,12 +1,16 @@
 import { useDayPicker } from "react-day-picker";
 import type { optionItemType } from "../../_types";
 import Button from "../../button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const MonthPicker = ({
-    onClick
+    onClick,
+    calendarStartValue,
+    calendarEndValue,
 }:{
     onClick:(id:string)=>void
+    calendarStartValue:Date
+    calendarEndValue:Date
 }) =>{
     const monthOption:optionItemType[] = [
         { id: '1', txtLabel: 'January' },
@@ -23,9 +27,39 @@ const MonthPicker = ({
         { id: '12', txtLabel: 'December' }
     ];
     const {
-        months
+        months,
     } = useDayPicker()
     const selected = months[0].date
+
+    const availableMonth = useMemo(()=>{
+        let filteredMonths: optionItemType[] = [];
+        const selectedYear = selected.getFullYear()
+        const startYear = calendarStartValue?.getFullYear()
+        const endYear= calendarEndValue?.getFullYear()
+        const startMonth = calendarStartValue
+        const endMonth = calendarEndValue
+
+        if (selectedYear < startYear || selectedYear > endYear) {
+            // No months available
+            filteredMonths = [];
+        } else if (selectedYear === startYear && selectedYear === endYear) {
+            // Both start and end in the same year
+            filteredMonths = monthOption.filter(
+                (m) => +m.id >= startMonth.getMonth() + 1 && +m.id <= endMonth.getMonth() + 1
+            );
+        } else if (selectedYear === startYear) {
+            // Starting year: filter from start month to December
+            filteredMonths = monthOption.filter((m) => +m.id >= startMonth.getMonth() + 1);
+        } else if (selectedYear === endYear) {
+            // Ending year: filter from January to end month
+            filteredMonths = monthOption.filter((m) => +m.id <= endMonth.getMonth() + 1);
+        } else {
+            // Full year between start and end
+            filteredMonths = monthOption;
+        }
+
+        return(filteredMonths);
+    },[])
 
     const isTodayYear = new Date().getFullYear() == selected.getFullYear()
     const todayMonth = new Date().getMonth()+1;
@@ -33,7 +67,7 @@ const MonthPicker = ({
 	const selectedRef = useRef<HTMLButtonElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [focusIndex, setFocusIndex] = useState(
-        monthOption.findIndex((y) => y.id === String(selected.getMonth() + 1))
+        availableMonth.findIndex((y) => y.id === String(selected.getMonth() + 1))
     );
 
     // scroll to keep selected centered
@@ -59,9 +93,9 @@ const MonthPicker = ({
 		const cols = 1;
 		let newIndex = focusIndex;
 
-		if (e.key === "ArrowRight") newIndex = Math.min(focusIndex + 1, monthOption.length - 1);
+		if (e.key === "ArrowRight") newIndex = Math.min(focusIndex + 1, availableMonth.length - 1);
 		if (e.key === "ArrowLeft") newIndex = Math.max(focusIndex - 1, 0);
-		if (e.key === "ArrowDown") newIndex = Math.min(focusIndex + cols, monthOption.length - 1);
+		if (e.key === "ArrowDown") newIndex = Math.min(focusIndex + cols, availableMonth.length - 1);
 		if (e.key === "ArrowUp") newIndex = Math.max(focusIndex - cols, 0);
 
 		setFocusIndex(newIndex);
@@ -77,7 +111,7 @@ const MonthPicker = ({
 			onKeyDown={handleKeyDown}
         >
             {
-                monthOption.map((i, idx)=>{
+                availableMonth.map((i, idx)=>{
                     const isSelected = `${selected.getMonth() + 1}`===i.id;
                     return(
                         <Button
