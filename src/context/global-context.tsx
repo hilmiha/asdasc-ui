@@ -8,7 +8,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
     const [globalTone, setGlobalTone] = useState<string>('tonal_blue');
     const [globalPrimary, setGlobalPrimary] = useState<string>('primary_emerald');
     const [globalShape, setGlobalShape] = useState<globalShapeType>('rounded');
-    const [screenSize, setScreenSize] = useState<ScreenSizeType>('laptop');
+    const [screenSize, setScreenSize] = useState<ScreenSizeType>('mobile');
 
     // Function to determine screen size category
     const getScreenSize = useCallback((width: number): ScreenSizeType => {
@@ -32,7 +32,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
 
         // Cleanup event listener on unmount
         return () => window.removeEventListener('resize', handleResize);
-    }, [getScreenSize]);
+    }, []);
 
     const appTheme = useMemo(()=>{
         return {

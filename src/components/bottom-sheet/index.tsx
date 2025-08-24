@@ -7,6 +7,7 @@ import type { globalShapeType } from '../_types';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import IconButton from '../icon-button';
 import { PiXBold } from 'react-icons/pi';
+import { useDeepCompareMemo } from '../../hook/useDeepCompareMemo';
 
 const BottomSheet = ({
     isOpen, 
@@ -33,8 +34,10 @@ const BottomSheet = ({
 
     //States and refs start ======
     const mountedOnce = useRef(false);
-    const snapPointConfig = useMemo<Record<snapPointType, number>>(()=>{
-        if(screenSize==='mobile'){
+    const snapPointConfig = useDeepCompareMemo<snapPointSizeType>(()=>{
+        if(floatingConfig?.snapPointSize){
+            return floatingConfig.snapPointSize
+        }else if(screenSize==='mobile'){
             return{
                 HIDDEN: 0,
                 HALF: 45,
@@ -47,7 +50,7 @@ const BottomSheet = ({
                 FULL: 95
             }
         }
-    },[screenSize]);
+    },[screenSize, floatingConfig?.snapPointSize]);
 
     const [snapPoint, setSnapPoint] = useState<snapPointType>('HIDDEN');
     const [currentHeight, setCurrentHeight] = useState(0);
@@ -73,7 +76,6 @@ const BottomSheet = ({
         return gridTamp.join(' ')
     },[])
     //States and refs end ======
-
 
     // Update height when snap point changes
     useEffect(() => {
@@ -288,11 +290,8 @@ const BottomSheet = ({
                                         }
                                         <div 
                                             className='bottom-sheet-body-box'
-                                            onTouchStart={(e)=>{
-                                                ctrl.handleTouchStart(e, setTouchStart)
-                                            }}
-                                            onTouchMove={(e)=>{
-                                                ctrl.onTouchMove(e, touchStart, setTouchStart, snapPoint, setSnapPoint, floatingConfig, setIsOpen)
+                                            onScroll={(e)=>{
+                                                ctrl.contentScrollUp(e, snapPoint, setSnapPoint)
                                             }}
                                         >
                                             {children}
@@ -353,6 +352,7 @@ interface _BottomSheet{
 
 export type bottomSheetFloatingConfig = {
     defaultSnapPoint?:'FULL'|'HALF'
+    snapPointSize?:snapPointSizeType
     isDisableDismiss?:boolean
     isChildOpen?:boolean
     level?:number
@@ -362,4 +362,9 @@ type bottomSheetStyleType = {
     container?:React.CSSProperties,
 }
 
+export type snapPointSizeType = {
+    HIDDEN: number,
+    HALF: number,
+    FULL: number
+}
 export type snapPointType = 'HIDDEN'|'HALF'|'FULL'

@@ -59,7 +59,7 @@ const Dropdown = ({
             shift(),
             flip({
                 padding: 10,
-                fallbackPlacements:['bottom', 'top']
+                fallbackPlacements:['bottom-start','bottom','bottom-end','top-start','top','top-end']
             }),
             size({
                 apply({availableHeight, elements, rects}) {

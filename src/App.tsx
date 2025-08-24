@@ -25,9 +25,9 @@ import { QuillHtmlUtils } from './components/wysiwyg/utils/utils';
 import CheckboxButton from './components/checkbox-button';
 import RadioButton from './components/radio-button';
 import CheckboxGroup from './components/checkbox-group';
-import Calendar, { type validCalendarDisabledValue } from './components/calendar';
-import type { DateRange } from 'react-day-picker';
-import { addDays, subDays, subMonths } from 'date-fns';
+import Calendar, { type validCalendarDisabledValue, type validCalendarValue } from './components/calendar';
+import { addDays, subDays } from 'date-fns';
+import InputDateTime from './components/input-date';
 
 function App() {
     const {
@@ -60,9 +60,10 @@ function App() {
         testSelectionComboBox:[],
         testSelectionMulti:[],
         testTags:[],
-        isRadio:false,
-        radioStatus:'',
-        checkboxStatus:[],
+        testDate:new Date(),
+        testDateTime:undefined,
+        testDateMultiple:undefined,
+        testDateRange:undefined
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -75,9 +76,10 @@ function App() {
         testSelectionComboBox:{isError:false, errorMessage:''},
         testSelectionMulti:{isError:false, errorMessage:''},
         testTags:{isError:false, errorMessage:''},
-        isRadio:{isError:false, errorMessage:''},
-        radioStatus:{isError:false, errorMessage:''},
-        checkboxStatus:{isError:false, errorMessage:''},
+        testDate:{isError:false, errorMessage:''},
+        testDateTime:{isError:false, errorMessage:''},
+        testDateMultiple:{isError:false, errorMessage:''},
+        testDateRange:{isError:false, errorMessage:''}
     })
     const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
@@ -148,10 +150,10 @@ function App() {
         setContent(sampleContent as Delta);
     };
 
-    const [valueDt, setValueDt] = useState< Date | undefined>(undefined)
-    const [valueDtTm, setValueDtTm] = useState< Date | undefined>(undefined)
-    const [valueDtRange, setValueDtRange] = useState< DateRange | undefined>(undefined)
-    const [valueDtMultiple, setValueDtMultiple] = useState< Date[] | undefined>(undefined)
+    const [valueDt, setValueDt] = useState< validCalendarValue >(undefined)
+    const [valueDtTm, setValueDtTm] = useState< validCalendarValue >(undefined)
+    const [valueDtRange, setValueDtRange] = useState< validCalendarValue >(undefined)
+    const [valueDtMultiple, setValueDtMultiple] = useState< validCalendarValue >(undefined)
     const disabledDates = useMemo<validCalendarDisabledValue[]>(()=>{
         return([
             {from:subDays(new Date(), 30), to:subDays(new Date(), 27)}
@@ -541,6 +543,54 @@ function App() {
                             isRequired:true,
                         }}
                     />
+                    <InputDateTime
+                        type='single'
+                        txtPlaceholder='Select date...'
+                        value={form['testDate']}
+                        onChange={(newValue)=>{onChange('testDate', newValue)}}
+                        onValidate={(error)=>{onValidate('testDate', error)}}
+                        error={formError['testDate']}
+                        config={{
+                            isRequired:true,
+                        }}
+                    />
+                    <InputDateTime
+                        type='single-with-time'
+                        txtPlaceholder='Select date with time...'
+                        value={form['testDateTime']}
+                        onChange={(newValue)=>{onChange('testDateTime', newValue)}}
+                        onValidate={(error)=>{onValidate('testDateTime', error)}}
+                        error={formError['testDateTime']}
+                        config={{
+                            isRequired:true
+                        }}
+                    />
+                    <InputDateTime
+                        type='multiple'
+                        txtPlaceholder='Select date multiple...'
+                        value={form['testDateMultiple']}
+                        onChange={(newValue)=>{onChange('testDateMultiple', newValue)}}
+                        onValidate={(error)=>{onValidate('testDateMultiple', error)}}
+                        error={formError['testDateMultiple']}
+                        config={{
+                            isRequired:true,
+                            minSelected:3,
+                            maxSelected:7
+                        }}
+                    />
+                    <InputDateTime
+                        type='range'
+                        txtPlaceholder='Select date range...'
+                        value={form['testDateRange']}
+                        onChange={(newValue)=>{onChange('testDateRange', newValue)}}
+                        onValidate={(error)=>{onValidate('testDateRange', error)}}
+                        error={formError['testDateRange']}
+                        config={{
+                            isRequired:true,
+                            minSelected:3,
+                            maxSelected:7
+                        }}
+                    />
                     <div>
                         <RadioButton
                             isSelected={true}
@@ -636,7 +686,6 @@ function App() {
                     value={content}
                     onChange={(newValue)=>{setContent(newValue)}}
                     onValidate={(error)=>{setContentError(error)}}
-                    onBlur={()=>{console.log('here')}}
                     isDisabled={false}
                     placeholder="Start typing..."
                     error={contentError}

@@ -2,12 +2,11 @@ import './styles.scss'
 import * as ctrl from './controller';
 import clsx from 'clsx'
 import { useContext, useMemo, useState } from 'react'
-import { DayPicker, isDateRange, type DateRange, type Mode } from "react-day-picker"
+import { DayPicker, type CustomComponents, type DateRange, type Mode } from "react-day-picker"
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context'
 import type { globalShapeType } from '../_types'
 import CalendarNavigation from './components/calendar-navigation'
 import CalendarPickerArea from './components/calendar-picker-area'
-import { isDate } from 'date-fns'
 import TimePicker from './components/time-picker'
 
 const Calendar = ({
@@ -15,7 +14,6 @@ const Calendar = ({
     value = undefined,
     onChange = undefined,
     isDisabled = false,
-    isWithTime = false, //only applies when type === single
     disabledDates = undefined,
     shape = undefined,
     calendarStart = undefined,
@@ -47,6 +45,26 @@ const Calendar = ({
         }
     },[calendarEnd])
 
+    const components = useMemo<Partial<CustomComponents>>(()=>{
+        return ({
+            MonthCaption:()=>{
+                return<CalendarNavigation pickMode={pickMode} setPickMode={setPickMode}/>
+            },
+            Nav:()=>{
+                return(<></>)
+            },
+            MonthGrid:(props)=>{
+                return<CalendarPickerArea 
+                    props={props} 
+                    pickMode={pickMode} 
+                    setPickMode={setPickMode}
+                    calendarStartValue={calendarStartValue}
+                    calendarEndValue={calendarEndValue}
+                />
+            },
+        })
+    },[pickMode, calendarStartValue, calendarEndValue])
+    
     return(
         <div 
             className={clsx(
@@ -59,88 +77,40 @@ const Calendar = ({
             )}
         >
             {
-                (type==='multiple' && (Array.isArray(value) || !value))?(
+                (type==='multiple')?(
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
-                        components={{
-                            MonthCaption:()=>{
-                                return<CalendarNavigation pickMode={pickMode} setPickMode={setPickMode}/>
-                            },
-                            Nav:()=>{
-                                return(<></>)
-                            },
-                            MonthGrid:(props)=>{
-                                return<CalendarPickerArea 
-                                    props={props} 
-                                    pickMode={pickMode} 
-                                    setPickMode={setPickMode}
-                                    calendarStartValue={calendarStartValue}
-                                    calendarEndValue={calendarEndValue}
-                                />
-                            },
-                        }}
+                        components={components}
                         mode='multiple'
                         selected={value as Date[] | undefined}
-                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, isWithTime, onChange)}}
+                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, onChange)}}
                         disabled={disabledDates}
                         fixedWeeks={true}
                     />
-                ):(type==='range' && (isDateRange(value) || !value))?(
+                ):(type==='range')?(
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
-                        components={{
-                            MonthCaption:()=>{
-                                return<CalendarNavigation pickMode={pickMode} setPickMode={setPickMode}/>
-                            },
-                            Nav:()=>{
-                                return(<></>)
-                            },
-                            MonthGrid:(props)=>{
-                                return<CalendarPickerArea 
-                                    props={props} 
-                                    pickMode={pickMode} 
-                                    setPickMode={setPickMode}
-                                    calendarStartValue={calendarStartValue}
-                                    calendarEndValue={calendarEndValue}
-                                />
-                            },
-                        }}
+                        components={components}
                         mode='range'
                         selected={value as DateRange | undefined}
-                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, isWithTime, onChange)}}
+                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, onChange)}}
                         disabled={disabledDates}
                         fixedWeeks={true}
                     />
-                ):((type==='single' || type==='single-with-time') && (isDate(value) || !value))?(
+                ):((type==='single' || type==='single-with-time'))?(
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
-                        components={{
-                            MonthCaption:()=>{
-                                return<CalendarNavigation pickMode={pickMode} setPickMode={setPickMode}/>
-                            },
-                            Nav:()=>{
-                                return(<></>)
-                            },
-                            MonthGrid:(props)=>{
-                                return<CalendarPickerArea 
-                                    props={props} 
-                                    pickMode={pickMode} 
-                                    setPickMode={setPickMode}
-                                    calendarStartValue={calendarStartValue}
-                                    calendarEndValue={calendarEndValue}
-                                />
-                            },
-                        }}
+                        components={components}
                         mode='single'
                         selected={value as Date | undefined}
-                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, isWithTime, onChange)}}
+                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, onChange)}}
                         disabled={disabledDates}
                         fixedWeeks={true}
                         footer={(type==='single-with-time')?(
-                            <TimePicker value={value} setValue={onChange as React.Dispatch<React.SetStateAction<Date | undefined>>} isDisabled={isDisabled}/>
+                            <TimePicker value={value as Date | undefined} setValue={onChange as React.Dispatch<React.SetStateAction<Date | undefined>>} isDisabled={isDisabled}/>
                         ):(undefined)}
                     />
                 ):(
@@ -155,16 +125,16 @@ const Calendar = ({
 export default Calendar
 
 interface _Calendar {
-    type:Mode | 'single-with-time'
-    value?:Date | DateRange | Date[] | undefined
-    onChange?: React.Dispatch<React.SetStateAction<Date | undefined>> | React.Dispatch<React.SetStateAction<DateRange | undefined>> | React.Dispatch<React.SetStateAction<Date[] | undefined>>
+    type:calendarType
+    value?:validCalendarValue
+    onChange?:(newValue:validCalendarValue)=>void
     isDisabled?:boolean
-    isWithTime?:boolean
     disabledDates?:validCalendarDisabledValue[]
     shape?:globalShapeType
     calendarStart?:Date
     calendarEnd?:Date
 }
+export type calendarType = Mode | 'single-with-time'
 export type pickModeType = "date" | 'month' | 'year'
 export type validCalendarDisabledValue = Date | Date[] | DateRange
 export type validCalendarValue = Date | Date[] | DateRange | undefined

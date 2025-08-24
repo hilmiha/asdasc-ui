@@ -138,10 +138,19 @@ export const handlePointerUp = (
 };
 
 //Content touch drag
+export const contentScrollUp = (
+    e: React.UIEvent<HTMLDivElement, UIEvent>,
+    currentSnapPoint:snapPointType,
+    setSnapPoint: React.Dispatch<React.SetStateAction<snapPointType>>,
+) =>{
+    const element = e.target as HTMLDivElement
+    if(element.scrollTop > 0 && currentSnapPoint==='HALF'){
+        setSnapPoint('FULL')
+    }
+}
 export const handleTouchStart = (
     e: React.TouchEvent<HTMLDivElement>,
     setTouchStart:React.Dispatch<React.SetStateAction<{y: number; scrollTop: number;} | null>>,
-
 ) => {
     const touch = e.touches[0];
     const element = e.currentTarget;

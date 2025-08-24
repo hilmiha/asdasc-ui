@@ -1,4 +1,4 @@
-import { isDateRange, type DateRange, type Mode } from "react-day-picker";
+import { isDateRange, type Mode } from "react-day-picker";
 import type { pickModeType, validCalendarValue } from ".";
 import { isDate } from "date-fns";
 
@@ -7,22 +7,24 @@ export const onValueChange = (
     prevValue:validCalendarValue,
     newValue:validCalendarValue,
     isDisabled:boolean,
-    isWithTime:boolean,
-    onChange?: React.Dispatch<React.SetStateAction<Date | undefined>> | React.Dispatch<React.SetStateAction<DateRange | undefined>> | React.Dispatch<React.SetStateAction<Date[] | undefined>>
+    onChange?: (newValue:validCalendarValue)=>void
 ) =>{
     if(isDisabled){
         return
     }
     if(type==='multiple' && (Array.isArray(newValue) || !newValue) && onChange){
-        const setFunction = onChange as React.Dispatch<React.SetStateAction<Date[] | undefined>>
-        setFunction(newValue)
+        const isArrayEmpty = Array.isArray(newValue) && newValue.length===0
+        if(isArrayEmpty){
+            onChange(undefined)
+        }else{
+            onChange(newValue)
+        }
     }else if(type==='range' && (isDateRange(newValue) || !newValue) && onChange){
-        const setFunction = onChange as React.Dispatch<React.SetStateAction<DateRange | undefined>>
-        setFunction(newValue)
+        onChange(newValue)
     }else if((type==='single' || type==='single-with-time') && (isDate(newValue) || !newValue) && onChange){
         const tampNewValue = newValue
 
-        if(isWithTime && tampNewValue){
+        if(type==='single-with-time' && tampNewValue){
             const tampOldValue = prevValue as Date | undefined
             const hour = tampOldValue?(tampOldValue.getHours()):(0)
             const minute = tampOldValue?(tampOldValue.getMinutes()):(0)
@@ -32,10 +34,7 @@ export const onValueChange = (
             tampNewValue.setMinutes(minute)
             tampNewValue.setSeconds(second)
         }
-        
-
-        const setFunction = onChange as React.Dispatch<React.SetStateAction<Date | undefined>>
-        setFunction(tampNewValue)
+        onChange(newValue)
     }
 }
 
