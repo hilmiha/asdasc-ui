@@ -190,6 +190,7 @@ interface _DropdownMenu {
 
 export type dropdownFloatingConfigType = {
     placement?:Placement,
+    fallbackPlacement?:Placement[]
     isContainerWidthSameAsTrigger?:boolean
     isWithCheckmark?:boolean
     isLockScroll?:boolean

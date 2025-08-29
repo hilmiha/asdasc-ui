@@ -28,6 +28,7 @@ import CheckboxGroup from './components/checkbox-group';
 import Calendar, { type validCalendarDisabledValue, type validCalendarValue } from './components/calendar';
 import { addDays, subDays } from 'date-fns';
 import InputDateTime from './components/input-date';
+import TableData, { type tableRowData } from './components/table-data';
 
 function App() {
     const {
@@ -60,7 +61,7 @@ function App() {
         testSelectionComboBox:[],
         testSelectionMulti:[],
         testTags:[],
-        testDate:new Date(),
+        testDate:undefined,
         testDateTime:undefined,
         testDateMultiple:undefined,
         testDateRange:undefined
@@ -678,6 +679,13 @@ function App() {
                     onChange={setValueDtRange}
                     isDisabled={false}
                     disabledDates={disabledDates}
+                />
+            </div>
+            <div style={{padding:'var(--space-100) var(--space-100)', height:'420px'}}>
+                <TableData
+                    onClickRow={(rowData:tableRowData)=>{console.log(rowData)}}
+                    isColumnSwapable={true}
+                    isShowFooter={true}
                 />
             </div>
             <div style={{padding:'var(--space-300)'}}>

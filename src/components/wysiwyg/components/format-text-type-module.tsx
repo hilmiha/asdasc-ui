@@ -21,7 +21,7 @@ const FormatTextTypeModule = ({
                 trigger={
                     <Button 
                         txtLabel={`${selected?('Header '):('')}${selected || 'Normal'}`}
-                        iconAfter={<PiCaretDownBold/>}
+                        iconAfter={<PiCaretDownBold className="global-icon"/>}
                         isDisabled={isDisabled}
                         appearance="subtle"
                     />

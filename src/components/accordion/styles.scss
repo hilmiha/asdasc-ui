@@ -44,6 +44,7 @@
         }
 
         &:focus-visible{
+            background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
             outline: 2px solid var(--clr-focus-ouline);
             outline-offset: 2px;
             z-index: 1;

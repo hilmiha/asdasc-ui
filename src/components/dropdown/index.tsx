@@ -59,7 +59,7 @@ const Dropdown = ({
             shift(),
             flip({
                 padding: 10,
-                fallbackPlacements:['bottom-start','bottom','bottom-end','top-start','top','top-end']
+                fallbackPlacements:floatingConfig?.fallbackPlacement??['bottom-start','bottom','bottom-end','top-start','top','top-end']
             }),
             size({
                 apply({availableHeight, elements, rects}) {
@@ -67,7 +67,7 @@ const Dropdown = ({
                     elements.floating.style.maxHeight = value;
                     if(floatingConfig?.isContainerWidthSameAsTrigger){
                         elements.floating.style.width = `${rects.reference.width}px`
-                        elements.floating.style.minWidth = `${Math.max(310, rects.reference.width)}px`
+                        elements.floating.style.minWidth = `${Math.max(120, rects.reference.width)}px`
                         elements.floating.style.maxWidth = `${rects.reference.width}px`
                     }else{
                         elements.floating.style.width = `310x`
@@ -246,6 +246,7 @@ interface _Dropdown {
 
 export type dropdownFloatingConfigType = {
     placement?:Placement,
+    fallbackPlacement?:Placement[]
     isContainerWidthSameAsTrigger?:boolean
     isWithCheckmark?:boolean
     isLockScroll?:boolean

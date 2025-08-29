@@ -98,7 +98,8 @@ const OptionsComponent = ({
                                     shape={(shape)?(shape):(globalShape)}
                                     onClick={(_, option, e)=>{ctrl.onOptionClick(option, e, onClick)}}
                                     floatingConfig={{
-                                        placement:'right-start',
+                                        placement:floatingConfig?.placement??'bottom-start',
+                                        fallbackPlacement:floatingConfig?.fallbackPlacement,
                                         level:((floatingConfig?.level)??0)+1,
                                         isWithCheckmark:floatingConfig?.isWithCheckmark,
                                     }}
