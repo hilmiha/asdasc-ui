@@ -28,7 +28,7 @@ import CheckboxGroup from './components/checkbox-group';
 import Calendar, { type validCalendarDisabledValue, type validCalendarValue } from './components/calendar';
 import { addDays, subDays } from 'date-fns';
 import InputDateTime from './components/input-date';
-import TableData, { type tableRowData } from './components/table-data';
+import TableData, { type tableRowDataType } from './components/table-data';
 
 function App() {
     const {
@@ -175,6 +175,7 @@ function App() {
 
     const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
     
+    const [tabelChecked, setTableChecked] = useState<string[]>([])
     return (
         <div>
             <p>Level one surface</p>
@@ -683,9 +684,17 @@ function App() {
             </div>
             <div style={{padding:'var(--space-100) var(--space-100)', height:'420px'}}>
                 <TableData
-                    onClickRow={(rowData:tableRowData)=>{console.log(rowData)}}
+                    onClickRow={(rowData:tableRowDataType)=>{console.log(rowData)}}
+                    onClickRowAction={(idButton, rowData)=>{
+                        console.log(idButton, rowData)
+                    }}
+                    selectedRow={tabelChecked}
+                    onClickRowCheckbox={(selectedList)=>{
+                        setTableChecked(selectedList)
+                    }}
                     isColumnSwapable={true}
                     isShowFooter={true}
+                    isCheckbox={true}
                 />
             </div>
             <div style={{padding:'var(--space-300)'}}>

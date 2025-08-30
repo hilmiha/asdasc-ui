@@ -67,7 +67,7 @@ const Dropdown = ({
                     elements.floating.style.maxHeight = value;
                     if(floatingConfig?.isContainerWidthSameAsTrigger){
                         elements.floating.style.width = `${rects.reference.width}px`
-                        elements.floating.style.minWidth = `${Math.max(120, rects.reference.width)}px`
+                        elements.floating.style.minWidth = `${Math.max(180, rects.reference.width)}px`
                         elements.floating.style.maxWidth = `${rects.reference.width}px`
                     }else{
                         elements.floating.style.width = `310x`
@@ -139,11 +139,11 @@ const Dropdown = ({
     },[trigger, isShowOption])
 
     useEffect(()=>{
-        if(triggerClose?.current===1){
-            (refs.domReference.current as HTMLButtonElement).click()
-            triggerClose.current = 0
+        if(triggerClose===1){
+            const trigger = refs.domReference.current as HTMLButtonElement
+            trigger.click()
         }
-    },[triggerClose?.current])
+    },[triggerClose])
 
     return(
         <>
@@ -240,7 +240,7 @@ interface _Dropdown {
     elementFooter?:JSX.Element
     children?:JSX.Element | JSX.Element[]
 
-    triggerClose?:React.MutableRefObject<1 | 0 | null>,
+    triggerClose?:1|0,
     floatingConfig?:dropdownFloatingConfigType
 }
 

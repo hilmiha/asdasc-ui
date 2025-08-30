@@ -79,7 +79,7 @@ const DropdownMenu = ({
         }
     },[trigger, isDisabled, bottomSheetOpen])
 
-    const triggerDropdownRef = useRef< 1 | 0 | null>(0)
+    const [triggerDropdownRef, setTriggerDropdown] = useState<0|1>(0)
 
     useEffect(()=>{
         setBottomSheetOpen(false)
@@ -115,7 +115,10 @@ const DropdownMenu = ({
                             onClick(idOption, option, e)
                         }
                         if(floatingConfig?.isCloseOnItemClicked){
-                            triggerDropdownRef.current = 1
+                            setTriggerDropdown(1)
+                            setTimeout(() => {
+                                setTriggerDropdown(0)
+                            }, 200);
                         }
                     }}
                     floatingConfig={floatingConfig}
@@ -153,7 +156,14 @@ const DropdownMenu = ({
                         shape={shape}
                         options={options}
                         optionSelected={optionSelected}
-                        onClick={onClick}
+                        onClick={(idOption, option, e)=>{
+                            if(onClick){
+                                onClick(idOption, option, e)
+                            }
+                            if(floatingConfig?.isCloseOnItemClicked){
+                                setBottomSheetOpen(false)
+                            }
+                        }}
                         setIsChildOpen={setIsChildOpen}
                         floatingConfig={floatingConfig}
                     />

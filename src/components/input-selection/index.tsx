@@ -246,7 +246,8 @@ const InputSelection = ({
                 floatingConfig={{
                     isLockScroll:true,
                     isContainerWidthSameAsTrigger:true,
-                    isWithCheckmark:type==='multiple'
+                    isWithCheckmark:type==='multiple',
+                    isCloseOnItemClicked:type==='single'
                 }}
             />
             {
