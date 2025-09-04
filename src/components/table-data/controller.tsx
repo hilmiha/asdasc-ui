@@ -11,6 +11,11 @@ export const thisOnMouseClickRow = (
 
     //Ignore if click happened inside an interactive element
     const target = e.target as HTMLElement;
+
+    if(target.closest('.label-cell')){
+        onClickRow(rowData);
+        return
+    }
     if (
         target.closest('.interactive-box')||
         target.tagName!=='TD'

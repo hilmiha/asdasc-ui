@@ -14,6 +14,7 @@ const TableDataRow = ({
     onClickRowAction,
     onClickRowCheckbox,
     column,
+    columnShowList,
     isSelected,
 }:{
     rowData:tableRowDataType
@@ -21,6 +22,7 @@ const TableDataRow = ({
     onClickRowAction?:(idButton:string, rowDate:tableRowDataType)=>void
     onClickRowCheckbox?:(rowData:tableRowDataType)=>void
     column:tableColumnType[],
+    columnShowList:string[]
     isSelected:boolean,
 }) =>{
 
@@ -62,12 +64,11 @@ const TableDataRow = ({
                         minWidth: headerData.size.min,
                         textAlign: headerData.horizontalAlign==='center'?('center'):(headerData.horizontalAlign==='end')?('end'):('start'),
                         verticalAlign: headerData.verticalAlign==='middle'?('middle'):(headerData.verticalAlign==='bottom')?('bottom'):('top'),
+                        display:(!columnShowList.includes(headerData.key))?('none'):(undefined)
                     }}
                 >
                     {
-                        (typeof(rowData[headerData.key])==='string')?(
-                            <>{rowData[headerData.key]}</>
-                        ):(headerData.key==='#checkbox')?(
+                        (headerData.key==='#checkbox')?(
                             <div className="table-action-box interactive-box">
                                 <CheckboxButton
                                     className="table-checkbox-button"
@@ -133,8 +134,24 @@ const TableDataRow = ({
                                     ))
                                 }
                             </div>
+                        ):(Array.isArray(rowData[headerData.key]))?(
+                            <>
+                                {
+                                    (rowData[headerData.key] as any[]).map((k)=>(
+                                        <Fragment key={`${k}`}>
+                                            {
+                                                (typeof(k) === 'string')?(
+                                                    <span className="label-cell" style={{display:'inline-block'}}>{k}</span>
+                                                ):(
+                                                    <>{k}</>
+                                                )
+                                            }
+                                        </Fragment>
+                                    ))
+                                }
+                            </>
                         ):(
-                            <></>
+                            <>{rowData[headerData.key]}</>
                         )
                     }
                 </td>

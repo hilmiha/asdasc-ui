@@ -174,7 +174,7 @@ const BottomSheet = ({
     if(isMounted){
         return(
             <FloatingPortal>
-                <FloatingOverlay lockScroll={true} style={{overflow:'hidden'}}>
+                <FloatingOverlay lockScroll={true} style={{overflow:'hidden', zIndex:"1"}}>
                     <FloatingFocusManager 
                         context={context} 
                         order={['floating']}

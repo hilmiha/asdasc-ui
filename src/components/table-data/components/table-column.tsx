@@ -1,9 +1,10 @@
 import { PiArrowDownBold, PiArrowsDownUpBold, PiArrowUpBold, PiDotsSixVerticalBold } from "react-icons/pi"
 import type { tableColumnType } from ".."
 import IconButton from "../../icon-button"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import Sortable, { Swap } from "sortablejs"
 import CheckboxButton from "../../checkbox-button"
+import { GlobalContext, type _GlobalContextType } from "../../../context/global-context"
 
 if (!(window as any)._swapMounted) {
     Sortable.mount(new Swap());
@@ -14,6 +15,7 @@ const TableColumn = ({
     ref,
     column,
     setColumn,
+    columnShowList,
     sortBy,
     setSortBy,
     isSortDesc,
@@ -27,6 +29,7 @@ const TableColumn = ({
     ref:React.RefObject<HTMLTableRowElement | null>
     column:tableColumnType[]
     setColumn:React.Dispatch<React.SetStateAction<tableColumnType[]>>
+    columnShowList:string[]
     sortBy:string
     setSortBy:React.Dispatch<React.SetStateAction<string>>
     isSortDesc:boolean
@@ -38,10 +41,13 @@ const TableColumn = ({
     thisOnClickColumnCheckbox:()=>void
 }) =>{
 
+    const {
+        screenSize
+    } = useContext(GlobalContext) as _GlobalContextType
+
     useEffect(() => {
         if(!isColumnSwapable) return;
         if (!ref.current) return;
-        console.log('here')
 
         const sortable = Sortable.create(ref.current, {
             animation: 150,
@@ -51,7 +57,6 @@ const TableColumn = ({
             handle: '.drag-handle',
             onChoose:()=>{
                 setIsColumnDragging(true)
-                console.log('here')
             },
             onUnchoose:()=>{
                 setIsColumnDragging(false)
@@ -66,7 +71,6 @@ const TableColumn = ({
             },
             onMove: (evt) => {
                 const related = evt.related; // element being swapped with
-                // prevent swap if related has class "no-swap"
                 if (related.classList.contains('no-swap')) {
                     return false; // Cancel move
                 }
@@ -94,11 +98,12 @@ const TableColumn = ({
                             minWidth: headerData.size.min,
                             paddingLeft:headerData.key==='#checkbox'?('var(--space-150)'):(undefined),
                             paddingRight:headerData.key==='#checkbox'?('var(--space-150)'):(undefined),
+                            display:(!columnShowList.includes(headerData.key))?('none'):(undefined)
                         }}
                     >
                         <div className='cell-header'>
                             {
-                                (isColumnSwapable && headerData.key!=='#checkbox')&&(
+                                (isColumnSwapable && headerData.key!=='#checkbox' && screenSize!=="mobile")&&(
                                     <div className='drag-handle'>
                                         <PiDotsSixVerticalBold className='global-icon' size={18}/>
                                     </div>

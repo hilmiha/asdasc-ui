@@ -95,6 +95,9 @@ html {
     background-color: hsl(from var(--clr-surface-4) h s l / 1);
 }
 
+::-webkit-scrollbar-corner { 
+    background: hsl(from var(--clr-surface-4) h s l / 0.2);
+}
 [data-theme*="box"] {
     /* Track */
     ::-webkit-scrollbar-track {

@@ -6,7 +6,8 @@ import { GlobalContext, type _GlobalContextType } from '../../context/global-con
 import TableColumn from './components/table-column'
 import TableFooter from './components/table-footer';
 import TableDataRow from './components/table-data-row';
-import { PiDotsThree, PiDownloadBold, PiPencil, PiTrashBold } from 'react-icons/pi'
+import { PiCheckCircleBold, PiDotsThree, PiDownloadBold, PiHourglassBold, PiPencil, PiTagBold, PiTrashBold, PiXSquareBold } from 'react-icons/pi'
+import Tag from '../tag'
 
 export type tableRowDataType = {
     id:string, 
@@ -75,6 +76,7 @@ const TableData = ({
     const tableColumnFloatingRef = useRef<HTMLTableRowElement>(null);
     const [isColumnDragging, setIsColumnDragging] = useState(false)
     const [column, setColumn] = useState<tableColumnType[]>(columnDummy)
+    const [columnShowList, setColumnShowList] = useState<string[]>(column.map((i)=>i.key)) 
     
     useEffect(()=>{
         if(isCheckbox){
@@ -87,6 +89,8 @@ const TableData = ({
                     },
                     ...prev
                 ]
+
+                setColumnShowList(tampNew.map((i)=>i.key))
                 return tampNew
             })
         }
@@ -171,6 +175,7 @@ const TableData = ({
                         ref={tableColumnFloatingRef}
                         column={column}
                         setColumn={setColumn}
+                        columnShowList={columnShowList}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
                         isSortDesc={isSortDesc}
@@ -189,6 +194,7 @@ const TableData = ({
                                 key={rowData.id}
                                 rowData={rowData}
                                 column={column}
+                                columnShowList={columnShowList}
                                 onClickRow={onClickRow}
                                 onClickRowAction={onClickRowAction}
                                 onClickRowCheckbox={thisOnClickRowCheckbox}
@@ -205,6 +211,12 @@ const TableData = ({
                         maxRow={maxRow}
                         setMaxRow={setMaxRow}
                         isTableScrolled={isTableScrolled}
+
+                        column={column}
+                        setColumn={setColumn}
+                        columnShowList={columnShowList}
+                        setColumnShowList={setColumnShowList}
+                        isColumnSwapable={isColumnSwapable}
                     />
                 )
             }
@@ -216,8 +228,8 @@ const TableData = ({
 export default TableData
 
 const columnDummy: tableColumnType[] = [
-    {key:'label1', txtLable:'Label 1', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
-    {key:'label2', txtLable:'Label 2', size:{size:'40%', min:'420px'}, isCanSort:false, horizontalAlign:'start'},
+    {key:'label1', txtLable:'Label 1', size:{size:'30%', min:'200px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
+    {key:'label2', txtLable:'Label 2', size:{size:'60%', min:'280px'}, isCanSort:false, horizontalAlign:'start'},
     {key:'label3', txtLable:'Label 3', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'end'},
     {key:'label4', txtLable:'Label 4', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'start'},
     {key:'action', type:'row-action', txtLable:'Action', size:{size:'0%', min:'144px'}, horizontalAlign:'center', actionButtonList:[
@@ -247,177 +259,50 @@ const columnDummy: tableColumnType[] = [
 const dataDummy: tableRowDataType[] = [
     {
         id: '1',
-        label1: 'hello-1',
+        label1: [
+            'Data Row Satu',
+            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
+                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+            </div>)
+        ],
         label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         label3: '131.123',
-        label4: 'world-1'
+        label4: (
+            <Tag appearance='success' txtLabel='Success' iconBefore={<PiCheckCircleBold className='global-icon'/>}/>
+        )
     },
     {
         id: '2',
-        label1: 'hello-2',
+        label1: [
+            'Data Row Satu',
+            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
+                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+            </div>)
+        ],
         label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '300.549',
-        label4: 'world-2'
+        label3: '131.123',
+        label4: (
+            <Tag appearance='warning' txtLabel='Pending' iconBefore={<PiHourglassBold className='global-icon'/>}/>
+        )
     },
     {
         id: '3',
-        label1: 'hello-3',
+        label1: [
+            'Data Row Satu',
+            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
+                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
+            </div>)
+        ],
         label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '982.341',
-        label4: 'world-3'
+        label3: '131.123',
+        label4: (
+            <Tag appearance='danger' txtLabel='Canceled' iconBefore={<PiXSquareBold className='global-icon'/>}/>
+        )
     },
-    {
-        id: '4',
-        label1: 'hello-4',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '55.672',
-        label4: 'world-4'
-    },
-    {
-        id: '5',
-        label1: 'hello-5',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '640.897',
-        label4: 'world-5'
-    },
-    {
-        id: '6',
-        label1: 'hello-6',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '754.320',
-        label4: 'world-6'
-    },
-    {
-        id: '7',
-        label1: 'hello-7',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '128.421',
-        label4: 'world-7'
-    },
-    {
-        id: '8',
-        label1: 'hello-8',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '999.432',
-        label4: 'world-8'
-    },
-    {
-        id: '9',
-        label1: 'hello-9',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '437.912',
-        label4: 'world-9'
-    },
-    {
-        id: '10',
-        label1: 'hello-10',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '847.120',
-        label4: 'world-10'
-    },
-    {
-        id: '11',
-        label1: 'hello-11',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '431.123',
-        label4: 'world-11'
-    },
-    {
-        id: '12',
-        label1: 'hello-12',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '222.786',
-        label4: 'world-12'
-    },
-    {
-        id: '13',
-        label1: 'hello-13',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '567.874',
-        label4: 'world-13'
-    },
-    {
-        id: '14',
-        label1: 'hello-14',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '784.342',
-        label4: 'world-14'
-    },
-    {
-        id: '15',
-        label1: 'hello-15',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '345.001',
-        label4: 'world-15'
-    },
-    {
-        id: '16',
-        label1: 'hello-16',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '120.876',
-        label4: 'world-16'
-    },
-    {
-        id: '17',
-        label1: 'hello-17',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '654.987',
-        label4: 'world-17'
-    },
-    {
-        id: '18',
-        label1: 'hello-18',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '189.765',
-        label4: 'world-18'
-    },
-    {
-        id: '19',
-        label1: 'hello-19',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '999.876',
-        label4: 'world-19'
-    },
-    {
-        id: '20',
-        label1: 'hello-20',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '210.987',
-        label4: 'world-20'
-    },
-    {
-        id: '21',
-        label1: 'hello-21',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '501.230',
-        label4: 'world-21'
-    },
-    {
-        id: '22',
-        label1: 'hello-22',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '672.432',
-        label4: 'world-22'
-    },
-    {
-        id: '23',
-        label1: 'hello-23',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '789.567',
-        label4: 'world-23'
-    },
-    {
-        id: '24',
-        label1: 'hello-24',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '980.123',
-        label4: 'world-24'
-    },
-    {
-        id: '25',
-        label1: 'hello-25',
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '320.777',
-        label4: 'world-25'
-    }
 ];

@@ -136,6 +136,10 @@
                         padding: var(--cell-padding);
                         position: relative;
 
+                        > *{
+                            margin-bottom: var(--space-100);
+                        }
+
                         + td {
                             &::before{
                                 content: ' ';
@@ -173,6 +177,9 @@
     .table-action-button{
         padding: var(--space-50) var(--space-100);
         margin: 0px;
+        &.circle:has(.icon-before) {
+            padding-left: var(--space-100);
+        }
     }
     .table-action-icon-button{
         margin: 0px;
@@ -223,6 +230,54 @@
                 }
                 .icon-after{
                     margin-left: var(--space-200);
+                }
+            }
+        }
+    }
+}
+
+.table-setting-bottom-sheet{
+    .bottom-sheet-container{
+        .section-title{
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-100);
+        }
+        &.rounded .list-column-box .item-column{
+            border-radius: var(--space-100);
+        }
+        &.box .list-column-box .item-column{
+            border-radius: var(--space-0);
+        }
+        &.circle .list-column-box .item-column{
+            border-radius: var(--space-200);
+            padding-left: var(--space-200);
+            padding-right: var(--space-200);
+        }
+        .list-column-box{
+            display: grid;
+            gap: var(--space-100);
+            margin-left: var(--space-50);
+            margin-right: var(--space-50);
+
+            .item-column{
+                display: flex;
+                align-items: center;
+                gap: var(--space-100);
+                border: 1px solid var(--clr-border);
+                padding: var(--space-100);
+                min-height: 23.2px;
+
+                .checkbox-button{
+                    margin: 0px;
+                    padding-left: var(--space-50) !important;
+                    padding-right: var(--space-50) !important;
+                    min-height: fit-content;                    
+                }
+
+                .icon-button{
+                    margin: 0px;
+                    height: fit-content;  
+                    width: fit-content;               
                 }
             }
         }
