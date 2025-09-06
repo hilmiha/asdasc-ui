@@ -9,6 +9,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
     const [globalPrimary, setGlobalPrimary] = useState<string>('primary_emerald');
     const [globalShape, setGlobalShape] = useState<globalShapeType>('rounded');
     const [screenSize, setScreenSize] = useState<ScreenSizeType>('mobile');
+    const [globalFontSize, setGlobalFontSize] = useState<string>('medium');
 
     // Function to determine screen size category
     const getScreenSize = useCallback((width: number): ScreenSizeType => {
@@ -40,14 +41,16 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
             globalTone,
             globalPrimary,
             globalShape,
+            globalFontSize,
             screenSize
         }
-    },[globalTheme, globalTone, globalPrimary, globalShape, screenSize])
+    },[globalTheme, globalTone, globalPrimary, globalShape, screenSize, globalFontSize])
     
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', `${globalTheme}-tonal_${globalTone}-primary_${globalPrimary}-${globalShape}`);
         document.documentElement.setAttribute('data-screen-size', screenSize);
-    }, [globalTheme, globalTone, globalPrimary, globalShape, screenSize]);
+        document.documentElement.setAttribute('data-font-size', globalFontSize);
+    }, [globalTheme, globalTone, globalPrimary, globalShape, screenSize, globalFontSize]);
 
     const toggleGlobalTheme = useCallback(() => {
         setGlobalTheme(globalTheme.includes('light') ? 'dark' : 'light');
@@ -65,6 +68,9 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
         setGlobalShape(shape);
     },[])
 
+    const toggleGlobalFontSize = useCallback((size:string) => {
+        setGlobalFontSize(size);
+    },[])
     return (
         <GlobalContext.Provider value={{
             appTheme, 
@@ -73,6 +79,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
             toggleGlobalPrimary,
             globalShape,
             toggleGlobalShape,
+            toggleGlobalFontSize,
             screenSize,
         }}>
             {children}
@@ -88,6 +95,7 @@ export interface _GlobalContextType {
         globalTone: string;
         globalPrimary: string;
         globalShape: globalShapeType;
+        globalFontSize:string;
         screenSize: ScreenSizeType;
     };
     toggleGlobalTheme:()=>void;
@@ -95,6 +103,7 @@ export interface _GlobalContextType {
     toggleGlobalPrimary:(color:string)=>void;
     globalShape:globalShapeType;
     toggleGlobalShape:(shape:globalShapeType)=>void;
+    toggleGlobalFontSize:(size:string)=>void;
     screenSize: ScreenSizeType;
 }
 

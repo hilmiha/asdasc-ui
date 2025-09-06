@@ -32,16 +32,19 @@
     --space-800: #{$space-800};
     --space-1000: #{$space-1000};
 
-    --font-size: #{$font-size};
-    --font-size-sm: #{$font-size-sm};
-    --font-size-lg: #{$font-size-lg};
-
-
-    @include generate-global-color-variable(false)
+    @include generate-font-size-variable(medium);
+    @include generate-global-color-variable(false);
 }
 
 [data-theme^="dark"] {
     @include generate-global-color-variable(true)
+}
+
+[data-font-size^="small"] {
+    @include generate-font-size-variable(small);
+}
+[data-font-size^="large"] {
+    @include generate-font-size-variable(large);
 }
 
 *:not(.ql-editor):not(.ql-editor *) {
@@ -67,8 +70,8 @@ html {
     }
 
     .global-icon{
-        min-height: #{$icon-size};
-        min-width: #{$icon-size};
+        min-height: var(--icon-size);
+        min-width: var(--icon-size);
     }
 }
 

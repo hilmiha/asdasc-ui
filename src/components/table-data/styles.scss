@@ -130,6 +130,10 @@
                             cursor: pointer;
                             background-color:  hsl(from var(--clr-surface-primary-4) h s l / 0.1);
                         }
+
+                        &:last-child{
+                            border-bottom: transparent;
+                        }
                     }
 
                     td {
@@ -162,6 +166,11 @@
     }
     .table-checkbox-button{
         margin: 0px;
+
+        &.checkbox-button.button:not(:has(.text-label-box)).circle:has(.icon-before) {
+            padding-left: var(--space-50) !important;
+            padding-right: var(--space-50) !important;
+        }
 
         &:not(:has(.text-label-box)){
             padding: var(--space-50) !important;
@@ -224,7 +233,7 @@
             }
             .max-row-button{
                 margin: var(--space-25);
-                padding: var(--space-50) var(--space-200);
+                padding: var(--space-50) var(--space-100);
                 .text-label{
                     font-weight: var(--font-weight-normal);
                 }

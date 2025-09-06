@@ -1,7 +1,7 @@
 import './App.scss'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiAppWindowFill, PiCheckCircleBold, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiMonitorArrowUpFill, PiPencilBold, PiStarFourBold, PiTagBold, PiXCircleBold } from 'react-icons/pi';
+import { PiAppWindowFill, PiCaretDownBold, PiCheckCircleBold, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiDownloadBold, PiHourglassBold, PiMonitorArrowUpFill, PiPencil, PiPencilBold, PiStarFourBold, PiTagBold, PiTrashBold, PiXCircleBold, PiXSquareBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -28,7 +28,8 @@ import CheckboxGroup from './components/checkbox-group';
 import Calendar, { type validCalendarDisabledValue, type validCalendarValue } from './components/calendar';
 import { addDays, subDays } from 'date-fns';
 import InputDateTime from './components/input-date';
-import TableData, { type tableRowDataType } from './components/table-data';
+import TableData, { type tableColumnType, type tableConfigType, type tableRowDataType } from './components/table-data';
+import Tag from './components/tag';
 
 function App() {
     const {
@@ -37,6 +38,7 @@ function App() {
         toggleGlobalTheme,
         toggleGlobalTone,
         toggleGlobalShape,
+        toggleGlobalFontSize,
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
     
@@ -175,7 +177,59 @@ function App() {
 
     const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
     
+    const allDataTable = useMemo(()=>{
+        return generateDataDummy(25)
+    },[])
+    const [tableData, setTableData] = useState<tableRowDataType[]>([])
+    const tableColumn = useMemo<tableColumnType[]>(()=>{
+        return tableColumnDummy
+    },[])
     const [tabelChecked, setTableChecked] = useState<string[]>([])
+
+    const [tableConfig, setTableConfig] = useState<tableConfigType>({
+        maxRow:10,
+        currentPage:1,
+        countPage:1,
+        totalData:0,
+
+        sortBy:'label3',
+        isSortDesc:false
+    })
+
+    const doGetDataTable = () => {
+        const { maxRow, currentPage, sortBy, isSortDesc } = tableConfig;
+
+        // 1. Sort data
+        const sortedData = [...allDataTable].sort((a, b) => {
+            const valA = a[sortBy];
+            const valB = b[sortBy];
+
+            // Handle if values are numbers or strings
+            if (typeof valA === 'number' && typeof valB === 'number') {
+                return isSortDesc ? valB - valA : valA - valB;
+            }
+            return isSortDesc
+                ? String(valB).localeCompare(String(valA))
+                : String(valA).localeCompare(String(valB));
+        });
+
+        // 2. Paginate
+        const startIndex = (currentPage - 1) * maxRow;
+        const endIndex = startIndex + maxRow;
+
+        setTableConfig((prev) => ({
+            ...prev,
+            totalData: allDataTable.length,
+            countPage: Math.ceil(allDataTable.length / prev.maxRow)
+        }));
+        
+        setTableData(sortedData.slice(startIndex, endIndex))
+    };
+
+    useEffect(()=>{
+        doGetDataTable()
+    },[JSON.stringify(tableConfig)])
+
     return (
         <div>
             <p>Level one surface</p>
@@ -203,25 +257,46 @@ function App() {
                     }}
                 >
                     <p style={{marginBottom:'var(--space-300)'}}>Level three surface</p>
-
-                    <SplitButton
-                        txtLabel='Toggle Theme'
-                        options={[
-                            {id:'circle', txtLabel:'Circle', txtSublabel:'Toggle global shape to circle', icon:<PiCircleBold className='global-icon'/>},
-                            {id:'rounded', txtLabel:'Rounded', txtSublabel:'Toggle global shape to rounded', icon:<BiSquareRounded className='global-icon'/>},
-                            {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
-                        ]}
-                        appearance='neutral'
-                        optionSelected={[appTheme.globalShape]}
-                        onClick={()=>{
-                            toggleGlobalTheme()
-                        }}
-                        onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
-                    />
+                    <div style={{display:'flex'}}>
+                        <SplitButton
+                            txtLabel='Toggle Theme'
+                            options={[
+                                {id:'circle', txtLabel:'Circle', txtSublabel:'Toggle global shape to circle', icon:<PiCircleBold className='global-icon'/>},
+                                {id:'rounded', txtLabel:'Rounded', txtSublabel:'Toggle global shape to rounded', icon:<BiSquareRounded className='global-icon'/>},
+                                {id:'box', txtLabel:'Box', txtSublabel:'Toggle global shape to boxed', icon:<BiSquare className='global-icon'/>},
+                            ]}
+                            appearance='neutral'
+                            optionSelected={[appTheme.globalShape]}
+                            onClick={()=>{
+                                toggleGlobalTheme()
+                            }}
+                            onOptionClick={(id)=>{toggleGlobalShape(id as globalShapeType)}}
+                        />
+                        <DropdownMenu
+                            trigger={
+                                <Button
+                                    txtLabel={'Font Size'}
+                                    iconAfter={<PiCaretDownBold/>}
+                                />
+                            }
+                            options={[
+                                {id:'small', txtLabel:'Small', txtSublabel:'Toggle global font size to Small'},
+                                {id:'medium', txtLabel:'Medium', txtSublabel:'Toggle global font size to Medium'},
+                                {id:'large', txtLabel:'Large', txtSublabel:'Toggle global font size to Large'},
+                            ]}
+                            optionSelected={[appTheme.globalFontSize]}
+                            onClick={(id)=>{
+                                toggleGlobalFontSize(id)
+                            }}
+                            
+                        />
+                    </div>
+                    
                     <p className='hello'>{appTheme.globalTheme??'-'}</p>
                     <p className='hello'>{appTheme.globalTone??'-'}</p>
                     <p className='hello'>{appTheme.globalPrimary??'-'}</p>
-                    <p className='hello'>{appTheme.globalShape??'-'}</p>
+                    <p className='hello'>shape_{appTheme.globalShape??'-'}</p>
+                    <p className='hello'>font_size_{appTheme.globalFontSize??'-'}</p>
                     <div
                         style={{
                             display:'grid',
@@ -500,7 +575,7 @@ function App() {
                         error={formError['testTextArea']}
                         config={{
                             isRequired:true,
-                            maxLines:5,
+                            maxLines:15,
                         }}
                     />
                     <InputSelection
@@ -682,8 +757,41 @@ function App() {
                     disabledDates={disabledDates}
                 />
             </div>
-            <div style={{padding:'var(--space-100) var(--space-100)', height:'420px'}}>
+            <div style={{padding:'var(--space-100) var(--space-100)', height:'80vh'}}>
                 <TableData
+                    tableData={tableData}
+                    tableColumn={tableColumn}
+                    tableConfig={tableConfig}
+                    
+                    onClickSortColumn={(newSortBy, newIsDesc)=>{
+                        setTableConfig((prev)=>{
+                            const tamp:tableConfigType = {
+                                ...prev,
+                                sortBy:newSortBy,
+                                isSortDesc:newIsDesc
+                            }
+                            return tamp
+                        })
+                    }}
+                    onSelectMaxRow={(newMaxRow)=>{
+                        setTableConfig((prev)=>{
+                            const tamp:tableConfigType = {
+                                ...prev,
+                                maxRow:newMaxRow
+                            }
+                            return tamp
+                        })
+                    }}
+                    onClickPagination={(newCurrentPage)=>{
+                        setTableConfig((prev)=>{
+                            const tamp:tableConfigType = {
+                                ...prev,
+                                currentPage:newCurrentPage
+                            }
+                            return tamp
+                        })
+                    }}
+
                     onClickRow={(rowData:tableRowDataType)=>{console.log(rowData)}}
                     onClickRowAction={(idButton, rowData)=>{
                         console.log(idButton, rowData)
@@ -983,6 +1091,76 @@ function App() {
 
 export default App
 
+
+const tableColumnDummy: tableColumnType[] = [
+    {key:'label1', txtLable:'Label 1', size:{size:'30%', min:'200px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
+    {key:'label2', txtLable:'Label 2', size:{size:'60%', min:'280px'}, isCanSort:false, horizontalAlign:'start'},
+    {key:'label3', txtLable:'Label 3', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'end'},
+    {key:'label4', txtLable:'Label 4', size:{size:'10%', min:'120px'}, isCanSort:false, horizontalAlign:'start'},
+    {key:'action', type:'row-action', txtLable:'Action', size:{size:'0%', min:'154px'}, horizontalAlign:'center', actionButtonList:[
+        {id:"edit", type:'button', txtLabel:'Edit', icon:<PiPencil className='global-icon'/>},
+        {id:"delete", type:'icon-button', txtLabel:'Delete', icon:<PiTrashBold className='global-icon'/>},
+        {
+            id:"option", 
+            type:'dropdown-menu', 
+            txtLabel:'Option', 
+            icon:<PiDotsThreeBold className='global-icon'/>, 
+            option:[
+                {
+                    id:"download-csv", 
+                    txtLabel:"Download as CSV", 
+                    icon:<PiDownloadBold className='global-icon'/>,
+                },
+                {
+                    id:"download-xlsx", 
+                    txtLabel:"Download as XLSX", 
+                    icon:<PiDownloadBold className='global-icon'/>
+                }
+            ]
+        },
+    ]},
+]
+const statuses = [
+    { appearance: 'success', label: 'Success', icon: <PiCheckCircleBold className='global-icon'/> },
+    { appearance: 'warning', label: 'Pending', icon: <PiHourglassBold className='global-icon'/> },
+    { appearance: 'danger', label: 'Canceled', icon: <PiXSquareBold className='global-icon'/> }
+];
+
+const generateRandomNumber = (min: number, max: number) => {
+    return (Math.floor(Math.random() * (max - min + 1)) + min);
+};
+
+const loremText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
+
+const generateDataDummy = (length:number) =>{
+    const tableDataDummy: tableRowDataType[] = Array.from({ length: length??25 }, (_, index) => {
+        const status = statuses[index % statuses.length];
+
+        return {
+            id: String(index + 1),
+            label1: [
+                `Data Row ${index + 1}`,
+                (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-50)' }}>
+                        <Tag txtLabel={`tag-${index + 1}`} iconBefore={<PiTagBold className='global-icon' />} onClick={(_, textLabel) => console.log(textLabel)} />
+                        <Tag txtLabel={`tag-${index + 10}`} iconBefore={<PiTagBold className='global-icon' />} onClick={(_, textLabel) => console.log(textLabel)} />
+                        <Tag txtLabel={`tag-${index + 11}`} iconBefore={<PiTagBold className='global-icon' />} onClick={(_, textLabel) => console.log(textLabel)} />
+                    </div>
+                )
+            ],
+            label2: loremText,
+            label3: generateRandomNumber(1000, 1000000),
+            label4: (
+                <Tag
+                    appearance={status.appearance as any}
+                    txtLabel={status.label}
+                    iconBefore={status.icon}
+                />
+            )
+        };
+    })
+    return tableDataDummy
+}
 
 const indonesiaProvinces:optionItemType[] = [
     {id:'aceh', txtLabel:'Aceh', type:'option', icon:<PiCityBold/>},

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { GlobalContext, type _GlobalContextType } from "../../../context/global-context"
 import IconButton from "../../icon-button"
 import { PiArrowLineUpBold, PiCaretDownBold, PiCaretLeftBold, PiCaretLineLeftBold, PiCaretLineRightBold, PiCaretRightBold, PiCheckBold, PiColumnsBold, PiDotsSixVerticalBold, PiEyeBold, PiEyeClosedBold, PiGearBold, PiGearFill } from "react-icons/pi"
@@ -6,38 +6,51 @@ import DropdownMenu from "../../dropdown-menu"
 import Button from "../../button"
 import Sortable from "sortablejs"
 import BottomSheet from "../../bottom-sheet"
-import type { tableColumnType } from ".."
+import type { tableColumnType, tableConfigType } from ".."
 import { useDeepCompareMemo } from "../../../hook/useDeepCompareMemo"
-import type { optionItemType } from "../../_types"
+import type { globalShapeType, optionItemType } from "../../_types"
 import CheckboxButton from "../../checkbox-button"
 import clsx from "clsx"
 
 const TableFooter = ({
     tableContainerRef,
-    maxRow,
+    tableConfig,
+    onSelectMaxRow,
+    onClickPagination,
     isTableScrolled,
-    setMaxRow,
-
+    selectedRowCount,
     isColumnSwapable,
     column,
     setColumn,
     columnShowList,
-    setColumnShowList
+    setColumnShowList,
+    shape
 }:{
     tableContainerRef:React.RefObject<HTMLDivElement | null>
-    maxRow:string,
+    tableConfig?:tableConfigType
+    onSelectMaxRow?:(newMaxRow:number)=>void
+    onClickPagination?:(newCurrentPage:number)=>void
     isTableScrolled:boolean
-    setMaxRow: React.Dispatch<React.SetStateAction<string>>
-
+    selectedRowCount:number
     isColumnSwapable:boolean
     column:tableColumnType[]
     setColumn:React.Dispatch<React.SetStateAction<tableColumnType[]>>
     columnShowList:string[]
     setColumnShowList:React.Dispatch<React.SetStateAction<string[]>>
+    shape?:globalShapeType
 }) =>{
     const {
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
+
+    const footerNuberRow:[number, number] = useMemo(()=>{
+        const currentPage = tableConfig?.currentPage??1
+        const maxRow = tableConfig?.maxRow??1
+        const totalData = tableConfig?.totalData??0
+        const startAt = (currentPage*maxRow)-maxRow+1
+        const endAt = Math.min((currentPage*maxRow),totalData)
+        return([startAt,endAt])
+    },[tableConfig?.maxRow, tableConfig?.currentPage, tableConfig?.totalData])
 
     const maxRowOption:optionItemType[] = [
         {id:'10', txtLabel:'10 Rows'},
@@ -58,6 +71,10 @@ const TableFooter = ({
 
     const [isShowTableSetting, setIsShowTableSetting] = useState(false)
 
+    const doScrollToTop = () =>{
+        tableContainerRef.current?.scrollTo({top:0, behavior:'smooth'})
+    }
+
     return(
         <div
             className='table-footer-floating'
@@ -66,39 +83,76 @@ const TableFooter = ({
             }}
         >
             {
-                (screenSize==='laptop')&&(
+                (
+                    tableConfig &&
+                    screenSize==='laptop'
+                )&&(
                     <div className='footer-left'>
-                        <p>Showing 1-25 of 25</p>
+                        <p>
+                            <span>Showing {footerNuberRow[0]}-{footerNuberRow[1]} of {tableConfig?.totalData} {(selectedRowCount>0)&&(`, ${selectedRowCount} rows selected`)}</span>
+                        </p>
                     </div>
                 )
             }
+            
             <div 
                 className='footer-pagination'
                 style={{
                     justifyContent:screenSize==='laptop'?('center'):('start')
                 }}
             >
-                <IconButton
-                    icon={<PiCaretLineLeftBold className='global-icon'/>}
-                    txtLabel='First Page'
-                    appearance='subtle'
-                />
-                <IconButton
-                    icon={<PiCaretLeftBold className='global-icon'/>}
-                    txtLabel='Previous Page'
-                    appearance='subtle'
-                />
-                <p className='page-info-box'>Page 1 / 1</p>
-                <IconButton
-                    icon={<PiCaretRightBold className='global-icon'/>}
-                    txtLabel='Next Page'
-                    appearance='subtle'
-                />
-                <IconButton
-                    icon={<PiCaretLineRightBold className='global-icon'/>}
-                    txtLabel='Last Page'
-                    appearance='subtle'
-                />
+                {
+                    (tableConfig && onClickPagination)&&(
+                        <>
+                            <IconButton
+                                icon={<PiCaretLineLeftBold className='global-icon'/>}
+                                txtLabel='First Page'
+                                appearance='subtle'
+                                isDisabled={tableConfig.currentPage===1}
+                                onClick={()=>{
+                                    onClickPagination(1)
+                                    doScrollToTop()
+                                }}
+                                shape={shape}
+                            />
+                            <IconButton
+                                icon={<PiCaretLeftBold className='global-icon'/>}
+                                txtLabel='Previous Page'
+                                appearance='subtle'
+                                isDisabled={tableConfig.currentPage===1}
+                                onClick={()=>{
+                                    onClickPagination(tableConfig.currentPage - 1)
+                                    doScrollToTop()
+                                }}
+                                shape={shape}
+                            />
+                            <p className='page-info-box'>Page {tableConfig.currentPage} / {tableConfig.countPage}</p>
+                            <IconButton
+                                icon={<PiCaretRightBold className='global-icon'/>}
+                                txtLabel='Next Page'
+                                appearance='subtle'
+                                isDisabled={tableConfig.currentPage===tableConfig.countPage}
+                                onClick={()=>{
+                                    onClickPagination(tableConfig.currentPage + 1)
+                                    doScrollToTop()
+                                }}
+                                shape={shape}
+                            />
+                            <IconButton
+                                icon={<PiCaretLineRightBold className='global-icon'/>}
+                                txtLabel='Last Page'
+                                appearance='subtle'
+                                isDisabled={tableConfig.currentPage===tableConfig.countPage}
+                                onClick={()=>{
+                                    onClickPagination(tableConfig.countPage)
+                                    doScrollToTop()
+                                }}
+                                shape={shape}
+                            />
+                        </>
+                    )
+                }
+                
             </div>
             <div className='footer-right'>
                 {
@@ -111,6 +165,7 @@ const TableFooter = ({
                                 onClick={()=>{
                                     setIsShowTableSetting(true)
                                 }}
+                                shape={shape}
                             />
                             <BottomSheet
                                 className="table-setting-bottom-sheet"
@@ -118,54 +173,58 @@ const TableFooter = ({
                                 setIsOpen={setIsShowTableSetting}
                                 txtTitle="Table Setting"
                                 iconTitle={<PiGearFill className="global-icon"/>}
+                                shape={shape}
                             >
                                 <TableSettingMobile
-                                    maxRow={maxRow}
-                                    setMaxRow={setMaxRow}
+                                    tableConfig={tableConfig}
+                                    onSelectMaxRow={onSelectMaxRow}
                                     maxRowOption={maxRowOption}
                                     column={column}
                                     setColumn={setColumn}
                                     columnShowList={columnShowList}
                                     setColumnShowList={setColumnShowList}
                                     isColumnSwapable={isColumnSwapable}
+                                    shape={shape}
                                 />
                             </BottomSheet>
                         
                         </>
                         
-                    ):(
+                    ):(tableConfig && onSelectMaxRow)?(
                         <DropdownMenu
                             trigger={
                                 <Button
                                     className='max-row-button'
-                                    txtLabel={`Show ${maxRow} Rows`}
+                                    txtLabel={`Show ${tableConfig.maxRow} Rows`}
                                     iconAfter={<PiCaretDownBold className='global-icon'/>}
                                     appearance='subtle'
+                                    shape={shape}
                                 />
                             }
-                            optionSelected={[maxRow]}
+                            optionSelected={[`${tableConfig.maxRow}`]}
                             options={maxRowOption}
                             onClick={(id)=>{
-                                setMaxRow(id)
+                                onSelectMaxRow(parseInt(id))
                             }}
                             floatingConfig={{
                                 isContainerWidthSameAsTrigger:true,
                                 placement:'bottom-end',
                                 fallbackPlacement:['top-end']
                             }}
+                            shape={shape}
                         />
-                    )
+                    ):(<></>)
                 }
                 {
                     (screenSize!=='mobile')&&(
                         <>
-                            <div className='separator'></div>
                             <DropdownMenu
                                 trigger={
                                     <IconButton
                                         icon={<PiColumnsBold className='global-icon'/>}
                                         txtLabel='Column'
                                         appearance='subtle'
+                                        shape={shape}
                                     />
                                 }  
                                 optionSelected={columnShowList}
@@ -183,6 +242,7 @@ const TableFooter = ({
                                     isWithCheckmark:true,
                                     isContainerWidthSameAsTrigger:true
                                 }}
+                                shape={shape}
                             />
                         </>
                     )
@@ -190,15 +250,15 @@ const TableFooter = ({
                 {
                     (screenSize!=='mobile')&&(
                         <>
-                            <div className='separator'></div>
                             <IconButton
                                 icon={<PiArrowLineUpBold className='global-icon'/>}
                                 txtLabel='Go To Top'
                                 onClick={()=>{
-                                    tableContainerRef.current?.scrollTo({top:0, behavior:'smooth'})
+                                    doScrollToTop()
                                 }}
                                 isDisabled={!isTableScrolled}
                                 appearance='subtle'
+                                shape={shape}
                             />
                         </>
                     )
@@ -212,18 +272,19 @@ const TableFooter = ({
 export default TableFooter
 
 const TableSettingMobile = ({
-    maxRow,
-    setMaxRow,
+    tableConfig,
+    onSelectMaxRow,
     maxRowOption,
 
     isColumnSwapable,
     column,
     setColumn,
     columnShowList,
-    setColumnShowList
+    setColumnShowList,
+    shape
 }:{
-    maxRow:string,
-    setMaxRow: React.Dispatch<React.SetStateAction<string>>
+    tableConfig?:tableConfigType
+    onSelectMaxRow?:(newMaxRow:number)=>void
     maxRowOption:optionItemType[]
 
     isColumnSwapable:boolean
@@ -231,6 +292,7 @@ const TableSettingMobile = ({
     setColumn:React.Dispatch<React.SetStateAction<tableColumnType[]>>
     columnShowList:string[]
     setColumnShowList:React.Dispatch<React.SetStateAction<string[]>>
+    shape?:globalShapeType
 }) =>{
     const columnRef = useRef(null)
 
@@ -269,26 +331,31 @@ const TableSettingMobile = ({
 
     return(
         <div>
-            <div>
-                <p className="section-title">
-                    Max Row
-                </p>
-                <div style={{display:"grid", gridTemplateColumns:"1fr 1fr"}}>
-                    {
-                        maxRowOption.map((i)=>(
-                            <Button
-                                key={i.id}
-                                txtLabel={i.txtLabel}
-                                isSelected={maxRow===i.id}
-                                iconBefore={(maxRow===i.id)?(<PiCheckBold className="global-icon"/>):(undefined)}
-                                onClick={()=>{
-                                    setMaxRow(i.id)
-                                }}
-                            />
-                        ))
-                    }
-                </div>
-            </div>
+            {
+                (tableConfig && onSelectMaxRow)&&(
+                    <div>
+                        <p className="section-title">
+                            Max Row
+                        </p>
+                        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr"}}>
+                            {
+                                maxRowOption.map((i)=>(
+                                    <Button
+                                        key={i.id}
+                                        txtLabel={i.txtLabel}
+                                        isSelected={`${tableConfig.maxRow}`===i.id}
+                                        iconBefore={(`${tableConfig.maxRow}`===i.id)?(<PiCheckBold className="global-icon"/>):(undefined)}
+                                        onClick={()=>{
+                                            onSelectMaxRow(parseInt(i.id))
+                                        }}
+                                        shape={shape}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </div>
+                )
+            }
             <div style={{marginTop:'var(--space-250)'}}>
                 <p className="section-title">
                     Column Order
@@ -327,28 +394,6 @@ const TableSettingMobile = ({
                                 {
                                     (headerData.key!=='#checkbox')&&(
                                         <>
-                                            {/* <IconButton
-                                                icon={
-                                                    !columnShowList.includes(headerData.key)?(
-                                                        <PiEyeClosedBold/>
-
-                                                    ):(
-                                                        <PiEyeBold/>
-                                                    )
-                                                }
-                                                txtLabel="Show/Hide column"
-                                                isSelected={columnShowList.includes(headerData.key)}
-                                                onClick={()=>{
-                                                    const id = headerData.key
-                                                    setColumnShowList((prev)=>{
-                                                        if(prev.includes(id)){
-                                                            return [...prev].filter(i=>i!==id)
-                                                        }else{
-                                                            return [...prev, id]
-                                                        }
-                                                    })
-                                                }}
-                                            /> */}
                                             {
                                                 !columnShowList.includes(headerData.key)?(
                                                     <PiEyeClosedBold/>
@@ -369,6 +414,7 @@ const TableSettingMobile = ({
                                                         }
                                                     })
                                                 }}
+                                                shape={shape}
                                             />
                                         </>
                                     )

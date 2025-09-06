@@ -6,8 +6,6 @@ import { GlobalContext, type _GlobalContextType } from '../../context/global-con
 import TableColumn from './components/table-column'
 import TableFooter from './components/table-footer';
 import TableDataRow from './components/table-data-row';
-import { PiCheckCircleBold, PiDotsThree, PiDownloadBold, PiHourglassBold, PiPencil, PiTagBold, PiTrashBold, PiXSquareBold } from 'react-icons/pi'
-import Tag from '../tag'
 
 export type tableRowDataType = {
     id:string, 
@@ -40,14 +38,31 @@ export type tableColumnType = {
     actionButtonList?:rowActionButtonType[]
 }
 
+export type tableConfigType = {
+    maxRow: number;
+    currentPage: number;
+    countPage: number;
+    totalData: number;
+    sortBy: string;
+    isSortDesc: boolean;
+}
+
 const TableData = ({
     className,
     shape,
+
+    tableData = [],
+    tableColumn = [],
+    tableConfig = undefined,
+
+    onClickSortColumn = undefined,
+    onSelectMaxRow = undefined,
+
+    selectedRow = [],
     onClickRow = undefined,
     onClickRowAction = undefined,
-    
-    selectedRow = [],
     onClickRowCheckbox = undefined,
+    onClickPagination = undefined,
 
     isColumnSwapable = false,
     isShowFooter = false,
@@ -55,6 +70,15 @@ const TableData = ({
 }:{
     className?:string,
     shape?:globalShapeType,
+
+    tableData:tableRowDataType[]
+    tableColumn:tableColumnType[]
+    tableConfig?:tableConfigType
+
+    onClickSortColumn?:(newSortBy:string, newIsDesc:boolean)=>void
+    onSelectMaxRow?: (newMaxRow: number) => void
+    onClickPagination?: (newCurrentPage:number) => void
+
     selectedRow?:string[]
     onClickRow?:(rowData:tableRowDataType)=>void
     onClickRowAction?:(idButton:string, rowData:tableRowDataType)=>void
@@ -68,18 +92,18 @@ const TableData = ({
         globalShape,
     } = useContext(GlobalContext) as _GlobalContextType
 
-    const [data, _] = useState<tableRowDataType[]>(dataDummy)
+    // const [data, _] = useState<tableRowDataType[]>(dataDummy)
     
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const tableContainerRef = useRef<HTMLDivElement>(null);
 
     const tableColumnFloatingRef = useRef<HTMLTableRowElement>(null);
     const [isColumnDragging, setIsColumnDragging] = useState(false)
-    const [column, setColumn] = useState<tableColumnType[]>(columnDummy)
+    const [column, setColumn] = useState<tableColumnType[]>(tableColumn)
     const [columnShowList, setColumnShowList] = useState<string[]>(column.map((i)=>i.key)) 
     
     useEffect(()=>{
-        if(isCheckbox){
+        if(isCheckbox && column[0]?.key!=='#checkbox'){
             setColumn((prev)=>{
                 const tampNew = [
                     {
@@ -96,26 +120,35 @@ const TableData = ({
         }
     },[])
 
-    const defaultSort = useMemo(()=>{
-        const tamp = column.find(i=>i.isDefaultSort)
-        if(tamp){
-            return tamp.key
-        }else{
-            return('')
-        }
-    },[])
+    // const [sortBy, setSortBy] = useState(defaultSort)
+    // const [isSortDesc, setIsSortDesc] = useState(false)
 
-    const [sortBy, setSortBy] = useState(defaultSort)
-    const [isSortDesc, setIsSortDesc] = useState(false)
-    const [maxRow, setMaxRow] = useState('10')
+    // const [maxRow, setMaxRow] = useState('10')
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const [countPage, setCountPage] = useState(1)
+    // const [totalData, setTotalData] = useState(3)
+    
+    // const footerNuberRow:[number, number] = useMemo(()=>{
+    //     const currentPage = tableConfig?.currentPage??1
+    //     const maxRow = tableConfig?.maxRow??1
+    //     const totalData = tableConfig?.totalData??0
+    //     const startAt = (currentPage*maxRow)-maxRow+1
+    //     const endAt = Math.min((currentPage*maxRow),totalData)
+    //     return([startAt,endAt])
+    // },[tableConfig?.maxRow, tableConfig?.currentPage, tableConfig?.totalData])
+
+
 
     const thisSelectedRow = useMemo(()=>{
         return selectedRow
     },[selectedRow])
+    const selectedRowCount = useMemo(()=>{
+        return selectedRow.length
+    },[selectedRow])
     const columnCheckboxState = useMemo(()=>{
         if(selectedRow.length===0){
             return 0
-        }else if(selectedRow.length===data.length){
+        }else if(selectedRow.length===tableData.length){
             return 2
         }else{
             return 1
@@ -140,7 +173,7 @@ const TableData = ({
             return
         }
         if(columnCheckboxState===0 || columnCheckboxState===1){
-            onClickRowCheckbox(data.map(i=>i.id))
+            onClickRowCheckbox(tableData.map(i=>i.id))
         }else{
             onClickRowCheckbox([])
         }
@@ -176,20 +209,20 @@ const TableData = ({
                         column={column}
                         setColumn={setColumn}
                         columnShowList={columnShowList}
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
-                        isSortDesc={isSortDesc}
-                        setIsSortDesc={setIsSortDesc}
+                        tableConfig={tableConfig}
+                        onClickSortColumn={onClickSortColumn}
+
                         setIsColumnDragging={setIsColumnDragging}
                         isColumnSwapable={isColumnSwapable}
 
                         columnCheckboxState={columnCheckboxState}
                         thisOnClickColumnCheckbox={thisOnClickColumnCheckbox}
+                        shape={shape}
                     />
                 </table>
                 <table className="table-data">
                     <tbody className='table-body'>
-                        {data.map((rowData) => (
+                        {tableData.map((rowData) => (
                             <TableDataRow
                                 key={rowData.id}
                                 rowData={rowData}
@@ -199,6 +232,7 @@ const TableData = ({
                                 onClickRowAction={onClickRowAction}
                                 onClickRowCheckbox={thisOnClickRowCheckbox}
                                 isSelected={thisSelectedRow.includes(rowData.id)}
+                                shape={shape}
                             />
                         ))}
                     </tbody>
@@ -208,15 +242,18 @@ const TableData = ({
                 (isShowFooter)&&(
                     <TableFooter
                         tableContainerRef={tableContainerRef}
-                        maxRow={maxRow}
-                        setMaxRow={setMaxRow}
+                        tableConfig={tableConfig}
+                        onSelectMaxRow={onSelectMaxRow}
+                        onClickPagination={onClickPagination}
+                        
                         isTableScrolled={isTableScrolled}
-
+                        selectedRowCount={selectedRowCount}
                         column={column}
                         setColumn={setColumn}
                         columnShowList={columnShowList}
                         setColumnShowList={setColumnShowList}
                         isColumnSwapable={isColumnSwapable}
+                        shape={shape}
                     />
                 )
             }
@@ -226,83 +263,3 @@ const TableData = ({
 }
 
 export default TableData
-
-const columnDummy: tableColumnType[] = [
-    {key:'label1', txtLable:'Label 1', size:{size:'30%', min:'200px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
-    {key:'label2', txtLable:'Label 2', size:{size:'60%', min:'280px'}, isCanSort:false, horizontalAlign:'start'},
-    {key:'label3', txtLable:'Label 3', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'end'},
-    {key:'label4', txtLable:'Label 4', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'start'},
-    {key:'action', type:'row-action', txtLable:'Action', size:{size:'0%', min:'144px'}, horizontalAlign:'center', actionButtonList:[
-        {id:"edit", type:'button', txtLabel:'Edit', icon:<PiPencil className='global-icon'/>},
-        {id:"delete", type:'icon-button', txtLabel:'Delete', icon:<PiTrashBold className='global-icon'/>},
-        {
-            id:"option", 
-            type:'dropdown-menu', 
-            txtLabel:'Option', 
-            icon:<PiDotsThree className='global-icon'/>, 
-            option:[
-                {
-                    id:"download-csv", 
-                    txtLabel:"Download as CSV", 
-                    icon:<PiDownloadBold className='global-icon'/>,
-                },
-                {
-                    id:"download-xlsx", 
-                    txtLabel:"Download as XLSX", 
-                    icon:<PiDownloadBold className='global-icon'/>
-                }
-            ]
-        },
-    ]},
-]
-
-const dataDummy: tableRowDataType[] = [
-    {
-        id: '1',
-        label1: [
-            'Data Row Satu',
-            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
-                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-            </div>)
-        ],
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '131.123',
-        label4: (
-            <Tag appearance='success' txtLabel='Success' iconBefore={<PiCheckCircleBold className='global-icon'/>}/>
-        )
-    },
-    {
-        id: '2',
-        label1: [
-            'Data Row Satu',
-            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
-                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-            </div>)
-        ],
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '131.123',
-        label4: (
-            <Tag appearance='warning' txtLabel='Pending' iconBefore={<PiHourglassBold className='global-icon'/>}/>
-        )
-    },
-    {
-        id: '3',
-        label1: [
-            'Data Row Satu',
-            (<div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-50)'}}>
-                <Tag txtLabel='tag-1' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-10' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-                <Tag txtLabel='tag-11' iconBefore={<PiTagBold className='global-icon'/>} onClick={(_, textLabel)=>{console.log(textLabel)}}/>
-            </div>)
-        ],
-        label2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        label3: '131.123',
-        label4: (
-            <Tag appearance='danger' txtLabel='Canceled' iconBefore={<PiXSquareBold className='global-icon'/>}/>
-        )
-    },
-];

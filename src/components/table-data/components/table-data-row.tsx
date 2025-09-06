@@ -7,6 +7,7 @@ import IconButton from "../../icon-button";
 import { PiSquareBold } from "react-icons/pi";
 import DropdownMenu from "../../dropdown-menu";
 import CheckboxButton from "../../checkbox-button";
+import type { globalShapeType } from "../../_types";
 
 const TableDataRow = ({
     rowData,
@@ -16,6 +17,7 @@ const TableDataRow = ({
     column,
     columnShowList,
     isSelected,
+    shape,
 }:{
     rowData:tableRowDataType
     onClickRow?:(rowData:tableRowDataType)=>void
@@ -24,6 +26,7 @@ const TableDataRow = ({
     column:tableColumnType[],
     columnShowList:string[]
     isSelected:boolean,
+    shape?:globalShapeType
 }) =>{
 
     const isCanClickRow = useMemo(()=>{
@@ -78,6 +81,7 @@ const TableDataRow = ({
                                             onClickRowCheckbox(rowData)
                                         }
                                     }}
+                                    shape={shape}
                                 />
                             </div>
                         ):(headerData.type==='row-action' && headerData.actionButtonList)?(
@@ -95,6 +99,7 @@ const TableDataRow = ({
                                                             onClickRowAction(itmButton.id, rowData)
                                                         }
                                                     }}
+                                                    shape={shape}
                                                 />
                                             )}
                                             {(itmButton.type==='icon-button')&&(
@@ -107,6 +112,7 @@ const TableDataRow = ({
                                                             onClickRowAction(itmButton.id, rowData)
                                                         }
                                                     }}
+                                                    shape={shape}
                                                 />
                                             )}
                                             {(itmButton.type==='dropdown-menu')&&(
@@ -116,6 +122,7 @@ const TableDataRow = ({
                                                             className="table-action-icon-button"
                                                             txtLabel={itmButton.txtLabel}
                                                             icon={itmButton.icon??<PiSquareBold className="global-icon"/>}
+                                                            shape={shape}
                                                         />
                                                     }
                                                     options={itmButton.option??[]}
@@ -128,6 +135,7 @@ const TableDataRow = ({
                                                             onClickRowAction(idButton, rowData)
                                                         }
                                                     }}
+                                                    shape={shape}
                                                 />
                                             )}
                                         </Fragment>

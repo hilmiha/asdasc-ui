@@ -196,6 +196,43 @@ $clr-danger:$clr-red; //defaul danger color
     @include generate-shadow-colors($isDark);
 }
 
+
+
+@mixin generate-font-size-variable($size: small) {
+    
+    @if $size == large {
+        $font-size-sm:14px;
+        $font-size:16px;
+        $icon-size:18px;
+        $font-size-lg:20px;
+
+        --icon-size: #{$icon-size};
+        --font-size: #{$font-size};
+        --font-size-sm: #{$font-size-sm};
+        --font-size-lg: #{$font-size-lg};
+    } @else if $size == medium {
+        $font-size-sm:12px;
+        $font-size:14px;
+        $icon-size:16px;
+        $font-size-lg:18px;
+
+        --icon-size: #{$icon-size};
+        --font-size: #{$font-size};
+        --font-size-sm: #{$font-size-sm};
+        --font-size-lg: #{$font-size-lg};
+    }  @else {
+        $font-size-sm:10px;
+        $font-size:12px;
+        $icon-size:14px;
+        $font-size-lg:16px;
+
+        --icon-size: #{$icon-size};
+        --font-size: #{$font-size};
+        --font-size-sm: #{$font-size-sm};
+        --font-size-lg: #{$font-size-lg};
+    }
+}
+
 $space-0: 0px;
 $space-25: 2px;
 $space-50: 4px;
@@ -215,8 +252,4 @@ $font-weight-normal: 400;
 $font-weight-semi-bold: 600;
 $font-weight-bold: 700;
 $font-weight-bolder: 800;
-$icon-size:14px;
 
-$font-size-sm:10px;
-$font-size:12px;
-$font-size-lg:16px

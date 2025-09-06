@@ -1,10 +1,11 @@
 import { PiArrowDownBold, PiArrowsDownUpBold, PiArrowUpBold, PiDotsSixVerticalBold } from "react-icons/pi"
-import type { tableColumnType } from ".."
+import type { tableColumnType, tableConfigType } from ".."
 import IconButton from "../../icon-button"
 import { useContext, useEffect } from "react"
 import Sortable, { Swap } from "sortablejs"
 import CheckboxButton from "../../checkbox-button"
 import { GlobalContext, type _GlobalContextType } from "../../../context/global-context"
+import type { globalShapeType } from "../../_types"
 
 if (!(window as any)._swapMounted) {
     Sortable.mount(new Swap());
@@ -16,29 +17,27 @@ const TableColumn = ({
     column,
     setColumn,
     columnShowList,
-    sortBy,
-    setSortBy,
-    isSortDesc,
-    setIsSortDesc,
+    tableConfig,
+    onClickSortColumn,
     setIsColumnDragging,
     isColumnSwapable,
 
     columnCheckboxState,
-    thisOnClickColumnCheckbox
+    thisOnClickColumnCheckbox,
+    shape
 }:{
     ref:React.RefObject<HTMLTableRowElement | null>
     column:tableColumnType[]
     setColumn:React.Dispatch<React.SetStateAction<tableColumnType[]>>
     columnShowList:string[]
-    sortBy:string
-    setSortBy:React.Dispatch<React.SetStateAction<string>>
-    isSortDesc:boolean
-    setIsSortDesc:React.Dispatch<React.SetStateAction<boolean>>,
+    tableConfig?:tableConfigType
+    onClickSortColumn?:(newSortBy:string, newIsDesc:boolean)=>void
     setIsColumnDragging:React.Dispatch<React.SetStateAction<boolean>>,
     isColumnSwapable:boolean
 
     columnCheckboxState:number,
     thisOnClickColumnCheckbox:()=>void
+    shape?:globalShapeType
 }) =>{
 
     const {
@@ -117,6 +116,7 @@ const TableColumn = ({
                                             isSelected={columnCheckboxState===2}
                                             isIndeterminate={columnCheckboxState===1}
                                             onClick={thisOnClickColumnCheckbox}
+                                            shape={shape}
                                         />
                                     </div>
                                 )
@@ -124,23 +124,26 @@ const TableColumn = ({
                             {headerData.txtLable}
                             {
                                 (
+                                    tableConfig &&
+                                    onClickSortColumn &&
                                     headerData.isCanSort &&
                                     headerData.type!=='row-action'
                                 )&&(
                                     <div style={{flexGrow:'1', display:'flex', justifyContent:'end'}}>
                                         <IconButton
                                             className='sort-button'
-                                            icon={sortBy===headerData.key?(isSortDesc?(<PiArrowUpBold className='global-icon'/>):(<PiArrowDownBold className='global-icon'/>)):(<PiArrowsDownUpBold className='global-icon'/>)}
+                                            icon={tableConfig.sortBy===headerData.key?(tableConfig.isSortDesc?(<PiArrowUpBold className='global-icon'/>):(<PiArrowDownBold className='global-icon'/>)):(<PiArrowsDownUpBold className='global-icon'/>)}
                                             appearance='subtle'
-                                            txtLabel={sortBy===headerData.key?((isSortDesc)?('Chnage Sort To Asc'):('Change Sort To Des')):('Sort Asc')}
-                                            isSelected={sortBy===headerData.key}
+                                            shape={shape}
+                                            txtLabel={tableConfig.sortBy===headerData.key?((tableConfig.isSortDesc)?('Chnage Sort To Asc'):('Change Sort To Des')):('Sort Asc')}
+                                            isSelected={tableConfig.sortBy===headerData.key}
                                             onClick={()=>{
-                                                setSortBy(headerData.key)
-                                                if(sortBy===headerData.key){
-                                                    setIsSortDesc(!isSortDesc)
-                                                }else{
-                                                    setIsSortDesc(false)
+                                                let newSortBy = headerData.key
+                                                let newIsDesc = false
+                                                if(tableConfig.sortBy===headerData.key){
+                                                    newIsDesc = !tableConfig.isSortDesc
                                                 }
+                                                onClickSortColumn(newSortBy, newIsDesc)
                                             }}
                                         />
                                     </div>

@@ -20,7 +20,7 @@
         border: 1px solid var(--clr-border);
     }
     &.primary{
-        background-color: hsl(from var(--clr-primary-success-3) h s l / 0.5);
+        background-color: hsl(from var(--clr-primary-success-3) h s l / 0.7);
         border: 1px solid var(--clr-border-primary);
         color: var(--clr-primary-900);
         .tag-label-box-as-button{
@@ -28,7 +28,7 @@
         }
     }
     &.success{
-        background-color: hsl(from var(--clr-surface-success-3) h s l / 0.5);
+        background-color: hsl(from var(--clr-surface-success-3) h s l / 0.7);
         border: 1px solid var(--clr-border-success);
         color: var(--clr-success-900);
         .tag-label-box-as-button{
@@ -36,7 +36,7 @@
         }
     }
     &.warning{
-        background-color: hsl(from var(--clr-surface-warning-3) h s l / 0.5);
+        background-color: hsl(from var(--clr-surface-warning-3) h s l / 0.7);
         border: 1px solid var(--clr-border-warning);
         color: var(--clr-warning-900);
         .tag-label-box-as-button{
