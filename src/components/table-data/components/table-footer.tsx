@@ -59,7 +59,7 @@ const TableFooter = ({
         {id:'100', txtLabel:'100 Rows'},
     ]
     const columnList = useDeepCompareMemo<optionItemType[]>(()=>{
-        const tamp:optionItemType[] = column.filter(i=>i.key!=='#checkbox').map((i)=>{
+        const tamp:optionItemType[] = column.filter(i=>(i.key!=='#checkbox' && i.key!=='#expandable')).map((i)=>{
             return({
                 id:i.key,
                 txtLabel:i.txtLable,
@@ -209,7 +209,8 @@ const TableFooter = ({
                             floatingConfig={{
                                 isContainerWidthSameAsTrigger:true,
                                 placement:'bottom-end',
-                                fallbackPlacement:['top-end']
+                                fallbackPlacement:['top-end'],
+                                isCloseOnItemClicked:true
                             }}
                             shape={shape}
                         />
@@ -371,12 +372,12 @@ const TableSettingMobile = ({
                                 className={clsx(
                                     'item-column',
                                     {
-                                        ['no-swap']:(headerData.key==='#checkbox')
+                                        ['no-swap']:(headerData.key==='#checkbox' || headerData.key==='#expandable')
                                     }
                                 )}
                             >
                                 {
-                                    (isColumnSwapable && headerData.key!=='#checkbox')&&(
+                                    (isColumnSwapable && headerData.key!=='#checkbox' && headerData.key!=='#expandable')&&(
                                         <div className='drag-handle' style={{display:"flex", alignItems:'center'}}>
                                             <PiDotsSixVerticalBold className='global-icon' size={18}/>
                                         </div>
@@ -386,13 +387,15 @@ const TableSettingMobile = ({
                                     {
                                         headerData.key==='#checkbox'?(
                                             'Checkbox'
+                                        ):headerData.key==='#expandable'?(
+                                            'Expandable'
                                         ):(
                                             headerData.txtLable
                                         )
                                     }
                                 </div>
                                 {
-                                    (headerData.key!=='#checkbox')&&(
+                                    (headerData.key!=='#checkbox' && headerData.key!=='#expandable')&&(
                                         <>
                                             {
                                                 !columnShowList.includes(headerData.key)?(

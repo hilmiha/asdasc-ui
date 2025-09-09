@@ -1,4 +1,4 @@
-import { PiArrowDownBold, PiArrowsDownUpBold, PiArrowUpBold, PiDotsSixVerticalBold } from "react-icons/pi"
+import { PiArrowDownBold, PiArrowsDownUpBold, PiArrowUpBold, PiCaretUpDownBold, PiDotsSixVerticalBold } from "react-icons/pi"
 import type { tableColumnType, tableConfigType } from ".."
 import IconButton from "../../icon-button"
 import { useContext, useEffect } from "react"
@@ -23,7 +23,8 @@ const TableColumn = ({
     isColumnSwapable,
 
     columnCheckboxState,
-    thisOnClickColumnCheckbox,
+    onClickColumnCheckbox,
+    onClickExpandAll,
     shape
 }:{
     ref:React.RefObject<HTMLTableRowElement | null>
@@ -36,7 +37,8 @@ const TableColumn = ({
     isColumnSwapable:boolean
 
     columnCheckboxState:number,
-    thisOnClickColumnCheckbox:()=>void
+    onClickColumnCheckbox:()=>void
+    onClickExpandAll:()=>void
     shape?:globalShapeType
 }) =>{
 
@@ -90,19 +92,19 @@ const TableColumn = ({
             >
                 {column.map((headerData) => (
                     <th
-                        className={headerData.key==='#checkbox'?'no-swap':undefined}
+                        className={(headerData.key==='#checkbox'||headerData.key==='#expandable')?'no-swap':undefined}
                         key={headerData.key}
                         style={{
                             width: headerData.size.size,
                             minWidth: headerData.size.min,
-                            paddingLeft:headerData.key==='#checkbox'?('var(--space-150)'):(undefined),
-                            paddingRight:headerData.key==='#checkbox'?('var(--space-150)'):(undefined),
+                            paddingLeft:(headerData.key==='#checkbox'||headerData.key==='#expandable')?('var(--space-150)'):(undefined),
+                            paddingRight:(headerData.key==='#checkbox'||headerData.key==='#expandable')?('var(--space-150)'):(undefined),
                             display:(!columnShowList.includes(headerData.key))?('none'):(undefined)
                         }}
                     >
                         <div className='cell-header'>
                             {
-                                (isColumnSwapable && headerData.key!=='#checkbox' && screenSize!=="mobile")&&(
+                                (isColumnSwapable && headerData.key!=='#checkbox' && headerData.key!=='#expandable' && screenSize!=="mobile")&&(
                                     <div className='drag-handle'>
                                         <PiDotsSixVerticalBold className='global-icon' size={18}/>
                                     </div>
@@ -115,8 +117,21 @@ const TableColumn = ({
                                             className="table-checkbox-button"
                                             isSelected={columnCheckboxState===2}
                                             isIndeterminate={columnCheckboxState===1}
-                                            onClick={thisOnClickColumnCheckbox}
+                                            onClick={onClickColumnCheckbox}
                                             shape={shape}
+                                        />
+                                    </div>
+                                )
+                            }
+                            {
+                                (headerData.key==='#expandable')&&(
+                                    <div className="table-action-box interactive-box">
+                                        <IconButton
+                                            className="table-expand-button"
+                                            icon={<PiCaretUpDownBold className="global-icon"/>}
+                                            txtLabel="Expand/Collapse All"
+                                            onClick={onClickExpandAll}
+                                            appearance="subtle"
                                         />
                                     </div>
                                 )

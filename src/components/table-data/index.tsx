@@ -9,6 +9,7 @@ import TableDataRow from './components/table-data-row';
 
 export type tableRowDataType = {
     id:string, 
+    expandedPage?:JSX.Element | string
     [key:string]:any
 }
 
@@ -66,7 +67,8 @@ const TableData = ({
 
     isColumnSwapable = false,
     isShowFooter = false,
-    isCheckbox = false
+    isCheckbox = false,
+    isExpandable = false
 }:{
     className?:string,
     shape?:globalShapeType,
@@ -87,6 +89,7 @@ const TableData = ({
     isColumnSwapable?:boolean
     isShowFooter?:boolean
     isCheckbox?:boolean
+    isExpandable?:boolean
 }) =>{ 
     const {
         globalShape,
@@ -103,7 +106,8 @@ const TableData = ({
     const [columnShowList, setColumnShowList] = useState<string[]>(column.map((i)=>i.key)) 
     
     useEffect(()=>{
-        if(isCheckbox && column[0]?.key!=='#checkbox'){
+        const tampColumnKeys = column.map((i)=>i.key)
+        if(isCheckbox && !tampColumnKeys.includes('#checkbox')){
             setColumn((prev)=>{
                 const tampNew = [
                     {
@@ -118,25 +122,46 @@ const TableData = ({
                 return tampNew
             })
         }
+        if(isExpandable && !tampColumnKeys.includes('#expandable')){
+            setColumn((prev)=>{
+                const tampNew = [
+                    {
+                        key:'#expandable',
+                        size:{size:'0%', min:'23px'},
+                        txtLable:''
+                    },
+                    ...prev
+                ]
+
+                setColumnShowList(tampNew.map((i)=>i.key))
+                return tampNew
+            })
+        }
     },[])
 
-    // const [sortBy, setSortBy] = useState(defaultSort)
-    // const [isSortDesc, setIsSortDesc] = useState(false)
-
-    // const [maxRow, setMaxRow] = useState('10')
-    // const [currentPage, setCurrentPage] = useState(1)
-    // const [countPage, setCountPage] = useState(1)
-    // const [totalData, setTotalData] = useState(3)
+    const [rowExpanded, setRowExpanded] = useState<string[]>([])
+    const onClickExpandAll = () =>{
+        if(rowExpanded.length===tableData.length || rowExpanded.length>0){
+            setRowExpanded([])
+        }else{
+            setRowExpanded(tableData.map(i=>i.id))
+        }
+    }
+    const onClickExpandRow = (id:string) =>{
+        if(rowExpanded.includes(id)){
+            setRowExpanded((prev)=>{
+                return [...prev].filter(i=>i!=id)
+            })
+        }else{
+            setRowExpanded((prev)=>{
+                return [...prev, id]
+            })
+        }
+    }
+    useEffect(()=>{
+        setRowExpanded([])
+    },[tableConfig])
     
-    // const footerNuberRow:[number, number] = useMemo(()=>{
-    //     const currentPage = tableConfig?.currentPage??1
-    //     const maxRow = tableConfig?.maxRow??1
-    //     const totalData = tableConfig?.totalData??0
-    //     const startAt = (currentPage*maxRow)-maxRow+1
-    //     const endAt = Math.min((currentPage*maxRow),totalData)
-    //     return([startAt,endAt])
-    // },[tableConfig?.maxRow, tableConfig?.currentPage, tableConfig?.totalData])
-
 
 
     const thisSelectedRow = useMemo(()=>{
@@ -216,11 +241,12 @@ const TableData = ({
                         isColumnSwapable={isColumnSwapable}
 
                         columnCheckboxState={columnCheckboxState}
-                        thisOnClickColumnCheckbox={thisOnClickColumnCheckbox}
+                        onClickColumnCheckbox={thisOnClickColumnCheckbox}
+                        onClickExpandAll={onClickExpandAll}
                         shape={shape}
                     />
                 </table>
-                <table className="table-data">
+                <table className="table-data" style={{height:'1px'}}>
                     <tbody className='table-body'>
                         {tableData.map((rowData) => (
                             <TableDataRow
@@ -232,6 +258,8 @@ const TableData = ({
                                 onClickRowAction={onClickRowAction}
                                 onClickRowCheckbox={thisOnClickRowCheckbox}
                                 isSelected={thisSelectedRow.includes(rowData.id)}
+                                isExpanded={rowExpanded.includes(rowData.id)}
+                                onClickExpandButton={onClickExpandRow}
                                 shape={shape}
                             />
                         ))}

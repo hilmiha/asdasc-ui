@@ -178,7 +178,7 @@ function App() {
     const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
     
     const allDataTable = useMemo(()=>{
-        return generateDataDummy(25)
+        return generateDataDummy(300)
     },[])
     const [tableData, setTableData] = useState<tableRowDataType[]>([])
     const tableColumn = useMemo<tableColumnType[]>(()=>{
@@ -257,7 +257,7 @@ function App() {
                     }}
                 >
                     <p style={{marginBottom:'var(--space-300)'}}>Level three surface</p>
-                    <div style={{display:'flex'}}>
+                    <div style={{display:'flex', flexWrap:'wrap'}}>
                         <SplitButton
                             txtLabel='Toggle Theme'
                             options={[
@@ -777,7 +777,8 @@ function App() {
                         setTableConfig((prev)=>{
                             const tamp:tableConfigType = {
                                 ...prev,
-                                maxRow:newMaxRow
+                                maxRow:newMaxRow,
+                                currentPage:1
                             }
                             return tamp
                         })
@@ -803,6 +804,7 @@ function App() {
                     isColumnSwapable={true}
                     isShowFooter={true}
                     isCheckbox={true}
+                    isExpandable={true}
                 />
             </div>
             <div style={{padding:'var(--space-300)'}}>
@@ -1135,8 +1137,7 @@ const loremText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed 
 const generateDataDummy = (length:number) =>{
     const tableDataDummy: tableRowDataType[] = Array.from({ length: length??25 }, (_, index) => {
         const status = statuses[index % statuses.length];
-
-        return {
+        const tamp:tableRowDataType = {
             id: String(index + 1),
             label1: [
                 `Data Row ${index + 1}`,
@@ -1156,10 +1157,21 @@ const generateDataDummy = (length:number) =>{
                     txtLabel={status.label}
                     iconBefore={status.icon}
                 />
-            )
-        };
+            ),
+            expandedPage:(<TableExpandPage index={index+1}/>)
+        }
+        return tamp;
     })
     return tableDataDummy
+}
+
+const TableExpandPage = ({index}:{index:number}) =>{
+    return(
+        <div style={{maxHeight:'50vh', overflow:'auto'}}>
+            <p>{`helloworld ${index}`}</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae dolorem sunt, nihil facere voluptas natus voluptate eligendi. Minus fuga blanditiis temporibus officiis dolorem iusto voluptate labore, quasi quis mollitia ipsa! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi veritatis consectetur tenetur odit quae, error vel consequuntur distinctio, sit commodi illo architecto facilis sunt? Provident cum corrupti maiores aliquid aspernatur.</p>
+        </div>
+    )
 }
 
 const indonesiaProvinces:optionItemType[] = [

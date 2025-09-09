@@ -144,7 +144,7 @@
                             margin-bottom: var(--space-100);
                         }
 
-                        + td {
+                        + td:not(.table-expanded-box) {
                             &::before{
                                 content: ' ';
                                 position: absolute;
@@ -159,10 +159,36 @@
                         }
                         
                     }
+                    td.table-expanded-span-box{
+                        padding-top: var(--space-0);
+                        padding-left: var(--space-300);
+                        height: auto;
+                        .table-expanded-span{
+                            border-left: 1px solid var(--clr-border-primary);
+                            border-bottom: 1px solid var(--clr-border-primary);
+                            height: 100%;
+                            width: 100%;
+                            margin-bottom: 0px;
+                        }
+                    }
+                    td.table-expanded-box{
+                        padding-left: var(--space-100);
+                    }
                 }
+
+                // tr.expanded-content-box{
+                //     background-color: green;
+                // }
             }
             
         }
+    }
+
+    .table-expand-button{
+        padding: var(--space-50);
+        margin: var(--space-0);
+        height: fit-content;
+        width: fit-content;
     }
     .table-checkbox-button{
         margin: 0px;
