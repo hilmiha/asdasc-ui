@@ -79,7 +79,7 @@ const DropdownBottomSheet = ({
         }
     },[trigger, isDisabled, bottomSheetOpen])
 
-    const triggerDropdownRef = useRef< 1 | 0 | null>(0)
+    const [triggerDropdownRef, _] = useState<0|1>(0)
 
     useEffect(()=>{
         setBottomSheetOpen(false)

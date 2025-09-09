@@ -28,7 +28,7 @@ import CheckboxGroup from './components/checkbox-group';
 import Calendar, { type validCalendarDisabledValue, type validCalendarValue } from './components/calendar';
 import { addDays, subDays } from 'date-fns';
 import InputDateTime from './components/input-date';
-import TableData, { type tableColumnType, type tableConfigType, type tableRowDataType } from './components/table-data';
+import TableData, { type tableColumnType, type tableConfigType, type tableRowDataType } from './components/table';
 import Tag from './components/tag';
 
 function App() {

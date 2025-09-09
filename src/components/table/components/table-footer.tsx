@@ -1,3 +1,4 @@
+import * as ctrl from '../controller';
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { GlobalContext, type _GlobalContextType } from "../../../context/global-context"
 import IconButton from "../../icon-button"
@@ -71,10 +72,6 @@ const TableFooter = ({
 
     const [isShowTableSetting, setIsShowTableSetting] = useState(false)
 
-    const doScrollToTop = () =>{
-        tableContainerRef.current?.scrollTo({top:0, behavior:'smooth'})
-    }
-
     return(
         <div
             className='table-footer-floating'
@@ -111,7 +108,7 @@ const TableFooter = ({
                                 isDisabled={tableConfig.currentPage===1}
                                 onClick={()=>{
                                     onClickPagination(1)
-                                    doScrollToTop()
+                                    ctrl.doScrollToTop(tableContainerRef)
                                 }}
                                 shape={shape}
                             />
@@ -122,7 +119,7 @@ const TableFooter = ({
                                 isDisabled={tableConfig.currentPage===1}
                                 onClick={()=>{
                                     onClickPagination(tableConfig.currentPage - 1)
-                                    doScrollToTop()
+                                    ctrl.doScrollToTop(tableContainerRef)
                                 }}
                                 shape={shape}
                             />
@@ -134,7 +131,7 @@ const TableFooter = ({
                                 isDisabled={tableConfig.currentPage===tableConfig.countPage}
                                 onClick={()=>{
                                     onClickPagination(tableConfig.currentPage + 1)
-                                    doScrollToTop()
+                                    ctrl.doScrollToTop(tableContainerRef)
                                 }}
                                 shape={shape}
                             />
@@ -145,7 +142,7 @@ const TableFooter = ({
                                 isDisabled={tableConfig.currentPage===tableConfig.countPage}
                                 onClick={()=>{
                                     onClickPagination(tableConfig.countPage)
-                                    doScrollToTop()
+                                    ctrl.doScrollToTop(tableContainerRef)
                                 }}
                                 shape={shape}
                             />
@@ -255,7 +252,7 @@ const TableFooter = ({
                                 icon={<PiArrowLineUpBold className='global-icon'/>}
                                 txtLabel='Go To Top'
                                 onClick={()=>{
-                                    doScrollToTop()
+                                    ctrl.doScrollToTop(tableContainerRef)
                                 }}
                                 isDisabled={!isTableScrolled}
                                 appearance='subtle'

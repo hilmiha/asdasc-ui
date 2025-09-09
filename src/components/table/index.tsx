@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import './styles.scss'
+import * as ctrl from './controller';
 import type { globalShapeType, optionItemType } from '../_types'
 import { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context'
@@ -7,48 +8,7 @@ import TableColumn from './components/table-column'
 import TableFooter from './components/table-footer';
 import TableDataRow from './components/table-data-row';
 
-export type tableRowDataType = {
-    id:string, 
-    expandedPage?:JSX.Element | string
-    [key:string]:any
-}
-
-export type rowActionButtonType = {
-    id:string,
-    type:'button'|'icon-button'|'dropdown-menu'
-    txtLabel:string,
-    icon?:JSX.Element,
-    option?:optionItemType[]
-}
-
-export type tableColumnType = {
-    key:string,
-    txtLable:string,
-    size:{
-        size:string,
-        min:string
-    },
-    horizontalAlign?:'start' | 'end' | 'center',
-    verticalAlign?:'top' | 'bottom' | 'middle',
-    isCanSort?:boolean,
-    isDefaultSort?:boolean
-
-    type?:'row-action'
-    
-    //for type row-action only
-    actionButtonList?:rowActionButtonType[]
-}
-
-export type tableConfigType = {
-    maxRow: number;
-    currentPage: number;
-    countPage: number;
-    totalData: number;
-    sortBy: string;
-    isSortDesc: boolean;
-}
-
-const TableData = ({
+const Table = ({
     className,
     shape,
 
@@ -69,34 +29,11 @@ const TableData = ({
     isShowFooter = false,
     isCheckbox = false,
     isExpandable = false
-}:{
-    className?:string,
-    shape?:globalShapeType,
-
-    tableData:tableRowDataType[]
-    tableColumn:tableColumnType[]
-    tableConfig?:tableConfigType
-
-    onClickSortColumn?:(newSortBy:string, newIsDesc:boolean)=>void
-    onSelectMaxRow?: (newMaxRow: number) => void
-    onClickPagination?: (newCurrentPage:number) => void
-
-    selectedRow?:string[]
-    onClickRow?:(rowData:tableRowDataType)=>void
-    onClickRowAction?:(idButton:string, rowData:tableRowDataType)=>void
-    onClickRowCheckbox?:(listSelectedRow:string[], rowData?:tableRowDataType)=>void
-
-    isColumnSwapable?:boolean
-    isShowFooter?:boolean
-    isCheckbox?:boolean
-    isExpandable?:boolean
-}) =>{ 
+}:_Table) =>{ 
     const {
         globalShape,
     } = useContext(GlobalContext) as _GlobalContextType
 
-    // const [data, _] = useState<tableRowDataType[]>(dataDummy)
-    
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -140,69 +77,26 @@ const TableData = ({
     },[])
 
     const [rowExpanded, setRowExpanded] = useState<string[]>([])
-    const onClickExpandAll = () =>{
-        if(rowExpanded.length===tableData.length || rowExpanded.length>0){
-            setRowExpanded([])
-        }else{
-            setRowExpanded(tableData.map(i=>i.id))
-        }
-    }
-    const onClickExpandRow = (id:string) =>{
-        if(rowExpanded.includes(id)){
-            setRowExpanded((prev)=>{
-                return [...prev].filter(i=>i!=id)
-            })
-        }else{
-            setRowExpanded((prev)=>{
-                return [...prev, id]
-            })
-        }
-    }
-    useEffect(()=>{
-        setRowExpanded([])
-    },[tableConfig])
-    
 
-
-    const thisSelectedRow = useMemo(()=>{
-        return selectedRow
-    },[selectedRow])
     const selectedRowCount = useMemo(()=>{
         return selectedRow.length
     },[selectedRow])
     const columnCheckboxState = useMemo(()=>{
         if(selectedRow.length===0){
-            return 0
+            return 0 //none selected
         }else if(selectedRow.length===tableData.length){
-            return 2
+            return 2 //all selected
         }else{
-            return 1
+            return 1 //partial selected
         }
     },[selectedRow])
 
-    const thisOnClickRowCheckbox = (dataRow:tableRowDataType) =>{
-        if(!onClickRowCheckbox){
-            return
-        }
-        const id = dataRow.id
-        if(thisSelectedRow.includes(dataRow.id)){
-            const tamp = [...thisSelectedRow].filter(i=>i!==id)
-            onClickRowCheckbox(tamp, dataRow)
-        }else{
-            const tamp = [...thisSelectedRow, id]
-            onClickRowCheckbox(tamp, dataRow)
-        }
-    }
-    const thisOnClickColumnCheckbox = () =>{
-        if(!onClickRowCheckbox){
-            return
-        }
-        if(columnCheckboxState===0 || columnCheckboxState===1){
-            onClickRowCheckbox(tableData.map(i=>i.id))
-        }else{
+    useEffect(()=>{
+        setRowExpanded([])
+        if(onClickRowCheckbox){
             onClickRowCheckbox([])
         }
-    }
+    },[tableConfig])
 
     return(
         <div
@@ -241,8 +135,14 @@ const TableData = ({
                         isColumnSwapable={isColumnSwapable}
 
                         columnCheckboxState={columnCheckboxState}
-                        onClickColumnCheckbox={thisOnClickColumnCheckbox}
-                        onClickExpandAll={onClickExpandAll}
+                        onClickColumnCheckbox={()=>{
+                            if(onClickRowCheckbox){
+                                ctrl.onClickCheckboxAll(columnCheckboxState, tableData, onClickRowCheckbox)
+                            }
+                        }}
+                        onClickExpandAll={()=>{
+                            ctrl.onClickExpandAll(tableData, setRowExpanded)
+                        }}
                         shape={shape}
                     />
                 </table>
@@ -256,10 +156,16 @@ const TableData = ({
                                 columnShowList={columnShowList}
                                 onClickRow={onClickRow}
                                 onClickRowAction={onClickRowAction}
-                                onClickRowCheckbox={thisOnClickRowCheckbox}
-                                isSelected={thisSelectedRow.includes(rowData.id)}
+                                onClickRowCheckbox={(rowData)=>{
+                                    if(onClickRowCheckbox){
+                                        ctrl.onClickCheckboxRow(selectedRow, rowData, onClickRowCheckbox)
+                                    }
+                                }}
+                                isSelected={selectedRow.includes(rowData.id)}
                                 isExpanded={rowExpanded.includes(rowData.id)}
-                                onClickExpandButton={onClickExpandRow}
+                                onClickExpandButton={(id)=>{
+                                    ctrl.onClickExpandRow(id, setRowExpanded)
+                                }}
                                 shape={shape}
                             />
                         ))}
@@ -290,4 +196,68 @@ const TableData = ({
     )
 }
 
-export default TableData
+export default Table
+
+interface _Table {
+    className?:string,
+    shape?:globalShapeType,
+
+    tableData:tableRowDataType[]
+    tableColumn:tableColumnType[]
+    tableConfig?:tableConfigType
+
+    onClickSortColumn?:(newSortBy:string, newIsDesc:boolean)=>void
+    onSelectMaxRow?: (newMaxRow: number) => void
+    onClickPagination?: (newCurrentPage:number) => void
+
+    selectedRow?:string[]
+    onClickRow?:(rowData:tableRowDataType)=>void
+    onClickRowAction?:(idButton:string, rowData:tableRowDataType)=>void
+    onClickRowCheckbox?:(listSelectedRow:string[], rowData?:tableRowDataType)=>void
+
+    isColumnSwapable?:boolean
+    isShowFooter?:boolean
+    isCheckbox?:boolean
+    isExpandable?:boolean
+}
+
+export type tableRowDataType = {
+    id:string, 
+    expandedPage?:JSX.Element | string
+    [key:string]:any
+}
+
+export type rowActionButtonType = {
+    id:string,
+    type:'button'|'icon-button'|'dropdown-menu'
+    txtLabel:string,
+    icon?:JSX.Element,
+    option?:optionItemType[]
+}
+
+export type tableColumnType = {
+    key:string,
+    txtLable:string,
+    size:{
+        size:string,
+        min:string
+    },
+    horizontalAlign?:'start' | 'end' | 'center',
+    verticalAlign?:'top' | 'bottom' | 'middle',
+    isCanSort?:boolean,
+    isDefaultSort?:boolean
+
+    type?:'row-action'
+    
+    //for type row-action only
+    actionButtonList?:rowActionButtonType[]
+}
+
+export type tableConfigType = {
+    maxRow: number;
+    currentPage: number;
+    countPage: number;
+    totalData: number;
+    sortBy: string;
+    isSortDesc: boolean;
+}

@@ -202,25 +202,6 @@ const TableDataRow = ({
                         rowData={rowData['expandedPage']}
                         colSpan={column.length-1}
                     />
-                    // <tr
-                    //     className={clsx(
-                    //         "expanded-content-box",
-                    //         (isExpanded)?('open'):('close'),
-                    //     )}
-                    // >
-                    //     <td className="table-expanded-span-box">
-                    //         <div className="table-expanded-span">
-                    //         </div>
-                    //     </td>
-                    //     <td className="table-expanded-box" colSpan={column.length-1}>
-                    //         <div className="expandable-wrapper">
-                    //             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae perferendis itaque corporis perspiciatis! Numquam quidem dolores quas! Voluptatum corporis nihil fugit. Fugit a cum repellendus quia libero, modi deleniti reiciendis.
-                    //         </div>
-                    //         {/* {
-                    //             <>{rowData['expandedPage']}</>
-                    //         } */}
-                    //     </td>
-                    // </tr>
                 )
             }
         </>
