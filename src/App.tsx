@@ -30,6 +30,7 @@ import { addDays, subDays } from 'date-fns';
 import InputDateTime from './components/input-date';
 import TableData, { type tableColumnType, type tableConfigType, type tableRowDataType } from './components/table';
 import Tag from './components/tag';
+import Carousel from './components/carousel';
 
 function App() {
     const {
@@ -1087,6 +1088,33 @@ function App() {
                     </p>
                 </Accordion>
             </AccordionGroup>
+            <div style={{padding:"var(--space-300)"}}>
+                <Carousel
+                    autoRunInterval={5000}
+                    height='60vh'
+                >
+                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                        <p>
+                            Page 1
+                        </p>
+                    </div>
+                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                        <p>
+                            Page 2
+                        </p>
+                    </div>
+                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                        <p>
+                            Page 3
+                        </p>
+                    </div>
+                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                        <p>
+                            Page 4
+                        </p>
+                    </div>
+                </Carousel>
+            </div>
         </div>
     )
 }
