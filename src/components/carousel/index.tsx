@@ -14,6 +14,7 @@ const Carousel = ({
     isAutoRunning = true,
     autoRunInterval = 5000,
     canLoop = true,
+    indicatorPosition = 'center',
     children
 }:{
     className?:string,
@@ -22,6 +23,7 @@ const Carousel = ({
     isAutoRunning?: boolean;
     autoRunInterval?: number;
     canLoop?: boolean;
+    indicatorPosition?:'start'|'end'|'center'
     children: React.ReactNode[];
 }) =>{
     const {
@@ -64,6 +66,9 @@ const Carousel = ({
                 (shape)?(shape):(globalShape),
                 className
             )}
+            style={{
+                justifyContent:indicatorPosition
+            }}
         >
             <div
                 className='main-carousel'

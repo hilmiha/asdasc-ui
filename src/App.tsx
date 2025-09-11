@@ -1090,8 +1090,9 @@ function App() {
             </AccordionGroup>
             <div style={{padding:"var(--space-300)"}}>
                 <Carousel
-                    autoRunInterval={5000}
+                    autoRunInterval={3000}
                     height='60vh'
+                    indicatorPosition='end'
                 >
                     <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
                         <p>
