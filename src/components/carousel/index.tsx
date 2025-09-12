@@ -16,16 +16,7 @@ const Carousel = ({
     canLoop = true,
     indicatorPosition = 'center',
     children
-}:{
-    className?:string,
-    shape?:globalShapeType
-    height?:string
-    isAutoRunning?: boolean;
-    autoRunInterval?: number;
-    canLoop?: boolean;
-    indicatorPosition?:'start'|'end'|'center'
-    children: React.ReactNode[];
-}) =>{
+}:_Carausel) =>{
     const {
         globalShape
     } = useContext(GlobalContext) as _GlobalContextType
@@ -162,3 +153,14 @@ const Carousel = ({
 }
 
 export default Carousel
+
+interface _Carausel {
+    className?:string,
+    shape?:globalShapeType
+    height?:string
+    isAutoRunning?: boolean;
+    autoRunInterval?: number;
+    canLoop?: boolean;
+    indicatorPosition?:'start'|'end'|'center'
+    children: React.ReactNode[];
+}

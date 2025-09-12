@@ -1,7 +1,7 @@
 import './App.scss'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Button from './components/button';
-import { PiAppWindowFill, PiCaretDownBold, PiCheckCircleBold, PiCircleBold, PiCircleDashedBold, PiCityBold, PiCopyBold, PiDotsThreeBold, PiDownloadBold, PiHourglassBold, PiMonitorArrowUpFill, PiPencil, PiPencilBold, PiStarFourBold, PiTagBold, PiTrashBold, PiXCircleBold, PiXSquareBold } from 'react-icons/pi';
+import { PiAppWindowFill, PiCaretDownBold, PiChatBold, PiCheckCircleBold, PiCircleBold, PiCircleDashedBold, PiCircleFill, PiCityBold, PiCopyBold, PiDotsThreeBold, PiDownloadBold, PiHourglassBold, PiHouseBold, PiMonitorArrowUpFill, PiPencil, PiPencilBold, PiStackBold, PiStarFourBold, PiTagBold, PiTrashBold, PiXCircleBold, PiXSquareBold } from 'react-icons/pi';
 import IconButton from './components/icon-button';
 import { GlobalContext, type _GlobalContextType } from './context/global-context';
 import { BiSquare, BiSquareRounded } from 'react-icons/bi';
@@ -31,6 +31,8 @@ import InputDateTime from './components/input-date';
 import TableData, { type tableColumnType, type tableConfigType, type tableRowDataType } from './components/table';
 import Tag from './components/tag';
 import Carousel from './components/carousel';
+import type { tabItem } from './components/tabs';
+import Tabs from './components/tabs';
 
 function App() {
     const {
@@ -230,6 +232,16 @@ function App() {
     useEffect(()=>{
         doGetDataTable()
     },[JSON.stringify(tableConfig)])
+
+
+    const tabItems = useMemo<tabItem[]>(()=>{
+        return [
+            {id:'dashboard', txtLabel:'Dashboard', iconBefore:(<PiHouseBold className='global-icon'/>), iconAfter:(<PiCircleFill color='var(--clr-primary-700)' size={8}/>)},
+            {id:'projects', txtLabel:'Projects', iconBefore:(<PiStackBold className='global-icon'/>)},
+            {id:'chat', txtLabel:'Chat', iconBefore:(<PiChatBold className='global-icon'/>), isDisabled:true},
+        ]
+    },[])
+    const [tabSelected, setTabSelected] = useState('dashboard')
 
     return (
         <div>
@@ -847,7 +859,127 @@ function App() {
                     ></iframe>
                 </div>
             </div>
-            <div>
+            <div style={{padding:"var(--space-300)", display:'grid', gap:'var(--space-300)'}}>
+                <div>
+                    <Tabs
+                        tabItem={tabItems}
+                        selectedItem={tabSelected}
+                        onClickTabItem={(id:string)=>{
+                            setTabSelected(id)
+                        }}
+                    />
+                    <div
+                        className={`global-${appTheme.globalShape}`}
+                        style={{
+                            border:'1px solid var(--clr-border)',
+                            height:"200px",
+                            maxHeight:"200px",
+                            overflow:'auto',
+                            marginTop:'var(--space-100)',
+                            padding:'var(--space-200)',
+                        }}
+                    >
+                        {
+                            (tabSelected==='dashboard')&&(
+                                <>
+                                    <h1>Dashboard</h1>
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                    </p>
+                                </>
+                            )
+                        }
+                        {
+                            (tabSelected==='projects')&&(
+                                <>
+                                    <h1>Projects</h1>
+                                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.</p>
+                                    <div style={{display:'flex', marginTop:"var(--space-400)"}}>
+                                        <Button
+                                            txtLabel={'Hello'}
+                                            appearance='primary'
+                                        />
+                                    </div>
+                                </>
+                            )
+                        }
+                    </div>
+                </div>
+                <div>
+                    <Tabs
+                        appearance='flush'
+                        tabItem={tabItems}
+                        selectedItem={tabSelected}
+                        onClickTabItem={(id:string)=>{
+                            setTabSelected(id)
+                        }}
+                    />
+                    <div
+                        className={`global-${appTheme.globalShape}`}
+                        style={{
+                            borderTopLeftRadius:'0px',
+                            borderTopRightRadius:'0px',
+                            border:'1px solid var(--clr-border)',
+                            height:"200px",
+                            maxHeight:"200px",
+                            overflow:'auto',
+                            padding:'var(--space-200)',
+                        }}
+                    >
+                        {
+                            (tabSelected==='dashboard')&&(
+                                <>
+                                    <h1>Dashboard</h1>
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae vitae culpa officiis numquam nam tenetur temporibus similique, qui cum veritatis, voluptatum velit cumque ab voluptate consectetur vero quam aliquam eveniet!
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.
+                                    </p>
+                                </>
+                            )
+                        }
+                        {
+                            (tabSelected==='projects')&&(
+                                <>
+                                    <h1>Projects</h1>
+                                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum exercitationem eligendi aspernatur porro iusto omnis, quis dignissimos veniam soluta illo necessitatibus aut! Ipsa, libero omnis amet ut saepe vitae repudiandae.</p>
+                                    <div style={{display:'flex', marginTop:"var(--space-400)"}}>
+                                        <Button
+                                            txtLabel={'Hello'}
+                                            appearance='primary'
+                                        />
+                                    </div>
+                                </>
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
+            <div style={{padding:"var(--space-300)"}}>
                 <SplitButton
                     txtLabel='Modal Open'
                     options={[

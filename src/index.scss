@@ -73,6 +73,16 @@ html {
         min-height: var(--icon-size);
         min-width: var(--icon-size);
     }
+
+    .global-rounded{
+        border-radius: var(--space-100);
+    }
+    .global-box{
+        border-radius: var(--space-0);
+    }
+    .global-circle{
+        border-radius: var(--space-200);
+    }
 }
 
 /* width */
@@ -89,7 +99,7 @@ html {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background-color: hsl(from var(--clr-surface-4) h s l / 0.4);
+    background-color: hsl(from var(--clr-surface-4) h s l / 0.3);
     border-radius: 10px;
 }
 
