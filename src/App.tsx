@@ -33,6 +33,9 @@ import Tag from './components/tag';
 import Carousel from './components/carousel';
 import type { tabItem } from './components/tabs';
 import Tabs from './components/tabs';
+import Resizable from './components/resizable';
+import ResizableHandle from './components/resizable/resizable-handle';
+import ResizablePanel from './components/resizable/resizable-panel';
 
 function App() {
     const {
@@ -242,6 +245,9 @@ function App() {
         ]
     },[])
     const [tabSelected, setTabSelected] = useState('dashboard')
+
+
+    const [isShowLeftPanel, setIsShowLeftPanel] = useState(true)
 
     return (
         <div>
@@ -1247,6 +1253,59 @@ function App() {
                         </p>
                     </div>
                 </Carousel>
+            </div>
+            <div style={{height:'80vh', border:'1px solid var(--clr-border)', margin:'var(--space-300)'}}>
+                <Resizable isSavePanelSize={true} direction={appTheme.screenSize==='mobile'?('vertical'):('horizontal')}>
+                    {
+                        isShowLeftPanel&&(
+                            <>
+                                <ResizablePanel order={1} minPanelSize={0} defaultPanelSize={20} contentPadding='var(--space-300)'>
+                                    <div>
+                                        <h1>Resizable Panels</h1>
+                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
+                                    </div>
+                                </ResizablePanel>
+                                <ResizableHandle/>
+                            </>
+
+                        )
+                    }
+                    <ResizablePanel order={2}>
+                        <Resizable direction='vertical'>
+                            <ResizablePanel minPanelSize={20} contentPadding='var(--space-300)'>
+                                <div>
+                                    <h1>Resizable Panels</h1>
+                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
+                                    <div style={{display:'flex', alignItems:"center", marginTop:"var(--space-300)"}}>
+                                        <Button
+                                            txtLabel={'Show Right Panel'}
+                                            onClick={()=>{setIsShowLeftPanel(!isShowLeftPanel)}}
+                                        />
+                                        <span>isShowLeft Panel:{`${isShowLeftPanel}`}</span>
+                                    </div>
+                                </div>
+                            </ResizablePanel>
+                            <ResizableHandle/>
+                            <ResizablePanel minPanelSize={20}>
+                                <Resizable direction='horizontal'>
+                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw' contentPadding='var(--space-300)'>
+                                        <div>
+                                            <h1>Resizable Panels</h1>
+                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
+                                        </div>
+                                    </ResizablePanel>
+                                    <ResizableHandle/>
+                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw' contentPadding='var(--space-300)'>
+                                        <div>
+                                            <h1>Resizable Panels</h1>
+                                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
+                                        </div>
+                                    </ResizablePanel>
+                                </Resizable>
+                            </ResizablePanel>
+                        </Resizable>
+                    </ResizablePanel>
+                </Resizable>
             </div>
         </div>
     )

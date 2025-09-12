@@ -14,15 +14,7 @@ const Tabs = ({
     tabItem = [],
     selectedItem = '',
     onClickTabItem = undefined
-}:{
-    className?:string,
-    shape?:globalShapeType,
-    appearance?:'detached' | 'flush',
-    style?:buttonStyleType,
-    tabItem:tabItem[],
-    selectedItem:string,
-    onClickTabItem?:(id:string)=>void
-}) =>{
+}:_Tabs) =>{
     const {
         globalShape
     } = useContext(GlobalContext) as _GlobalContextType
@@ -61,3 +53,13 @@ const Tabs = ({
 }
 
 export default Tabs
+
+interface _Tabs {
+    className?:string,
+    shape?:globalShapeType,
+    appearance?:'detached' | 'flush',
+    style?:buttonStyleType,
+    tabItem:tabItem[],
+    selectedItem:string,
+    onClickTabItem?:(id:string)=>void
+}
