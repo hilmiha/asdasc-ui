@@ -31,6 +31,7 @@ const Tabs = ({
             {
                 tabItem.map((i)=>(
                     <Button
+                        key={i.id}
                         shape={shape}
                         className="tabs-item-button"
                         appearance={appearance==='detached'?('subtle'):('subtle')}

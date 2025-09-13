@@ -11,6 +11,11 @@
         }
     }
 
+    &.selected.subtle-selected{
+        background-color: transparent;
+        border: 1px solid transparent;
+    }
+
     &:disabled{
         &:hover, &:focus-visible{
 

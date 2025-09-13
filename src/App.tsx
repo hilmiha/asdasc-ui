@@ -36,6 +36,7 @@ import Tabs from './components/tabs';
 import Resizable from './components/resizable';
 import ResizableHandle from './components/resizable/resizable-handle';
 import ResizablePanel from './components/resizable/resizable-panel';
+import SwitchButton from './components/switch-button';
 
 function App() {
     const {
@@ -150,7 +151,6 @@ function App() {
     const [contentError, setContentError] = useState<fieldErrorType>({isError:false, errorMessage:''})
     const contentHtml = useMemo(()=>{
         if(content){
-            console.log(content)
             return QuillHtmlUtils.deltaToHtml(content)
         }
     },[content])
@@ -169,16 +169,16 @@ function App() {
         ])
     },[])
     useEffect(()=>{
-        console.log(valueDt)
+        console.log('valueDt', valueDt)
     },[valueDt])
     useEffect(()=>{
-        console.log(valueDtTm)
+        console.log('valueDtTm', valueDtTm)
     },[valueDtTm])
     useEffect(()=>{
-        console.log(valueDtRange)
+        console.log('valueDtRange', valueDtRange)
     },[valueDtRange])
     useEffect(()=>{
-        console.log(valueDtMultiple)
+        console.log('valueDtMultiple', valueDtMultiple)
     },[valueDtMultiple])
 
     const [valueCheckbox, setValueCheckbox] = useState<string[]>([])
@@ -693,6 +693,7 @@ function App() {
                         />
                         <RadioButton
                             isSelected={true}
+                            appearance='appear-selected'
                             txtLabel='Hello World'
                             txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
@@ -716,6 +717,7 @@ function App() {
                         />
                         <CheckboxButton
                             isSelected={true}
+                            appearance='appear-selected'
                             txtLabel='Hello World'
                             txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
@@ -727,6 +729,17 @@ function App() {
                             selectedList={valueCheckbox}
                             isDefaultCollapse={false}
                             onChange={(newValue) => setValueCheckbox(newValue)}
+                        />
+                    </div>
+                    <div>
+                        <SwitchButton
+                            isSelected={valueCheckbox.length>0}
+                        />
+                        <SwitchButton
+                            isSelected={valueCheckbox.length>0}
+                            appearance='appear-selected'
+                            txtLabel='Hello World'
+                            txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
                     </div>
                     <div style={{display:'flex', gap:'var(--spacep-50)', justifyContent:'end', marginTop:'var(--space-1000)'}}>
@@ -1255,7 +1268,7 @@ function App() {
                 </Carousel>
             </div>
             <div style={{height:'80vh', border:'1px solid var(--clr-border)', margin:'var(--space-300)'}}>
-                <Resizable isSavePanelSize={true} direction={appTheme.screenSize==='mobile'?('vertical'):('horizontal')}>
+                <Resizable isSavePanelSize={true} direction={(appTheme.screenSize!=='laptop')?('vertical'):('horizontal')}>
                     {
                         isShowLeftPanel&&(
                             <>

@@ -6,7 +6,7 @@ import { GlobalContext, type _GlobalContextType } from '../../context/global-con
 import type { globalShapeType } from '../_types';
 import Button, { type buttonStyleType } from '../button';
 
-const RadioButton = ({
+const SwitchButton = ({
     className = undefined,
     shape = undefined,
     style = undefined,
@@ -17,7 +17,7 @@ const RadioButton = ({
     isSelected = false,
     onClick = undefined,
     isDisabled = false,
-}:_RadioButton) =>{
+}:_SwitchButton) =>{
     //Context start ====
     const {
         globalShape
@@ -26,7 +26,7 @@ const RadioButton = ({
     return(
         <Button
             className={clsx(
-                "radio-button",
+                "switch-button",
                 appearance,
                 (shape)?(shape):(globalShape),
                 className
@@ -56,7 +56,7 @@ const RadioButton = ({
                 <div style={{display:'flex', gap:'var(--space-200)'}}>
                     <div
                         className={clsx(
-                            'circle-indicator',
+                            'switch-indicator',
                             (isSelected)?('circle-on'):('circle-off'),
                             {
                                 ['full-on']:(isSelected)
@@ -73,13 +73,13 @@ const RadioButton = ({
     )
 }
 
-export default RadioButton
+export default SwitchButton
 
-interface _RadioButton {
+interface _SwitchButton {
     className?:string,
     style?:buttonStyleType;
     shape?:globalShapeType;
-    appearance?: radioButtonAppearance
+    appearance?: switchButtonAppearance
     txtLabel?:string
     txtSublabel?:string,
     icon?:JSX.Element,
@@ -89,4 +89,4 @@ interface _RadioButton {
     isIndeterminate?:boolean
 }
 
-export type radioButtonAppearance = 'subtle-selected' | 'appear-selected'
+export type switchButtonAppearance = 'subtle-selected' | 'appear-selected'

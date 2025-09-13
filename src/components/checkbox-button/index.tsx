@@ -11,6 +11,7 @@ const CheckboxButton = ({
     className = undefined,
     shape = undefined,
     style = undefined,
+    appearance = 'subtle-selected',
     txtLabel = undefined,
     txtSublabel = undefined,
     icon = undefined,
@@ -28,6 +29,7 @@ const CheckboxButton = ({
         <Button
             className={clsx(
                 "checkbox-button",
+                appearance,
                 (shape)?(shape):(globalShape),
                 className
             )}
@@ -86,6 +88,7 @@ interface _CheckboxButton {
     className?:string,
     style?:buttonStyleType;
     shape?:globalShapeType;
+    appearance?: checkboxButtonAppearance
     txtLabel?:string
     txtSublabel?:string,
     icon?:JSX.Element,
@@ -94,3 +97,5 @@ interface _CheckboxButton {
     isDisabled?:boolean
     isIndeterminate?:boolean
 }
+
+export type checkboxButtonAppearance = 'subtle-selected' | 'appear-selected'

@@ -22,7 +22,6 @@ const ResizablePanel = ({
 }) =>{
 
     const isPanelGroup = useMemo(()=>{
-        console.log(children.type)
         if(typeof children.type === 'function'){
             return true
         }else{

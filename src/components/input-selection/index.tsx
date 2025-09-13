@@ -174,6 +174,7 @@ const InputSelection = ({
                 }
                 options={optionTamp}
                 optionSelected={value}
+                optionSelectedAppearance='appear-selected'
                 shape={shape}
                 style={style?.dropdownMenu}
                 onClick={(_, option, e)=>{

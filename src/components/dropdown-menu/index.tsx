@@ -8,6 +8,7 @@ import OptionsComponent from './options-component';
 import Dropdown from '../dropdown';
 import clsx from 'clsx';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
+import type { checkboxButtonAppearance } from '../checkbox-button';
 
 const DropdownMenu = ({
     className,
@@ -16,6 +17,7 @@ const DropdownMenu = ({
     shape = undefined,
     options = [],
     optionSelected = undefined,
+    optionSelectedAppearance = 'subtle-selected',
     isDisabled = false,
     onClick,
     onClose,
@@ -110,6 +112,7 @@ const DropdownMenu = ({
                     shape={shape}
                     options={options}
                     optionSelected={optionSelected}
+                    optionSelectedAppearance={optionSelectedAppearance}
                     onClick={(idOption, option, e)=>{
                         if(onClick){
                             onClick(idOption, option, e)
@@ -156,6 +159,7 @@ const DropdownMenu = ({
                         shape={shape}
                         options={options}
                         optionSelected={optionSelected}
+                        optionSelectedAppearance={optionSelectedAppearance}
                         onClick={(idOption, option, e)=>{
                             if(onClick){
                                 onClick(idOption, option, e)
@@ -187,6 +191,7 @@ interface _DropdownMenu {
     shape?:globalShapeType;
     options:optionItemType[]
     optionSelected?:string[]
+    optionSelectedAppearance?:checkboxButtonAppearance
     isDisabled?:boolean
     onClick?:(idOption:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOpen?: () => void;

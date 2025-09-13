@@ -7,7 +7,7 @@ import { PiCaretRightBold, PiCircleBold } from "react-icons/pi";
 import { GlobalContext, type _GlobalContextType } from "../../context/global-context";
 import type { globalShapeType, optionItemType } from "../_types";
 import type { dropdownFloatingConfigType, dropdownMenuStyleType } from "."
-import CheckboxButton from "../checkbox-button";
+import CheckboxButton, { type checkboxButtonAppearance } from "../checkbox-button";
 
 const OptionsComponent = ({
     style,
@@ -16,6 +16,7 @@ const OptionsComponent = ({
     setIsChildOpen,
     options,
     optionSelected,
+    optionSelectedAppearance,
     floatingConfig
 }:{
     style?:dropdownMenuStyleType;
@@ -24,6 +25,7 @@ const OptionsComponent = ({
     setIsChildOpen?:React.Dispatch<React.SetStateAction<boolean>>,
     options:optionItemType[]
     optionSelected?:string[],
+    optionSelectedAppearance?:checkboxButtonAppearance
     floatingConfig?:dropdownFloatingConfigType
 }) =>{
     const {
@@ -48,6 +50,7 @@ const OptionsComponent = ({
                                         isSelected={optionSelected?.includes(option.id)||false}
                                         onClick={(_, e)=>{ctrl.onOptionClick(option, e, onClick)}}
                                         isDisabled={option.isDisabled}
+                                        appearance={optionSelectedAppearance}
                                     />
                                 )
                             }else{

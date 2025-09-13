@@ -1,26 +1,13 @@
-.checkbox-button.button{
+.switch-button.button{
     padding-left: var(--space-100);
     padding-right: var(--space-100);
 
     cursor: pointer;
 
-    &.rounded{
-        .square-indicator{
-            border-radius: var(--space-50);
-        }
-    }
-    &.box{
-        .square-indicator{
-            border-radius: var(--space-0);
-        }
-    }
     &.circle{
         &:has(.icon-before){
             padding-left: var(--space-150);
             padding-right: var(--space-150);
-        }
-        .square-indicator{
-            border-radius: var(--space-50);
         }
     }
 
@@ -32,11 +19,11 @@
     &:disabled{
         &:hover, &:focus-visible{
 
-            .square-indicator{
+            .circle-indicator{
                 background-color: transparent;
             }
 
-            .square-on{
+            .circle-on{
                 &::before{
                     background-color: var(--clr-primary-700);
                 }
@@ -49,7 +36,7 @@
     }
 
     &:hover, &:focus-visible{
-        .square-indicator{
+        .circle-indicator{
             background-color: hsl(from var(--clr-surface-2) h s l / 1);
         }
     }
@@ -64,14 +51,11 @@
                 padding-left: var(--space-150) !important;
                 padding-right: var(--space-150) !important;
             }
-            .square-indicator{
-                border-radius: var(--space-50);
-            }
         }
 
         .icon-before{
             margin: var(--space-0);
-            .square-indicator{
+            .circle-indicator{
                 margin: var(--space-0);
             }
         }
@@ -102,36 +86,40 @@
         align-items: start;
     }
 
-    .square-indicator{
-        height: var(--space-150);
-        width: var(--space-150);
+    .switch-indicator{
+        border-radius: var(--space-300);
+        height: var(--space-200);
+        width: var(--space-300);
         display: flex;
         align-items: center;
-        justify-content: center;
+        transition: all 0.3s ease; /* Changed from 2s for better UX */
+        padding-left: var(--space-25);
+        padding-right: var(--space-25);
         position: relative;
 
-        &.square-on{
+        &::before{
+            content: '';
+            position: absolute;
+            left: 10%;
+            display: block;
+            height: var(--space-100);
+            width: var(--space-100);
+            border-radius: var(--space-300);
+            background-color: var(--clr-surface-5);
+            transition: left 0.3s ease; /* This animates the circle movement */
+        }
+
+        &.circle-on{
+            background-color: var(--clr-surface-primary-2);
             border: 1px solid var(--clr-primary-700);
             color: var(--clr-primary-100);
-            .icon-check{
-                position: absolute;
-            }
             &::before{
-                content: '';
-                position: absolute;
-                display: block;
-                height: var(--space-100);
-                width: var(--space-100);
+                left: 60%;
                 background-color: var(--clr-primary-700);
-                border-radius: var(--space-0);
-            }
-
-            &.full-on{
-                background-color: var(--clr-primary-700);;
             }
         }
 
-        &.square-off{
+        &.circle-off{
             border: 1px solid var(--clr-border);
         }
     }
