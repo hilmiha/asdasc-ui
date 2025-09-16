@@ -24,9 +24,18 @@
         }
     }
 
+    &.subtle.subtle-selected{
+        &:hover, &:focus-visible{
+            background-color: transparent;
+        }
+    }
     &.selected.subtle-selected{
         background-color: transparent;
         border: 1px solid transparent;
+
+        &:hover, &:focus-visible{
+            background-color: transparent;
+        }
     }
 
     &:disabled{

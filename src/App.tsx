@@ -37,6 +37,7 @@ import Resizable from './components/resizable';
 import ResizableHandle from './components/resizable/resizable-handle';
 import ResizablePanel from './components/resizable/resizable-panel';
 import SwitchButton from './components/switch-button';
+import Spinner from './components/spinner';
 
 function App() {
     const {
@@ -49,6 +50,7 @@ function App() {
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
     
+    const [isButtonLoading, setIsButtonLoading] = useState(false) 
     const colors = useMemo(()=>{
         return ['rose', 'red', 'orange', 'yellow', 'lime', 'green', 'emerald', 'teal', 'blue', 'purple', 'magenta', 'grey', 'stone', 'black']
     },[])
@@ -114,6 +116,8 @@ function App() {
     const listCheckbox = useMemo(()=>{
         return[...menues]
     },[])
+    const [isSwitchActive, setIsSwitchActive] = useState(false) 
+
 
     const colorPaletComponent = useMemo(()=>{
         return(
@@ -384,15 +388,26 @@ function App() {
                     </div>
                 </div>
             </div>
+            <div style={{padding:"var(--space-300)", display:'flex', gap:"var(--space-100)", alignItems:'center'}}>
+                <Spinner size='small'/>
+                <Spinner size='medium'/>
+                <Spinner size='large'/>
+            </div>
             <div style={{padding:"var(--space-300)"}}>
                 <div style={{display:'flex', flexWrap:'wrap'}}>
                     <Button 
                         txtLabel='Hello World'
+                        isLoading={true}
+                    />
+                    <Button 
+                        txtLabel='Hello World'
                         isDisabled
+                        isLoading={isButtonLoading}
                     />
                     <Button 
                         txtLabel='Hello World'
                         isSelected
+                        isLoading={isButtonLoading}
                     />
                     <Button 
                         txtLabel='Hello World'
@@ -409,6 +424,7 @@ function App() {
                                 'Content Management System'
                             ])
                         }}
+                        isLoading={isButtonLoading}
                     />
                     <Button 
                         txtLabel='Hello World'
@@ -419,10 +435,18 @@ function App() {
                             setValueDtMultiple([now, addDays(now, 4), addDays(now, 8), subDays(now, 5)])
                             setValueDtRange({from:now, to:addDays(now, 5)})
                         }}
+                        isLoading={isButtonLoading}
                     />
                     <Button 
                         txtLabel='Hello World'
                         appearance='subtle'
+                        onClick={()=>{
+                            setIsButtonLoading(true)
+                            setTimeout(() => {
+                                setIsButtonLoading(false)
+                            }, 3000);
+                        }}
+                        isLoading={isButtonLoading}
                     />
                 </div>
                 
@@ -430,36 +454,48 @@ function App() {
                     <Button
                         iconBefore={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello'
+                        isLoading={isButtonLoading}
                     />
                     <Button
                         iconAfter={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello'
+                        isLoading={isButtonLoading}
                     />
                 </div>
                 <div style={{display:'flex'}}>
                     <IconButton 
                         icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
+                        isLoading={true}
+                    />
+                    <IconButton 
+                        icon={<PiStarFourBold className='global-icon'/>}
+                        txtLabel='Hello World'
                         isDisabled
+                        isLoading={isButtonLoading}
                     />
                     <IconButton 
                         icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                         isSelected
+                        isLoading={isButtonLoading}
                     />
                     <IconButton 
                         icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
+                        isLoading={isButtonLoading}
                     />
                     <IconButton 
                         icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                         appearance='primary'
+                        isLoading={isButtonLoading}
                     />
                     <IconButton 
                         icon={<PiStarFourBold className='global-icon'/>}
                         txtLabel='Hello World'
                         appearance='subtle'
+                        isLoading={isButtonLoading}
                     />
                 </div>
                 <div style={{display:'flex'}}>
@@ -693,7 +729,6 @@ function App() {
                         />
                         <RadioButton
                             isSelected={true}
-                            appearance='appear-selected'
                             txtLabel='Hello World'
                             txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
@@ -717,7 +752,6 @@ function App() {
                         />
                         <CheckboxButton
                             isSelected={true}
-                            appearance='appear-selected'
                             txtLabel='Hello World'
                             txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
@@ -733,11 +767,16 @@ function App() {
                     </div>
                     <div>
                         <SwitchButton
-                            isSelected={valueCheckbox.length>0}
+                            isSelected={isSwitchActive}
+                            onClick={()=>{
+                                setIsSwitchActive(!isSwitchActive)
+                            }}
                         />
                         <SwitchButton
-                            isSelected={valueCheckbox.length>0}
-                            appearance='appear-selected'
+                            isSelected={isSwitchActive}
+                            onClick={()=>{
+                                setIsSwitchActive(!isSwitchActive)
+                            }}
                             txtLabel='Hello World'
                             txtSublabel='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, exercitationem laboriosam! Porro ducimus sapiente qui sit asperiores, modi reiciendis quo tempora dolor at nesciunt harum suscipit laudantium, nam eos doloribus.'
                         />
@@ -1004,7 +1043,8 @@ function App() {
                     options={[
                         {id:'small', txtLabel:'Small Modal'},
                         {id:'medium', txtLabel:'Medium Modal'},
-                        {id:'large', txtLabel:'Large Modal'}
+                        {id:'large', txtLabel:'Large Modal'},
+                        {id:'full', txtLabel:'Full Modal'}
                     ]}
                     optionSelected={modalSize?([modalSize]):([])}
                     onOptionClick={(idButton)=>{setModalSize(idButton as 'small' | 'medium' | 'large')}}

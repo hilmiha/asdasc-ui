@@ -1,0 +1,39 @@
+.loader {
+    --loader-border-color:hsl(from var(--clr-surface-4) h s l / 0.4);
+    --loader-color:var(--clr-primary-700);
+
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+
+    &.small{
+        width: 16px;
+        height: 16px;
+        border: 3.2px solid var(--loader-border-color);
+        border-bottom-color: var(--loader-color);
+    }
+
+    &.medium{
+        width: 32px;
+        height: 32px;
+        border: 4.6px solid var(--loader-border-color);
+        border-bottom-color: var(--loader-color);
+    }
+
+    &.large{
+        width: 42px;
+        height: 42px;
+        border: 5.5px solid var(--loader-border-color);
+        border-bottom-color: var(--loader-color);
+    }
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 

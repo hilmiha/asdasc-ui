@@ -57,7 +57,7 @@ const Modal = ({
         }
 
         return gridTamp.join(' ')
-    },[])
+    },[txtTitle])
     //States, memo, ref end =====
 
     //FloatingUi Config ====
@@ -137,7 +137,7 @@ const Modal = ({
                             <div
                                 className={clsx(
                                     'modal-container',
-                                    (screenSize==='mobile')?('mobile'):(size)?(size):('small'),
+                                    (size==='full')?('full'):(screenSize==='mobile')?('mobile'):(size)?(size):('small'),
                                     (shape)?(shape):(globalShape),
                                     {
                                         ['closing']:(!isModalShow)
@@ -239,7 +239,7 @@ interface _Modal {
     floatingConfig?:modalFloatingConfigType
 }
 
-type modalSizeType = 'small' | 'medium' | 'large'
+type modalSizeType = 'small' | 'medium' | 'large' | 'full'
 type modalStyleType = {
     container:React.CSSProperties,
 }

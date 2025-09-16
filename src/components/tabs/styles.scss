@@ -7,7 +7,7 @@
 
 
     &.detached{
-        background-color: var(--clr-surface-2);
+        background-color: transparent;
         border: 1px solid var(--clr-border);
         max-width: 100%;
 
@@ -18,7 +18,7 @@
             border-radius: var(--space-0);
         }
         &.circle{
-            border-radius: var(--space-200);
+            border-radius: var(--space-250);
         }
     }
     &::-webkit-scrollbar {
@@ -33,15 +33,15 @@
         .tabs-item-button{
             border-radius: 0px;
             border: 1px solid transparent;
-            border-bottom: 3px solid transparent;
+            border-bottom: 1px solid transparent;
             min-height: var(--);
             
             &:hover:not(.disabled){
-                border-bottom: 3px solid var(--clr-border);
+                border-bottom: 1px solid var(--clr-border);
             }
 
             &.selected, &:hover.selected{
-                border-bottom: 3px solid var(--clr-primary-800);
+                border-bottom: 1px solid var(--clr-primary-800);
             }
 
             &:focus-visible{
@@ -50,7 +50,7 @@
 
             &.disabled{
                 border: 1px dashed var(--clr-border);
-                border-bottom: 3px solid transparent;
+                border-bottom: 1px solid transparent;
             }
         }
     }

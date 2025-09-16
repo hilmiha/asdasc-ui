@@ -10,10 +10,19 @@
             padding-right: var(--space-150);
         }
     }
-
+    
+    &.subtle.subtle-selected{
+        &:hover, &:focus-visible{
+            background-color: transparent;
+        }
+    }
     &.selected.subtle-selected{
         background-color: transparent;
         border: 1px solid transparent;
+
+        &:hover, &:focus-visible{
+            background-color: transparent;
+        }
     }
 
     &:disabled{
@@ -88,8 +97,8 @@
 
     .switch-indicator{
         border-radius: var(--space-300);
-        height: var(--space-200);
-        width: var(--space-300);
+        height: var(--space-250);
+        width: var(--space-400);
         display: flex;
         align-items: center;
         transition: all 0.3s ease; /* Changed from 2s for better UX */
@@ -102,8 +111,8 @@
             position: absolute;
             left: 10%;
             display: block;
-            height: var(--space-100);
-            width: var(--space-100);
+            height: var(--space-150);
+            width: var(--space-150);
             border-radius: var(--space-300);
             background-color: var(--clr-surface-5);
             transition: left 0.3s ease; /* This animates the circle movement */
@@ -114,7 +123,7 @@
             border: 1px solid var(--clr-primary-700);
             color: var(--clr-primary-100);
             &::before{
-                left: 60%;
+                left: 58%;
                 background-color: var(--clr-primary-700);
             }
         }

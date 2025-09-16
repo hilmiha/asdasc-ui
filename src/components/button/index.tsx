@@ -4,6 +4,7 @@ import * as ctrl from './controller';
 import type { globalAppearanceType, globalShapeType } from '../_types';
 import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
+import Spinner from '../spinner';
 
 const Button = ({
     ref = undefined,
@@ -17,6 +18,7 @@ const Button = ({
     iconAfter = undefined,
     isSelected = false,
     isDisabled = false,
+    isLoading = false,
     onClick = undefined,
     tabIndex = undefined
 }:_Button) =>{
@@ -39,25 +41,31 @@ const Button = ({
                     (shape)?(shape):(globalShape),
                     {
                         ['selected']:(isSelected),
-                        ['disabled']:(isDisabled)
+                        ['disabled']:(isDisabled),
+                        ['loading']:(isLoading)
                     },
                     className
                 )
             }
             style={style?.button}
             onClick={(e)=>{
-                if(!isDisabled){
+                if(!isDisabled && !isLoading){
                     ctrl.thisOnClick(e, onClick)
                 }
             }}
             disabled={isDisabled}
         >
             {
-                (iconBefore)&&(
+                (iconBefore || isLoading)&&(
                     <div 
                         className='icon-before'
                         style={style?.iconBefore}
                     >
+                        {
+                            (isLoading)&&(
+                                <Spinner size='small'/>
+                            )
+                        }
                         {iconBefore}
                     </div>
                 )
@@ -101,6 +109,7 @@ interface _Button {
     iconAfter?:JSX.Element;
     isSelected?:boolean;
     isDisabled?:boolean;
+    isLoading?:boolean;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
     tabIndex?:number
 };

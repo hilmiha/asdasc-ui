@@ -6,10 +6,13 @@
     width: var(--space-400); 
     margin: var(--space-50);
     padding: var(--space-50) var(--space-50);
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:not(.loading){
+        cursor: pointer;
+    }
 
     &:focus-visible{
         outline: 2px solid var(--clr-focus-ouline);
@@ -21,11 +24,11 @@
         background-color: hsl(from var(--clr-surface-4) h s l / 0.2);
         border-color:  var(--clr-border);
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: hsl(from var(--clr-surface-4) h s l / 0.4);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: hsl(from var(--clr-surface-4) h s l / 0.6);;
         }
     }
@@ -34,12 +37,16 @@
         background-color: var(--clr-primary-700);
         border-color:  var(--clr-border-primary);
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: var(--clr-primary-800);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: var(--clr-primary-900);
+        }
+
+        .loader{
+            border-bottom-color: var(--clr-text-rev);
         }
     }
     &.success{
@@ -47,11 +54,11 @@
         background-color: var(--clr-success-700);
         border-color:  var(--clr-border-success);
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: var(--clr-success-800);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: var(--clr-success-900);
         }
     }
@@ -61,11 +68,11 @@
         border-color:  var(--clr-border-warning);
 
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: var(--clr-warning-800);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: var(--clr-warning-900);
         }
     }
@@ -74,11 +81,11 @@
         background-color: var(--clr-danger-700);
         border-color:  var(--clr-border-danger);
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: var(--clr-danger-800);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: var(--clr-danger-900);
         }
     }
@@ -86,11 +93,11 @@
         color: var(--clr-text);
         background-color: hsl(from var(--clr-surface-4) h s l / 0);
 
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: hsl(from var(--clr-surface-4) h s l / 0.2);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: hsl(from var(--clr-surface-4) h s l / 0.4);
         }
     }
@@ -99,11 +106,11 @@
         background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.1);
         border-color:  var(--clr-border-primary);
         
-        &:hover, &:focus-visible{
+        &:hover:not(.loading), &:focus-visible:not(.loading){
             background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.2);
         }
 
-        &:active{
+        &:active:not(.loading){
             background-color: hsl(from var(--clr-surface-primary-4) h s l / 0.4);
         }
     }
@@ -120,13 +127,13 @@
             hsl(from var(--clr-surface-4) h s l / 0.2) 4px
         );
 
-        &:active{
+        &:active:not(.loading){
             .text-label{
                 text-decoration: none;
             }
         }
         
-        &:hover, &:focus-visible, &:active{
+        &:hover:not(.loading), &:focus-visible:not(.loading), &:active:not(.loading){
             background-color: hsl(from var(--clr-surface-2) h s l / 0.5);
         }
     }

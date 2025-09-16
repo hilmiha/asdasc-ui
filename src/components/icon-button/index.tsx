@@ -6,6 +6,7 @@ import { PiCircle } from 'react-icons/pi';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import Tooltip from '../tooltip';
 import type { globalAppearanceType, globalShapeType } from '../_types';
+import Spinner from '../spinner';
 
 const IconButton = ({
     ref = undefined,
@@ -18,6 +19,7 @@ const IconButton = ({
     txtLabel = '',
     isSelected = false,
     isDisabled = false,
+    isLoading = false,
     isShowtooltip = true,
     onClick = undefined
 }:_IconButton) =>{
@@ -43,7 +45,8 @@ const IconButton = ({
                         (shape)?(shape):(globalShape),
                         {
                             ['selected']:(isSelected),
-                            ['disabled']:(isDisabled)
+                            ['disabled']:(isDisabled),
+                            ['loading']:(isLoading),
                         },
                     )
                 }
@@ -61,7 +64,11 @@ const IconButton = ({
                     style={style?.icon}
                 >
                     {
-                        icon
+                        (isLoading)?(
+                            <Spinner size='small'/>
+                        ):(
+                            icon
+                        )
                     }
                 </div>
             </button>
@@ -83,6 +90,7 @@ interface _IconButton {
     txtLabel:string;
     isSelected?:boolean;
     isDisabled?:boolean;
+    isLoading?:boolean;
     isShowtooltip?:boolean;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
 }

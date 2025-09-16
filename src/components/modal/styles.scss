@@ -76,10 +76,16 @@
             width: 80vw;
             min-width: 260px;
         }
+        &.full{
+            width: calc(100% - 60px);
+            max-width: calc(100% - 60px);
+            height: calc(100% - 60px);
+            max-height: calc(100% - 60px);
+        }
 
         &.mobile{
             width: 85vw;
-            max-height: 80vh;
+            max-height: 85vh;
             bottom: var(--space-100);
         }
         .modal-title-box{
