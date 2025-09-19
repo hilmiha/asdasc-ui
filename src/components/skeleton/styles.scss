@@ -1,0 +1,38 @@
+.skeleton{
+    width: 100%;
+    background-color: hsl(from var(--clr-surface-4) h s l / 0.5);
+    animation: shimmer 3s infinite;
+    border-radius: var(--size-1);
+    
+    +.skeleton{
+        margin: var(--space-100) 0px;
+    }
+
+    &.rounded{
+        border-radius: var(--space-50);
+    }
+    &.box{
+        border-radius: var(--space-0);
+    }
+    &.circle{
+        border-radius: var(--space-200);
+    }
+
+    >p{
+        color: transparent;
+    }
+
+
+    @keyframes shimmer{
+        0%,
+        50%,
+        100% {
+            opacity: 1;
+        }
+
+        25%,
+        75% {
+            opacity: 0.3;
+        }
+    }
+}

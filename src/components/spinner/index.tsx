@@ -2,12 +2,14 @@ import clsx from 'clsx';
 import './styles.scss'
 
 const Spinner = ({
-    size = 'small'
+    className = undefined,
+    size = 'small',
 }:{
-    size?: 'small' | 'medium' | 'large'
+    className?:string,
+    size?: 'small' | 'medium' | 'large',
 }) => {
     return (
-        <span className={clsx("loader", size)}></span>
+        <span className={clsx("loader", size, className)}></span>
     );
 };
 

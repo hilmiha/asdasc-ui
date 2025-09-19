@@ -21,6 +21,7 @@ const TableColumn = ({
     onClickSortColumn,
     setIsColumnDragging,
     isColumnSwapable,
+    isLoading,
 
     columnCheckboxState,
     onClickColumnCheckbox,
@@ -35,7 +36,7 @@ const TableColumn = ({
     onClickSortColumn?:(newSortBy:string, newIsDesc:boolean)=>void
     setIsColumnDragging:React.Dispatch<React.SetStateAction<boolean>>,
     isColumnSwapable:boolean
-
+    isLoading:boolean
     columnCheckboxState:number,
     onClickColumnCheckbox:()=>void
     onClickExpandAll:()=>void
@@ -105,7 +106,7 @@ const TableColumn = ({
                         <div className='cell-header'>
                             {
                                 (isColumnSwapable && headerData.key!=='#checkbox' && headerData.key!=='#expandable' && screenSize!=="mobile")&&(
-                                    <div className='drag-handle'>
+                                    <div className={(isLoading)?('drag-handle-loading'):('drag-handle')}>
                                         <PiDotsSixVerticalBold className='global-icon' size={18}/>
                                     </div>
                                 )
@@ -153,6 +154,9 @@ const TableColumn = ({
                                             txtLabel={tableConfig.sortBy===headerData.key?((tableConfig.isSortDesc)?('Chnage Sort To Asc'):('Change Sort To Des')):('Sort Asc')}
                                             isSelected={tableConfig.sortBy===headerData.key}
                                             onClick={()=>{
+                                                if(isLoading){
+                                                    return
+                                                }
                                                 let newSortBy = headerData.key
                                                 let newIsDesc = false
                                                 if(tableConfig.sortBy===headerData.key){

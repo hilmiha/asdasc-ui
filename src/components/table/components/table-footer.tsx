@@ -12,6 +12,7 @@ import { useDeepCompareMemo } from "../../../hook/useDeepCompareMemo"
 import type { globalShapeType, optionItemType } from "../../_types"
 import CheckboxButton from "../../checkbox-button"
 import clsx from "clsx"
+import Spinner from '../../spinner';
 
 const TableFooter = ({
     tableContainerRef,
@@ -21,6 +22,7 @@ const TableFooter = ({
     isTableScrolled,
     selectedRowCount,
     isColumnSwapable,
+    isLoading,
     column,
     setColumn,
     columnShowList,
@@ -34,6 +36,7 @@ const TableFooter = ({
     isTableScrolled:boolean
     selectedRowCount:number
     isColumnSwapable:boolean
+    isLoading:boolean
     column:tableColumnType[]
     setColumn:React.Dispatch<React.SetStateAction<tableColumnType[]>>
     columnShowList:string[]
@@ -85,9 +88,15 @@ const TableFooter = ({
                     screenSize==='laptop'
                 )&&(
                     <div className='footer-left'>
-                        <p>
-                            <span>Showing {footerNuberRow[0]}-{footerNuberRow[1]} of {tableConfig?.totalData} {(selectedRowCount>0)&&(`, ${selectedRowCount} rows selected`)}</span>
-                        </p>
+                        {
+                            (!isLoading)?(
+                                <p>
+                                    <span>Showing {footerNuberRow[0]}-{footerNuberRow[1]} of {tableConfig?.totalData} {(selectedRowCount>0)&&(`, ${selectedRowCount} rows selected`)}</span>
+                                </p>
+                            ):(
+                                <Spinner size='small'/>
+                            )
+                        }
                     </div>
                 )
             }
@@ -107,6 +116,9 @@ const TableFooter = ({
                                 appearance='subtle'
                                 isDisabled={tableConfig.currentPage===1}
                                 onClick={()=>{
+                                    if(isLoading){
+                                        return
+                                    }
                                     onClickPagination(1)
                                     ctrl.doScrollToTop(tableContainerRef)
                                 }}
@@ -118,6 +130,9 @@ const TableFooter = ({
                                 appearance='subtle'
                                 isDisabled={tableConfig.currentPage===1}
                                 onClick={()=>{
+                                    if(isLoading){
+                                        return
+                                    }
                                     onClickPagination(tableConfig.currentPage - 1)
                                     ctrl.doScrollToTop(tableContainerRef)
                                 }}
@@ -130,6 +145,9 @@ const TableFooter = ({
                                 appearance='subtle'
                                 isDisabled={tableConfig.currentPage===tableConfig.countPage}
                                 onClick={()=>{
+                                    if(isLoading){
+                                        return
+                                    }
                                     onClickPagination(tableConfig.currentPage + 1)
                                     ctrl.doScrollToTop(tableContainerRef)
                                 }}
@@ -141,6 +159,9 @@ const TableFooter = ({
                                 appearance='subtle'
                                 isDisabled={tableConfig.currentPage===tableConfig.countPage}
                                 onClick={()=>{
+                                    if(isLoading){
+                                        return
+                                    }
                                     onClickPagination(tableConfig.countPage)
                                     ctrl.doScrollToTop(tableContainerRef)
                                 }}
@@ -163,6 +184,7 @@ const TableFooter = ({
                                     setIsShowTableSetting(true)
                                 }}
                                 shape={shape}
+                                isDisabled={isLoading}
                             />
                             <BottomSheet
                                 className="table-setting-bottom-sheet"
@@ -174,7 +196,12 @@ const TableFooter = ({
                             >
                                 <TableSettingMobile
                                     tableConfig={tableConfig}
-                                    onSelectMaxRow={onSelectMaxRow}
+                                    onSelectMaxRow={(newMaxRow)=>{
+                                        if(onSelectMaxRow){
+                                            onSelectMaxRow(newMaxRow)
+                                        }
+                                        setIsShowTableSetting(false)
+                                    }}
                                     maxRowOption={maxRowOption}
                                     column={column}
                                     setColumn={setColumn}
@@ -196,6 +223,7 @@ const TableFooter = ({
                                     iconAfter={<PiCaretDownBold className='global-icon'/>}
                                     appearance='subtle'
                                     shape={shape}
+                                    isDisabled={isLoading}
                                 />
                             }
                             optionSelected={[`${tableConfig.maxRow}`]}
@@ -223,6 +251,7 @@ const TableFooter = ({
                                         txtLabel='Column'
                                         appearance='subtle'
                                         shape={shape}
+                                        isDisabled={isLoading}
                                     />
                                 }  
                                 optionSelected={columnShowList}

@@ -13,6 +13,10 @@
     display: grid;
     grid-template-rows: 1fr min-content;
 
+    &.fill-container{
+        height: 100%;
+    }
+
     &.rounded{
         border-radius: var(--space-100);
     }
@@ -53,7 +57,7 @@
                             align-items: center;
                             color: var(--clr-primary-900);
 
-                            .drag-handle, .drag-handle-floating{
+                            .drag-handle, .drag-handle-floating, .drag-handle-loading{
                                 margin-right: var(--space-100);
                                 display: flex;
                                 height: fit-content;
@@ -98,17 +102,13 @@
                     border-bottom: 1px solid var(--clr-border);
                     outline: 0px;
 
-                    &:hover{
-                        background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
-                    }
-
                     &:focus-visible{
                         outline: 2px solid var(--clr-focus-ouline);
                         outline-offset: -2px;
                         z-index: 1;
                     }
 
-                    &:hover, &:focus-visible{
+                    &:hover:not(.loading), &:focus-visible{
                         background-color: hsl(from var(--clr-surface-4) h s l / 0.1);
                     }
 
