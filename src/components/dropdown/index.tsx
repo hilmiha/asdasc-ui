@@ -70,9 +70,9 @@ const Dropdown = ({
                         elements.floating.style.minWidth = `${Math.max(180, rects.reference.width)}px`
                         elements.floating.style.maxWidth = `${rects.reference.width}px`
                     }else{
-                        elements.floating.style.width = `310x`
-                        elements.floating.style.minWidth = `310px`
-                        elements.floating.style.maxWidth = `310px`
+                        elements.floating.style.width = floatingConfig?.width?(`${floatingConfig.width}px`):(`310px`)
+                        elements.floating.style.minWidth = floatingConfig?.width?(`${floatingConfig.width}px`):(`310px`)
+                        elements.floating.style.maxWidth = floatingConfig?.width?(`${floatingConfig.width}px`):(`310px`)
                     }
                 },
             }),
@@ -248,6 +248,7 @@ export type dropdownFloatingConfigType = {
     placement?:Placement,
     fallbackPlacement?:Placement[]
     isContainerWidthSameAsTrigger?:boolean
+    width?:number
     isWithCheckmark?:boolean
     isLockScroll?:boolean
     isShowDropdown?:boolean

@@ -5,6 +5,7 @@ import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import type { globalShapeType } from '../_types';
 import Button, { type buttonStyleType } from '../button';
+import Radio from './radio';
 
 const RadioButton = ({
     className = undefined,
@@ -54,16 +55,7 @@ const RadioButton = ({
             }
             iconBefore={
                 <div style={{display:'flex', gap:'var(--space-200)'}}>
-                    <div
-                        className={clsx(
-                            'circle-indicator',
-                            (isSelected)?('circle-on'):('circle-off'),
-                            {
-                                ['full-on']:(isSelected)
-                            }
-                        )}
-                    >
-                    </div>
+                    <Radio isSelected={isSelected}/>
                     {icon}
                 </div>
             }

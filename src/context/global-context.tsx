@@ -52,8 +52,8 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
         document.documentElement.setAttribute('data-font-size', globalFontSize);
     }, [globalTheme, globalTone, globalPrimary, globalShape, screenSize, globalFontSize]);
 
-    const toggleGlobalTheme = useCallback(() => {
-        setGlobalTheme(globalTheme.includes('light') ? 'dark' : 'light');
+    const toggleGlobalTheme = useCallback((theme?:'light'|'dark') => {
+        setGlobalTheme(theme?(theme):(globalTheme.includes('light') ? 'dark' : 'light'));
     },[globalTheme])
 
     const toggleGlobalTone = useCallback((color:string) => {
@@ -98,7 +98,7 @@ export interface _GlobalContextType {
         globalFontSize:string;
         screenSize: ScreenSizeType;
     };
-    toggleGlobalTheme:()=>void;
+    toggleGlobalTheme:(theme?:'light'|'dark')=>void;
     toggleGlobalTone:(color:string)=>void;
     toggleGlobalPrimary:(color:string)=>void;
     globalShape:globalShapeType;

@@ -4,32 +4,19 @@
 
     cursor: pointer;
 
-    &.rounded{
-        .square-indicator{
-            border-radius: var(--space-50);
-        }
-    }
-    &.box{
-        .square-indicator{
-            border-radius: var(--space-0);
-        }
-    }
     &.circle{
         &:has(.icon-before){
             padding-left: var(--space-150);
             padding-right: var(--space-150);
         }
-        .square-indicator{
-            border-radius: var(--space-50);
-        }
     }
 
-    &.subtle.subtle-selected{
+    &.subtle.subtle-selected:not(:disabled){
         &:hover, &:focus-visible{
             background-color: transparent;
         }
     }
-    &.selected.subtle-selected{
+    &.selected.subtle-selected:not(:disabled){
         background-color: transparent;
         border: 1px solid transparent;
 
@@ -39,9 +26,10 @@
     }
 
     &:disabled{
+        cursor: not-allowed;
         &:hover, &:focus-visible{
 
-            .square-indicator{
+            .checkbox-square-indicator{
                 background-color: transparent;
             }
 
@@ -57,8 +45,8 @@
         }
     }
 
-    &:hover, &:focus-visible{
-        .square-indicator{
+    &:hover:not(.selected), &:focus-visible:not(.selected){
+        .checkbox-square-indicator{
             background-color: hsl(from var(--clr-surface-2) h s l / 1);
         }
     }
@@ -73,14 +61,14 @@
                 padding-left: var(--space-150) !important;
                 padding-right: var(--space-150) !important;
             }
-            .square-indicator{
+            .checkbox-square-indicator{
                 border-radius: var(--space-50);
             }
         }
 
         .icon-before{
             margin: var(--space-0);
-            .square-indicator{
+            .checkbox-square-indicator{
                 margin: var(--space-0);
             }
         }
@@ -110,38 +98,48 @@
     &:has(.text-sublabel){
         align-items: start;
     }
+}
 
-    .square-indicator{
-        height: var(--space-150);
-        width: var(--space-150);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+.checkbox-square-indicator{
+    height: var(--space-150);
+    width: var(--space-150);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 
-        &.square-on{
-            border: 1px solid var(--clr-primary-700);
-            color: var(--clr-primary-100);
-            .icon-check{
-                position: absolute;
-            }
-            &::before{
-                content: '';
-                position: absolute;
-                display: block;
-                height: var(--space-100);
-                width: var(--space-100);
-                background-color: var(--clr-primary-700);
-                border-radius: var(--space-0);
-            }
+    &.rounded{
+        border-radius: var(--space-50);
+    }
+    &.box{
+        border-radius: var(--space-0);
+    }
+    &.circle{
+        border-radius: var(--space-50);
+    }
 
-            &.full-on{
-                background-color: var(--clr-primary-700);;
-            }
+    &.square-on{
+        border: 1px solid var(--clr-primary-700);
+        color: var(--clr-primary-100);
+        .icon-check{
+            position: absolute;
+        }
+        &::before{
+            content: '';
+            position: absolute;
+            display: block;
+            height: var(--space-100);
+            width: var(--space-100);
+            background-color: var(--clr-primary-700);
+            border-radius: var(--space-0);
         }
 
-        &.square-off{
-            border: 1px solid var(--clr-border);
+        &.full-on{
+            background-color: var(--clr-primary-700);;
         }
+    }
+
+    &.square-off{
+        border: 1px solid var(--clr-surface-5);
     }
 }

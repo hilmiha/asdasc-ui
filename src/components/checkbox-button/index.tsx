@@ -4,8 +4,8 @@ import * as ctrl from './controller';
 import { useContext, type JSX } from 'react';
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context';
 import type { globalShapeType } from '../_types';
-import { FaCheck, FaMinus } from 'react-icons/fa';
 import Button, { type buttonStyleType } from '../button';
+import Checkbox from './checkbox';
 
 const CheckboxButton = ({
     className = undefined,
@@ -56,23 +56,11 @@ const CheckboxButton = ({
             }
             iconBefore={
                 <div style={{display:'flex', gap:'var(--space-200)'}}>
-                    <div
-                        className={clsx(
-                            'square-indicator',
-                            (isSelected||isIndeterminate)?('square-on'):('square-off'),
-                            {
-                                ['full-on']:(isSelected)
-                            }
-                        )}
-                    >
-                        {
-                            (isIndeterminate)?(
-                                <FaMinus className='icon-check' size={8}/>
-                            ):(isSelected)?(
-                                <FaCheck className='icon-check' size={8}/>
-                            ):(<></>)
-                        }
-                    </div>
+                    <Checkbox
+                        isIndeterminate={isIndeterminate}
+                        isSelected={isSelected}
+                        shape={shape}
+                    />
                     {icon}
                 </div>
             }

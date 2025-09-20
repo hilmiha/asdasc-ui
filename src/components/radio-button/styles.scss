@@ -11,12 +11,12 @@
         }
     }
 
-    &.subtle.subtle-selected{
+    &.subtle.subtle-selected:not(:disabled){
         &:hover, &:focus-visible{
             background-color: transparent;
         }
     }
-    &.selected.subtle-selected{
+    &.selected.subtle-selected:not(:disabled){
         background-color: transparent;
         border: 1px solid transparent;
 
@@ -26,26 +26,17 @@
     }
 
     &:disabled{
+        cursor: not-allowed;
         &:hover, &:focus-visible{
 
-            .circle-indicator{
+            .radio-circle-indicator{
                 background-color: transparent;
-            }
-
-            .circle-on{
-                &::before{
-                    background-color: var(--clr-primary-700);
-                }
-
-                &.full-on{
-                    background-color: var(--clr-primary-700);;
-                }
             }
         }
     }
 
     &:hover, &:focus-visible{
-        .circle-indicator{
+        .radio-circle-indicator{
             background-color: hsl(from var(--clr-surface-2) h s l / 1);
         }
     }
@@ -94,35 +85,35 @@
     &:has(.text-sublabel){
         align-items: start;
     }
+}
 
-    .circle-indicator{
-        border-radius: var(--space-300);
-        height: var(--space-150);
-        width: var(--space-150);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+.radio-circle-indicator{
+    border-radius: var(--space-300);
+    height: var(--space-150);
+    width: var(--space-150);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 
-        &.circle-on{
-            border: 1px solid var(--clr-primary-700);
-            color: var(--clr-primary-100);
-            .icon-check{
-                position: absolute;
-            }
-            &::before{
-                content: '';
-                position: absolute;
-                display: block;
-                height: var(--space-100);
-                width: var(--space-100);
-                background-color: var(--clr-primary-700);
-                border-radius: var(--space-300);
-            }
+    &.circle-on{
+        border: 1px solid var(--clr-primary-700);
+        color: var(--clr-primary-100);
+        .icon-check{
+            position: absolute;
         }
-
-        &.circle-off{
-            border: 1px solid var(--clr-border);
+        &::before{
+            content: '';
+            position: absolute;
+            display: block;
+            height: var(--space-100);
+            width: var(--space-100);
+            background-color: var(--clr-primary-700);
+            border-radius: var(--space-300);
         }
+    }
+
+    &.circle-off{
+        border: 1px solid var(--clr-surface-5);
     }
 }
