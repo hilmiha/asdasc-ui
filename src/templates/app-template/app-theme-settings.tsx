@@ -1,10 +1,9 @@
 import { PiCircleBold, PiCircleFill, PiMoonBold, PiSunBold, PiTextTBold } from "react-icons/pi"
-import Button from "../../components/button"
 import { useContext, useMemo } from "react"
 import { GlobalContext, type _GlobalContextType } from "../../context/global-context"
 import { BiSquare, BiSquareRounded } from "react-icons/bi"
 import IconButton from "../../components/icon-button"
-import Radio from "../../components/radio-button/radio"
+import RadioToggle from "../../composite/radio-toggle"
 
 const AppThemeSetting = () =>{
 
@@ -22,31 +21,33 @@ const AppThemeSetting = () =>{
     },[])
 
     return(
-        <div>
-            <div style={{borderBottom:'1px solid var(--clr-border)', paddingBottom:'var(--space-150)'}}>
-                <p style={{fontWeight:'var(--font-weight-bold)', marginBottom:'var(--space-50)'}}>Global Theme</p>
+        <div style={{
+            display:'grid',
+            gap:'var(--space-250)'
+        }}>
+            <div>
+                <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Global Theme</p>
                 <div style={{display:'grid', gridTemplateColumns:'1fr 1fr'}}>
-                    <Button
-                        className="font-toggle-button"
-                        iconBefore={<PiSunBold className="global-icon"/>}
-                        iconAfter={<Radio isSelected={appTheme.globalTheme==='light'}/>}
-                        txtLabel={'Light Mode'}
-                        onClick={()=>{toggleGlobalTheme('light')}}
+                    <RadioToggle
+                        type="vertical"
+                        icon={<PiSunBold className="global-icon"/>}
+                        txtLabel='Light Mode'
                         isSelected={appTheme.globalTheme==='light'}
+                        onClick={()=>{toggleGlobalTheme('light')}}
                     />
-                    <Button
-                        className="font-toggle-button"
-                        iconBefore={<PiMoonBold className="global-icon"/>}
-                        iconAfter={<Radio isSelected={appTheme.globalTheme==='dark'}/>}
-                        txtLabel={'Dark Mode'}
-                        onClick={()=>{toggleGlobalTheme('dark')}}
+                    <RadioToggle
+                        type="vertical"
+                        icon={<PiMoonBold className="global-icon"/>}
+                        txtLabel='Dark Mode'
                         isSelected={appTheme.globalTheme==='dark'}
+                        onClick={()=>{toggleGlobalTheme('dark')}}
                     />
                 </div>
             </div>
-            <div style={{borderBottom:'1px solid var(--clr-border)', paddingBottom:'var(--space-150)', marginTop:'var(--space-150)'}}>
-                <p style={{fontWeight:'var(--font-weight-bold)', marginBottom:'var(--space-50)'}}>Tone Color</p>
-                <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-50)', justifyContent:'center'}}>
+            <div style={{borderTop:'1px solid var(--clr-border)'}}/>
+            <div>
+                <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Tone Color</p>
+                <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-0)', justifyContent:'center'}}>
                     {
                         colors.map((clr)=>(
                             <IconButton
@@ -76,9 +77,10 @@ const AppThemeSetting = () =>{
                     }
                 </div>
             </div>
-            <div style={{borderBottom:'1px solid var(--clr-border)', paddingBottom:'var(--space-150)', marginTop:'var(--space-150)'}}>
-                <p style={{fontWeight:'var(--font-weight-bold)', marginBottom:'var(--space-50)'}}>Primary Color</p>
-                <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-50)', justifyContent:'center'}}>
+            <div style={{borderTop:'1px solid var(--clr-border)'}}/>
+            <div>
+                <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Primary Color</p>
+                <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-0)', justifyContent:'center'}}>
                     {
                         colors.map((clr)=>(
                             <IconButton
@@ -108,74 +110,55 @@ const AppThemeSetting = () =>{
                     }
                 </div>
             </div>
-            <div style={{borderBottom:'1px solid var(--clr-border)', paddingBottom:'var(--space-150)', marginTop:'var(--space-150)'}}>
-                <p style={{fontWeight:'var(--font-weight-bold)', marginBottom:'var(--space-50)'}}>Design System</p>
+            <div style={{borderTop:'1px solid var(--clr-border)'}}/>
+            <div>
+                <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Design System</p>
                 <div style={{display:'grid'}}>
-                    <Button
-                        className="shape-toggle-button"
-                        iconBefore={<PiCircleBold className="global-icon"/>}
-                        iconAfter={<Radio isSelected={appTheme.globalShape==='circle'}/>}
-                        txtLabel={'Cicle'}
+                    <RadioToggle
+                        type="horizontal"
+                        icon={<PiCircleBold className="global-icon"/>}
+                        txtLabel='Cicle'
                         onClick={()=>{toggleGlobalShape('circle')}}
                         isSelected={appTheme.globalShape==='circle'}
-                        style={{
-                            button:{
-                                justifyContent:'start'
-                            }
-                        }}
                     />
-                    <Button
-                        className="shape-toggle-button"
-                        iconBefore={<BiSquareRounded className="global-icon"/>}
-                        iconAfter={<Radio isSelected={appTheme.globalShape==='rounded'}/>}
-                        txtLabel={'Rounded'}
+                    <RadioToggle
+                        type="horizontal"
+                        icon={<BiSquareRounded className="global-icon"/>}
+                        txtLabel='Rounded'
                         onClick={()=>{toggleGlobalShape('rounded')}}
                         isSelected={appTheme.globalShape==='rounded'}
-                        style={{
-                            button:{
-                                justifyContent:'start'
-                            }
-                        }}
                     />
-                    <Button
-                        className="shape-toggle-button"
-                        iconBefore={<BiSquare className="global-icon"/>}
-                        iconAfter={<Radio isSelected={appTheme.globalShape==='box'}/>}
-                        txtLabel={'Square'}
+                    <RadioToggle
+                        type="horizontal"
+                        icon={<BiSquare className="global-icon"/>}
+                        txtLabel='Square'
                         onClick={()=>{toggleGlobalShape('box')}}
                         isSelected={appTheme.globalShape==='box'}
-                        style={{
-                            button:{
-                                justifyContent:'start'
-                            }
-                        }}
                     />
                 </div>
             </div>
-            <div style={{marginTop:'var(--space-150)'}}>
-                <p style={{fontWeight:'var(--font-weight-bold)', marginBottom:'var(--space-50)'}}>Font Size</p>
+            <div style={{borderTop:'1px solid var(--clr-border)'}}/>
+            <div>
+                <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Font Size</p>
                 <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr'}}>
-                    <Button
-                        className="font-toggle-button"
-                        iconBefore={<PiTextTBold style={{fontSize:'var(--font-size-sm)'}}/>}
-                        iconAfter={<Radio isSelected={appTheme.globalFontSize==='small'}/>}
-                        txtLabel={'Small'}
+                    <RadioToggle
+                        type="vertical"
+                        icon={<PiTextTBold style={{fontSize:'var(--font-size-sm)'}}/>}
+                        txtLabel='Small'
                         onClick={()=>{toggleGlobalFontSize('small')}}
                         isSelected={appTheme.globalFontSize==='small'}
                     />
-                    <Button
-                        className="font-toggle-button"
-                        iconBefore={<PiTextTBold style={{fontSize:'var(--font-size)'}}/>}
-                        iconAfter={<Radio isSelected={appTheme.globalFontSize==='medium'}/>}
-                        txtLabel={'Medium'}
+                    <RadioToggle
+                        type="vertical"
+                        icon={<PiTextTBold style={{fontSize:'var(--font-size)'}}/>}
+                        txtLabel='Medium'
                         onClick={()=>{toggleGlobalFontSize('medium')}}
                         isSelected={appTheme.globalFontSize==='medium'}
                     />
-                    <Button
-                        className="font-toggle-button"
-                        iconBefore={<PiTextTBold style={{fontSize:'var(--font-size-lg)'}}/>}
-                        iconAfter={<Radio isSelected={appTheme.globalFontSize==='large'}/>}
-                        txtLabel={'Large'}
+                    <RadioToggle
+                        type="vertical"
+                        icon={<PiTextTBold style={{fontSize:'var(--font-size-lg)'}}/>}
+                        txtLabel='Large'
                         onClick={()=>{toggleGlobalFontSize('large')}}
                         isSelected={appTheme.globalFontSize==='large'}
                     />

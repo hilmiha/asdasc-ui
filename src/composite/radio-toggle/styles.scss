@@ -1,0 +1,27 @@
+.radio-toggle-vertical{
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-100);
+    .icon-before{
+        margin: 0px;
+        min-height: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .icon-after{
+        margin: 0px;
+        margin-top: var(--space-100);
+        min-height: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .text-label-box{
+        margin-top: var(--space-50);
+    }
+}
+
+.radio-toggle-horizontal{
+    .text-label-box{
+        flex-grow: 1;
+    }
+}

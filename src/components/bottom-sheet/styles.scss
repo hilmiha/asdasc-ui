@@ -20,6 +20,26 @@
     outline: 0px;
     width: 100vw;
 
+    &.mobile{
+        .bottom-sheet-title-box{
+            padding-left: var(--space-200) !important;
+            padding-right: var(--space-200) !important;
+        }
+        .bottom-sheet-container .content-box{
+            padding: var(--space-200);
+        }
+    }
+
+    &.table{
+        .bottom-sheet-title-box{
+            padding-left: var(--space-300) !important;
+            padding-right: var(--space-300) !important;
+        }
+        .bottom-sheet-container .content-box{
+            padding: var(--space-300);
+        }
+    }
+
     &.dragging{
         transition: none;
     }
@@ -73,7 +93,7 @@
             .bottom-sheet-title-box{
                 display: flex;
                 align-items: center;
-                padding: var(--space-250);
+                padding: var(--space-500);
                 padding-top: var(--space-100);
                 padding-bottom: var(--space-0);
 
@@ -115,7 +135,7 @@
             grid-row: 2 / 3;
             display: grid;
             overflow: hidden;
-            padding: var(--space-250);
+            padding: var(--space-500);
             gap: var(--space-250);
 
             .bottom-sheet-body-box{

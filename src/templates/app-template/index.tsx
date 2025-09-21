@@ -8,6 +8,7 @@ import Dropdown from '../../components/dropdown'
 import AppThemeSetting from './app-theme-settings'
 import { GlobalContext, type _GlobalContextType } from '../../context/global-context'
 import BottomSheet from '../../components/bottom-sheet'
+import clsx from 'clsx'
 
 const AppTemplate = ({
     children
@@ -22,7 +23,9 @@ const AppTemplate = ({
     const [isShowThemeSetting, setIsShowThemeSetting] = useState(false)
     
     return(
-        <div className="app-template">
+        <div className={clsx("app-template", screenSize)}>
+            <div className='top-banner-box'>
+            </div>
             <div className="top-nav-box">
                 <div className='logo-box'>
                     <PiSailboat size={32} color='var(--clr-primary-600)'/>

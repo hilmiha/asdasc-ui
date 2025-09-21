@@ -117,7 +117,7 @@ const Modal = ({
     if(isMounted){
         return(
             <FloatingPortal>
-                <FloatingOverlay lockScroll={true} style={{overflow:'hidden'}}>
+                <FloatingOverlay lockScroll={true} style={{overflow:'hidden', zIndex:'1'}}>
                     <FloatingFocusManager
                         context={context} 
                         order={['floating']}
@@ -137,7 +137,8 @@ const Modal = ({
                             <div
                                 className={clsx(
                                     'modal-container',
-                                    (size==='full')?('full'):(screenSize==='mobile')?('mobile'):(size)?(size):('small'),
+                                    screenSize,
+                                    (size==='full')?('full'):(screenSize==='mobile')?(''):(size)?(size):('small'),
                                     (shape)?(shape):(globalShape),
                                     {
                                         ['closing']:(!isModalShow)

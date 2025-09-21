@@ -22,7 +22,7 @@
         overflow: hidden;
         border: 1px solid var(--clr-border);
         outline: 0px;
-        padding: var(--space-250);
+        padding: var(--space-500);
         background-color: var(--clr-surface-2);
         max-height: 80vh;
         gap: var(--space-250);
@@ -77,16 +77,32 @@
             min-width: 260px;
         }
         &.full{
-            width: calc(100% - 60px);
-            max-width: calc(100% - 60px);
-            height: calc(100% - 60px);
-            max-height: calc(100% - 60px);
+            width: calc(100% - 100px);
+            max-width: calc(100% - 100px);
+            height: calc(100% - 100px);
+            max-height: calc(100% - 100px);
         }
 
+        &.tablet{
+            padding: var(--space-300);
+            &.full{
+                width: calc(100% - 60px);
+                max-width: calc(100% - 60px);
+                height: calc(100% - 60px);
+                max-height: calc(100% - 60px);
+            }
+        }
         &.mobile{
             width: 85vw;
             max-height: 85vh;
             bottom: var(--space-100);
+            padding: var(--space-200);
+            &.full{
+                width: calc(100% - 60px);
+                max-width: calc(100% - 60px);
+                height: calc(100% - 60px);
+                max-height: 85vh;
+            }
         }
         .modal-title-box{
             display: flex;

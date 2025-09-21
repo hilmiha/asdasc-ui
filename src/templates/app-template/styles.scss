@@ -1,17 +1,25 @@
 .app-template{
     display: grid;
-    grid-template-rows: max-content 1fr;
+    grid-template-rows: max-content max-content 1fr;
     grid-template-columns: 100vw;
+    max-height: 100vh;
 
-    .logo-box{
-        display: flex;
+    &.mobile{
+        .top-nav-box{
+            padding: var(--space-100) var(--space-200);
+        }
     }
+    
     .top-nav-box{
         display: flex;
         align-items: center;
         gap: var(--space-400);
         border-bottom: 1px solid var(--clr-border);
         padding: var(--space-100) var(--space-300);
+
+        .logo-box{
+            display: flex;
+        }
 
         .nav-buttons-box{
             display: flex;
@@ -30,31 +38,9 @@
             }
         }
     }
-}
 
-.shape-toggle-button{
-    .text-label-box{
-        flex-grow: 1;
-    }
-}
-.font-toggle-button{
-    flex-direction: column;
-    justify-content: space-between;
-    padding: var(--space-100);
-    .icon-before{
-        margin: 0px;
-        min-height: 20px;
-        display: flex;
-        align-items: center;
-    }
-    .icon-after{
-        margin: 0px;
-        margin-top: var(--space-100);
-        min-height: 20px;
-        display: flex;
-        align-items: center;
-    }
-    .text-label-box{
-        margin-top: var(--space-50);
+    .app-pages-box{
+        overflow: auto;
+        max-height: 100%;
     }
 }

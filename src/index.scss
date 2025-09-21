@@ -34,6 +34,27 @@
 
     @include generate-font-size-variable(medium);
     @include generate-global-color-variable(false);
+
+    *:not(.ql-editor):not(.ql-editor *) {
+        font-family: 'Inter', monospace;
+        font-size: var(--font-size);
+        line-height: 160%;
+    }
+
+    .text-sub{
+        color: var(--clr-surface-6);
+    }
+    .text-title{
+        font-weight: var(--font-weight-bold);
+    }
+    .text-title-lg{
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-lg) !important;
+    }
+    .text-title-xl{
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-xl) !important;
+    }
 }
 
 [data-theme^="dark"] {
@@ -47,9 +68,20 @@
     @include generate-font-size-variable(large);
 }
 
-*:not(.ql-editor):not(.ql-editor *) {
-    font-family: 'Inter', monospace;
-    font-size: var(--font-size);
+[data-theme*="rounded"] {
+    .global-radius{
+        border-radius: var(--space-100);
+    }
+}
+[data-theme*="circle"] {
+    .global-radius{
+        border-radius: var(--space-200);
+    }
+}
+[data-theme*="box"] {
+    .global-radius{
+        border-radius: var(--space-0);
+    }
 }
 
 html {
@@ -73,22 +105,12 @@ html {
         min-height: var(--icon-size);
         min-width: var(--icon-size);
     }
-
-    .global-rounded{
-        border-radius: var(--space-100);
-    }
-    .global-box{
-        border-radius: var(--space-0);
-    }
-    .global-circle{
-        border-radius: var(--space-200);
-    }
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: var(--space-100);
-    height: var(--space-100);
+    width: var(--space-50);
+    height: var(--space-50);
 }
 
 /* Track */

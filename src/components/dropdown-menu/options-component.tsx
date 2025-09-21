@@ -65,7 +65,7 @@ const OptionsComponent = ({
                                             <p className='text-label'>{option.txtLabel}</p>
                                             {
                                                 (option.txtSublabel)&&(
-                                                    <p className='text-sublabel'>{option.txtSublabel??''}</p>
+                                                    <p className='text-sublabel text-sub'>{option.txtSublabel??''}</p>
                                                 )
                                             }
                                         </div>}

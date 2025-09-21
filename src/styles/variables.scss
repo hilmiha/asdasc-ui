@@ -2,7 +2,7 @@
 @use "sass:map";
 
 $clr-light:'#FFFFFF';
-$clr-dark:'#000000';
+$clr-dark:'#1f1f1f';
 
 $clr-rose: (
     light: #eb7c8b,
@@ -94,12 +94,14 @@ $clr-black: (
         --#{$prefix}-3: #{color.mix(map.get($colors, light), #17191c, 10%)};
         --#{$prefix}-4: #{color.mix(map.get($colors, light), #38414A, 12%)};
         --#{$prefix}-5: #{color.mix(map.get($colors, light), #596773, 15%)};
+        --#{$prefix}-6: #{color.mix(map.get($colors, light), #7a8d9d, 20%)};
     } @else {
         --#{$prefix}-1: #{color.mix(map.get($colors, dark), #F7F8F9, 5%)};
         --#{$prefix}-2: #{color.mix(map.get($colors, dark), #f6f7f9, 10%)};
         --#{$prefix}-3: #{color.mix(map.get($colors, dark), #f1f3f7, 15%)};
         --#{$prefix}-4: #{color.mix(map.get($colors, dark), #bac2cf, 20%)};
         --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8c95a4, 25%)};
+        --#{$prefix}-6: #{color.mix(map.get($colors, light), #5c626c, 20%)};
     }
 }
 
@@ -205,31 +207,37 @@ $clr-danger:$clr-red; //defaul danger color
         $font-size:16px;
         $icon-size:18px;
         $font-size-lg:20px;
+        $font-size-xl:26px;
 
         --icon-size: #{$icon-size};
         --font-size: #{$font-size};
         --font-size-sm: #{$font-size-sm};
         --font-size-lg: #{$font-size-lg};
+        --font-size-xl: #{$font-size-xl};
     } @else if $size == medium {
         $font-size-sm:12px;
         $font-size:14px;
         $icon-size:16px;
         $font-size-lg:18px;
+        $font-size-xl:22px;
 
         --icon-size: #{$icon-size};
         --font-size: #{$font-size};
         --font-size-sm: #{$font-size-sm};
         --font-size-lg: #{$font-size-lg};
+        --font-size-xl: #{$font-size-xl};
     }  @else {
         $font-size-sm:10px;
         $font-size:12px;
         $icon-size:14px;
         $font-size-lg:16px;
+        $font-size-xl:20px;
 
         --icon-size: #{$icon-size};
         --font-size: #{$font-size};
         --font-size-sm: #{$font-size-sm};
         --font-size-lg: #{$font-size-lg};
+        --font-size-xl: #{$font-size-xl};
     }
 }
 

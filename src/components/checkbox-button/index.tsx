@@ -46,7 +46,7 @@ const CheckboxButton = ({
                                 <p className='text-label'>{txtLabel}</p>
                                 {
                                     (txtSublabel)&&(
-                                        <p className='text-sublabel'>{txtSublabel??''}</p>
+                                        <p className='text-sublabel text-sub'>{txtSublabel??''}</p>
                                     )
                                 }
                             </div>

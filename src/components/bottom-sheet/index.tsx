@@ -198,6 +198,7 @@ const BottomSheet = ({
                                 ref={refs.setFloating}
                                 className={clsx(
                                     'bottom-sheet-box',
+                                    screenSize,
                                     {
                                         ['dragging']:(isDragging)
                                     }

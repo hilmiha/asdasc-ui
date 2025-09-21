@@ -29,7 +29,6 @@
                 align-items: start;
                 
                 .text-sublabel{
-                    color: var(--clr-surface-5);
                     font-size: var(--font-size-sm);
                     font-weight: var(--font-weight-normal);
                     margin-top: var(--space-50);
@@ -69,7 +68,7 @@
 .dropdown-menu-bottom-sheet{
     .bottom-sheet-box .bottom-sheet-container{
         .content-box{
-            padding: var(--space-0);
+            padding: var(--space-0) !important;
             gap: var(--space-0);
         }
         .bottom-sheet-body-box{
