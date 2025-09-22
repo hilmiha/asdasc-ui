@@ -1,10 +1,10 @@
 import clsx from 'clsx'
-import { GlobalContext, type _GlobalContextType } from '../../context/global-context'
+import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import './styles.scss'
 import { useContext, useState } from "react"
-import IconButton from '../../components/icon-button'
+import IconButton from 'src/components/ui/icon-button'
 import { PiListBold } from 'react-icons/pi'
-import BottomSheet from '../../components/bottom-sheet'
+import BottomSheet from 'src/components/ui/bottom-sheet'
 
 const ThreeColumnTemplate = ({
     className,
@@ -67,7 +67,9 @@ const ThreeColumnTemplate = ({
                     </div>
                 )}
             <div className='doc-pages-box'>
-                {children}
+                <div>
+                    {children}
+                </div>
             </div>
             {
                 (screenSize==='laptop')&&(

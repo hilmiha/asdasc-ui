@@ -1,12 +1,11 @@
 import { PiCircleBold, PiCircleFill, PiMoonBold, PiSunBold, PiTextTBold } from "react-icons/pi"
 import { useContext, useMemo } from "react"
-import { GlobalContext, type _GlobalContextType } from "../../context/global-context"
+import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
 import { BiSquare, BiSquareRounded } from "react-icons/bi"
-import IconButton from "../../components/icon-button"
-import RadioToggle from "../../composite/radio-toggle"
+import IconButton from "src/components/ui/icon-button"
+import RadioToggle from "src/components/composite/radio-toggle"
 
 const AppThemeSetting = () =>{
-
     const {
         appTheme,
         toggleGlobalPrimary,

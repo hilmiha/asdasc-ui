@@ -1,19 +1,19 @@
 import './styles.scss'
-import { useContext, useState, type JSX } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router"
-import Button from "../../components/button"
+import Button from "src/components/ui/button"
 import { PiPaintRollerBold, PiPaintRollerFill, PiSailboat } from 'react-icons/pi'
-import IconButton from '../../components/icon-button'
-import Dropdown from '../../components/dropdown'
+import IconButton from 'src/components/ui/icon-button'
+import Dropdown from 'src/components/ui/dropdown'
 import AppThemeSetting from './app-theme-settings'
-import { GlobalContext, type _GlobalContextType } from '../../context/global-context'
-import BottomSheet from '../../components/bottom-sheet'
+import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
+import BottomSheet from 'src/components/ui/bottom-sheet'
 import clsx from 'clsx'
 
 const AppTemplate = ({
     children
 }:{
-    children:JSX.Element
+    children:React.ReactNode,
 }) =>{
     const {
         screenSize
@@ -25,6 +25,7 @@ const AppTemplate = ({
     return(
         <div className={clsx("app-template", screenSize)}>
             <div className='top-banner-box'>
+
             </div>
             <div className="top-nav-box">
                 <div className='logo-box'>

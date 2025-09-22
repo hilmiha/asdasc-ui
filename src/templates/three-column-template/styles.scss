@@ -5,12 +5,15 @@
     overflow: hidden;
 
     &.mobile{
-        .doc-pages-box{
+        .doc-pages-box>div{
             padding: var(--space-400) var(--space-200);
         }
     }
     &.tablet{
-        .doc-pages-box{
+        .left-side-content-box{
+            padding: var(--space-400) var(--space-300);
+        }
+        .doc-pages-box>div{
             padding: var(--space-400) var(--space-300);
         }
     }
@@ -29,7 +32,13 @@
     .doc-pages-box{
         overflow: auto;
         max-height: 100%;
-        padding: var(--space-600) var(--space-500);
+        display: flex;
+        justify-content: center;
+        >div{
+            flex-grow: 1;
+            padding: var(--space-600) var(--space-500);
+            max-width: 720px;
+        }
     }
     .right-side-content-box{
         overflow: auto;
