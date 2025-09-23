@@ -1,5 +1,5 @@
 import { PiCircleBold, PiCircleFill, PiMoonBold, PiSunBold, PiTextTBold } from "react-icons/pi"
-import { useContext, useMemo } from "react"
+import { useContext } from "react"
 import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
 import { BiSquare, BiSquareRounded } from "react-icons/bi"
 import IconButton from "src/components/ui/icon-button"
@@ -7,6 +7,7 @@ import RadioToggle from "src/components/composite/radio-toggle"
 
 const AppThemeSetting = () =>{
     const {
+        globalColors,
         appTheme,
         toggleGlobalPrimary,
         toggleGlobalTheme,
@@ -14,10 +15,6 @@ const AppThemeSetting = () =>{
         toggleGlobalShape,
         toggleGlobalFontSize,
     } = useContext(GlobalContext) as _GlobalContextType
-
-    const colors = useMemo(()=>{
-        return ['rose', 'red', 'orange', 'yellow', 'lime', 'green', 'emerald', 'teal', 'blue', 'purple', 'magenta', 'grey', 'stone', 'black']
-    },[])
 
     return(
         <div style={{
@@ -48,7 +45,7 @@ const AppThemeSetting = () =>{
                 <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Tone Color</p>
                 <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-0)', justifyContent:'center'}}>
                     {
-                        colors.map((clr)=>(
+                        globalColors.map((clr)=>(
                             <IconButton
                                 key={clr}
                                 txtLabel={clr}
@@ -81,7 +78,7 @@ const AppThemeSetting = () =>{
                 <p className="text-title" style={{marginBottom:'var(--space-100)'}}>Primary Color</p>
                 <div style={{display:"flex", flexWrap:'wrap', gap:'var(--space-0)', justifyContent:'center'}}>
                     {
-                        colors.map((clr)=>(
+                        globalColors.map((clr)=>(
                             <IconButton
                                 key={clr}
                                 txtLabel={clr}

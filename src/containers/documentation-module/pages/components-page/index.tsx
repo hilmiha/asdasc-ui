@@ -11,7 +11,7 @@ const ComponentsPage = () =>{
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
 
-    const navigation = useNavigate()
+    const navigate = useNavigate()
 
     return(
         <div
@@ -36,12 +36,12 @@ const ComponentsPage = () =>{
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
                             txtLabel="to Get Started"
-                            onClick={()=>{navigation(`${baseUrl}`)}}
+                            onClick={()=>{navigate(`${baseUrl}`)}}
                         />
                         <IconButton
                             icon={<PiArrowRightBold className="global-icon"/>}
                             txtLabel="to Colors"
-                            onClick={()=>{navigation(`${baseUrl}/colors`)}}
+                            onClick={()=>{navigate(`${baseUrl}/colors`)}}
                         />
                     </div>
                 </div>
@@ -52,7 +52,6 @@ const ComponentsPage = () =>{
                 style={{
                     display:'grid',
                     gridTemplateColumns:(screenSize==='laptop')?('1fr 1fr 1fr'):(screenSize==='tablet')?('1fr 1fr'):('1fr'),
-                    gap:'var(--space-200)'
                 }}
             >
                 {
@@ -61,8 +60,13 @@ const ComponentsPage = () =>{
                             appearance='subtle'
                             key={menu.id}
                             txtLabel={menu.txtLable}
-                            onClick={()=>{navigation(`${baseUrl}${menu.to}`)}}
-                        
+                            onClick={()=>{navigate(`${baseUrl}${menu.to}`)}}
+                            style={{
+                                button:{
+                                    padding:'var(--space-150) var(--space-50)',
+                                    border:'1px solid var(--clr-border)'
+                                },
+                            }}
                         />
                     ))
                 }

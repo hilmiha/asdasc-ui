@@ -1,5 +1,7 @@
 import type { JSX } from "react";
 
+export type globalThemeType = 'light'|'dark'
+export type screenSizeType = 'mobile' | 'tablet' | 'laptop';
 export type globalShapeType = 'rounded' | 'box' | 'circle';
 export type globalAppearanceType = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'subtle';
 

@@ -4,13 +4,14 @@ import AppTemplate from 'src/templates/app-template'
 import GlobalProvider from 'src/context/global-context.tsx'
 import { Suspense } from 'react'
 import routes from './routes'
+import PageSkeleton from './sections/page-skeleton'
 
 const MainModule = () =>{
 
     return(
         <GlobalProvider>
             <AppTemplate>
-                <Suspense fallback={<div>Loading…</div>}>
+                <Suspense fallback={<PageSkeleton/>}>
                     <Routes>
                         {
                             routes.map((itmRoute)=>(

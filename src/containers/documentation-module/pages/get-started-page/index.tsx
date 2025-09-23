@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router'
 import { baseUrl } from '../../constant'
 
 const GetStartedPage = () =>{
-    const navigation = useNavigate()
+    const navigate = useNavigate()
     const {
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
@@ -34,7 +34,7 @@ const GetStartedPage = () =>{
                         <IconButton
                             icon={<PiArrowRightBold className="global-icon"/>}
                             txtLabel="to Components"
-                            onClick={()=>{navigation(`${baseUrl}/components`)}}
+                            onClick={()=>{navigate(`${baseUrl}/components`)}}
                         />
                     </div>
                 </div>

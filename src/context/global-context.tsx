@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import type { globalShapeType } from '../components/_types';
+import type { globalShapeType, globalThemeType, screenSizeType } from 'src/components/_types';
 
 export const GlobalContext = React.createContext<_GlobalContextType | null>(null);
 
 const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+    const globalColors = useMemo(()=>{
+        return ['rose', 'red', 'orange', 'yellow', 'lime', 'green', 'emerald', 'teal', 'blue', 'purple', 'magenta', 'grey', 'stone', 'black']
+    },[])
     const [globalTheme, setGlobalTheme] = useState<string>('dark');
     const [globalTone, setGlobalTone] = useState<string>('tonal_blue');
     const [globalPrimary, setGlobalPrimary] = useState<string>('primary_emerald');
     const [globalShape, setGlobalShape] = useState<globalShapeType>('rounded');
-    const [screenSize, setScreenSize] = useState<ScreenSizeType>('mobile');
+    const [screenSize, setScreenSize] = useState<screenSizeType>('mobile');
     const [globalFontSize, setGlobalFontSize] = useState<string>('medium');
 
     // Function to determine screen size category
-    const getScreenSize = useCallback((width: number): ScreenSizeType => {
+    const getScreenSize = useCallback((width: number): screenSizeType => {
         if (width < 768) return 'mobile';
-        if (width < 1024) return 'tablet';
+        if (width < 1440) return 'tablet';
         return 'laptop';
     }, []);
 
@@ -74,6 +77,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
     return (
         <GlobalContext.Provider value={{
             appTheme, 
+            globalColors,
             toggleGlobalTheme,
             toggleGlobalTone,
             toggleGlobalPrimary,
@@ -96,15 +100,15 @@ export interface _GlobalContextType {
         globalPrimary: string;
         globalShape: globalShapeType;
         globalFontSize:string;
-        screenSize: ScreenSizeType;
+        screenSize: screenSizeType;
     };
-    toggleGlobalTheme:(theme?:'light'|'dark')=>void;
+    globalColors:string[]
+    toggleGlobalTheme:(theme?:globalThemeType)=>void;
     toggleGlobalTone:(color:string)=>void;
     toggleGlobalPrimary:(color:string)=>void;
     globalShape:globalShapeType;
     toggleGlobalShape:(shape:globalShapeType)=>void;
     toggleGlobalFontSize:(size:string)=>void;
-    screenSize: ScreenSizeType;
+    screenSize: screenSizeType;
 }
 
-export type ScreenSizeType = 'mobile' | 'tablet' | 'laptop';

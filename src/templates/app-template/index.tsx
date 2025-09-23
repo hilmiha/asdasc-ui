@@ -25,25 +25,36 @@ const AppTemplate = ({
     return(
         <div className={clsx("app-template", screenSize)}>
             <div className='top-banner-box'>
-
             </div>
             <div className="top-nav-box">
                 <div className='logo-box'>
                     <PiSailboat size={32} color='var(--clr-primary-600)'/>
                 </div>
                 <div className='nav-buttons-box'>
-                    <Button
-                        className='top-nav-button'
-                        appearance='subtle'
-                        txtLabel={'Home'}
-                        onClick={()=>{navigate('/')}}
-                    />
-                    <Button
-                        className='top-nav-button'
-                        appearance='subtle'
-                        txtLabel={'Docs'}
-                        onClick={()=>{navigate('/docs')}}
-                    />
+                    {
+                        (screenSize!=='mobile')&&(
+                            <>
+                                <Button
+                                    className='top-nav-button'
+                                    appearance='subtle'
+                                    txtLabel={'Home'}
+                                    onClick={()=>{navigate('/')}}
+                                />
+                                <Button
+                                    className='top-nav-button'
+                                    appearance='subtle'
+                                    txtLabel={'Docs'}
+                                    onClick={()=>{navigate('/docs')}}
+                                />
+                                <Button
+                                    className='top-nav-button'
+                                    appearance='subtle'
+                                    txtLabel={'Generate Colors'}
+                                    onClick={()=>{navigate('/generate-colors')}}
+                                />
+                            </>
+                        )
+                    }
                 </div>
                 <div className='app-action-box'>
                     {

@@ -55,6 +55,10 @@
         font-weight: var(--font-weight-bold);
         font-size: var(--font-size-xl) !important;
     }
+
+    .global-radius{
+        border-radius: var(--global-radius);
+    }
 }
 
 [data-theme^="dark"] {
@@ -69,19 +73,13 @@
 }
 
 [data-theme*="rounded"] {
-    .global-radius{
-        border-radius: var(--space-100);
-    }
+    --global-radius: var(--space-100);
 }
 [data-theme*="circle"] {
-    .global-radius{
-        border-radius: var(--space-200);
-    }
+    --global-radius: var(--space-200);
 }
 [data-theme*="box"] {
-    .global-radius{
-        border-radius: var(--space-0);
-    }
+    --global-radius: var(--space-0);
 }
 
 html {

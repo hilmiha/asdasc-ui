@@ -337,7 +337,7 @@ interface _BottomSheet{
     
     iconTitle?:JSX.Element,
     txtTitle?:string,
-    children?: JSX.Element | JSX.Element[],
+    children?: React.ReactNode,
 
     onOpen?: () => void;
     onClose?: () => void;

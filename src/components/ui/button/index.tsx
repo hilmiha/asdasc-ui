@@ -116,6 +116,7 @@ interface _Button {
 
 export type buttonStyleType = {
     button?:React.CSSProperties,
+    textLabelBox?:React.CSSProperties,
     textLabel?:React.CSSProperties,
     iconBefore?:React.CSSProperties,
     iconAfter?:React.CSSProperties

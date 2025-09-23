@@ -5,16 +5,20 @@
     overflow: hidden;
 
     &.mobile{
-        .doc-pages-box>div{
-            padding: var(--space-400) var(--space-200);
+        .doc-pages-box{
+            >div>.page-box{
+                padding: var(--space-400) var(--space-200);
+            }
         }
     }
     &.tablet{
         .left-side-content-box{
             padding: var(--space-400) var(--space-300);
         }
-        .doc-pages-box>div{
-            padding: var(--space-400) var(--space-300);
+        .doc-pages-box{
+            >div>.page-box{
+                padding: var(--space-400) var(--space-300);
+            }
         }
     }
     
@@ -33,16 +37,30 @@
         overflow: auto;
         max-height: 100%;
         display: flex;
-        justify-content: center;
+        position: relative;
         >div{
             flex-grow: 1;
-            padding: var(--space-600) var(--space-500);
-            max-width: 720px;
+            display: flex;
+            justify-content: center;
+
+            >.page-box{
+                height: max-content;
+                flex-grow: 1;
+                padding: var(--space-600) var(--space-500);
+                max-width: 720px;
+            }
+        }
+        .right-side-content-box{
+            border-left: 1px solid var(--clr-border);
+            position: sticky;
+            top: 0px;
+            flex-grow: 1;
+            overflow: auto;
+            max-height: 100%;
+            max-width: 240px;
+            min-width: 240px;
+            padding: var(--space-600) var(--space-300);
         }
     }
-    .right-side-content-box{
-        overflow: auto;
-        max-height: 100%;
-        padding: var(--space-600) var(--space-300);
-    }
+    
 }

@@ -113,6 +113,14 @@ $clr-black: (
     }
 }
 
+@mixin generate-border-colored($prefix, $colors, $isDark: false) {
+    @if $isDark {
+        --#{$prefix}: hsl(from #{color.mix(map.get($colors, light), #DCDFE4, 80%)} h s l / 0.4); 
+    } @else {
+        --#{$prefix}: hsl(from #{color.mix(map.get($colors, dark), #191414, 72%)} h s l / 0.4); 
+    }
+}
+
 @mixin generate-shadow-colors($isDark: false) {
     @if $isDark {
         --clr-shadow: hsl(from #{$clr-dark} h s l / 0.4);
@@ -164,7 +172,7 @@ $clr-danger:$clr-red; //defaul danger color
     @each $name, $color in $color-map {
         @include generate-colors('clr-#{$name}', $color, $isDark);
         @include generate-surface-colors('clr-surface-#{$name}', $color, $isDark);
-        @include generate-border-colors('clr-border-#{$name}', $color, $isDark);
+        @include generate-border-colored('clr-border-#{$name}', $color, $isDark);
     }
 
     // Theme variants using loop (excluding black for primary themes)
@@ -172,8 +180,7 @@ $clr-danger:$clr-red; //defaul danger color
         &[data-theme*="primary_#{$name}"] {
             @include generate-colors('clr-primary', $color, $isDark);
             @include generate-surface-colors('clr-surface-primary', $color, $isDark);
-            --clr-border-primary: hsl(from var(--clr-primary-700) h s l / 0.4);
-            // @include generate-border-colors('clr-border-primary', $color, $isDark);
+            @include generate-border-colored('clr-border-primary', $color, $isDark);
         }
     }
     @each $name, $color in $color-map {
@@ -185,15 +192,17 @@ $clr-danger:$clr-red; //defaul danger color
 
     @include generate-colors('clr-success', $clr-success, $isDark);
     @include generate-surface-colors('clr-surface-success', $clr-success, $isDark);
-    @include generate-border-colors('clr-border-success', $clr-success, $isDark);
+    @include generate-border-colored('clr-border-success', $clr-success, $isDark);
+
 
     @include generate-colors('clr-warning', $clr-warning, $isDark);
     @include generate-surface-colors('clr-surface-warning', $clr-warning, $isDark);
-    @include generate-border-colors('clr-border-warning', $clr-warning, $isDark);
+    @include generate-border-colored('clr-border-warning', $clr-warning, $isDark);
+
 
     @include generate-colors('clr-danger', $clr-danger, $isDark);
     @include generate-surface-colors('clr-surface-danger', $clr-danger, $isDark);
-    @include generate-border-colors('clr-border-danger', $clr-danger, $isDark);
+    @include generate-border-colored('clr-border-danger', $clr-danger, $isDark);
 
     @include generate-shadow-colors($isDark);
 }
