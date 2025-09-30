@@ -1,0 +1,93 @@
+.color-picker{
+    display: grid;
+    gap: var(--space-200);
+    padding: var(--space-25);
+    width: 310px;
+    max-width: 310px;
+
+    &.dark{
+        .react-colorful__alpha {
+            background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="white"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>');
+            background-color: transparent;
+        }
+    }
+
+    &.light{
+        .react-colorful__alpha{
+            background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="black"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>');
+            background-color: transparent;
+        }
+    }
+
+    .color-picker-box{
+        width:  100%;
+    }
+    .color-input-box{
+        display: flex;
+        gap: var(--space-100);
+        .rgba-input{
+            .input-text-container{
+                margin: 0px;
+                padding-left: var(--space-100);
+                padding-right: var(--space-100);
+                
+                .input-text{
+                    width: 30px;
+                }
+            }
+        }
+
+        .hex-input{
+            .input-text-container{
+                margin: 0px;
+                .input-text{
+                    width: 100px;
+                }
+            }
+        }
+
+        .toggle-mode-button{
+            margin: 0px;
+        }
+    }
+
+    .react-colorful__interactive{
+        cursor: crosshair;
+    }
+    .react-colorful__interactive:focus .react-colorful__pointer{
+        outline: 2px solid var(--clr-focus-ouline);
+        outline-offset: 2px;
+    }
+    .react-colorful__saturation{
+        border-bottom: 0px;
+        border-radius: var(--space-50);
+
+        .react-colorful__saturation-pointer{
+            z-index: 1;
+            width: 25px;
+            height: 25px;
+        }
+    }
+    .react-colorful__hue{
+        margin-top: var(--space-300);
+        border-radius: var(--space-50);
+
+        .react-colorful__hue-pointer{
+            z-index: 1;
+            width: 25px;
+            height: 25px;
+        }
+    }
+    .react-colorful__alpha{
+        margin-top: var(--space-200);
+        border-radius: var(--space-50);
+        .react-colorful__alpha-gradient{
+            box-shadow:none
+        }
+        .react-colorful__alpha-pointer{
+            z-index: 1;
+            width: 25px;
+            height: 25px;
+        }
+    }
+}

@@ -38,6 +38,8 @@ import ResizablePanel from 'src/components/ui/resizable/resizable-panel';
 import SwitchButton from 'src/components/ui/switch-button';
 import Spinner from 'src/components/ui/spinner';
 import Skeleton from 'src/components/ui/skeleton';
+import ColorPicker from 'src/components/ui/color-picker';
+import InputColor from 'src/components/ui/input-color';
 
 function PlaygroundModule() {
     const {
@@ -75,7 +77,8 @@ function PlaygroundModule() {
         testDate:undefined,
         testDateTime:undefined,
         testDateMultiple:undefined,
-        testDateRange:undefined
+        testDateRange:undefined,
+        testColor:'#000000'
     })
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
@@ -91,7 +94,8 @@ function PlaygroundModule() {
         testDate:{isError:false, errorMessage:''},
         testDateTime:{isError:false, errorMessage:''},
         testDateMultiple:{isError:false, errorMessage:''},
-        testDateRange:{isError:false, errorMessage:''}
+        testDateRange:{isError:false, errorMessage:''},
+        testColor:{isError:false, errorMessage:''}
     })
     const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
@@ -257,6 +261,10 @@ function PlaygroundModule() {
 
 
     const [isShowLeftPanel, setIsShowLeftPanel] = useState(true)
+
+
+    const [colorSoild, setColorSolid] = useState('')
+    const [colorAlpha, setColorAlpha] = useState('')
 
     return (
         <div>
@@ -739,6 +747,17 @@ function PlaygroundModule() {
                             maxSelected:7
                         }}
                     />
+                    <InputColor
+                        txtPlaceholder='Select color...'
+                        value={form['testColor']}
+                        onChange={(newValue)=>{onChange('testColor', newValue)}}
+                        onValidate={(error)=>{onValidate('testColor', error)}}
+                        error={formError['testColor']}
+                        config={{
+                            isAllowAlpha:true,
+                            isRequired:true,
+                        }}
+                    />
                     <div>
                         <RadioButton
                             isSelected={true}
@@ -858,6 +877,21 @@ function PlaygroundModule() {
                     isDisabled={false}
                     disabledDates={disabledDates}
                 />
+            </div>
+            <div  style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                <div style={{display:'flex', flexWrap:'wrap', gap:'var(--space-300)', justifyContent:'space-around', width:'100%'}}>
+                    <ColorPicker value={colorAlpha} onChange={(newValue)=>{setColorAlpha(newValue)}}/>
+                    <ColorPicker value={colorSoild} onChange={(newValue)=>{setColorSolid(newValue)}} isAllowAlpha={true}/>
+                </div>
+                <div>
+                    <Button 
+                        txtLabel='Change to Green'
+                        onClick={()=>{
+                            setColorAlpha('#16824C8C')
+                            setColorSolid('#16824C')
+                        }}
+                    />
+                </div>
             </div>
             <div style={{padding:'var(--space-100) var(--space-100)', height:'80vh', maxHeight:'80vh'}}>
                 <TableData

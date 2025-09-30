@@ -155,6 +155,9 @@ const Dropdown = ({
                     <FloatingPortal>
                         <FloatingOverlay
                             lockScroll={floatingConfig?.isLockScroll}
+                            style={{
+                                zIndex:'1'
+                            }}
                         >
                             <FloatingFocusManager 
                                 context={context} 

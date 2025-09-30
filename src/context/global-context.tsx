@@ -17,7 +17,7 @@ const GlobalProvider: React.FC<{children: React.ReactNode}> = ({ children }) => 
     // Function to determine screen size category
     const getScreenSize = useCallback((width: number): screenSizeType => {
         if (width < 768) return 'mobile';
-        if (width < 1440) return 'tablet';
+        if (width < 1024) return 'tablet';
         return 'laptop';
     }, []);
 

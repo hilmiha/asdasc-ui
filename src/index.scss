@@ -59,10 +59,18 @@
     .global-radius{
         border-radius: var(--global-radius);
     }
+
+    .checkered-background{
+        background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="black"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>')
+    }
 }
 
 [data-theme^="dark"] {
-    @include generate-global-color-variable(true)
+    @include generate-global-color-variable(true);
+
+    .checkered-background{
+        background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="white"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>')
+    }
 }
 
 [data-font-size^="small"] {

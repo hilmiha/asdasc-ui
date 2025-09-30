@@ -38,6 +38,7 @@
         max-height: 100%;
         display: flex;
         position: relative;
+        scrollbar-gutter: stable;
         >div{
             flex-grow: 1;
             display: flex;
@@ -58,7 +59,7 @@
             overflow: auto;
             max-height: 100%;
             max-width: 240px;
-            min-width: 240px;
+            min-width: 180px;
             padding: var(--space-600) var(--space-300);
         }
     }
