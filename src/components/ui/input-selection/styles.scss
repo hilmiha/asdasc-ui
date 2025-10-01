@@ -8,6 +8,7 @@
     .input-selection{
         grid-column: 2 / 3;
         grid-row: 1 / 2;
+        min-height: 32.01px;
 
         border: 1px solid var(--clr-border);
         margin: var(--space-50);

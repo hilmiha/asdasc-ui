@@ -16,7 +16,7 @@ const Wysiwyg = ({
 	style = undefined,
 	shape = undefined,
 	
-	placeholder = undefined,
+	txtPlaceholder = undefined,
 	value = undefined,
 	isDisabled = false,
 	onChange = undefined,
@@ -79,7 +79,7 @@ const Wysiwyg = ({
 					'list', 'indent', 'align', 'color', 'background',
 					'link', 'image', 'blockquote', 'code', 'code-block', 'script'
 				],
-				placeholder,
+				placeholder:txtPlaceholder,
 				readOnly:isDisabled,
 			});
 
@@ -149,7 +149,7 @@ const Wysiwyg = ({
 			<div ref={editorRef} className={'editor-box'} style={style?.editorBox}/>
 			{
 				(!isAsPreview)&&(
-					<div className='footer-box'>
+					<div className='footer-box' style={style?.footerBox}>
 						{
 							(error&& error.isError && error.errorMessage)&&(
 								<div className='error-box'>
@@ -178,7 +178,7 @@ interface _Wysiwyg {
 	style?: wysiwygStyleType;
 	shape?:globalShapeType;
 
-	placeholder?: string;
+	txtPlaceholder?: string;
 	value?: Delta;
 	isDisabled?: boolean;
 	onChange?: (content: Delta) => void;
@@ -191,7 +191,8 @@ interface _Wysiwyg {
 }
 
 export type wysiwygStyleType = {
-	editorBox:React.CSSProperties;
+	editorBox?:React.CSSProperties;
+	footerBox?:React.CSSProperties;
 }
 export type wysiwygConfigType = {
     isRequired?:boolean

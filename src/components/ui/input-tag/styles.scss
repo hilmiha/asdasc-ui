@@ -118,6 +118,7 @@
                 width: fit-content;
                 flex-grow: 1;
                 min-height: 24.4px;
+                padding: 0px;
                 &::placeholder{
                     color: var(--clr-surface-5);
                 }

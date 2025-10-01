@@ -152,7 +152,7 @@ const ColorPicker = ({
                                     }else{
                                         setTimeout(() => {
                                             setHexInput(ctrl.rgbaToHex(color, isAllowAlpha))
-                                        }, 500);
+                                        }, 600);
                                     }
                                 }}  
                                 config={{
@@ -182,7 +182,7 @@ const ColorPicker = ({
                                         }else{
                                             setTimeout(() => {
                                                 setRinput(`${color.r}`)
-                                            }, 500);
+                                            }, 600);
                                         }
                                     }}
                                     config={{prefixElement:'R', isHideClear:true, maxLength:3}}
@@ -203,7 +203,7 @@ const ColorPicker = ({
                                         }else{
                                             setTimeout(() => {
                                                 setGinput(`${color.g}`)
-                                            }, 500);
+                                            }, 600);
                                         }
                                     }}
                                     config={{prefixElement:'G', isHideClear:true, maxLength:3}}
@@ -224,7 +224,7 @@ const ColorPicker = ({
                                         }else{
                                             setTimeout(() => {
                                                 setBinput(`${color.b}`)
-                                            }, 500);
+                                            }, 600);
                                         }
                                     }}
                                     config={{prefixElement:'B', isHideClear:true, maxLength:3}}
@@ -247,7 +247,7 @@ const ColorPicker = ({
                                                 }else{
                                                     setTimeout(() => {
                                                         setAinput(`${(color.a*100).toFixed(0)}`)
-                                                    }, 500);
+                                                    }, 600);
                                                 }
                                             }}
                                             config={{prefixElement:'A', sufixElement:'%', isHideClear:true, maxLength:3}}

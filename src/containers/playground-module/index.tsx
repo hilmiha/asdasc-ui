@@ -40,6 +40,8 @@ import Spinner from 'src/components/ui/spinner';
 import Skeleton from 'src/components/ui/skeleton';
 import ColorPicker from 'src/components/ui/color-picker';
 import InputColor from 'src/components/ui/input-color';
+import CarouselChild from 'src/components/ui/carousel/carousel-child';
+import InputCode from 'src/components/ui/input-code';
 
 function PlaygroundModule() {
     const {
@@ -78,8 +80,11 @@ function PlaygroundModule() {
         testDateTime:undefined,
         testDateMultiple:undefined,
         testDateRange:undefined,
-        testColor:'#000000'
+        testColor:'#000000',
     })
+    useEffect(()=>{
+        console.log(form)
+    },[JSON.stringify(form)])
     const [formError, setFormError] = useState<{[key:string]:fieldErrorType}>({
         testText:{isError:false, errorMessage:''},
         testPassword:{isError:false, errorMessage:''},
@@ -95,7 +100,7 @@ function PlaygroundModule() {
         testDateTime:{isError:false, errorMessage:''},
         testDateMultiple:{isError:false, errorMessage:''},
         testDateRange:{isError:false, errorMessage:''},
-        testColor:{isError:false, errorMessage:''}
+        testColor:{isError:false, errorMessage:''},
     })
     const onChange = useCallback((key: string, newValue: any) => {
         setForm((prev) => ({
@@ -154,6 +159,28 @@ function PlaygroundModule() {
     const [isShowBottomSheet, setIsShowBottomSheet] = useState(false)
 
     const [listAccordionOpen, setListAccordionOpen] = useState<string[]>([])
+
+    const [codeContent, setCodeContent] = useState('')
+    const [codeContentError, setCodeContentError] = useState<fieldErrorType>({isError:false, errorMessage:''})
+
+    const presetCodeContent = () => {
+        setCodeContent(`<>
+    <Button 
+        txtLabel='Hello World'
+        isLoading={true}
+    />
+    <Button 
+        txtLabel='Hello World'
+        isDisabled
+        isLoading={isButtonLoading}
+    />
+    <Button 
+        txtLabel='Hello World'
+        isSelected
+        isLoading={isButtonLoading}
+    />
+</>`);
+    };
 
     const [content, setContent] = useState<Delta | undefined>(undefined);
     const [contentError, setContentError] = useState<fieldErrorType>({isError:false, errorMessage:''})
@@ -946,19 +973,40 @@ function PlaygroundModule() {
                     isExpandable={true}
                 />
             </div>
-            <div style={{padding:'var(--space-300)'}}>
+            <div style={{padding:'var(--space-300)', height:'400px'}}>
+                <Button txtLabel={'Preset'} onClick={()=>{presetCodeContent()}}/>
+                <InputCode
+                    lang='tsx'
+                    txtPlaceholder='Start typing...'
+                    value={codeContent}
+                    onChange={(newValue)=>{setCodeContent(newValue)}}
+                    onValidate={(error)=>{
+                        setCodeContentError(error)
+                    }}  
+                    isDisabled={false}
+                    error={codeContentError}
+                    config={{
+                        isRequired:true,
+                        isAsPreview:false
+                    }}
+                />
+            </div>
+            <div style={{padding:'var(--space-300)', height:'400px'}}>
                 <Button txtLabel={'Preset'} onClick={()=>{presetContent()}}/>
                 <Wysiwyg
                     value={content}
                     onChange={(newValue)=>{setContent(newValue)}}
                     onValidate={(error)=>{setContentError(error)}}
                     isDisabled={false}
-                    placeholder="Start typing..."
+                    txtPlaceholder="Start typing..."
                     error={contentError}
                     config={{
                         isRequired:true,
                     }}
                 />
+                
+            </div>
+            <div style={{padding:'var(--space-300)'}}>
                 <div>
                     <p>Value:</p>
                     <div
@@ -994,7 +1042,7 @@ function PlaygroundModule() {
                     }}
                 />
                 <div
-                    className={`global-${appTheme.globalShape}`}
+                    className={`global-${appTheme.globalShape} global-radius`}
                     style={{
                         border:'1px solid var(--clr-border)',
                         height:"200px",
@@ -1053,7 +1101,7 @@ function PlaygroundModule() {
                     }}
                 />
                 <div
-                    className={`global-${appTheme.globalShape}`}
+                    className={`global-${appTheme.globalShape} global-radius`}
                     style={{
                         borderTopLeftRadius:'0px',
                         borderTopRightRadius:'0px',
@@ -1348,29 +1396,38 @@ function PlaygroundModule() {
             <div style={{padding:"var(--space-300)"}}>
                 <Carousel
                     autoRunInterval={3000}
+                    isAutoRunning={true}
                     height='60vh'
                     indicatorPosition='end'
                 >
-                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
-                        <p>
-                            Page 1
-                        </p>
-                    </div>
-                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
-                        <p>
-                            Page 2
-                        </p>
-                    </div>
-                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
-                        <p>
-                            Page 3
-                        </p>
-                    </div>
-                    <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
-                        <p>
-                            Page 4
-                        </p>
-                    </div>
+                    <CarouselChild>
+                        <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                            <p>
+                                Page 1
+                            </p>
+                        </div>
+                    </CarouselChild>
+                    <CarouselChild>
+                        <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                            <p>
+                                Page 2
+                            </p>
+                        </div>
+                    </CarouselChild>
+                    <CarouselChild>
+                        <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                            <p>
+                                Page 3
+                            </p>
+                        </div>
+                    </CarouselChild>
+                    <CarouselChild>
+                        <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', border:'1px dashed var(--clr-border)', boxSizing:'border-box'}}>
+                            <p>
+                                Page 4
+                            </p>
+                        </div>
+                    </CarouselChild>
                 </Carousel>
             </div>
             <div style={{height:'80vh', border:'1px solid var(--clr-border)', margin:'var(--space-300)'}}>

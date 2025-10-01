@@ -64,7 +64,7 @@ const InputText = ({
             if (onChange) {
                 onChange(newValue, e);
             }
-        }, 300),
+        }, 500),
     [onChange]);
     
     //detect if value change/setted outsite of component

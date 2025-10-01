@@ -35,7 +35,11 @@
     @include generate-font-size-variable(medium);
     @include generate-global-color-variable(false);
 
-    *:not(.ql-editor):not(.ql-editor *) {
+    font-weight: var(--font-weight-normal);
+    background-color: var(--clr-surface-1);
+    color: var(--clr-text);
+
+    *:not(.ql-editor):not(.ql-editor *):not(.cm-editor):not(.cm-editor *){
         font-family: 'Inter', monospace;
         font-size: var(--font-size);
         line-height: 160%;
@@ -62,6 +66,11 @@
 
     .checkered-background{
         background-image: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="black"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>')
+    }
+
+    .global-icon{
+        min-height: var(--icon-size);
+        min-width: var(--icon-size);
     }
 }
 
@@ -91,10 +100,6 @@
 }
 
 html {
-    font-weight: var(--font-weight-normal);
-    background-color: var(--clr-surface-1);
-    color: var(--clr-text);
-
     button{
         color: var(--clr-text);
     }
@@ -105,11 +110,6 @@ html {
 
     p{
         margin: 0;
-    }
-
-    .global-icon{
-        min-height: var(--icon-size);
-        min-width: var(--icon-size);
     }
 }
 

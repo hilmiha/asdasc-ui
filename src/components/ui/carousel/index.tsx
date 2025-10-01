@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
@@ -16,41 +16,60 @@ const Carousel = ({
     canLoop = true,
     indicatorPosition = 'center',
     children
-}:_Carausel) =>{
-    const {
-        globalShape
-    } = useContext(GlobalContext) as _GlobalContextType
+}: _Carausel) => {
+    const { globalShape } = useContext(GlobalContext) as _GlobalContextType;
+
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [progress, setProgress] = useState(0);
-    
     const [isPaused, setIsPaused] = useState(false);
 
     const totalSlides = children.length;
 
+    const progressRef = useRef(0);              // progress value (0–100)
+    const barRef = useRef<HTMLDivElement>(null); // DOM ref for indicator bar
+    const rafRef = useRef<number>(0);
+
     const canGoPrevious = currentIndex > 0 || canLoop;
     const canGoNext = currentIndex < totalSlides - 1 || canLoop;
 
-    // Auto-run functionality
+    // animation loop for progress bar
     useEffect(() => {
         if (!isAutoRunning || isPaused) return;
 
-        const progressInterval = setInterval(() => {
-            setProgress(prev => {
-                const newProgress = prev + (100 / (autoRunInterval / 100));
-                if (newProgress >= 100) {
-                    ctrl.goToNext(totalSlides, canLoop, isAutoRunning, setCurrentIndex);
-                    return 0;
-                }
-                return newProgress;
-            });
-        }, 100);
+        let lastTime = performance.now();
+
+        const tick = (now: number) => {
+            const delta = now - lastTime;
+            lastTime = now;
+
+            progressRef.current += (delta / autoRunInterval) * 100;
+
+            if (progressRef.current >= 100) {
+                progressRef.current = 0;
+                ctrl.goToNext(totalSlides, canLoop, isAutoRunning, setCurrentIndex);
+            }
+
+            // update DOM directly, no React re-render
+            if (barRef.current) {
+                barRef.current.style.width = `${progressRef.current}%`;
+            }
+
+            rafRef.current = requestAnimationFrame(tick);
+        };
+
+        rafRef.current = requestAnimationFrame(tick);
 
         return () => {
-            clearInterval(progressInterval);
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
         };
-    }, [isAutoRunning, isPaused, autoRunInterval]);
+    }, [isAutoRunning, isPaused, autoRunInterval, totalSlides, canLoop]);
 
-    return(
+    // reset progress when index changes manually
+    useEffect(() => {
+        progressRef.current = 0;
+        if (barRef.current) barRef.current.style.width = `0%`;
+    }, [currentIndex]);
+
+    return (
         <div
             className={clsx(
                 'carousel-box',
@@ -61,37 +80,25 @@ const Carousel = ({
                 justifyContent:indicatorPosition
             }}
         >
-            <div
-                className='main-carousel'
-            >
+            <div className='main-carousel'>
                 <div
                     className='carousel-container'
                     style={{ 
                         transform: `translateX(-${currentIndex * 100}%)`,
-                        height: `${height??'420px'}`
+                        height: `${height ?? '420px'}`
                     }}
                 >
-                    {
-                        children.map((child, idx)=>(
-                            <div key={idx} className='carousel-child-box'>
-                                {child}
-                            </div>
-                        ))
-                    }
+                    {children}
                 </div>
             </div>
-            <div
-                className='button-carousel-box'
-            >
-                
+            <div className='button-carousel-box'>
                 <IconButton
                     className='nex-prev-button'
                     icon={<PiCaretLeftBold className='global-icon'/>}
                     txtLabel='Prev.'
                     appearance='subtle'
-                    onClick={()=>{
-                        ctrl.goToPrevious(totalSlides, canLoop, setCurrentIndex)
-                        setProgress(0)
+                    onClick={() => {
+                        ctrl.goToPrevious(totalSlides, canLoop, setCurrentIndex);
                     }}
                     isDisabled={!canGoPrevious}
                 />
@@ -101,66 +108,53 @@ const Carousel = ({
                             tabIndex={-1}
                             key={index}
                             onClick={() => {
-                                ctrl.goToSlide(index, setCurrentIndex)
-                                setProgress(0)
+                                ctrl.goToSlide(index, setCurrentIndex);
                             }}
                             className={clsx(
                                 'indicator-button',
-                                {
-                                    ['selected']:(index === currentIndex)
-                                }
+                                { ['selected']: index === currentIndex }
                             )}
                         >
-                            {index === currentIndex && isAutoRunning &&(
-                                <div 
-                                    className="time-indicator"
-                                    style={{ width: `${progress}%` }}
-                                />
+                            {index === currentIndex && isAutoRunning && (
+                                <div className="time-indicator" ref={barRef} />
                             )}
                         </button>
                     ))}
-                    {
-                        isAutoRunning&&(
-                            <IconButton
-                                className='play-pause-button'
-                                icon={isPaused?(<PiPlayFill size={12}/>):(<PiPauseFill size={12}/>)}
-                                txtLabel={isPaused?('Play'):('Pause')}
-                                appearance='subtle'
-                                onClick={()=>{
-                                    setIsPaused(!isPaused)
-                                }}
-                                isDisabled={!canGoNext}
-                            />
-                        )
-                    }
-                    
+                    {isAutoRunning && (
+                        <IconButton
+                            className='play-pause-button'
+                            icon={(isPaused)?(<PiPlayFill size={12}/>):(<PiPauseFill size={12}/>)}
+                            txtLabel={isPaused ? 'Play' : 'Pause'}
+                            appearance='subtle'
+                            onClick={() => setIsPaused(!isPaused)}
+                            isDisabled={!canGoNext}
+                        />
+                    )}
                 </div>
-                
                 <IconButton
                     className='nex-prev-button'
                     icon={<PiCaretRightBold className='global-icon'/>}
                     txtLabel='Next'
                     appearance='subtle'
-                    onClick={()=>{
-                        ctrl.goToNext(totalSlides, canLoop, isAutoRunning, setCurrentIndex)
-                        setProgress(0)
+                    onClick={() => {
+                        ctrl.goToNext(totalSlides, canLoop, isAutoRunning, setCurrentIndex);
                     }}
                     isDisabled={!canGoNext}
                 />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Carousel
+export default Carousel;
 
 interface _Carausel {
-    className?:string,
-    shape?:globalShapeType
-    height?:string
+    className?: string;
+    shape?: globalShapeType;
+    height?: string;
     isAutoRunning?: boolean;
     autoRunInterval?: number;
     canLoop?: boolean;
-    indicatorPosition?:'start'|'end'|'center'
+    indicatorPosition?: 'start' | 'end' | 'center';
     children: React.ReactNode[];
 }

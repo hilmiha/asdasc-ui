@@ -1,18 +1,9 @@
 
 .wysiwyg-box {
     margin: var(--space-50);
-
-    &.has-error{
-        .toolbar-container{
-            border-color: var(--clr-danger-700);
-        }
-        .editor-box{
-            border-color: var(--clr-danger-700);
-        }
-        .footer-box{
-            border-color: var(--clr-danger-700);
-        }
-    }
+    display: grid;
+    height: 100%;
+    grid-template-rows: min-content 1fr min-content;
     
     // Styles when it HAS a .footer-box child
     &:has(.footer-box) {
@@ -89,7 +80,20 @@
         }
     }
 
+    &.has-error{
+        .toolbar-container{
+            border-color: var(--clr-danger-700);
+        }
+        .editor-box{
+            border-color: var(--clr-danger-700);
+        }
+        .footer-box{
+            border-color: var(--clr-danger-700);
+        }
+    }
+
     .toolbar-container{
+        grid-row: 1 / 2;
         background-color: var(--clr-surface-2);
         border: 1px solid var(--clr-border);
         border-bottom: 0px;
@@ -132,6 +136,9 @@
         }
     }
     .editor-box{
+        grid-row: 2 / 3;
+        max-height: 100%;
+        overflow: auto;
         border: 1px solid var(--clr-border);
         background-color: white;
         color: black;
@@ -183,6 +190,7 @@
         }
     }
     .footer-box{
+        grid-row: 3 / 4;
         background-color: var(--clr-surface-2);
         border: 1px solid var(--clr-border);
         display: flex;
