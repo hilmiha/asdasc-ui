@@ -1,0 +1,31 @@
+.section-list-box{
+    display:flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    border-left: 1px solid var(--clr-border);
+    height: fit-content;
+    width: 100%;
+
+    .button.section-list-button{
+        padding: var(--space-0) var(--space-150);
+        min-height:fit-content;
+        border-radius: var(--space-0);
+        margin: 0px;
+
+        &.is-on{
+            border-left: 1px solid var(--clr-primary-700);
+            >div{
+                color: var(--clr-primary-800);
+            }
+        }
+
+        &.sub{
+            margin-left: var(--space-300);
+        }
+        >div{
+            font-weight: var(--font-weight-light);
+            color: var(--clr-surface-6);
+        }
+        
+    }
+}

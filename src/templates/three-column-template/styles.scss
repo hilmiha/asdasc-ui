@@ -25,7 +25,7 @@
     .left-side-content-box{
         overflow: auto;
         max-height: 100%;
-        padding: var(--space-600) var(--space-300);
+        padding: var(--space-600) var(--space-100) var(--space-600) var(--space-300);
     }
 
     .left-side-content-box-mobile{
@@ -47,20 +47,19 @@
             >.page-box{
                 height: max-content;
                 flex-grow: 1;
-                padding: var(--space-600) var(--space-500);
+                padding: var(--space-600) var(--space-500) 40vh var(--space-600);
                 max-width: 720px;
             }
         }
         .right-side-content-box{
-            border-left: 1px solid var(--clr-border);
             position: sticky;
             top: 0px;
             flex-grow: 1;
             overflow: auto;
             max-height: 100%;
             max-width: 240px;
-            min-width: 180px;
-            padding: var(--space-600) var(--space-300);
+            min-width: 240px;
+            padding: var(--space-600) var(--space-300) var(--space-600) var(--space-100);
         }
     }
     

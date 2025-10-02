@@ -1,20 +1,31 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import Button from "src/components/ui/button"
 import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
 import { baseUrl, componentList } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
+import { useDocModule } from "../.."
 
 const ComponentsPage = () =>{
     const {
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
-
+    
+    const {
+        setSectionList,
+        setSectionRef
+    } = useDocModule()
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        setSectionList([])
+    },[])
 
     return(
         <div
+            id="components"
+            ref={setSectionRef('components')} 
             style={{
                 display:'grid',
                 gap:'var(--space-400)'

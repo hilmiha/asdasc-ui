@@ -6,9 +6,11 @@ import { useThreeColumnTemplate } from "src/templates/three-column-template"
 
 const LeftSideContent = () =>{
     const navigate = useNavigate()
+    
     const menuComponent = useMemo(()=>{
         return([...sideNavMenues])
     },[])
+
     const { pageContentBox, setIsShowLeftContent } = useThreeColumnTemplate(); 
     return(
         <>

@@ -1,16 +1,30 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import './styles.scss'
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import IconButton from 'src/components/ui/icon-button'
 import { PiArrowRightBold } from 'react-icons/pi'
 import { useNavigate } from 'react-router'
 import { baseUrl } from '../../constant'
+import { useDocModule } from '../..'
+import { sections } from './constant'
+
+
 
 const GetStartedPage = () =>{
     const navigate = useNavigate()
     const {
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
+    const {
+        setSectionList,
+        setSectionRef
+    } = useDocModule()
+
+
+    useEffect(() => {
+        setSectionList(sections)
+    }, [])
+
     return(
         <div
             style={{
@@ -19,6 +33,8 @@ const GetStartedPage = () =>{
             }}
         >
             <div
+                id="introduction"
+                ref={setSectionRef('introduction')} 
                 style={{
                     display:'grid',
                     gap:'var(--space-100)'
@@ -41,9 +57,16 @@ const GetStartedPage = () =>{
                 <p className="text-sub">Another Scalable Design And Stuff, Components</p>
                 <p>ASDASC is my personal exploration into building React components the way I think they should work. It's not about reinventing the wheel, but it's about understanding how the wheel is made and building one that fits my specific needs and preferences. This React component collection built from years of front-end development experience and my journey of learning how to create my own components from scratch.</p>
             </div>
-            
-            <p className="text-title-xl">Features</p>
+            <div 
+                id="features" 
+                ref={setSectionRef('features')}
+            >
+                <p className="text-title-xl">Features</p>
+                
+            </div>
             <div
+                id="features_1" 
+                ref={setSectionRef('features_1')}
                 style={{
                     display:'grid',
                     gap:'var(--space-150)'
@@ -70,6 +93,8 @@ const GetStartedPage = () =>{
                 </div>
             </div>
             <div
+                id="features_2" 
+                ref={setSectionRef('features_2')}
                 style={{
                     display:'grid',
                     gap:'var(--space-150)',
@@ -92,6 +117,8 @@ const GetStartedPage = () =>{
                 </div>
             </div>
             <div
+                id="features_3" 
+                ref={setSectionRef('features_3')}
                 style={{
                     display:'grid',
                     gap:'var(--space-150)',
@@ -114,6 +141,8 @@ const GetStartedPage = () =>{
                 </div>
             </div>
             <div
+                id="features_4" 
+                ref={setSectionRef('features_4')}
                 style={{
                     display:'grid',
                     gap:'var(--space-150)',
@@ -135,8 +164,9 @@ const GetStartedPage = () =>{
                     </div>
                 </div>
             </div>
-
             <div
+                id="why" 
+                ref={setSectionRef('why')}
                 style={{
                     display:'grid',
                     gap:'var(--space-100)'
@@ -164,6 +194,8 @@ const GetStartedPage = () =>{
             </div>
 
             <div
+                id="philosophy" 
+                ref={setSectionRef('philosophy')}
                 style={{
                     display:'grid',
                     gap:'var(--space-100)'

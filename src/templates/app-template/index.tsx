@@ -27,7 +27,7 @@ const AppTemplate = ({
             <div className='top-banner-box'>
             </div>
             <div className="top-nav-box">
-                <div className='logo-box'>
+                <div className='logo-box' onClick={()=>{navigate('/')}}>
                     <PiSailboat size={32} color='var(--clr-primary-600)'/>
                 </div>
                 <div className='nav-buttons-box'>
