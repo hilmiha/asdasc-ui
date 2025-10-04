@@ -11,7 +11,7 @@ export const nextComp = {
 }
 
 export const sections = [
-    {id:'accordion', txtLabel:'Accordion', isSub:false},
+    {id:'preview', txtLabel:'Accordion', isSub:false},
     {id:'api_ref', txtLabel:'API Refrence', isSub:false},
     {id:'api_ref_1', txtLabel:'AccordionGroup', isSub:true},
     {id:'api_ref_2', txtLabel:'Accordion', isSub:true},

@@ -49,7 +49,8 @@ const PreviewSection = () =>{
 export default PreviewSection
 
 
-const sampleCode = `import Accordion from "src/components/ui/accordion"
+const sampleCode = `import { useState } from "react"
+import Accordion from "src/components/ui/accordion"
 import AccordionGroup from "src/components/ui/accordion-group"
 
 const AccordionDemo = () =>{

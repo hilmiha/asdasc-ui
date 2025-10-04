@@ -12,7 +12,7 @@ import ExampleSection from './section/example-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
 import Button from "src/components/ui/button"
 
-const AccordionPage = () =>{
+const BottomSheetPage = () =>{
     const {
         setSectionList,
         setSectionRef
@@ -44,7 +44,7 @@ const AccordionPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Accordion</p>
+                    <p className="text-title-xl">Bottom Sheet</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -59,7 +59,7 @@ const AccordionPage = () =>{
                     </div>
                 </div>
                 <p>
-                    A vertically stacked set of interactive headings that each reveal a section of content.
+                    Secondary content anchored to the bottom of the screen.
                 </p>
                 <PreviewSection/>
             </div>
@@ -82,4 +82,4 @@ const AccordionPage = () =>{
     )
 }
 
-export default AccordionPage
+export default BottomSheetPage

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import './styles.scss';
 import * as ctrl from './controller';
-import React, { useState, useEffect, useRef, type JSX, useMemo, useContext } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { autoUpdate, FloatingFocusManager, FloatingOverlay, FloatingPortal, useDismiss, useFloating, useInteractions, useRole, useTransitionStyles } from '@floating-ui/react';
 import type { globalShapeType } from 'src/components/_types';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
@@ -332,40 +332,34 @@ export default BottomSheet;
 interface _BottomSheet{
     isOpen?:boolean;
     setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-
-    className?:string
-    
-    iconTitle?:JSX.Element,
-    txtTitle?:string,
-    children?: React.ReactNode,
-
+    className?:string;
+    iconTitle?:React.ReactNode;
+    txtTitle?:string;
+    children?: React.ReactNode;
     onOpen?: () => void;
     onClose?: () => void;
-    
-    elementHeader?:JSX.Element
-    elementFooter?:JSX.Element
-
+    elementHeader?:React.ReactNode;
+    elementFooter?:React.ReactNode;
     shape?:globalShapeType;
     style?:bottomSheetStyleType;
-
-    floatingConfig?:bottomSheetFloatingConfig
+    floatingConfig?:bottomSheetFloatingConfig;
 }
 
 export type bottomSheetFloatingConfig = {
-    defaultSnapPoint?:'FULL'|'HALF'
-    snapPointSize?:snapPointSizeType
-    isDisableDismiss?:boolean
-    isChildOpen?:boolean
-    level?:number
+    defaultSnapPoint?:'FULL'|'HALF';
+    snapPointSize?:snapPointSizeType;
+    isDisableDismiss?:boolean;
+    isChildOpen?:boolean;
+    level?:number;
 }
 type bottomSheetStyleType = {
-    triggerBox?:React.CSSProperties,
-    container?:React.CSSProperties,
+    triggerBox?:React.CSSProperties;
+    container?:React.CSSProperties;
 }
 
 export type snapPointSizeType = {
-    HIDDEN: number,
-    HALF: number,
-    FULL: number
+    HIDDEN: number;
+    HALF: number;
+    FULL: number;
 }
 export type snapPointType = 'HIDDEN'|'HALF'|'FULL'
