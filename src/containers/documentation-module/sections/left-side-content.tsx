@@ -11,7 +11,8 @@ const LeftSideContent = () =>{
         return([...sideNavMenues])
     },[])
 
-    const { pageContentBox, setIsShowLeftContent } = useThreeColumnTemplate(); 
+    const { setIsShowLeftContent } = useThreeColumnTemplate(); 
+    
     return(
         <>
             {
@@ -33,7 +34,6 @@ const LeftSideContent = () =>{
                                         onClick={()=>{
                                             navigate(`${baseUrl}${menu.to}`)
                                             setIsShowLeftContent(false)
-                                            pageContentBox.current?.scrollTo({top:0})
                                         }}
                                     />
                                 ))

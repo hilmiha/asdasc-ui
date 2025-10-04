@@ -6,7 +6,8 @@ import { PiArrowRightBold } from 'react-icons/pi'
 import { useNavigate } from 'react-router'
 import { baseUrl } from '../../constant'
 import { useDocModule } from '../..'
-import { sections } from './constant'
+import { nextComp, sections } from './constant'
+import Button from 'src/components/ui/button'
 
 
 
@@ -49,8 +50,8 @@ const GetStartedPage = () =>{
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowRightBold className="global-icon"/>}
-                            txtLabel="to Components"
-                            onClick={()=>{navigate(`${baseUrl}/components`)}}
+                            txtLabel={`to ${nextComp.name}`}
+                            onClick={()=>{navigate(`${baseUrl}${nextComp.path}`)}}
                         />
                     </div>
                 </div>
@@ -62,7 +63,6 @@ const GetStartedPage = () =>{
                 ref={setSectionRef('features')}
             >
                 <p className="text-title-xl">Features</p>
-                
             </div>
             <div
                 id="features_1" 
@@ -225,6 +225,13 @@ const GetStartedPage = () =>{
                     </div>
                 </div>
                 <p>Keep in mind: this is my journey of learning how to build components, so expect some experimentation and iteration along the way.</p>
+            </div>
+            <div style={{display:'flex', gap:'var(--space-25)', justifyContent:'end', marginTop:'var(--space-500)'}}>
+                <Button
+                    iconAfter={<PiArrowRightBold className="global-icon"/>}
+                    txtLabel={`${nextComp.name}`}
+                    onClick={()=>{navigate(`${baseUrl}${nextComp.path}`)}}
+                />
             </div>
         </div>
     )

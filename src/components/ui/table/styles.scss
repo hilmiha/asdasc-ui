@@ -140,9 +140,9 @@
                         padding: var(--cell-padding);
                         position: relative;
 
-                        > *{
-                            margin-bottom: var(--space-100);
-                        }
+                        // > *{
+                        //     margin-bottom: var(--space-100);
+                        // }
 
                         + td:not(.table-expanded-box) {
                             &::before{

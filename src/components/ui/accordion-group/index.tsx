@@ -6,7 +6,7 @@ const AccordionGroup = ({
     children,
     listOpen,
     setListOpen,
-    isAllowMultipleOpen
+    isAllowMultipleOpen = false
 }:_AccordionGroup) => {
     
     const renderChildren = useCallback(() => {

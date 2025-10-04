@@ -213,6 +213,7 @@ export type dropdownFloatingConfigType = {
     isCloseOnItemClicked?:boolean
     level?:number,
     mode?:dropdownMenuModeType[]
+    width?:number
 }
 
 type dropdownMenuModeType = 'bottom-sheet' | 'dropdown'

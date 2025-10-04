@@ -43,8 +43,14 @@
         font-family: 'Inter', monospace;
         font-size: var(--font-size);
         line-height: 160%;
+
+        &.text-code{
+            font-family: monospace;
+            background-color: var(--clr-primary-100);
+        }
     }
 
+    
     .text-sub{
         color: var(--clr-surface-6);
     }

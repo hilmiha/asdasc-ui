@@ -98,6 +98,7 @@ const TableColumn = ({
                         style={{
                             width: headerData.size.size,
                             minWidth: headerData.size.min,
+                            maxWidth: headerData.size.min,
                             paddingLeft:(headerData.key==='#checkbox'||headerData.key==='#expandable')?('var(--space-150)'):(undefined),
                             paddingRight:(headerData.key==='#checkbox'||headerData.key==='#expandable')?('var(--space-150)'):(undefined),
                             display:(!columnShowList.includes(headerData.key))?('none'):(undefined)

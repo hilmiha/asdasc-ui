@@ -7,7 +7,7 @@ import { GlobalContext, type _GlobalContextType } from 'src/context/global-conte
 import type { globalShapeType } from 'src/components/_types';
 
 const Accordion = ({
-    id = undefined,
+    id,
     isOpen = false,
     onClickTrigger = undefined,
     className = undefined,
@@ -140,19 +140,19 @@ const Accordion = ({
 export default Accordion
 
 export interface _Accordion {
-    id?:string
+    id:string
     isOpen?:boolean
-    onClickTrigger?:(id?:string)=>void
+    onClickTrigger?:(id:string)=>void
     className?:string
 
-    onOpen?:(id?:string)=>void
-    onClose?:(id?:string)=>void
+    onOpen?:(id:string)=>void
+    onClose?:(id:string)=>void
 
     isDisabled?:boolean
 
     txtLabel?:string
-    iconBefore?:JSX.Element
-    children?:JSX.Element
+    iconBefore?:React.ReactNode
+    children?:React.ReactNode
 
     maxHeightContent?:string | number
     style?:accordionStyleType

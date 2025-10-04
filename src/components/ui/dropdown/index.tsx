@@ -156,13 +156,14 @@ const Dropdown = ({
                         <FloatingOverlay
                             lockScroll={floatingConfig?.isLockScroll}
                             style={{
-                                zIndex:'1'
+                                zIndex:'1',
+                                pointerEvents: floatingConfig?.isLockScroll ? "auto" : "none", // let scroll through
                             }}
                         >
                             <FloatingFocusManager 
                                 context={context} 
                                 order={['reference', 'content']}
-                                modal={true}
+                                modal={floatingConfig?.isLockScroll} // modal focus only if lockScroll
                             >
                                 <div
                                     className={clsx(

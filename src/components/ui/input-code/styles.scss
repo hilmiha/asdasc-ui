@@ -1,5 +1,4 @@
 .input-code{
-    margin: var(--space-50);    
     display: grid;
     height: 100%;
     grid-template-rows: min-content 1fr min-content;
@@ -55,6 +54,7 @@
             border-style: dashed;            
             .cm-editor{
                 background-color: transparent;
+                font-size: var(--font-size);
             }
 
             background-image: repeating-linear-gradient(

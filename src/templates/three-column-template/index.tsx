@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import './styles.scss'
-import { createContext, useContext, useRef, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import IconButton from 'src/components/ui/icon-button'
 import { PiListBold } from 'react-icons/pi'
 import BottomSheet from 'src/components/ui/bottom-sheet'
@@ -11,13 +11,15 @@ interface _ThreeColumnTemplateProps {
     leftSideContent: React.ReactNode;
     children: React.ReactNode;
     rightSideContent: React.ReactNode;
+    footerContent?: React.ReactNode;
 }
 
 const ThreeColumnTemplate = ({
     className,
     leftSideContent,
     children,
-    rightSideContent
+    rightSideContent,
+    footerContent,
 }:_ThreeColumnTemplateProps) =>{
     const {
         screenSize
@@ -32,6 +34,10 @@ const ThreeColumnTemplate = ({
         isShowLeftContent,
         setIsShowLeftContent
     };
+
+    useEffect(()=>{
+        pageContentBox.current?.scrollTo({top:0})
+    },[location.pathname])
 
     return(
         <ThreeColumnTemplateContext.Provider value={ctxValue}>
@@ -78,19 +84,29 @@ const ThreeColumnTemplate = ({
                             </BottomSheet>
                         </div>
                     )}
-                <div className='doc-pages-box' ref={pageContentBox}>
-                    <div>
+                <div className='main-content-box' ref={pageContentBox}>
+                    <div className='doc-pages-box'>
                         <div className='page-box'>
-                            {children}
+                            <div className='page-content'>
+                                {children}
+                            </div>
                         </div>
+                        {
+                            (screenSize==='laptop')&&(
+                                <div className='right-side-content-box'>
+                                    {rightSideContent}
+                                </div>
+                            )
+                        }
                     </div>
                     {
-                        (screenSize==='laptop')&&(
-                            <div className='right-side-content-box'>
-                                {rightSideContent}
+                        (footerContent)&&(
+                            <div className='footer-content-box'>
+                                {footerContent}
                             </div>
                         )
                     }
+                    
                 </div>
             </div>
         </ThreeColumnTemplateContext.Provider>

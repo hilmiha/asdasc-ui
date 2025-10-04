@@ -1,7 +1,7 @@
 export const doClickAccordionButton = (
-    id?:string,
+    id:string,
     currentIsOpen?:boolean,
-    onClickTrigger?:(id?:string)=>void
+    onClickTrigger?:(id:string)=>void
 ) =>{
     if(currentIsOpen===undefined){
         return 

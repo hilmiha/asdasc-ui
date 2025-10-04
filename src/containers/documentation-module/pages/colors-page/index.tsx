@@ -7,7 +7,7 @@ import { PiArrowLeftBold, PiArrowRightBold, PiPaintBrushBold } from "react-icons
 import { toTitleCase } from "src/helper/helper"
 import Button from "src/components/ui/button"
 import { useDocModule } from "../.."
-import { sections } from "./constant"
+import { nextComp, prevComp, sections } from "./constant"
 
 const ColorsPage = () =>{
     const {
@@ -61,13 +61,13 @@ const ColorsPage = () =>{
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
-                            txtLabel="to Components"
-                            onClick={()=>{navigate(`${baseUrl}/components`)}}
+                            txtLabel={`to ${prevComp.name}`}
+                            onClick={()=>{navigate(`${baseUrl}${prevComp.path}`)}}
                         />
                         <IconButton
                             icon={<PiArrowRightBold className="global-icon"/>}
-                            txtLabel="to Accordion"
-                            onClick={()=>{navigate(`${baseUrl}/accordion`)}}
+                            txtLabel={`to ${nextComp.name}`}
+                            onClick={()=>{navigate(`${baseUrl}${nextComp.path}`)}}
                         />
                     </div>
                 </div>
@@ -324,7 +324,18 @@ const ColorsPage = () =>{
                     }
                 </div>
             </div>
-            
+            <div style={{display:'flex', gap:'var(--space-25)', justifyContent:'space-between', marginTop:'var(--space-500)'}}>
+                <Button
+                    iconBefore={<PiArrowLeftBold className="global-icon"/>}
+                    txtLabel={`${prevComp.name}`}
+                    onClick={()=>{navigate(`${baseUrl}${prevComp.path}`)}}
+                />
+                <Button
+                    iconAfter={<PiArrowRightBold className="global-icon"/>}
+                    txtLabel={`${nextComp.name}`}
+                    onClick={()=>{navigate(`${baseUrl}${nextComp.path}`)}}
+                />
+            </div>
         </div>
     )
 }

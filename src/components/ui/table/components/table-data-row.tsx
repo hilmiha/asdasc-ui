@@ -70,6 +70,7 @@ const TableDataRow = ({
                             paddingBottom:(headerData.key==='#expandable')?('0px'):(undefined),
                             width: headerData.size.size,
                             minWidth: headerData.size.min,
+                            maxWidth: headerData.size.min,
                             textAlign: headerData.horizontalAlign==='center'?('center'):(headerData.horizontalAlign==='end')?('end'):('start'),
                             verticalAlign: headerData.verticalAlign==='middle'?('middle'):(headerData.verticalAlign==='bottom')?('bottom'):('top'),
                             display:(!columnShowList.includes(headerData.key))?('none'):(undefined)
@@ -158,7 +159,6 @@ const TableDataRow = ({
                                                         options={itmButton.option??[]}
                                                         floatingConfig={{
                                                             isCloseOnItemClicked:true,
-                                                            isContainerWidthSameAsTrigger:true
                                                         }}
                                                         onClick={(idButton)=>{
                                                             if(onClickRowAction){

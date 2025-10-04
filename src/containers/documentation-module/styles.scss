@@ -4,7 +4,6 @@
     gap: var(--space-100);
     border-left: 1px solid var(--clr-border);
     height: fit-content;
-    width: 100%;
 
     .button.section-list-button{
         padding: var(--space-0) var(--space-150);
@@ -27,5 +26,15 @@
             color: var(--clr-surface-6);
         }
         
+    }
+}
+
+.preview-box{
+    border: 1px solid var(--clr-border);
+    border-radius: var(--global-radius);
+    padding: var(--space-200) var(--space-200);
+
+    &.mobile{
+        padding: var(--space-50) var(--space-50);
     }
 }

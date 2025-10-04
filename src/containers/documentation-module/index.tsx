@@ -58,7 +58,7 @@ const DocsModule = () =>{
             },
             { 
                 threshold: 0, 
-                rootMargin: "-20% 0px -70% 0px" 
+                rootMargin: "-20% 0px -90% 0px" 
             }
         )
 
@@ -75,7 +75,7 @@ const DocsModule = () =>{
         return () => {
             mainObserver.disconnect()
         }
-    }, [location.pathname])
+    }, [location.pathname, JSON.stringify(sectionList)])
 
     return(
         <DocModuleContext.Provider value={ctxValue}>
@@ -84,9 +84,11 @@ const DocsModule = () =>{
                 leftSideContent={
                     <LeftSideContent/>
                 }
-                rightSideContent={<RightSideContent 
-                    ctxValue={ctxValue}
-                />}
+                rightSideContent={
+                    <RightSideContent 
+                        ctxValue={ctxValue}
+                    />
+                }
             >
                 <Suspense fallback={<PageSkeleton/>}>
                     <Routes>
@@ -97,6 +99,10 @@ const DocsModule = () =>{
                         }
                     </Routes>
                 </Suspense>
+                <div style={{marginTop:'10vh'}}>
+                    <p>Built with ☕ and the desire to understand.</p>
+                    <a style={{color:'var(--clr-primary-700)'}} href='https://github.com/hilmiha'>Hilmi Hidayat Arfisko</a>
+                </div>
             </ThreeColumnTemplate>
         </DocModuleContext.Provider>
     )

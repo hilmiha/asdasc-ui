@@ -1,49 +1,50 @@
-import { useContext, useEffect } from "react"
-import Button from "src/components/ui/button"
-import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
-import { baseUrl, componentList } from "../../constant"
+import { useEffect } from "react"
+import { type _GlobalContextType } from "src/context/global-context"
+import { baseUrl } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
 import { useDocModule } from "../.."
-import { nextComp, prevComp } from "./constant"
+import { nextComp, prevComp, sections } from "./constant"
+import PreviewSection from './section/preview-section'
+import ApiReferenceSection from './section/api-reference-section'
+import ExampleSection from './section/example-section'
+import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
+import Button from "src/components/ui/button"
 
-const ComponentsPage = () =>{
-    const {
-        screenSize
-    } = useContext(GlobalContext) as _GlobalContextType
-    
+const AccordionPage = () =>{
     const {
         setSectionList,
         setSectionRef
     } = useDocModule()
+
     const navigate = useNavigate()
 
     useEffect(()=>{
-        setSectionList([])
+        setSectionList(sections)
     },[])
 
     return(
         <div
-            id="components"
-            ref={setSectionRef('components')} 
             style={{
                 display:'grid',
                 gap:'var(--space-400)'
             }}
         >
             <div
+                id="accordion"
+                ref={setSectionRef('accordion')} 
                 style={{
                     display:'grid',
                     gap:'var(--space-100)',
-                    alignItems:'center'
+                    alignItems:'center',
                 }}
             >
                 <div style={{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Components</p>
+                    <p className="text-title-xl">Accordion</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -57,33 +58,14 @@ const ComponentsPage = () =>{
                         />
                     </div>
                 </div>
-                <p>The collection currently includes the following components and is actively being expanded.</p>
+                <p>
+                    A vertically stacked set of interactive headings that each reveal a section of content.
+                </p>
+                <PreviewSection/>
             </div>
-            
-            <div
-                style={{
-                    display:'grid',
-                    gridTemplateColumns:(screenSize==='laptop')?('1fr 1fr 1fr'):(screenSize==='tablet')?('1fr 1fr'):('1fr'),
-                }}
-            >
-                {
-                    componentList.map((menu)=>(
-                        <Button
-                            appearance='subtle'
-                            key={menu.id}
-                            txtLabel={menu.txtLable}
-                            onClick={()=>{navigate(`${baseUrl}${menu.to}`)}}
-                            style={{
-                                button:{
-                                    padding:'var(--space-150) var(--space-50)',
-                                    border:'1px solid var(--clr-border)'
-                                },
-                            }}
-                        />
-                    ))
-                }
-                
-            </div>
+            <ApiReferenceSection/>
+            <ExampleSection/>
+            <KeyboardInteractionsSection/>
             <div style={{display:'flex', gap:'var(--space-25)', justifyContent:'space-between', marginTop:'var(--space-500)'}}>
                 <Button
                     iconBefore={<PiArrowLeftBold className="global-icon"/>}
@@ -100,4 +82,4 @@ const ComponentsPage = () =>{
     )
 }
 
-export default ComponentsPage
+export default AccordionPage

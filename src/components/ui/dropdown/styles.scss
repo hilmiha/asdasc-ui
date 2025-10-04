@@ -4,6 +4,7 @@
     height: fit-content
 }
 .dropdown-box{
+    pointer-events: auto;
 
     .dropdown-container{
         background-color: var(--clr-surface-2);

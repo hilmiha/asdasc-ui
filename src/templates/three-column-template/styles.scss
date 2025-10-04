@@ -5,8 +5,8 @@
     overflow: hidden;
 
     &.mobile{
-        .doc-pages-box{
-            >div>.page-box{
+        .main-content-box .doc-pages-box{
+            .page-box>.page-content{
                 padding: var(--space-400) var(--space-200);
             }
         }
@@ -15,8 +15,8 @@
         .left-side-content-box{
             padding: var(--space-400) var(--space-300);
         }
-        .doc-pages-box{
-            >div>.page-box{
+        .main-content-box .doc-pages-box{
+            .page-box>.page-content{
                 padding: var(--space-400) var(--space-300);
             }
         }
@@ -33,34 +33,44 @@
         border-bottom: 1px solid var(--clr-border);
     }
 
-    .doc-pages-box{
+    .main-content-box{
         overflow: auto;
         max-height: 100%;
-        display: flex;
-        position: relative;
         scrollbar-gutter: stable;
-        >div{
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
+        position: relative;
 
-            >.page-box{
-                height: max-content;
+        .doc-pages-box{
+            display: flex;
+            .page-box{
                 flex-grow: 1;
-                padding: var(--space-600) var(--space-500) 40vh var(--space-600);
-                max-width: 720px;
+                display: flex;
+                justify-content: center;
+
+                >.page-content{
+                    height: max-content;
+                    flex-grow: 1;
+                    padding: var(--space-600) var(--space-500);
+                    max-width: 720px;
+                }
+            }
+            .right-side-content-box{
+                position: sticky;
+                top: 0px;
+                flex-grow: 1;
+                overflow: auto;
+                max-height: 100%;
+                height: fit-content;
+                max-width: 240px;
+                min-width: 240px;
+                padding: var(--space-600) var(--space-300) var(--space-600) var(--space-100);
             }
         }
-        .right-side-content-box{
-            position: sticky;
-            top: 0px;
-            flex-grow: 1;
-            overflow: auto;
-            max-height: 100%;
-            max-width: 240px;
-            min-width: 240px;
-            padding: var(--space-600) var(--space-300) var(--space-600) var(--space-100);
+
+        .footer-content-box{
+            padding: var(--space-600) var(--space-500);
+            margin-top: 5vh;
         }
     }
+    
     
 }
