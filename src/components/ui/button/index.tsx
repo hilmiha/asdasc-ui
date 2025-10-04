@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { globalAppearanceType, globalShapeType } from 'src/components/_types';
-import { useContext, type JSX } from 'react';
+import { useContext } from 'react';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import Spinner from '../spinner';
 
@@ -99,25 +99,25 @@ export default Button
 
 interface _Button {
     ref?:React.Ref<HTMLButtonElement>;
-    id?:string
+    id?:string;
     className?:string;
     style?:buttonStyleType;
     appearance?:globalAppearanceType;
     shape?:globalShapeType;
-    txtLabel:JSX.Element | string;
-    iconBefore?:JSX.Element;
-    iconAfter?:JSX.Element;
+    txtLabel:React.ReactNode | string;
+    iconBefore?:React.ReactNode;
+    iconAfter?:React.ReactNode;
     isSelected?:boolean;
     isDisabled?:boolean;
     isLoading?:boolean;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
-    tabIndex?:number
+    tabIndex?:number;
 };
 
 export type buttonStyleType = {
-    button?:React.CSSProperties,
-    textLabelBox?:React.CSSProperties,
-    textLabel?:React.CSSProperties,
-    iconBefore?:React.CSSProperties,
-    iconAfter?:React.CSSProperties
+    button?:React.CSSProperties;
+    textLabelBox?:React.CSSProperties;
+    textLabel?:React.CSSProperties;
+    iconBefore?:React.CSSProperties;
+    iconAfter?:React.CSSProperties;
 }

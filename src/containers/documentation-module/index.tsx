@@ -99,7 +99,7 @@ const DocsModule = () =>{
                         }
                     </Routes>
                 </Suspense>
-                <div style={{marginTop:'10vh'}}>
+                <div style={{marginTop:'10vh', marginBottom:'20vh'}}>
                     <p>Built with ☕ and the desire to understand.</p>
                     <a style={{color:'var(--clr-primary-700)'}} href='https://github.com/hilmiha'>Hilmi Hidayat Arfisko</a>
                 </div>

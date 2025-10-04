@@ -3,7 +3,7 @@ export const baseUrl = '/docs'
 export const componentList = [
     {id:'accordion', txtLable:'Accordion', to:'/accordion'},
     {id:'bottom-sheet', txtLable:'Bottom Sheet', to:'/bottom-sheet'},
-    {id:'button', txtLable:'Botton', to:'/botton'},
+    {id:'button', txtLable:'Button', to:'/button'},
     {id:'calendar', txtLable:'Calendar', to:'/calendar'},
     {id:'carousel', txtLable:'Carousel', to:'/carousel'},
     {id:'checkbox', txtLable:'Checkbox', to:'/checkbox'},
