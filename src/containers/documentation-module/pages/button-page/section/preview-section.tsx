@@ -39,7 +39,7 @@ export default PreviewSection
 
 const sampleCode = `import Button from "src/components/ui/button"
 
-const BottomSheetDemo = () =>{
+const ButtonDemo = () =>{
 
     return(
         <Button 

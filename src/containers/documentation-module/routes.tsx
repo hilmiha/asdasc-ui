@@ -6,7 +6,7 @@ const AccordionPage   = lazy(() => import('./pages/accordion-page'));
 const BottomSheetPage   = lazy(() => import('./pages/bottom-sheet-page'));
 const ButtonPage   = lazy(() => import('./pages/button-page'));
 const CalendarPage   = lazy(() => import('./pages/calendar-page'));
-
+const CarouselPage   = lazy(() => import('./pages/carousel-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -16,6 +16,7 @@ const routes = [
     {key:'bottom-sheet', path: '/bottom-sheet', component: <BottomSheetPage/>},
     {key:'button', path: '/button', component: <ButtonPage/>},
     {key:'calendar', path: '/calendar', component: <CalendarPage/>},
+    {key:'carousel', path: '/carousel', component: <CarouselPage/>},
 ];
 
 export default routes;
