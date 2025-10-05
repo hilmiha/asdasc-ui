@@ -83,6 +83,10 @@
 
     &:has(.text-sublabel){
         align-items: start;
+        .icon-before{
+            min-height: calc(var(--font-size) + 8px);
+            align-items: end;
+        }
     }
 }
 

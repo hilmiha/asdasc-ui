@@ -96,6 +96,10 @@
 
     &:has(.text-sublabel){
         align-items: start;
+        .icon-before{
+            min-height: calc(var(--font-size) + 5px);
+            align-items: end;
+        }
     }
 }
 

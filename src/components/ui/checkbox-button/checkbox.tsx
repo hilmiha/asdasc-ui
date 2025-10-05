@@ -10,8 +10,8 @@ const Checkbox = ({
     isIndeterminate = false,
     shape = undefined,
 }:{
-    isSelected:boolean
-    isIndeterminate:boolean,
+    isSelected:boolean;
+    isIndeterminate:boolean;
     shape?:globalShapeType;    
 }) =>{
     //Context start ====

@@ -73,17 +73,17 @@ const CheckboxButton = ({
 export default CheckboxButton
 
 interface _CheckboxButton {
-    className?:string,
+    className?:string;
     style?:buttonStyleType;
     shape?:globalShapeType;
-    appearance?: checkboxButtonAppearance
-    txtLabel?:string
-    txtSublabel?:string,
-    icon?:JSX.Element,
-    isSelected:boolean,
-    onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void
-    isDisabled?:boolean
-    isIndeterminate?:boolean
+    appearance?: checkboxButtonAppearance;
+    txtLabel?:string;
+    txtSublabel?:string;
+    icon?:JSX.Element;
+    isSelected:boolean;
+    onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    isDisabled?:boolean;
+    isIndeterminate?:boolean;
 }
 
 export type checkboxButtonAppearance = 'subtle-selected' | 'appear-selected'
