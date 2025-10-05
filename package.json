@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build-ghpg": "npm run build && cp dist/index.html dist/404.html && rm -rf docs && mkdir docs && cp -r dist/* docs/",
     "lint": "eslint .",
     "preview": "vite preview",
     "type-check:watch": "tsc --noEmit -p tsconfig.app.json --watch"

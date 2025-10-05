@@ -47,6 +47,8 @@ import CheckboxButton from "src/components/ui/checkbox-button"
 
 const CheckboxButtonDemo = () =>{
 
+    const [isSelected, setIsSelected] = useState(false)
+
     return(
         <CheckboxButton
             isSelected={isSelected}

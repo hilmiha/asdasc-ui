@@ -227,7 +227,7 @@ const Dropdown = ({
 export default Dropdown
 
 interface _Dropdown {
-    className?:string
+    className?:string;
     trigger:JSX.Element | ((
         triggerRef: React.RefCallback<HTMLElement>, 
         getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>,
@@ -236,16 +236,14 @@ interface _Dropdown {
     ) => JSX.Element);
     style?:dropdownStyleType;
     shape?:globalShapeType;
-    isDisabled?:boolean
+    isDisabled?:boolean;
     onOpen?: () => void;
     onClose?: () => void;
-
-    elementHeader?:JSX.Element
-    elementFooter?:JSX.Element
-    children?:JSX.Element | JSX.Element[]
-
-    triggerClose?:1|0,
-    floatingConfig?:dropdownFloatingConfigType
+    elementHeader?:JSX.Element;
+    elementFooter?:JSX.Element;
+    children?:JSX.Element | JSX.Element[];
+    triggerClose?:1|0;
+    floatingConfig?:dropdownFloatingConfigType;
 }
 
 export type dropdownFloatingConfigType = {

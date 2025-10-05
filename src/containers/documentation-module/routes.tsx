@@ -8,6 +8,7 @@ const ButtonPage   = lazy(() => import('./pages/button-page'));
 const CalendarPage   = lazy(() => import('./pages/calendar-page'));
 const CarouselPage   = lazy(() => import('./pages/carousel-page'));
 const CheckboxPage   = lazy(() => import('./pages/checkbox-page'));
+const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -19,7 +20,8 @@ const routes = [
     {key:'calendar', path: '/calendar', component: <CalendarPage/>},
     {key:'carousel', path: '/carousel', component: <CarouselPage/>},
     {key:'checkbox', path: '/checkbox', component: <CheckboxPage/>},
-    {key:'carousel', path: '/*', component: <>🚧 Coming Soon...</>},
+    {key:'dropdown', path: '/dropdown', component: <DropdownPage/>},
+    {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
 ];
 
 export default routes;
