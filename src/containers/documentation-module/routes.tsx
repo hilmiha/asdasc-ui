@@ -5,6 +5,7 @@ const ColorsPage   = lazy(() => import('./pages/colors-page'));
 const AccordionPage   = lazy(() => import('./pages/accordion-page'));
 const BottomSheetPage   = lazy(() => import('./pages/bottom-sheet-page'));
 const ButtonPage   = lazy(() => import('./pages/button-page'));
+const CalendarPage   = lazy(() => import('./pages/calendar-page'));
 
 
 const routes = [
@@ -13,7 +14,8 @@ const routes = [
     {key:'colors', path: '/colors', component: <ColorsPage/>},
     {key:'accordion', path: '/accordion', component: <AccordionPage/>},
     {key:'bottom-sheet', path: '/bottom-sheet', component: <BottomSheetPage/>},
-    {key:'button', path: '/button', component: <ButtonPage/>}
+    {key:'button', path: '/button', component: <ButtonPage/>},
+    {key:'calendar', path: '/calendar', component: <CalendarPage/>},
 ];
 
 export default routes;

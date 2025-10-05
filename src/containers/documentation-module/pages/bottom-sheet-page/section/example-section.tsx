@@ -2,7 +2,7 @@ import { useState } from "react"
 import BottomSheet from "src/components/ui/bottom-sheet"
 import Button from "src/components/ui/button"
 import InputCode from "src/components/ui/input-code"
-import { useDocModule } from "src/containers/documentation-module"
+import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const ExampleSection = () =>{

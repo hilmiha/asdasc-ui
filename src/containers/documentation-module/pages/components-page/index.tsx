@@ -5,7 +5,7 @@ import { baseUrl, componentList } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
-import { useDocModule } from "../.."
+import { useDocModule } from "src/containers/documentation-module/context"
 import { nextComp, prevComp } from "./constant"
 
 const ComponentsPage = () =>{

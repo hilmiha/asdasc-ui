@@ -125,14 +125,14 @@ const Calendar = ({
 export default Calendar
 
 interface _Calendar {
-    type:calendarType
-    value?:validCalendarValue
-    onChange?:(newValue:validCalendarValue)=>void
-    isDisabled?:boolean
-    disabledDates?:validCalendarDisabledValue[]
-    shape?:globalShapeType
-    calendarStart?:Date
-    calendarEnd?:Date
+    type:calendarType;
+    value?:validCalendarValue;
+    onChange?:(newValue:validCalendarValue)=>void;
+    isDisabled?:boolean;
+    disabledDates?:validCalendarDisabledValue[];
+    shape?:globalShapeType;
+    calendarStart?:Date;
+    calendarEnd?:Date;
 }
 export type calendarType = Mode | 'single-with-time'
 export type pickModeType = "date" | 'month' | 'year'

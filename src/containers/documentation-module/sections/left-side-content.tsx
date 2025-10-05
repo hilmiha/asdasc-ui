@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { useNavigate } from "react-router"
 import { baseUrl, sideNavMenues } from "../constant"
 import Button from "src/components/ui/button"
-import { useThreeColumnTemplate } from "src/templates/three-column-template"
+import { useThreeColumnTemplate } from "src/templates/three-column-template/context"
 
 const LeftSideContent = () =>{
     const navigate = useNavigate()

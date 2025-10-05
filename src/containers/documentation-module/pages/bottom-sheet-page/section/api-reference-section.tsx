@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
-import { useDocModule } from "src/containers/documentation-module"
+import { useDocModule } from "src/containers/documentation-module/context"
 import { apiRefBottomSheetList, apiRefBottomSheetFloatingConfigList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{

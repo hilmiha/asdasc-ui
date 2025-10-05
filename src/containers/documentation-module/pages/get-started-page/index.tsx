@@ -5,7 +5,7 @@ import IconButton from 'src/components/ui/icon-button'
 import { PiArrowRightBold } from 'react-icons/pi'
 import { useNavigate } from 'react-router'
 import { baseUrl } from '../../constant'
-import { useDocModule } from '../..'
+import { useDocModule } from "src/containers/documentation-module/context"
 import { nextComp, sections } from './constant'
 import Button from 'src/components/ui/button'
 

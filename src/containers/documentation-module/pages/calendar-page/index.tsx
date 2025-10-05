@@ -4,15 +4,15 @@ import { baseUrl } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
+import { useDocModule } from "src/containers/documentation-module/context"
 import { nextComp, prevComp, sections } from "./constant"
 import PreviewSection from './section/preview-section'
 import ApiReferenceSection from './section/api-reference-section'
 import ExampleSection from './section/example-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
 import Button from "src/components/ui/button"
-import { useDocModule } from "src/containers/documentation-module/context"
 
-const ButtonPage = () =>{
+const CalendarPage = () =>{
     const {
         setSectionList,
         setSectionRef
@@ -44,7 +44,7 @@ const ButtonPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Button</p>
+                    <p className="text-title-xl">Calendar</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -59,7 +59,7 @@ const ButtonPage = () =>{
                     </div>
                 </div>
                 <p>
-                    A button triggers an event or action.
+                    An interactive calendar for date selection experiences.
                 </p>
                 <PreviewSection/>
             </div>
@@ -82,4 +82,4 @@ const ButtonPage = () =>{
     )
 }
 
-export default ButtonPage
+export default CalendarPage

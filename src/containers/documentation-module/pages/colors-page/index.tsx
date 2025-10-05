@@ -6,7 +6,7 @@ import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold, PiPaintBrushBold } from "react-icons/pi"
 import { toTitleCase } from "src/helper/helper"
 import Button from "src/components/ui/button"
-import { useDocModule } from "../.."
+import { useDocModule } from "src/containers/documentation-module/context"
 import { nextComp, prevComp, sections } from "./constant"
 
 const ColorsPage = () =>{

@@ -1,11 +1,12 @@
 import './styles.scss'
-import { createContext, Suspense, useContext, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import ThreeColumnTemplate from 'src/templates/three-column-template'
 import { Route, Routes } from 'react-router'
 import routes from './routes'
 import LeftSideContent from './sections/left-side-content'
 import PageSkeleton from './sections/page-skeleton'
 import RightSideContent from './sections/right-side-content'
+import { DocModuleContext, type DocModuleContextValue } from './context'
 
 export type rightSideSectionType = {id:string, txtLabel:string, isSub:boolean}
 
@@ -100,8 +101,8 @@ const DocsModule = () =>{
                     </Routes>
                 </Suspense>
                 <div style={{marginTop:'10vh', marginBottom:'20vh'}}>
-                    <p>Built with ☕ and the desire to understand.</p>
-                    <a style={{color:'var(--clr-primary-700)'}} href='https://github.com/hilmiha'>Hilmi Hidayat Arfisko</a>
+                    <p>Built with ❤️ and the desire to understand.</p>
+                    <a style={{color:'var(--clr-primary-700)'}} href='https://github.com/hilmiha'>Hilmi Hidayat Arfisko</a> 
                 </div>
             </ThreeColumnTemplate>
         </DocModuleContext.Provider>
@@ -109,20 +110,3 @@ const DocsModule = () =>{
 }
 
 export default DocsModule
-
-//Context
-export interface DocModuleContextValue {
-    sectionList: rightSideSectionType[]
-    setSectionList: React.Dispatch<React.SetStateAction<rightSideSectionType[]>>
-    sectionOn:string
-    setSectionOn: React.Dispatch<React.SetStateAction<string>>
-    sectionRefs: React.RefObject<Record<string, HTMLDivElement | null>>
-    setSectionRef: (id: string) => (el: HTMLDivElement | null) => void
-    scrollToSection: (id: string) => void
-}
-const DocModuleContext = createContext<DocModuleContextValue | null>(null);
-export const useDocModule = () => {
-    const ctx = useContext(DocModuleContext);
-    if (!ctx) throw new Error('useDocModule must be used inside <DocModuleContext>');
-    return ctx;
-};

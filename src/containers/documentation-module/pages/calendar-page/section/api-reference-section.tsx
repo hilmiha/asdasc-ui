@@ -1,7 +1,8 @@
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefButtonList, apiRefTableColumnList } from "../constant"
+import { apiRefCalendarList, apiRefTableColumnList } from "../constant"
+import { parsePropsToDocumentation } from "src/helper/helper"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,8 +13,22 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefButtonData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefButtonList)
+    const apiRefCalendarData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefCalendarList)
+    },[])
+
+    useEffect(()=>{
+        const tamp = parsePropsToDocumentation(`
+            type:calendarType;
+            value?:validCalendarValue;
+            onChange?:(newValue:validCalendarValue)=>void;
+            isDisabled?:boolean;
+            disabledDates?:validCalendarDisabledValue[];
+            shape?:globalShapeType;
+            calendarStart?:Date;
+            calendarEnd?:Date;
+        }`)
+        console.log(tamp)
     },[])
 
     return(
@@ -32,11 +47,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">Button</span></p>
-                <p>The button.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">Calendar</span></p>
+                <p>Calendar with rendered dates that can be selected.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefButtonData}
+                    tableData={apiRefCalendarData}
                 />
             </div>
         </>

@@ -1,8 +1,12 @@
-import Button from "src/components/ui/button"
+import { useState } from "react"
+import Calendar, { type validCalendarValue } from "src/components/ui/calendar"
 import InputCode from "src/components/ui/input-code"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const PreviewSection = () =>{
+
+    const [value, setValue] = useState< validCalendarValue >(undefined)
+
     return(
         <div 
             style={{
@@ -13,10 +17,11 @@ const PreviewSection = () =>{
             }}
         >
             <PreviewBox>
-                <div style={{display:"flex", justifyContent:'center'}}>
-                    <Button 
-                        txtLabel={'Button'}
-                        onClick={()=>{alert("Button Clicked");}}
+                <div style={{display:'flex', justifyContent:'center'}}>
+                    <Calendar
+                        type='single'
+                        value={value}
+                        onChange={(newValue)=>{setValue(newValue)}}
                     />
                 </div>
             </PreviewBox>
@@ -37,14 +42,19 @@ const PreviewSection = () =>{
 export default PreviewSection
 
 
-const sampleCode = `import Button from "src/components/ui/button"
+const sampleCode = `import { useState } from "react"
+import Calendar, { type validCalendarValue } from "src/components/ui/calendar"
 
-const BottomSheetDemo = () =>{
+
+const CalendarDemo = () =>{
+
+    const [value, setValue] = useState<validCalendarValue>(undefined)
 
     return(
-        <Button 
-            txtLabel={'Button'}
-            onClick={()=>{alert("Button Clicked");}}
+        <Calendar
+            type='single'
+            value={value}
+            onChange={(newValue)=>{setValue(newValue)}}
         />
     )
 }`

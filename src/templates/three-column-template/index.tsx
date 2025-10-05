@@ -1,10 +1,13 @@
 import clsx from 'clsx'
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import './styles.scss'
-import { createContext, useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import IconButton from 'src/components/ui/icon-button'
 import { PiListBold } from 'react-icons/pi'
 import BottomSheet from 'src/components/ui/bottom-sheet'
+import { ThreeColumnTemplateContext, type ThreeColumnTemplateContextValue } from './context'
+
+
 
 interface _ThreeColumnTemplateProps {
     className?: string;
@@ -114,16 +117,3 @@ const ThreeColumnTemplate = ({
 }
 
 export default ThreeColumnTemplate
-
-//Context
-export interface ThreeColumnTemplateContextValue {
-    pageContentBox: React.RefObject<HTMLDivElement | null>;
-    isShowLeftContent: boolean;
-    setIsShowLeftContent: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const ThreeColumnTemplateContext = createContext<ThreeColumnTemplateContextValue | null>(null);
-export const useThreeColumnTemplate = () => {
-    const ctx = useContext(ThreeColumnTemplateContext);
-    if (!ctx) throw new Error('useThreeColumnTemplate must be used inside <ThreeColumnTemplate>');
-    return ctx;
-};

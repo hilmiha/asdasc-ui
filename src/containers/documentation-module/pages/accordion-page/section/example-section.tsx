@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { PiStarFourBold } from "react-icons/pi"
 import Accordion from "src/components/ui/accordion"
+import AccordionGroup from "src/components/ui/accordion-group"
 import InputCode from "src/components/ui/input-code"
-import { useDocModule } from "src/containers/documentation-module"
+import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const ExampleSection = () =>{
@@ -10,6 +11,7 @@ const ExampleSection = () =>{
         setSectionRef
     } = useDocModule()
     
+    const [listAccordionOpen, setListAccordionOpen] = useState<string[]>(['1', '2', '3'])
     const [isOpen, setIsOpen] = useState(true);
 
     return(
@@ -38,6 +40,23 @@ const ExampleSection = () =>{
                         alignItems:'center',
                     }}
                 >
+                    <PreviewBox>
+                        <AccordionGroup
+                            listOpen={listAccordionOpen}
+                            setListOpen={setListAccordionOpen}
+                            isAllowMultipleOpen={true}
+                        >
+                            <Accordion id='1' txtLabel='Heading One'>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sapiente accusamus necessitatibus ratione tempora, magnam harum repudiandae aperiam similique, itaque, incidunt fuga molestias repellat praesentium molestiae veritatis amet illo minus?</p>
+                            </Accordion>
+                            <Accordion id='2' txtLabel='Heading Two'>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sapiente accusamus necessitatibus ratione tempora, magnam harum repudiandae aperiam similique, itaque, incidunt fuga molestias repellat praesentium molestiae veritatis amet illo minus?</p>
+                            </Accordion>
+                            <Accordion id='3' txtLabel='Heading Three'>
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla sapiente accusamus necessitatibus ratione tempora, magnam harum repudiandae aperiam similique, itaque, incidunt fuga molestias repellat praesentium molestiae veritatis amet illo minus?</p>
+                            </Accordion>
+                        </AccordionGroup>
+                    </PreviewBox>
                     <InputCode
                         lang="tsx"
                         isDisabled={true}
