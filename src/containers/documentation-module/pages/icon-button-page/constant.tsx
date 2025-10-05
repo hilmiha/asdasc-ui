@@ -2,18 +2,18 @@ import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
 export const prevComp = {
-    name:'Bottom Sheet',
-    path:'/bottom-sheet'
+    name:'Dropdown Menu',
+    path:'/dropdown-menu'
 }
 export const nextComp = {
-    name:'Calendar',
-    path:'/calendar'
+    name:'Input Date',
+    path:'/input-date'
 }
 
 export const sections = [
-    {id:'preview', txtLabel:'Button', isSub:false},
+    {id:'preview', txtLabel:'Icon Button', isSub:false},
     {id:'api_ref', txtLabel:'API Refrence', isSub:false},
-    {id:'api_ref_1', txtLabel:'Button', isSub:true},
+    {id:'api_ref_1', txtLabel:'IconButton', isSub:true},
     {id:'example', txtLabel:'Example', isSub:false},
     {id:'example_1', txtLabel:'Appearances', isSub:true},
     {id:'example_2', txtLabel:'States', isSub:true},
@@ -49,7 +49,7 @@ export const apiRefTableColumnList:tableColumnType[] = [
     {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
-export const apiRefButtonList:tableRowDataType[] = [
+export const apiRefIconButtonList:tableRowDataType[] = [
     {
         "id": "1",
         "prop": <p style={{fontFamily:'monospace'}}>ref</p>,
@@ -71,7 +71,7 @@ export const apiRefButtonList:tableRowDataType[] = [
     {
         "id": "4",
         "prop": <p style={{fontFamily:'monospace'}}>style</p>,
-        "type": <p style={{fontFamily:'monospace'}}>buttonStyleType</p>,
+        "type": <p style={{fontFamily:'monospace'}}>iconButtonStyleType</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
@@ -88,50 +88,44 @@ export const apiRefButtonList:tableRowDataType[] = [
     },
     {
         "id": "7",
-        "prop": <p style={{fontFamily:'monospace'}}>txtLabel<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
-        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode | string</p>,
+        "prop": <p style={{fontFamily:'monospace'}}>icon<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
+        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "8",
-        "prop": <p style={{fontFamily:'monospace'}}>iconBefore</p>,
-        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode</p>,
+        "prop": <p style={{fontFamily:'monospace'}}>txtLabel<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
+        "type": <p style={{fontFamily:'monospace'}}>string</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "9",
-        "prop": <p style={{fontFamily:'monospace'}}>iconAfter</p>,
-        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "10",
         "prop": <p style={{fontFamily:'monospace'}}>isSelected</p>,
         "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
         "default": <p style={{fontFamily:'monospace'}}>false</p>
     },
     {
-        "id": "11",
+        "id": "10",
         "prop": <p style={{fontFamily:'monospace'}}>isDisabled</p>,
         "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
         "default": <p style={{fontFamily:'monospace'}}>false</p>
     },
     {
-        "id": "12",
+        "id": "11",
         "prop": <p style={{fontFamily:'monospace'}}>isLoading</p>,
         "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
         "default": <p style={{fontFamily:'monospace'}}>false</p>
     },
     {
+        "id": "12",
+        "prop": <p style={{fontFamily:'monospace'}}>isShowtooltip</p>,
+        "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
+        "default": <p style={{fontFamily:'monospace'}}>true</p>
+    },
+    {
         "id": "13",
         "prop": <p style={{fontFamily:'monospace'}}>onClick</p>,
         "type": <p style={{fontFamily:'monospace'}}>{`function (event) => void`}</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "14",
-        "prop": <p style={{fontFamily:'monospace'}}>tabIndex</p>,
-        "type": <p style={{fontFamily:'monospace'}}>number</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     }
 ]

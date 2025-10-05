@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefDropdownMenuList, apiRefTableColumnList } from "../constant"
+import { apiRefIconButtonList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,8 +12,8 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefDropdownMenuData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefDropdownMenuList)
+    const apiRefIconButtonData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefIconButtonList)
     },[])
 
     return(
@@ -32,11 +32,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">DropdownMenu</span></p>
-                <p>Dropdown component that contain trigger and menu list item.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">IconButton</span></p>
+                <p>The button.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefDropdownMenuData}
+                    tableData={apiRefIconButtonData}
                 />
             </div>
         </>

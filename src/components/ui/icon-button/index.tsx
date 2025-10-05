@@ -1,7 +1,7 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import { useContext, type JSX } from "react"
+import { useContext } from "react"
 import { PiCircle } from 'react-icons/pi';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import Tooltip from '../tooltip';
@@ -86,7 +86,7 @@ interface _IconButton {
     style?:iconButtonStyleType;
     appearance?:globalAppearanceType;
     shape?:globalShapeType;
-    icon:JSX.Element;
+    icon:React.ReactNode;
     txtLabel:string;
     isSelected?:boolean;
     isDisabled?:boolean;

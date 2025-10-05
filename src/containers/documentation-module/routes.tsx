@@ -10,6 +10,7 @@ const CarouselPage   = lazy(() => import('./pages/carousel-page'));
 const CheckboxPage   = lazy(() => import('./pages/checkbox-page'));
 const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
 const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
+const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -22,7 +23,8 @@ const routes = [
     {key:'carousel', path: '/carousel', component: <CarouselPage/>},
     {key:'checkbox', path: '/checkbox', component: <CheckboxPage/>},
     {key:'dropdown', path: '/dropdown', component: <DropdownPage/>},
-        {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
+    {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
+    {key:'icon-button', path: '/icon-button', component: <IconButtonPage/>},
     {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
 ];
 
