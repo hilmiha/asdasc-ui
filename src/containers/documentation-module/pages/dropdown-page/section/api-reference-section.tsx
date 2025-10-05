@@ -2,7 +2,6 @@ import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
 import { apiRefDropdownList, apiRefTableColumnList } from "../constant"
-import { parsePropsToDocumentation } from "src/helper/helper"
 
 const ApiReferenceSection = () =>{
     const {
@@ -14,26 +13,6 @@ const ApiReferenceSection = () =>{
     },[])
 
     const apiRefDropdownData = useMemo<tableRowDataType[]>(()=>{
-        const tamp = parsePropsToDocumentation(`
-            className?:string;
-            trigger:JSX.Element | ((
-                triggerRef: React.RefCallback<HTMLElement>, 
-                getReferenceProps: (userProps?: React.HTMLProps<Element>) => Record<string, unknown>,
-                isDropdownOpen:boolean, 
-                trigger:React.MutableRefObject<Element | null> | React.MutableRefObject<HTMLElement | null>,
-            ) => JSX.Element);
-            style?:dropdownStyleType;
-            shape?:globalShapeType;
-            isDisabled?:boolean;
-            onOpen?: () => void;
-            onClose?: () => void;
-            elementHeader?:JSX.Element;
-            elementFooter?:JSX.Element;
-            children?:JSX.Element | JSX.Element[];
-            triggerClose?:1|0;
-            floatingConfig?:dropdownFloatingConfigType;
-        `)
-        console.log(tamp)
         return(apiRefDropdownList)
     },[])
 

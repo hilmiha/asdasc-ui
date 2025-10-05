@@ -161,12 +161,14 @@ const DropdownMenu = ({
                         optionSelected={optionSelected}
                         optionSelectedAppearance={optionSelectedAppearance}
                         onClick={(idOption, option, e)=>{
-                            if(onClick){
-                                onClick(idOption, option, e)
-                            }
-                            if(floatingConfig?.isCloseOnItemClicked){
-                                setBottomSheetOpen(false)
-                            }
+                            setTimeout(() => {
+                                if(onClick){
+                                    onClick(idOption, option, e)
+                                }
+                                if(floatingConfig?.isCloseOnItemClicked){
+                                    setBottomSheetOpen(false)
+                                } 
+                            }, isChildOpen?(400):(0));
                         }}
                         setIsChildOpen={setIsChildOpen}
                         floatingConfig={floatingConfig}
@@ -180,7 +182,7 @@ const DropdownMenu = ({
 export default DropdownMenu
 
 interface _DropdownMenu {
-    className?:string
+    className?:string;
     trigger:JSX.Element | ((
         triggerRef: React.RefCallback<HTMLElement> | undefined, 
         getReferenceProps: ((userProps?: React.HTMLProps<Element>) => Record<string, unknown>) | undefined,
@@ -189,18 +191,16 @@ interface _DropdownMenu {
     ) => JSX.Element);
     style?:dropdownMenuStyleType;
     shape?:globalShapeType;
-    options:optionItemType[]
-    optionSelected?:string[]
-    optionSelectedAppearance?:checkboxButtonAppearance
-    isDisabled?:boolean
+    options:optionItemType[];
+    optionSelected?:string[];
+    optionSelectedAppearance?:checkboxButtonAppearance;
+    isDisabled?:boolean;
     onClick?:(idOption:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOpen?: () => void;
     onClose?: () => void;
-
-    elementHeader?:JSX.Element
-    elementFooter?:JSX.Element
-
-    floatingConfig?:dropdownFloatingConfigType
+    elementHeader?:JSX.Element;
+    elementFooter?:JSX.Element;
+    floatingConfig?:dropdownFloatingConfigType;
 }
 
 export type dropdownFloatingConfigType = {

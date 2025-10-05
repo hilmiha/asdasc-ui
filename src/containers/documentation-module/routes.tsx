@@ -9,6 +9,7 @@ const CalendarPage   = lazy(() => import('./pages/calendar-page'));
 const CarouselPage   = lazy(() => import('./pages/carousel-page'));
 const CheckboxPage   = lazy(() => import('./pages/checkbox-page'));
 const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
+const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -21,6 +22,7 @@ const routes = [
     {key:'carousel', path: '/carousel', component: <CarouselPage/>},
     {key:'checkbox', path: '/checkbox', component: <CheckboxPage/>},
     {key:'dropdown', path: '/dropdown', component: <DropdownPage/>},
+        {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
     {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
 ];
 

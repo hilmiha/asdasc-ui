@@ -133,6 +133,28 @@ import CheckboxGroup from "src/components/ui/checkbox-group"
 const CheckboxButtonDemo = () =>{
 
     const [value, setValue] = useState<string[]>([])
+    
+    const options:optionItemType[] =  [
+        {
+            id:'citrus', 
+            txtLabel:'Citrus',
+            childOption:[
+                {id:'orange', txtLabel:'Orange'},
+                {id:'lemon', txtLabel:'Lemon'},
+                {id:'lime', txtLabel:'Lime'},
+            ]
+        },
+        {
+            id:'berries', 
+            txtLabel:'Berries',
+            childOption:[
+                {id:'strawberry', txtLabel:'Strawberry'},
+                {id:'blueberry', txtLabel:'Blueberry'},
+                {id:'raspberry', txtLabel:'Raspberry'},
+            ]
+        },
+        {id:'mix', txtLabel:'Mix'}
+    ]
 
     return(
         <CheckboxGroup
@@ -143,32 +165,7 @@ const CheckboxButtonDemo = () =>{
             onChange={(newValue) => setValue(newValue)}
         />
     )
-}
-
-const options:optionItemType[] =  [
-    {
-        id:'citrus', 
-        txtLabel:'Citrus',
-        childOption:[
-            {id:'orange', txtLabel:'Orange'},
-            {id:'lemon', txtLabel:'Lemon'},
-            {id:'lime', txtLabel:'Lime'},
-        ]
-    },
-    {
-        id:'berries', 
-        txtLabel:'Berries',
-        childOption:[
-            {id:'strawberry', txtLabel:'Strawberry'},
-            {id:'blueberry', txtLabel:'Blueberry'},
-            {id:'raspberry', txtLabel:'Raspberry'},
-        ]
-    },
-    {
-        id:'mix',
-        txtLabel:'Mix'
-    }
-]`
+}`
 
 const options:optionItemType[] =  [
     {

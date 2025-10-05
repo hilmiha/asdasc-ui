@@ -2,7 +2,7 @@ import './styles.scss'
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router"
 import Button from "src/components/ui/button"
-import { PiPaintRollerBold, PiPaintRollerFill, PiSailboat } from 'react-icons/pi'
+import { PiPaintRollerBold, PiPaintRollerFill } from 'react-icons/pi'
 import IconButton from 'src/components/ui/icon-button'
 import Dropdown from 'src/components/ui/dropdown'
 import AppThemeSetting from './app-theme-settings'
@@ -28,7 +28,7 @@ const AppTemplate = ({
             </div>
             <div className="top-nav-box">
                 <div className='logo-box' onClick={()=>{navigate('/')}}>
-                    <PiSailboat size={32} color='var(--clr-primary-600)'/>
+                    <img src='hilmi.png' height={32} style={{borderRadius:'32px'}}/>
                 </div>
                 <div className='nav-buttons-box'>
                     {
