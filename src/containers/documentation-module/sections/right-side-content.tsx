@@ -1,5 +1,5 @@
 import Button from "src/components/ui/button"
-import { type DocModuleContextValue } from ".."
+import type { DocModuleContextValue } from "../context"
 
 const RightSideContent = ({
     ctxValue

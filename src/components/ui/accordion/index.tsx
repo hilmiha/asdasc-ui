@@ -1,7 +1,7 @@
 import './styles.scss'
 import clsx from "clsx"
 import * as ctrl from './controller';
-import { useContext, useEffect, useRef, useState, type JSX } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { PiCaretDownBold, PiCaretUpBold } from "react-icons/pi"
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import type { globalShapeType } from 'src/components/_types';
