@@ -11,6 +11,7 @@ const CheckboxPage   = lazy(() => import('./pages/checkbox-page'));
 const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
 const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
 const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
+const InputDatePage   = lazy(() => import('./pages/input-date-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -25,6 +26,7 @@ const routes = [
     {key:'dropdown', path: '/dropdown', component: <DropdownPage/>},
     {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
     {key:'icon-button', path: '/icon-button', component: <IconButtonPage/>},
+    {key:'input-date', path: '/input-date', component: <InputDatePage/>},
     {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
 ];
 

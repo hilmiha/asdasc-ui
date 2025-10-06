@@ -11,7 +11,7 @@ import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } fr
 import IconButton from '../icon-button';
 import DropdownBottomSheet from './components/dropdown-bottom-sheet';
 
-const InputDateTime = ({
+const InputDate = ({
     id = undefined,
     className = undefined,
     style = undefined,
@@ -29,7 +29,7 @@ const InputDateTime = ({
     onValidate = undefined,
 
     config = undefined,
-}:_InputDateTime) =>{
+}:_InputDate) =>{
     //Context start ====
     const {
         globalShape
@@ -200,10 +200,10 @@ const InputDateTime = ({
     )
 }
 
-export default InputDateTime
+export default InputDate
 
-interface _InputDateTime {
-    id?:string
+interface _InputDate {
+    id?:string;
     className?:string;
     style?:inputSelectionStyleType;
     shape?:globalShapeType;
@@ -211,14 +211,14 @@ interface _InputDateTime {
     afterElement?:JSX.Element;
     beforeElement?:JSX.Element;
 
-    type:calendarType
+    type:calendarType;
     txtPlaceholder?:string;
-    isDisabled?:boolean
-    value?:validCalendarValue
-    onChange?:(newValue:validCalendarValue)=>void,
+    isDisabled?:boolean;
+    value?:validCalendarValue;
+    onChange?:(newValue:validCalendarValue)=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:validCalendarValue)=>void
-    config?:inputDateTimeConfigType
+    onValidate?:(error:fieldErrorType, newValue:validCalendarValue)=>void;
+    config?:inputDateTimeConfigType;
 }
 
 export type inputDateTimeConfigType = {
