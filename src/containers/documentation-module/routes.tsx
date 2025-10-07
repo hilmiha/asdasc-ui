@@ -12,6 +12,7 @@ const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
 const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
 const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
 const InputDatePage   = lazy(() => import('./pages/input-date-page'));
+const InputPassowordPage   = lazy(() => import('./pages/input-password-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -27,6 +28,7 @@ const routes = [
     {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
     {key:'icon-button', path: '/icon-button', component: <IconButtonPage/>},
     {key:'input-date', path: '/input-date', component: <InputDatePage/>},
+    {key:'input-password', path: '/input-password', component: <InputPassowordPage/>},
     {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
 ];
 
