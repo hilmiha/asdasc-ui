@@ -1,27 +1,25 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
-export const pageId = 'input-date';
+export const pageId = 'input-selection';
 
 export const prevComp = {
-    name:'Icon Button',
-    path:'/icon-button'
-}
-export const nextComp = {
     name:'Input Password',
     path:'/input-password'
 }
+export const nextComp = {
+    name:'Input Tag',
+    path:'/input-tag'
+}
 
 export const sections = [
-    {id:'preview', txtLabel:'Input Date', isSub:false},
+    {id:'preview', txtLabel:'Input Selection', isSub:false},
     {id:'api_ref', txtLabel:'API Refrence', isSub:false},
-    {id:'api_ref_1', txtLabel:'InputDate', isSub:true},
+    {id:'api_ref_1', txtLabel:'InputSelection', isSub:true},
     {id:'example', txtLabel:'Example', isSub:false},
     {id:'example_0', txtLabel:'Disabled field', isSub:true},
-    {id:'example_1', txtLabel:'Single selection with time', isSub:true},
-    {id:'example_2', txtLabel:'Multiple dates', isSub:true},
-    {id:'example_3', txtLabel:'Range dates', isSub:true},
-    {id:'example_4', txtLabel:'Disabling dates', isSub:true},
+    {id:'example_1', txtLabel:'Multiple selection', isSub:true},
+    {id:'example_2', txtLabel:'Validating value', isSub:true},
     {id:'keyboard', txtLabel:'Keyboard Interactions', isSub:false},
 ]
 
@@ -45,12 +43,7 @@ export const keyboardInteractionsList:tableRowDataType[] = [
         id:'3',
         key:<Tag txtLabel="Tab"/>,
         description:<p>Moves focus to the next focusable element.</p>,
-    },
-    {
-        id:'4',
-        key:<Tag txtLabel="Arrow Buttons"/>,
-        description:<p>Naviagte focus inside dates, months and years</p>,
-    },
+    }
 ]
 
 export const apiRefTableColumnList:tableColumnType[] = [
@@ -59,7 +52,7 @@ export const apiRefTableColumnList:tableColumnType[] = [
     {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
-export const apiRefInputDateList:tableRowDataType[] = [
+export const apiRefInputSelectionList:tableRowDataType[] = [
     {
         "id": "1",
         "prop": <p style={{fontFamily:'monospace'}}>id</p>,
@@ -87,19 +80,19 @@ export const apiRefInputDateList:tableRowDataType[] = [
     {
         "id": "5",
         "prop": <p style={{fontFamily:'monospace'}}>afterElement</p>,
-        "type": <p style={{fontFamily:'monospace'}}>JSX.Element</p>,
+        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "6",
         "prop": <p style={{fontFamily:'monospace'}}>beforeElement</p>,
-        "type": <p style={{fontFamily:'monospace'}}>JSX.Element</p>,
+        "type": <p style={{fontFamily:'monospace'}}>React.ReactNode</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "7",
         "prop": <p style={{fontFamily:'monospace'}}>type<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
-        "type": <p style={{fontFamily:'monospace'}}>calendarType</p>,
+        "type": <p style={{fontFamily:'monospace'}}>inputSelectType</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
@@ -116,32 +109,38 @@ export const apiRefInputDateList:tableRowDataType[] = [
     },
     {
         "id": "10",
-        "prop": <p style={{fontFamily:'monospace'}}>value</p>,
-        "type": <p style={{fontFamily:'monospace'}}>validCalendarValue</p>,
+        "prop": <p style={{fontFamily:'monospace'}}>option</p>,
+        "type": <p style={{fontFamily:'monospace'}}>optionItemType[]</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "11",
-        "prop": <p style={{fontFamily:'monospace'}}>onChange</p>,
-        "type": <p style={{fontFamily:'monospace'}}>{`function (newValue) => void`}</p>,
+        "prop": <p style={{fontFamily:'monospace'}}>value</p>,
+        "type": <p style={{fontFamily:'monospace'}}>string[]</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
         "id": "12",
+        "prop": <p style={{fontFamily:'monospace'}}>onChange</p>,
+        "type": <p style={{fontFamily:'monospace'}}>{`function (newValue, option, event) => void`}</p>,
+        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
+    },
+    {
+        "id": "13",
         "prop": <p style={{fontFamily:'monospace'}}>error</p>,
         "type": <p style={{fontFamily:'monospace'}}>fieldErrorType</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "13",
+        "id": "14",
         "prop": <p style={{fontFamily:'monospace'}}>onValidate</p>,
-        "type": <p style={{fontFamily:'monospace'}}>{`function (error, newValue) => void`}</p>,
+        "type": <p style={{fontFamily:'monospace'}}>{`function (error, newValue)=>void`}</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "14",
+        "id": "15",
         "prop": <p style={{fontFamily:'monospace'}}>config</p>,
-        "type": <p style={{fontFamily:'monospace'}}>inputDateTimeConfigType</p>,
+        "type": <p style={{fontFamily:'monospace'}}>inputSelectConfigType</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     }
 ]

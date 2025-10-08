@@ -1,6 +1,8 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
+export const pageId = 'checkbox';
+
 export const prevComp = {
     name:'Carousel',
     path:'/carousel'

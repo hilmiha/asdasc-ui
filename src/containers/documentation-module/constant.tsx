@@ -35,7 +35,7 @@ export const sideNavMenues = [
         txtLable:'',
         menu:[
             {id:'get-started', txtLable:'Get Started', to:''},
-            {id:'component', txtLable:'Components', to:'/components'},
+            {id:'components', txtLable:'Components', to:'/components'},
             {id:'colors', txtLable:'Colors', to:'/colors'},
         ]
     },

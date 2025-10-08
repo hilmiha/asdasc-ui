@@ -6,7 +6,7 @@ import { PiArrowRightBold } from 'react-icons/pi'
 import { useNavigate } from 'react-router'
 import { baseUrl } from '../../constant'
 import { useDocModule } from "src/containers/documentation-module/context"
-import { nextComp, sections } from './constant'
+import { nextComp, pageId, sections } from './constant'
 import Button from 'src/components/ui/button'
 
 
@@ -18,11 +18,13 @@ const GetStartedPage = () =>{
     } = useContext(GlobalContext) as _GlobalContextType
     const {
         setSectionList,
-        setSectionRef
+        setSectionRef,
+        setPageOn,
     } = useDocModule()
 
 
     useEffect(() => {
+        setPageOn(pageId)
         setSectionList(sections)
     }, [])
 

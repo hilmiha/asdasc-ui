@@ -12,7 +12,7 @@ import ExampleSection from './section/example-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
 import Button from "src/components/ui/button"
 
-const InputPasswordPage = () =>{
+const InputSelectionPage = () =>{
     const {
         setSectionList,
         setSectionRef,
@@ -46,7 +46,7 @@ const InputPasswordPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Input Password</p>
+                    <p className="text-title-xl">Input Selection</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -61,7 +61,7 @@ const InputPasswordPage = () =>{
                     </div>
                 </div>
                 <p>
-                    Input form for password.
+                    Input form for selection of options.
                 </p>
                 <PreviewSection/>
             </div>
@@ -84,4 +84,4 @@ const InputPasswordPage = () =>{
     )
 }
 
-export default InputPasswordPage
+export default InputSelectionPage

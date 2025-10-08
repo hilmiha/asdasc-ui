@@ -1,6 +1,8 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
+export const pageId = 'bottom-sheet';
+
 export const prevComp = {
     name:'Accordion',
     path:'/accordion'

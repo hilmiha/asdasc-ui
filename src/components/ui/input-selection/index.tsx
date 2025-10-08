@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType, optionItemType } from "src/components/_types";
-import { useContext, useEffect, useRef, useState, type JSX } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import DropdownMenu, { type dropdownMenuStyleType } from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiEmpty, PiLockBold, PiMagnifyingGlassBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -280,23 +280,23 @@ const InputSelection = ({
 export default InputSelection
 
 interface _InputSelection {
-    id?:string
+    id?:string;
     className?:string;
     style?:inputSelectionStyleType;
     shape?:globalShapeType;
     
-    afterElement?:JSX.Element;
-    beforeElement?:JSX.Element;
+    afterElement?:React.ReactNode;
+    beforeElement?:React.ReactNode;
 
-    type:inputSelectType
+    type:inputSelectType;
     txtPlaceholder?:string;
-    isDisabled?:boolean
-    option?:optionItemType[]
+    isDisabled?:boolean;
+    option?:optionItemType[];
     value?:string[];
-    onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void,
+    onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:string[])=>void
-    config?:inputSelectConfigType
+    onValidate?:(error:fieldErrorType, newValue:string[])=>void;
+    config?:inputSelectConfigType;
 }
 
 export type inputSelectType = 'single' | 'multiple';
@@ -306,8 +306,8 @@ export type inputSelectConfigType = {
     isRequired?:boolean
     minValue?:number
     maxValue?:number
-    sufixElement?:JSX.Element|string
-    prefixElement?:JSX.Element|string
+    sufixElement?:React.ReactNode|string
+    prefixElement?:React.ReactNode|string
     isHideClear?:boolean
 }
 

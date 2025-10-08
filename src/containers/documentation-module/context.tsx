@@ -3,6 +3,8 @@ import type { rightSideSectionType } from "."
 
 //Context
 export interface DocModuleContextValue {
+    pageOn: string, 
+    setPageOn: React.Dispatch<React.SetStateAction<string>>,
     sectionList: rightSideSectionType[]
     setSectionList: React.Dispatch<React.SetStateAction<rightSideSectionType[]>>
     sectionOn:string

@@ -1,3 +1,5 @@
+export const pageId = 'components';
+
 export const prevComp = {
     name:'Get Started',
     path:''

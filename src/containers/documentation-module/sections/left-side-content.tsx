@@ -3,8 +3,17 @@ import { useNavigate } from "react-router"
 import { baseUrl, sideNavMenues } from "../constant"
 import Button from "src/components/ui/button"
 import { useThreeColumnTemplate } from "src/templates/three-column-template/context"
+import type { DocModuleContextValue } from "../context"
 
-const LeftSideContent = () =>{
+const LeftSideContent = ({
+    ctxValue
+}:{
+    ctxValue:DocModuleContextValue
+}) =>{
+    const {
+        pageOn
+    } = ctxValue
+
     const navigate = useNavigate()
     
     const menuComponent = useMemo(()=>{
@@ -31,6 +40,7 @@ const LeftSideContent = () =>{
                                         appearance='subtle'
                                         key={menu.id}
                                         txtLabel={<div style={{flexGrow:'1', textAlign:'start'}}>{menu.txtLable}</div>}
+                                        isSelected={pageOn===menu.id}
                                         onClick={()=>{
                                             navigate(`${baseUrl}${menu.to}`)
                                             setIsShowLeftContent(false)

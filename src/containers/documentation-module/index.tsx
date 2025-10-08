@@ -11,6 +11,8 @@ import { DocModuleContext, type DocModuleContextValue } from './context'
 export type rightSideSectionType = {id:string, txtLabel:string, isSub:boolean}
 
 const DocsModule = () =>{
+    const [pageOn, setPageOn] = useState<string>('')
+
     const [sectionList, setSectionList] = useState<rightSideSectionType[]>([])
     const [sectionOn, setSectionOn] = useState<string>('')
     
@@ -27,6 +29,8 @@ const DocsModule = () =>{
     }
 
     const ctxValue: DocModuleContextValue = {
+        pageOn, 
+        setPageOn,
         sectionList, 
         setSectionList,
         sectionOn, 
@@ -83,12 +87,10 @@ const DocsModule = () =>{
             <ThreeColumnTemplate
                 className='docs-module'
                 leftSideContent={
-                    <LeftSideContent/>
+                    <LeftSideContent ctxValue={ctxValue}/>
                 }
                 rightSideContent={
-                    <RightSideContent 
-                        ctxValue={ctxValue}
-                    />
+                    <RightSideContent ctxValue={ctxValue}/>
                 }
             >
                 <Suspense fallback={<PageSkeleton/>}>

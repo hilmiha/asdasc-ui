@@ -4,7 +4,7 @@ import { baseUrl } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
-import { nextComp, prevComp, sections } from "./constant"
+import { nextComp, pageId, prevComp, sections } from "./constant"
 import PreviewSection from './section/preview-section'
 import ApiReferenceSection from './section/api-reference-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
@@ -14,12 +14,14 @@ import { useDocModule } from "src/containers/documentation-module/context"
 const CarouselPage = () =>{
     const {
         setSectionList,
-        setSectionRef
+        setSectionRef,
+        setPageOn,
     } = useDocModule()
 
     const navigate = useNavigate()
 
     useEffect(()=>{
+        setPageOn(pageId)
         setSectionList(sections)
     },[])
 

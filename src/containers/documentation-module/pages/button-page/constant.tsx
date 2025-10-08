@@ -1,6 +1,8 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
+export const pageId = 'button';
+
 export const prevComp = {
     name:'Bottom Sheet',
     path:'/bottom-sheet'

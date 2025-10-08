@@ -78,6 +78,16 @@
         min-height: var(--icon-size);
         min-width: var(--icon-size);
     }
+
+    --global-disbaled-bg: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        hsl(from var(--clr-surface-4) h s l / 0.2) 4px
+    );
+    .global-disbaled-bg{
+        background-image: var(--global-disbaled-bg);
+    }
 }
 
 [data-theme^="dark"] {

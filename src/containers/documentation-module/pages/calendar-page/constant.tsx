@@ -1,6 +1,8 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
+export const pageId = 'calendar';
+
 export const prevComp = {
     name:'Button',
     path:'/button'

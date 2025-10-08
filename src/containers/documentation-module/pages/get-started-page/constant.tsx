@@ -1,3 +1,5 @@
+export const pageId = 'get-started';
+
 export const nextComp = {
     name:'Components',
     path:'/components'

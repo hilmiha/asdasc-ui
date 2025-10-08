@@ -1,3 +1,5 @@
+export const pageId = 'colors';
+
 export const prevComp = {
     name:'Components',
     path:'/components'

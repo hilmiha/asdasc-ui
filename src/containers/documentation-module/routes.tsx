@@ -1,4 +1,6 @@
 import { lazy } from 'react';
+
+const UnterConstruction   = lazy(() => import('./pages/under-construction-page'));
 const GetStartedPage   = lazy(() => import('./pages/get-started-page'));
 const ComponentsPage   = lazy(() => import('./pages/components-page'));
 const ColorsPage   = lazy(() => import('./pages/colors-page'));
@@ -13,6 +15,9 @@ const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
 const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
 const InputDatePage   = lazy(() => import('./pages/input-date-page'));
 const InputPassowordPage   = lazy(() => import('./pages/input-password-page'));
+const InputSelectionPage   = lazy(() => import('./pages/input-selection-page'));
+
+
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -29,7 +34,8 @@ const routes = [
     {key:'icon-button', path: '/icon-button', component: <IconButtonPage/>},
     {key:'input-date', path: '/input-date', component: <InputDatePage/>},
     {key:'input-password', path: '/input-password', component: <InputPassowordPage/>},
-    {key:'unknown', path: '/*', component: <>🚧 Coming Soon...</>},
+    {key:'input-selection', path: '/input-selection', component: <InputSelectionPage/>},
+    {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
 
 export default routes;

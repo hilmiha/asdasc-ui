@@ -7,7 +7,7 @@ import { PiArrowLeftBold, PiArrowRightBold, PiPaintBrushBold } from "react-icons
 import { toTitleCase } from "src/helper/helper"
 import Button from "src/components/ui/button"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { nextComp, prevComp, sections } from "./constant"
+import { nextComp, pageId, prevComp, sections } from "./constant"
 
 const ColorsPage = () =>{
     const {
@@ -17,11 +17,13 @@ const ColorsPage = () =>{
     } = useContext(GlobalContext) as _GlobalContextType
     const {
         setSectionList,
-        setSectionRef
+        setSectionRef,
+        setPageOn,
     } = useDocModule()
 
 
     useEffect(() => {
+        setPageOn(pageId)
         setSectionList(sections)
     }, [])
     

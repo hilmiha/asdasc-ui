@@ -1,8 +1,7 @@
-import { addDays } from "date-fns"
 import { useMemo, useState } from "react"
-import { type validCalendarValue } from "src/components/ui/calendar"
+import type { fieldErrorType, optionItemType } from "src/components/_types"
 import InputCode from "src/components/ui/input-code"
-import InputDate from "src/components/ui/input-date"
+import InputSelection from "src/components/ui/input-selection"
 import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
@@ -11,13 +10,11 @@ const ExampleSection = () =>{
         setSectionRef
     } = useDocModule()
     
-    const now = useMemo(()=>{
-        return new Date()
+    const valueConst = useMemo(()=>{
+        return ['option-1', 'option-2', 'option-4']
     },[])
-    const [value, setValue] = useState< validCalendarValue >(undefined)
-    const [valueDtTm, setValueDtTm] = useState< validCalendarValue >(undefined)
-    const [valueDtMultiple, setValueDtMultiple] = useState< validCalendarValue >(undefined)
-    const [valueDtRange, setValueDtRange] = useState< validCalendarValue >(undefined)
+    const [value, setValue] = useState<string[]>([])
+    const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
     
     return(
         <>
@@ -46,10 +43,11 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputDate
+                        <InputSelection
                             type="single"
-                            txtPlaceholder="Select date..."
-                            value={now}
+                            txtPlaceholder="Select option..."
+                            option={option}
+                            value={valueConst}
                             isDisabled={true}
                         />
                     </PreviewBox>
@@ -73,8 +71,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Single selection with time</p>
-                <p>Single selection type of the calendar can also comes with input time.</p>
+                <p className="text-title-lg">Multiple selection</p>
+                <p><span className="text-code">InputSelection</span> can also allow multiple selection for the value using value <span className="text-code">multiple</span> on <span className="text-code">type</span> props.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -84,11 +82,12 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputDate
-                            type="single-with-time"
-                            txtPlaceholder="Select date..."
-                            value={valueDtTm}
-                            onChange={(newValue)=>{setValueDtTm(newValue)}}
+                        <InputSelection
+                            type="multiple"
+                            txtPlaceholder="Select option..."
+                            option={option}
+                            value={value}
+                            onChange={(newValue)=>{setValue(newValue)}}
                         />
                     </PreviewBox>
                     <InputCode
@@ -111,8 +110,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Multiple dates</p>
-                <p>To allow selecting multiple datse, use type <span className="text-code">"multiple"</span> for the <span className="text-code">"Calendar"</span></p>
+                <p className="text-title-lg">Combobox</p>
+                <p>Add search option feature.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -122,11 +121,15 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputDate
+                        <InputSelection
                             type="multiple"
-                            txtPlaceholder="Select date..."
-                            value={valueDtMultiple}
-                            onChange={(newValue)=>{setValueDtMultiple(newValue)}}
+                            txtPlaceholder="Select option..."
+                            option={optionMany}
+                            value={value}
+                            onChange={(newValue)=>{setValue(newValue)}}
+                            config={{
+                                isCombobox:true
+                            }}
                         />
                     </PreviewBox>
                     <InputCode
@@ -149,8 +152,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Range dates</p>
-                <p>To selcting date in a range, use type <span className="text-code">"range"</span> for the <span className="text-code">"Calendar"</span></p>
+                <p className="text-title-lg">Validating value</p>
+                <p>Validation can be config inside <span>confi</span> props.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -160,11 +163,21 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputDate
-                            type="range"
-                            txtPlaceholder="Select date..."
-                            value={valueDtRange}
-                            onChange={(newValue)=>{setValueDtRange(newValue)}}
+                        <p>Please select at least 3 item</p>
+                        <InputSelection
+                            type="multiple"
+                            txtPlaceholder="Select option..."
+                            option={optionMany}
+                            value={value}
+                            onChange={(newValue)=>{setValue(newValue)}}
+                            onValidate={(error)=>{setValueError(error)}}
+                            error={valueError}
+                            config={{
+                                isCombobox:true,
+                                isRequired:true,
+                                minValue:3,
+                                maxValue:5,
+                            }}
                         />
                     </PreviewBox>
                     <InputCode
@@ -179,90 +192,87 @@ const ExampleSection = () =>{
                     />
                 </div>
             </div>
-            <div
-                id="example_4" 
-                ref={setSectionRef('example_4')}
-                style={{
-                    display:'grid',
-                    gap:'var(--space-150)'
-                }}
-            >
-                <p className="text-title-lg">Disabling dates</p>
-                <p>Dates can be disabled by providing array of dates or range of dates inside <span className="text-code">config</span> prop.</p>
-                <div 
-                    style={{
-                        display:'grid',
-                        gap:'var(--space-100)',
-                        marginTop:"var(--space-100)",
-                        alignItems:'center',
-                    }}
-                >
-                    <PreviewBox>
-                        <InputDate
-                            type="single"
-                            txtPlaceholder="Select date..."
-                            value={value}
-                            onChange={(newValue)=>{setValue(newValue)}}
-                            config={{
-                                disabledDates:[
-                                    {from:addDays(new Date(), 1), to:addDays(new Date(), 7)}
-                                ]
-                            }}
-                        />
-                    </PreviewBox>
-                    <InputCode
-                        lang="tsx"
-                        isDisabled={true}
-                        value={example_4_code}
-                        style={{
-                            inputCode:{
-                                maxHeight:'50vh'
-                            }
-                        }}
-                    />
-                </div>
-            </div>
         </>
     )
 }
 
 export default ExampleSection
 
-const example_0_code = `<InputDate
+const example_0_code = `<InputSelection
     type="single"
-    txtPlaceholder="Select date..."
-    value={value}
+    txtPlaceholder="Select option..."
+    option={option}
+    value={valueConst}
     isDisabled={true}
 />`
-const example_1_code = `<InputDate
-    type="single-with-time"
-    txtPlaceholder="Select date..."
-    value={valueDtTm}
-    onChange={(newValue)=>{setValueDtTm(newValue)}}
-/>`
 
-const example_2_code = `<InputDate
+const example_1_code = `<InputSelection
     type="multiple"
-    txtPlaceholder="Select date..."
-    value={valueDtMultiple}
-    onChange={(newValue)=>{setValueDtMultiple(newValue)}}
+    txtPlaceholder="Select option..."
+    option={optionMany}
+    value={value}
+    onChange={(newValue)=>{setValue(newValue)}}
 />`
 
-const example_3_code = `<InputDate
-    type="range"
-    txtPlaceholder="Select date..."
-    value={valueDtRange}
-    onChange={(newValue)=>{setValueDtRange(newValue)}}
-/>`
-
-const example_4_code = `<InputDate
-    type="single"
-    txtPlaceholder="Select date..."
+const example_2_code = `<InputSelection
+    type="multiple"
+    txtPlaceholder="Select option..."
+    option={option}
     value={value}
     onChange={(newValue)=>{setValue(newValue)}}
     config={{
-        disabledDates:[
-            {from:addDays(new Date(), 1), to:addDays(new Date(), 7)}
-        ]
+        isCombobox:true // to add search option feature
     }}
 />`
+
+const example_3_code = `import { useState } from "react"
+import InputPassword from "src/components/ui/input-password"
+import type { fieldErrorType } from "src/components/_types"
+
+const InputPasswordDemo = () =>{
+
+    const [value, setValue] = useState< string >('')
+    const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
+
+    return(
+        <>
+            <p>Please select at least 3 item</p>
+            <InputSelection
+                type="multiple"
+                txtPlaceholder="Select option..."
+                option={optionMany}
+                value={value}
+                onChange={(newValue)=>{setValue(newValue)}}
+                onValidate={(error)=>{setValueError(error)}}
+                error={valueError}
+                config={{
+                    isCombobox:true,
+                    isRequired:true,
+                    minValue:3,
+                    maxValue:5,
+                }}
+            />
+        </>
+    )
+}`
+
+const option:optionItemType[] = [
+    {id:'option-1', txtLabel:'Option one', type:'option'},
+    {id:'option-2', txtLabel:'Option two', type:'option'},
+    {id:'option-3', txtLabel:'Option three', type:'option'},
+    {id:'option-4', txtLabel:'Option four', type:'option'},
+]
+
+const optionMany:optionItemType[] = [
+    {id:'option-1', txtLabel:'Option one', type:'option'},
+    {id:'option-2', txtLabel:'Option two', type:'option'},
+    {id:'option-3', txtLabel:'Option three', type:'option'},
+    {id:'option-4', txtLabel:'Option four', type:'option'},
+    {id:'option-5', txtLabel:'Option five', type:'option'},
+    {id:'option-6', txtLabel:'Option six', type:'option'},
+    {id:'option-7', txtLabel:'Option seven', type:'option'},
+    {id:'option-8', txtLabel:'Option eight', type:'option'},
+    {id:'option-9', txtLabel:'Option nine', type:'option'},
+    {id:'option-10', txtLabel:'Option ten', type:'option'},
+
+]
