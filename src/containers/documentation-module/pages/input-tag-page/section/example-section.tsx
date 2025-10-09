@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import type { fieldErrorType, optionItemType } from "src/components/_types"
 import InputCode from "src/components/ui/input-code"
-import InputSelection from "src/components/ui/input-selection"
+import InputTag from "src/components/ui/input-tag"
 import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
@@ -13,6 +13,7 @@ const ExampleSection = () =>{
     const valueConst = useMemo(()=>{
         return ['option-1', 'option-2', 'option-4']
     },[])
+    const [valueSpace, setValueSpace] = useState<string[]>([])
     const [value, setValue] = useState<string[]>([])
     const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
     
@@ -43,10 +44,9 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputSelection
-                            type="single"
-                            txtPlaceholder="Select option..."
-                            option={option}
+                        <InputTag
+                            type="text-no-space"
+                            txtPlaceholder="Enter tag..."
                             value={valueConst}
                             isDisabled={true}
                         />
@@ -71,8 +71,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Multiple selection</p>
-                <p><span className="text-code">InputSelection</span> can also allow multiple selection for the value using value <span className="text-code">multiple</span> on <span className="text-code">type</span> props.</p>
+                <p className="text-title-lg">Allow space on tag</p>
+                <p>Insome usecase, tag need to be readable and writen as regular text with spaces.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -82,12 +82,11 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputSelection
-                            type="multiple"
-                            txtPlaceholder="Select option..."
-                            option={option}
-                            value={value}
-                            onChange={(newValue)=>{setValue(newValue)}}
+                        <InputTag
+                            type="text"
+                            txtPlaceholder="Enter tag..."
+                            value={valueSpace}
+                            onChange={(newValue)=>{setValueSpace(newValue)}}
                         />
                     </PreviewBox>
                     <InputCode
@@ -110,8 +109,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Combobox</p>
-                <p>Add search option feature.</p>
+                <p className="text-title-lg">Show sugestion or options</p>
+                <p>Add sugestion option feature when typing tag.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -121,15 +120,12 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputSelection
-                            type="multiple"
-                            txtPlaceholder="Select option..."
-                            option={optionMany}
+                        <InputTag
+                            type="text-no-space"
+                            txtPlaceholder="Enter tag..."
+                            options={option}
                             value={value}
                             onChange={(newValue)=>{setValue(newValue)}}
-                            config={{
-                                isCombobox:true
-                            }}
                         />
                     </PreviewBox>
                     <InputCode
@@ -163,20 +159,19 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <p>Please select at least 3 item</p>
-                        <InputSelection
-                            type="multiple"
-                            txtPlaceholder="Select option..."
-                            option={optionMany}
+                        <p>Please enter at least 3 item</p>
+                        <InputTag
+                            type="text-no-space"
+                            txtPlaceholder="Enter tag..."
+                            options={option}
                             value={value}
                             onChange={(newValue)=>{setValue(newValue)}}
                             onValidate={(error)=>{setValueError(error)}}
                             error={valueError}
                             config={{
-                                isCombobox:true,
                                 isRequired:true,
-                                minValue:3,
-                                maxValue:5,
+                                maxValue:3,
+                                minValue:2
                             }}
                         />
                     </PreviewBox>
@@ -198,58 +193,77 @@ const ExampleSection = () =>{
 
 export default ExampleSection
 
-const example_0_code = `<InputSelection
-    type="single"
-    txtPlaceholder="Select option..."
-    option={option}
-    value={valueConst}
+const example_0_code = `<InputTag
+    type="text-no-space"
+    txtPlaceholder="Enter tag..."
+    value={value}
     isDisabled={true}
 />`
 
-const example_1_code = `<InputSelection
-    type="multiple"
-    txtPlaceholder="Select option..."
-    option={optionMany}
+const example_1_code = `<InputTag
+    type="text"
+    txtPlaceholder="Enter tag..."
     value={value}
     onChange={(newValue)=>{setValue(newValue)}}
 />`
 
-const example_2_code = `<InputSelection
-    type="multiple"
-    txtPlaceholder="Select option..."
-    option={option}
-    value={value}
-    onChange={(newValue)=>{setValue(newValue)}}
-    config={{
-        isCombobox:true // to add search option feature
-    }}
-/>`
+const example_2_code = `import { useState } from "react"
+import InputTag from "src/components/ui/input-tag"
+import type { optionItemType } from "src/components/_types"
 
-const example_3_code = `import { useState } from "react"
-import InputPassword from "src/components/ui/input-password"
-import type { fieldErrorType } from "src/components/_types"
+const InputTagDemo = () =>{
 
-const InputPasswordDemo = () =>{
-
-    const [value, setValue] = useState< string >('')
-    const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
+    const [value, setValue] = useState<string>('')
+    const option:optionItemType[] = [
+        {id:'html', txtLabel:'html', type:'option'},
+        {id:'css', txtLabel:'css', type:'option'},
+        {id:'javascript', txtLabel:'javascript', type:'option'},
+        {id:'react', txtLabel:'react', type:'option'},
+    ]
 
     return(
         <>
-            <p>Please select at least 3 item</p>
-            <InputSelection
-                type="multiple"
-                txtPlaceholder="Select option..."
-                option={optionMany}
+            <InputTag
+                type="text-no-space"
+                txtPlaceholder="Enter tag..."
+                options={option}
+                value={value}
+                onChange={(newValue)=>{setValue(newValue)}}
+            />
+        </>
+    )
+}`
+
+const example_3_code = `import { useState } from "react"
+import InputTag from "src/components/ui/input-tag"
+import type { fieldErrorType } from "src/components/_types"
+
+const InputTagDemo = () =>{
+
+    const [value, setValue] = useState<string>('')
+    const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
+    const option:optionItemType[] = [
+        {id:'html', txtLabel:'html', type:'option'},
+        {id:'css', txtLabel:'css', type:'option'},
+        {id:'javascript', txtLabel:'javascript', type:'option'},
+        {id:'react', txtLabel:'react', type:'option'},
+    ]
+
+    return(
+        <>
+            <p>Please enter at least 3 item</p>
+            <InputTag
+                type="text-no-space"
+                txtPlaceholder="Enter tag..."
+                options={option}
                 value={value}
                 onChange={(newValue)=>{setValue(newValue)}}
                 onValidate={(error)=>{setValueError(error)}}
                 error={valueError}
                 config={{
-                    isCombobox:true,
                     isRequired:true,
-                    minValue:3,
-                    maxValue:5,
+                    maxValue:3,
+                    minValue:2
                 }}
             />
         </>
@@ -257,22 +271,8 @@ const InputPasswordDemo = () =>{
 }`
 
 const option:optionItemType[] = [
-    {id:'option-1', txtLabel:'Option one', type:'option'},
-    {id:'option-2', txtLabel:'Option two', type:'option'},
-    {id:'option-3', txtLabel:'Option three', type:'option'},
-    {id:'option-4', txtLabel:'Option four', type:'option'},
-]
-
-const optionMany:optionItemType[] = [
-    {id:'option-1', txtLabel:'Option one', type:'option'},
-    {id:'option-2', txtLabel:'Option two', type:'option'},
-    {id:'option-3', txtLabel:'Option three', type:'option'},
-    {id:'option-4', txtLabel:'Option four', type:'option'},
-    {id:'option-5', txtLabel:'Option five', type:'option'},
-    {id:'option-6', txtLabel:'Option six', type:'option'},
-    {id:'option-7', txtLabel:'Option seven', type:'option'},
-    {id:'option-8', txtLabel:'Option eight', type:'option'},
-    {id:'option-9', txtLabel:'Option nine', type:'option'},
-    {id:'option-10', txtLabel:'Option ten', type:'option'},
-
+    {id:'html', txtLabel:'html', type:'option'},
+    {id:'css', txtLabel:'css', type:'option'},
+    {id:'javascript', txtLabel:'javascript', type:'option'},
+    {id:'react', txtLabel:'react', type:'option'},
 ]

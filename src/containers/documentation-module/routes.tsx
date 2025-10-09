@@ -16,6 +16,7 @@ const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
 const InputDatePage   = lazy(() => import('./pages/input-date-page'));
 const InputPassowordPage   = lazy(() => import('./pages/input-password-page'));
 const InputSelectionPage   = lazy(() => import('./pages/input-selection-page'));
+const InputTagPage   = lazy(() => import('./pages/input-tag-page'));
 
 
 
@@ -35,6 +36,7 @@ const routes = [
     {key:'input-date', path: '/input-date', component: <InputDatePage/>},
     {key:'input-password', path: '/input-password', component: <InputPassowordPage/>},
     {key:'input-selection', path: '/input-selection', component: <InputSelectionPage/>},
+    {key:'input-tag', path: '/input-tag', component: <InputTagPage/>},
     {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
 

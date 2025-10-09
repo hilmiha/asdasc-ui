@@ -2,7 +2,7 @@ import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
 import type { fieldErrorType, globalShapeType, optionItemType } from "src/components/_types";
-import { useContext, useEffect, useRef, useState, type JSX } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import DropdownMenu from '../dropdown-menu';
 import { PiCaretDownBold, PiCaretUpBold, PiLockBold, PiWarningBold, PiXBold } from 'react-icons/pi';
@@ -10,7 +10,7 @@ import IconButton from '../icon-button';
 import Tag from '../tag';
 import { useDeepCompareMemo } from 'src/hook/useDeepCompareMemo';
 
-const InputTags = ({
+const InputTag = ({
     id = undefined,
     className = undefined,
     shape = undefined,
@@ -263,27 +263,27 @@ const InputTags = ({
     )
 }
 
-export default InputTags
+export default InputTag
 
 interface _InputTag {
-    id?:string
+    id?:string;
     className?:string;
     shape?:globalShapeType;
     
-    afterElement?:JSX.Element;
-    beforeElement?:JSX.Element;
+    afterElement?:React.ReactNode;
+    beforeElement?:React.ReactNode;
 
-    type:inputTagType
+    type:inputTagType;
     txtPlaceholder?:string;
-    options?:optionItemType[]
+    options?:optionItemType[];
     value?:string[];
-    isDisabled?:boolean
-    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void,
-    onBlur?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
-    onFocus?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void
+    isDisabled?:boolean;
+    onChange?:(newValue:string[], addedValue:string|undefined, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|React.KeyboardEvent<HTMLInputElement>)=>void;
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void;
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:string[])=>void
-    config?:inputTagConfigType
+    onValidate?:(error:fieldErrorType, newValue:string[])=>void;
+    config?:inputTagConfigType;
 }
 
 export type inputTagType = 'text' | 'text-no-space';
@@ -292,7 +292,7 @@ export type inputTagConfigType = {
     isRequired?:boolean
     minValue?:number
     maxValue?:number
-    prefixElement?:JSX.Element|string
-    sufixElement?:JSX.Element|string
+    prefixElement?:React.ReactNode|string
+    sufixElement?:React.ReactNode|string
     isHideClear?:boolean
 }

@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefInputDateList, apiRefTableColumnList } from "../constant"
+import { apiRefInputTagList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,8 +12,8 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefInputDateData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefInputDateList)
+    const apiRefInputTagData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefInputTagList)
     },[])
 
     return(
@@ -32,11 +32,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">InputDate</span></p>
-                <p>Calendar with rendered dates that can be selected.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">InputTag</span></p>
+                <p>Text input specifically function for inputing value, usualy list of string as tags.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefInputDateData}
+                    tableData={apiRefInputTagData}
                 />
             </div>
         </>
