@@ -20,6 +20,7 @@ const InputDatePage   = lazy(() => import('./pages/input-date-page'));
 const InputPassowordPage   = lazy(() => import('./pages/input-password-page'));
 const InputSelectionPage   = lazy(() => import('./pages/input-selection-page'));
 const InputTagPage   = lazy(() => import('./pages/input-tag-page'));
+const InputTextPage   = lazy(() => import('./pages/input-text-page'));
 
 
 
@@ -43,6 +44,7 @@ const routes = [
     {key:'input-password', path: '/input-password', component: <InputPassowordPage/>},
     {key:'input-selection', path: '/input-selection', component: <InputSelectionPage/>},
     {key:'input-tag', path: '/input-tag', component: <InputTagPage/>},
+    {key:'input-text', path: '/input-text', component: <InputTextPage/>},
     {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
 

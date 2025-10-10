@@ -184,24 +184,22 @@ export default InputText
 
 export interface _InputText {
     ref?:React.Ref<HTMLInputElement>;
-    id?:string
+    id?:string;
     className?:string;
     style?:inputTextStyleType;
     shape?:globalShapeType;
-
     afterElement?:JSX.Element;
     beforeElement?:JSX.Element;
-
-    type:inputTextType
+    type:inputTextType;
     txtPlaceholder?:string;
-    isDisabled?:boolean
+    isDisabled?:boolean;
     value?:string;
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
-    onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
-    onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void;
+    onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void;
+    onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, value:string)=>void
-    config?:inputTextConfigType
+    onValidate?:(error:fieldErrorType, value:string)=>void;
+    config?:inputTextConfigType;
 }
 
 export type inputTextType = 'text' | 'text-no-space' | 'number-text' | 'number' | 'password';
