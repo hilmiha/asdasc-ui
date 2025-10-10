@@ -19,7 +19,7 @@ import { PiWarningBold } from 'react-icons/pi';
 import { placeholder } from "@codemirror/view";
 
 
-export type codeInputLanguageType = 'json' | 'tsx' | 'html' | 'text'
+export type inputCodeLanguageType = 'json' | 'tsx' | 'html' | 'text'
 
 export type inputCodeStyleType = {
     inputCode?:React.CSSProperties,
@@ -30,9 +30,6 @@ export type inputCodeStyleType = {
 
 export type inputCodeConfigType = {
     isRequired?:boolean
-    maxLength?: number
-    minLength?: number
-    isHideTextCount?: boolean
     isAsPreview?:boolean
 }
 
@@ -51,18 +48,18 @@ const InputCode = ({
     onValidate = undefined,
 	config = undefined
 }:{
-    lang?:codeInputLanguageType
-    className?:string
-    style?:inputCodeStyleType,
-    shape?:globalShapeType
-    txtPlaceholder?:string
-    value?:string
-    isDisabled?:boolean
-    onChange?:(newValue:string)=>void
-	onBlur?:(e:FocusEvent, value:string)=>void
-    onFocus?:(e:FocusEvent, value:string)=>void
+    lang?:inputCodeLanguageType;
+    className?:string;
+    style?:inputCodeStyleType;
+    shape?:globalShapeType;
+    txtPlaceholder?:string;
+    value?:string;
+    isDisabled?:boolean;
+    onChange?:(newValue:string)=>void;
+	onBlur?:(e:FocusEvent, value:string)=>void;
+    onFocus?:(e:FocusEvent, value:string)=>void;
     error?:fieldErrorType;
-	onValidate?:(error:fieldErrorType, value:string)=>void
+	onValidate?:(error:fieldErrorType, value:string)=>void;
     config?:inputCodeConfigType;
 }) =>{
     //Context start ====

@@ -1,9 +1,12 @@
+import { useState } from "react"
 import { PiStarFourBold } from "react-icons/pi"
 import IconButton from "src/components/ui/icon-button"
 import InputCode from "src/components/ui/input-code"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const PreviewSection = () =>{
+    const [count, setCount] = useState(0)
+    
     return(
         <div 
             style={{
@@ -14,12 +17,13 @@ const PreviewSection = () =>{
             }}
         >
             <PreviewBox>
-                <div style={{display:"flex", justifyContent:'center'}}>
+                <div style={{display:"flex", flexDirection:'column', alignItems:'center'}}>
                     <IconButton 
                         icon={<PiStarFourBold className="global-icon"/>}
                         txtLabel={'Button'}
-                        onClick={()=>{alert("Button Clicked");}}
+                        onClick={()=>{setCount(count+1)}}
                     />
+                    <p style={{textAlign:'center'}}>{`Count: ${count}`}</p>
                 </div>
             </PreviewBox>
             <InputCode
@@ -39,16 +43,22 @@ const PreviewSection = () =>{
 export default PreviewSection
 
 
-const sampleCode = `import { PiStarFourBold } from "react-icons/pi"
+const sampleCode = `import { useState } from "react"
+import { PiStarFourBold } from "react-icons/pi"
 import IconButton from "src/components/ui/icon-button"
 
 const IconButtonDemo = () =>{
 
+    const [count, setCount] = useState(0)
+
     return(
-        <IconButton 
-            icon={<PiStarFourBold className="global-icon"/>}
-            txtLabel={'Button'}
-            onClick={()=>{alert("Button Clicked");}}
-        />
+        <>
+            <IconButton 
+                icon={<PiStarFourBold className="global-icon"/>}
+                txtLabel={'Button'}
+                onClick={()=>{setCount(count+1)}}
+            />
+            <p style={{textAlign:'center'}}>{\`Count: \${count}\`}</p>
+        </>
     )
 }`

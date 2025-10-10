@@ -8,8 +8,8 @@ export const prevComp = {
     path:'/dropdown-menu'
 }
 export const nextComp = {
-    name:'Input Date',
-    path:'/input-date'
+    name:'Input Code',
+    path:'/input-code'
 }
 
 export const sections = [

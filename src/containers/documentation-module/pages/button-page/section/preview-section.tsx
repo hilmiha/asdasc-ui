@@ -1,8 +1,10 @@
+import { useState } from "react"
 import Button from "src/components/ui/button"
 import InputCode from "src/components/ui/input-code"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const PreviewSection = () =>{
+    const [count, setCount] = useState(0)
     return(
         <div 
             style={{
@@ -13,11 +15,14 @@ const PreviewSection = () =>{
             }}
         >
             <PreviewBox>
-                <div style={{display:"flex", justifyContent:'center'}}>
-                    <Button 
-                        txtLabel={'Button'}
-                        onClick={()=>{alert("Button Clicked");}}
-                    />
+                <div style={{display:"flex", flexDirection:'column', justifyContent:'center'}}>
+                    <div style={{display:"flex",  justifyContent:'center'}}>
+                        <Button 
+                            txtLabel={'Button'}
+                            onClick={()=>{setCount(count+1)}}
+                        />
+                    </div>
+                    <p style={{textAlign:'center'}}>{`Count: ${count}`}</p>
                 </div>
             </PreviewBox>
             <InputCode
@@ -37,14 +42,20 @@ const PreviewSection = () =>{
 export default PreviewSection
 
 
-const sampleCode = `import Button from "src/components/ui/button"
+const sampleCode = `import { useState } from "react"
+import Button from "src/components/ui/button"
 
 const ButtonDemo = () =>{
 
+    const [count, setCount] = useState(0)
+
     return(
-        <Button 
-            txtLabel={'Button'}
-            onClick={()=>{alert("Button Clicked");}}
-        />
+        <>
+            <Button 
+                txtLabel={'Button'}
+                onClick={()=>{setCount(count+1)}}
+            />
+            <p style={{textAlign:'center'}}>{\`Count: \${count}\`}</p>
+        </>
     )
 }`

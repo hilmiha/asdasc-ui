@@ -13,6 +13,7 @@ const CheckboxPage   = lazy(() => import('./pages/checkbox-page'));
 const DropdownPage   = lazy(() => import('./pages/dropdown-page'));
 const DropdownMenuPage   = lazy(() => import('./pages/dropdown-menu-page'));
 const IconButtonPage   = lazy(() => import('./pages/icon-button-page'));
+const InputCodePage   = lazy(() => import('./pages/input-code-page'));
 const InputDatePage   = lazy(() => import('./pages/input-date-page'));
 const InputPassowordPage   = lazy(() => import('./pages/input-password-page'));
 const InputSelectionPage   = lazy(() => import('./pages/input-selection-page'));
@@ -33,6 +34,7 @@ const routes = [
     {key:'dropdown', path: '/dropdown', component: <DropdownPage/>},
     {key:'dropdown-menu', path: '/dropdown-menu', component: <DropdownMenuPage/>},
     {key:'icon-button', path: '/icon-button', component: <IconButtonPage/>},
+    {key:'input-code', path: '/input-code', component: <InputCodePage/>},
     {key:'input-date', path: '/input-date', component: <InputDatePage/>},
     {key:'input-password', path: '/input-password', component: <InputPassowordPage/>},
     {key:'input-selection', path: '/input-selection', component: <InputSelectionPage/>},
