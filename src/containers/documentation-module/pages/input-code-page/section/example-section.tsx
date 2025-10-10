@@ -133,7 +133,7 @@ import type { fieldErrorType } from "src/components/_types"
 
 const InputPasswordDemo = () =>{
 
-    const [value, setValue] = useState< string >('')
+    const [value, setValue] = useState<string>('')
     const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
 
     return(

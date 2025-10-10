@@ -5,7 +5,7 @@ import PreviewBox from "src/containers/documentation-module/sections/preview-box
 
 const PreviewSection = () =>{
 
-    const [value, setValue] = useState< string >('')
+    const [value, setValue] = useState<string>('')
 
     return(
         <div 
@@ -45,7 +45,7 @@ import InputPassword from "src/components/ui/input-password"
 
 const InputPasswordDemo = () =>{
 
-    const [value, setValue] = useState< string >('')
+    const [value, setValue] = useState<string>('')
 
     return(
         <InputPassword

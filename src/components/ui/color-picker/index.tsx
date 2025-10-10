@@ -15,18 +15,6 @@ import IconButton from '../icon-button';
 import { PiCaretUpDownBold } from 'react-icons/pi';
 import ColorPreview from './color-preview';
 
-interface _ColorPicker {
-    className?: string;
-    shape?: globalShapeType;
-    value?:string,
-    onChange?: (color: string) => void;
-    initMode?:colorPickerModeType
-    onModeChange?: (mode:colorPickerModeType)=>void
-    isAllowAlpha?: boolean;
-}
-
-export type colorPickerModeType = "hex" | "rgb";
-
 const ColorPicker = ({
     className,
     shape,
@@ -280,3 +268,14 @@ const ColorPicker = ({
 };
 
 export default ColorPicker
+interface _ColorPicker {
+    className?: string;
+    shape?: globalShapeType;
+    value?:string;
+    onChange?: (newValue: string) => void;
+    initMode?:colorPickerModeType
+    onModeChange?: (mode:colorPickerModeType)=>void
+    isAllowAlpha?: boolean;
+}
+
+export type colorPickerModeType = "hex" | "rgb";

@@ -1,10 +1,11 @@
 import { useState } from "react"
+import ColorPicker from "src/components/ui/color-picker"
 import InputCode from "src/components/ui/input-code"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const PreviewSection = () =>{
 
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>('#09976A')
 
     return(
         <div 
@@ -16,16 +17,12 @@ const PreviewSection = () =>{
             }}
         >
             <PreviewBox>
-                <InputCode
-                    txtPlaceholder="Enter code..."
-                    value={value}
-                    onChange={(newValue)=>{setValue(newValue)}}
-                    style={{
-                        codeEditorBox:{
-                            maxHeight:'240px'
-                        }
-                    }}
-                />
+                <div style={{display:'flex', justifyContent:'center'}}>
+                    <ColorPicker
+                        value={value}
+                        onChange={(newValue)=>{setValue(newValue)}}
+                    />
+                </div>
             </PreviewBox>
             <InputCode
                 lang="tsx"
@@ -43,23 +40,18 @@ const PreviewSection = () =>{
 
 export default PreviewSection
 
+
 const sampleCode = `import { useState } from "react"
-import InputCode from "src/components/ui/input-code"
+import ColorPicker from "src/components/ui/color-picker"
 
-const InputCodeDemo = () =>{
+const ColorPickerDemo = () =>{
 
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>('#09976A')
 
     return(
-        <InputCode
-            txtPlaceholder="Enter code..."
+        <ColorPicker
             value={value}
             onChange={(newValue)=>{setValue(newValue)}}
-            style={{
-                codeEditorBox:{
-                    maxHeight:'240px'
-                }
-            }}
         />
     )
 }`

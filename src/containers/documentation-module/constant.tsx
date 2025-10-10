@@ -7,6 +7,7 @@ export const componentList = [
     {id:'calendar', txtLable:'Calendar', to:'/calendar'},
     {id:'carousel', txtLable:'Carousel', to:'/carousel'},
     {id:'checkbox', txtLable:'Checkbox', to:'/checkbox'},
+    {id:'color-picker', txtLable:'Color Picker', to:'/color-picker'},
     {id:'dropdown', txtLable:'Dropdown', to:'/dropdown'},
     {id:'dropdown-menu', txtLable:'Dropdown Menu', to:'/dropdown-menu'},
     {id:'icon-button', txtLable:'Icon Button', to:'/icon-button'},

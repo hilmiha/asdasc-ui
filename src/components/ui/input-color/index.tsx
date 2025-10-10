@@ -225,21 +225,19 @@ const InputColor = ({
 export default InputColor
 
 interface _InputColor {
-    id?:string
+    id?:string;
     className?:string;
     style?:inputSelectionStyleType;
     shape?:globalShapeType;
-    
     afterElement?:JSX.Element;
     beforeElement?:JSX.Element;
-
     txtPlaceholder?:string;
-    isDisabled?:boolean
-    value?:string
-    onChange?:(newValue:string)=>void,
+    isDisabled?:boolean;
+    value?:string;
+    onChange?:(newValue:string)=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, newValue:string)=>void
-    config?:inputColorConfigType
+    onValidate?:(error:fieldErrorType, newValue:string)=>void;
+    config?:inputColorConfigType;
 }
 
 export type inputColorConfigType = {

@@ -1,10 +1,11 @@
 import { useState } from "react"
 import InputCode from "src/components/ui/input-code"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
+import InputColor from "src/components/ui/input-color"
 
 const PreviewSection = () =>{
 
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>('#09976A')
 
     return(
         <div 
@@ -16,15 +17,10 @@ const PreviewSection = () =>{
             }}
         >
             <PreviewBox>
-                <InputCode
-                    txtPlaceholder="Enter code..."
+                <InputColor
+                    txtPlaceholder="Select color..."
                     value={value}
                     onChange={(newValue)=>{setValue(newValue)}}
-                    style={{
-                        codeEditorBox:{
-                            maxHeight:'240px'
-                        }
-                    }}
                 />
             </PreviewBox>
             <InputCode
@@ -43,23 +39,19 @@ const PreviewSection = () =>{
 
 export default PreviewSection
 
+
 const sampleCode = `import { useState } from "react"
-import InputCode from "src/components/ui/input-code"
+import InputColor from "src/components/ui/input-color"
 
-const InputCodeDemo = () =>{
+const InputColorDemo = () =>{
 
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>('#09976A')
 
     return(
-        <InputCode
-            txtPlaceholder="Enter code..."
+        <InputColor
+            txtPlaceholder="Select color..."
             value={value}
             onChange={(newValue)=>{setValue(newValue)}}
-            style={{
-                codeEditorBox:{
-                    maxHeight:'240px'
-                }
-            }}
         />
     )
 }`

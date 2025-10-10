@@ -22,7 +22,7 @@
         &.disabled{
             cursor: not-allowed;
             background-color: hsl(from var(--clr-surface-1) h s l / 0.7);
-            border: 0px dashed var(--clr-border);
+            border: 1px dashed var(--clr-border);
             background-image: repeating-linear-gradient(
                 45deg,
                 transparent,

@@ -33,21 +33,18 @@ export const keyboardInteractionsList:tableRowDataType[] = [
     {
         id:'1',
         key:<Tag txtLabel="Space"/>,
-        description:<p>When focus is on an <span className="text-code">Button</span>, press and do selection for date, month or year.</p>,
+        description:<p>When focus is on an <span className="text-code">Button</span>, press and do the <span className="text-code">onClick</span> function.</p>,
     },
     {
         id:'2',
         key:<Tag txtLabel="Enter"/>,
-        description:<>
-            <p>When focus is on an <span className="text-code">Input</span>, press and add tag into array value.</p>
-            <p>When focus is on an <span className="text-code">Button</span>, press and do selection for date, month or year.</p>
-        </>,
+        description:<p>When focus is on an <span className="text-code">Button</span>, press and do the <span className="text-code">onClick</span> function.</p>,
     },
     {
         id:'3',
         key:<Tag txtLabel="Tab"/>,
         description:<p>Moves focus to the next focusable element.</p>,
-    }
+    },
 ]
 
 export const apiRefTableColumnList:tableColumnType[] = [

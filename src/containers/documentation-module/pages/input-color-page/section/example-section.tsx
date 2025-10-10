@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import type { fieldErrorType } from "src/components/_types"
 import InputCode from "src/components/ui/input-code"
-import InputPassword from "src/components/ui/input-password"
+import InputColor from "src/components/ui/input-color"
 import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
@@ -11,9 +11,10 @@ const ExampleSection = () =>{
     } = useDocModule()
     
     const valueConst = useMemo(()=>{
-        return 'hello-world'
+        return '#09976A'
     },[])
-    const [value, setValue] = useState<string>('')
+    const [valueWapha, setValueWapha] = useState<string>('#09966A2E')
+    const [value, setValue] = useState<string>('#09976A')
     const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
     
     return(
@@ -43,8 +44,8 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputPassword
-                            txtPlaceholder="Enter password..."
+                        <InputColor
+                            txtPlaceholder="Select color..."
                             value={valueConst}
                             isDisabled={true}
                         />
@@ -69,8 +70,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Strong password validation</p>
-                <p>Validating the password entered is a strong one.</p>
+                <p className="text-title-lg">Value with alpha</p>
+                <p>When value color needed using transparancy.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -80,17 +81,12 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <InputPassword
-                            txtPlaceholder="Enter password..."
-                            value={value}
-                            onChange={(newValue)=>{setValue(newValue)}}
-                            onValidate={(error)=>{setValueError(error)}}
-                            error={valueError}
+                        <InputColor
+                            txtPlaceholder="Select color..."
+                            value={valueWapha}
+                            onChange={(newValue)=>{setValueWapha(newValue)}}
                             config={{
-                                isRequired:true,
-                                validRegex: [
-                                    [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
-                                ]
+                                isAllowAlpha:true
                             }}
                         />
                     </PreviewBox>
@@ -106,39 +102,91 @@ const ExampleSection = () =>{
                     />
                 </div>
             </div>
+            <div
+                id="example_2" 
+                ref={setSectionRef('example_2')}
+                style={{
+                    display:'grid',
+                    gap:'var(--space-150)'
+                }}
+            >
+                <p className="text-title-lg">Validating value</p>
+                <p>Validation can be configure inside <span>config</span> props.</p>
+                <div 
+                    style={{
+                        display:'grid',
+                        gap:'var(--space-100)',
+                        marginTop:"var(--space-100)",
+                        alignItems:'center',
+                    }}
+                >
+                    <PreviewBox>
+                        <InputColor
+                            txtPlaceholder="Select color..."
+                            value={value}
+                            onChange={(newValue)=>{setValue(newValue)}}
+                            onValidate={(error)=>{setValueError(error)}}
+                            error={valueError}
+                            config={{
+                                isRequired:true,
+                            }}
+                        />
+                    </PreviewBox>
+                    <InputCode
+                        lang="tsx"
+                        isDisabled={true}
+                        value={example_2_code}
+                        style={{
+                            inputCode:{
+                                maxHeight:'50vh'
+                            }
+                        }}
+                    />
+                </div>
+            </div>
         </>
     )
 }
 
 export default ExampleSection
 
-const example_0_code = `<InputPassword
-    txtPlaceholder="Enter password..."
-    value={valueConst}
+const example_0_code = `<InputColor
+    txtPlaceholder="Select color..."
+    value={value}
     isDisabled={true}
 />`
 
-const example_1_code = `import { useState } from "react"
-import InputPassword from "src/components/ui/input-password"
+const example_1_code = `<InputColor
+    txtPlaceholder="Select color..."
+    value={value}
+    onChange={(newValue)=>{setValue(newValue)}}
+    config={{
+        isAllowAlpha:true
+    }}
+/>`
+
+
+const example_2_code = `import { useState } from "react"
+import InputColor from "src/components/ui/input-color"
 import type { fieldErrorType } from "src/components/_types"
 
-const InputPasswordDemo = () =>{
+const InputColorDemo = () =>{
 
-    const [value, setValue] = useState<string>('')
+    const [value, setValue] = useState<string>('#09976A')
     const [valueError, setValueError] = useState<fieldErrorType>({isError:false, errorMessage:''})
 
     return(
-        <InputPassword
-            txtPlaceholder="Enter password..."
-            onChange={(newValue)=>{setValue(newValue)}}
-            onValidate={(error)=>{setValueError(error)}}
-            error={valueError}
-            config={{
-                isRequired:true,
-                validRegex: [
-                    [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 'Password must contain at least 8 characters with one uppercase, one lowercase, one number, and one special character (@$!%*?&)']
-                ]
-            }}
-        />
+        <>
+            <InputColor
+                txtPlaceholder="Select color..."
+                value={value}
+                onChange={(newValue)=>{setValue(newValue)}}
+                onValidate={(error)=>{setValueError(error)}}
+                error={valueError}
+                config={{
+                    isRequired:true,
+                }}
+            />
+        </>
     )
 }`

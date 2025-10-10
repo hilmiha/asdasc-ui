@@ -8,8 +8,8 @@ export const prevComp = {
     path:'/carousel'
 }
 export const nextComp = {
-    name:'Dropdown',
-    path:'/dropdown'
+    name:'Color Picker',
+    path:'/color-picker'
 }
 
 export const sections = [

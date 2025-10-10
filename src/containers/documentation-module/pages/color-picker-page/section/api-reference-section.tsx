@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefCalendarList, apiRefTableColumnList } from "../constant"
+import { apiRefColorPickerList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,8 +12,8 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefCalendarData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefCalendarList)
+    const apiRefPickerData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefColorPickerList)
     },[])
 
     return(
@@ -32,11 +32,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">Calendar</span></p>
-                <p>Calendar with rendered dates that can be selected.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">ColorPicker</span></p>
+                <p>Color area where user can select colors.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefCalendarData}
+                    tableData={apiRefPickerData}
                 />
             </div>
         </>

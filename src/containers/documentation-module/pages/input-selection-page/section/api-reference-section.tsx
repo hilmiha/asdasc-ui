@@ -33,7 +33,7 @@ const ApiReferenceSection = () =>{
                 }}
             >
                 <p className="text-title-lg"><span className="text-title-lg text-code">InputSelection</span></p>
-                <p>Text input specifically function for inputing value from options.</p>
+                <p>Input field specifically function for inputing value from options.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
                     tableData={apiRefInputSelectionData}

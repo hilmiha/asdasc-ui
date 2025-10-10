@@ -1,24 +1,23 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
-export const pageId = 'input-password';
+export const pageId = 'color-picker';
 
 export const prevComp = {
-    name:'Input Date',
-    path:'/input-date'
+    name:'Checkbox',
+    path:'/checkbox'
 }
 export const nextComp = {
-    name:'Input Selection',
-    path:'/input-selection'
+    name:'Dropdown',
+    path:'/dropdown'
 }
 
 export const sections = [
-    {id:'preview', txtLabel:'Input Password', isSub:false},
+    {id:'preview', txtLabel:'Calendar', isSub:false},
     {id:'api_ref', txtLabel:'API Refrence', isSub:false},
-    {id:'api_ref_1', txtLabel:'InputPassword', isSub:true},
+    {id:'api_ref_1', txtLabel:'Calendar', isSub:true},
     {id:'example', txtLabel:'Example', isSub:false},
-    {id:'example_0', txtLabel:'Disabled field', isSub:true},
-    {id:'example_1', txtLabel:'Strong password validation', isSub:true},
+    {id:'example_1', txtLabel:'Value with alpha', isSub:true},
     {id:'keyboard', txtLabel:'Keyboard Interactions', isSub:false},
 ]
 
@@ -43,6 +42,11 @@ export const keyboardInteractionsList:tableRowDataType[] = [
         key:<Tag txtLabel="Tab"/>,
         description:<p>Moves focus to the next focusable element.</p>,
     },
+    {
+        id:'4',
+        key:<Tag txtLabel="Arrow Buttons"/>,
+        description:<p>Naviagte color inside color area</p>,
+    },
 ]
 
 export const apiRefTableColumnList:tableColumnType[] = [
@@ -51,64 +55,34 @@ export const apiRefTableColumnList:tableColumnType[] = [
     {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
-export const apiRefInputPasswordList:tableRowDataType[] = [
+export const apiRefColorPickerList:tableRowDataType[] = [
     {
         "id": "1",
-        "prop": <p style={{fontFamily:'monospace'}}>ref</p>,
-        "type": <p style={{fontFamily:'monospace'}}>{`React.Ref<HTMLInputElement>`}</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "2",
-        "prop": <p style={{fontFamily:'monospace'}}>id</p>,
+        "prop": <p style={{fontFamily:'monospace'}}>className</p>,
         "type": <p style={{fontFamily:'monospace'}}>string</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "3",
-        "prop": <p style={{fontFamily:'monospace'}}>style</p>,
-        "type": <p style={{fontFamily:'monospace'}}>inputPasswordStyleType</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "4",
+        "id": "2",
         "prop": <p style={{fontFamily:'monospace'}}>shape</p>,
         "type": <p style={{fontFamily:'monospace'}}>globalShapeType</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "5",
-        "prop": <p style={{fontFamily:'monospace'}}>txtPlaceholder</p>,
-        "type": <p style={{fontFamily:'monospace'}}>string</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "6",
+        "id": "3",
         "prop": <p style={{fontFamily:'monospace'}}>value</p>,
         "type": <p style={{fontFamily:'monospace'}}>string</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "7",
-        "prop": <p style={{fontFamily:'monospace'}}>isDisabled</p>,
-        "type": <p style={{fontFamily:'monospace'}}>fieldErrorType</p>,
+        "id": "4",
+        "prop": <p style={{fontFamily:'monospace'}}>onChange</p>,
+        "type": <p style={{fontFamily:'monospace'}}>{`function (newValue) => void`}</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
-        "id": "8",
-        "prop": <p style={{fontFamily:'monospace'}}>onValidate</p>,
-        "type": <p style={{fontFamily:'monospace'}}>{`(error, newValue) => void`}</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "9",
-        "prop": <p style={{fontFamily:'monospace'}}>config</p>,
-        "type": <p style={{fontFamily:'monospace'}}>inputTextConfigType</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "10",
-        "prop": <p style={{fontFamily:'monospace'}}>initialShowPassword</p>,
+        "id": "5",
+        "prop": <p style={{fontFamily:'monospace'}}>initMode</p>,
         "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     }

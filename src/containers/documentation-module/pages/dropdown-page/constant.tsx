@@ -4,8 +4,8 @@ import Tag from "src/components/ui/tag"
 export const pageId = 'dropdown';
 
 export const prevComp = {
-    name:'Checkbox',
-    path:'/checkbox'
+    name:'Color Picker',
+    path:'/color-picker'
 }
 export const nextComp = {
     name:'Dropdown Menu',
