@@ -15,7 +15,7 @@
         display: flex;
         gap: var(--space-100);
         align-items: center;
-        padding: var(--space-0) var(--space-200);
+        padding: var(--space-0) calc(var(--space-200) + 2px);
         background-color: hsl(from var(--clr-surface-1) h s l / 0.7);
         cursor: pointer;
 
@@ -50,7 +50,7 @@
         }
         &.circle{
             border-radius: var(--space-200);
-            padding: var(--space-0) var(--space-300);
+            padding: var(--space-0) calc(var(--space-300) + 2px);
 
             &:has(.icon-before){
                 padding-left: var(--space-250);

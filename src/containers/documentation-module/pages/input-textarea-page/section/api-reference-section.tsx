@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefInputTextList, apiRefTableColumnList } from "../constant"
+import { apiRefInputTextareaList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,8 +12,8 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefInputTextData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefInputTextList)
+    const apiRefInputTextareaData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefInputTextareaList)
     },[])
 
     return(
@@ -32,11 +32,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">InputText</span></p>
-                <p>Text input specifically function for inputing text value.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">InputTextarea</span></p>
+                <p>Text inputarea specifically function for inputing text value.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefInputTextData}
+                    tableData={apiRefInputTextareaData}
                 />
             </div>
         </>

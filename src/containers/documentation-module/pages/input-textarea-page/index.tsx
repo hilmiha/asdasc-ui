@@ -12,7 +12,7 @@ import ExampleSection from './section/example-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
 import Button from "src/components/ui/button"
 
-const InputTextPage = () =>{
+const InputTextareaPage = () =>{
     const {
         setSectionList,
         setSectionRef,
@@ -46,7 +46,7 @@ const InputTextPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Input Text</p>
+                    <p className="text-title-xl">Input Textarea</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -61,7 +61,7 @@ const InputTextPage = () =>{
                     </div>
                 </div>
                 <p>
-                    Input form for text value.
+                    Input form for text value inside textarea.
                 </p>
                 <PreviewSection/>
             </div>
@@ -84,4 +84,4 @@ const InputTextPage = () =>{
     )
 }
 
-export default InputTextPage
+export default InputTextareaPage

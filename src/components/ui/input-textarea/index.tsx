@@ -213,24 +213,22 @@ export default InputTextarea
 
 export interface _InputTextarea {
     ref?:React.Ref<HTMLTextAreaElement>;
-    id?:string
+    id?:string;
     className?:string;
     style?:inputTextareaStyleType;
     shape?:globalShapeType;
-
     afterElement?:JSX.Element;
     beforeElement?:JSX.Element;
-
-    type:inputTextareaType
+    type:inputTextareaType;
     txtPlaceholder?:string;
     value?:string;
-    isDisabled?:boolean
-    onChange?:(newValue:string, e:React.ChangeEvent<HTMLTextAreaElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
-    onBlur?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void
-    onFocus?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void
+    isDisabled?:boolean;
+    onChange?:(newValue:string, e:React.ChangeEvent<HTMLTextAreaElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void;
+    onBlur?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void;
+    onFocus?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void;
     error?:fieldErrorType;
-    onValidate?:(error:fieldErrorType, value:string)=>void
-    config?:inputTextareaConfigType
+    onValidate?:(error:fieldErrorType, value:string)=>void;
+    config?:inputTextareaConfigType;
 }
 
 export type inputTextareaType = 'text' | 'text-no-space' | 'number-text' | 'number';

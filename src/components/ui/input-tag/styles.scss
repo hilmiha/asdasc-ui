@@ -10,7 +10,7 @@
         grid-row: 1 / 2;
         border: 1px solid var(--clr-border);
         margin: var(--space-50);
-        padding: 2.8px var(--space-200);
+        padding: 2.8px calc(var(--space-200) + 2px);
         background-color: hsl(from var(--clr-surface-1) h s l / 0.7);
         display: flex;
         align-items: center;
@@ -88,7 +88,7 @@
         }
         &.circle{
             border-radius: var(--space-200);
-            padding: 2.8px var(--space-300);
+            padding: 2.8px calc(var(--space-300) + 2px);
 
             &:has(.icon-before){
                 padding-left: var(--space-250);
