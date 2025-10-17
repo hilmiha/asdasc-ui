@@ -22,7 +22,7 @@
         overflow: hidden;
         border: 1px solid var(--clr-border);
         outline: 0px;
-        padding: var(--space-500);
+        padding: var(--space-300);
         background-color: var(--clr-surface-2);
         max-height: 80vh;
         gap: var(--space-250);
@@ -84,7 +84,6 @@
         }
 
         &.tablet{
-            padding: var(--space-300);
             &.full{
                 width: calc(100% - 60px);
                 max-width: calc(100% - 60px);

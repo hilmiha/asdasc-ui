@@ -5,10 +5,9 @@ const ResizablePanel = ({
     id = undefined,
     children,
     order = undefined,
-    minPanelSize = undefined,
+    minPanelSize = 0,
     defaultPanelSize = 50,
-    minContentWidth = '320px',
-    contentPadding = '0px',
+    minContentWidth = '80px',
     isOverFlow = false
 }:{
     id?:string
@@ -17,7 +16,6 @@ const ResizablePanel = ({
     minPanelSize?:number,
     defaultPanelSize?:number,
     minContentWidth?:string,
-    contentPadding?:string
     isOverFlow?:boolean
 }) =>{
 
@@ -47,7 +45,6 @@ const ResizablePanel = ({
                     <div
                         style={{
                             minWidth:minContentWidth,
-                            padding:contentPadding
                         }}
                     >
                         {children}

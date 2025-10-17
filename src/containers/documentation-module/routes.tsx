@@ -22,6 +22,9 @@ const InputSelectionPage   = lazy(() => import('./pages/input-selection-page'));
 const InputTagPage   = lazy(() => import('./pages/input-tag-page'));
 const InputTextPage   = lazy(() => import('./pages/input-text-page'));
 const InputTextareaPage   = lazy(() => import('./pages/input-textarea-page'));
+const ModalPage   = lazy(() => import('./pages/modal-page'));
+const RadioPage   = lazy(() => import('./pages/radio-page'));
+const ResizablePage   = lazy(() => import('./pages/resizable-page'));
 
 
 
@@ -47,6 +50,9 @@ const routes = [
     {key:'input-tag', path: '/input-tag', component: <InputTagPage/>},
     {key:'input-text', path: '/input-text', component: <InputTextPage/>},
     {key:'input-textarea', path: '/input-textarea', component: <InputTextareaPage/>},
+    {key:'modal', path: '/modal', component: <ModalPage/>},
+    {key:'radio', path: '/radio', component: <RadioPage/>},
+    {key:'resizable', path: '/resizable', component: <ResizablePage/>},
     {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
 

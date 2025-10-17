@@ -1,5 +1,5 @@
 // import clsx from 'clsx';
-import React, { useContext, useEffect, useMemo, useRef, useState, type JSX } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import './styles.scss';
 import { autoUpdate, FloatingFocusManager, FloatingOverlay, FloatingPortal, useDismiss, useFloating, useInteractions, useRole, useTransitionStyles } from "@floating-ui/react";
 import clsx from 'clsx';
@@ -225,19 +225,18 @@ export default Modal
 interface _Modal {
     isOpen?:boolean;
     setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-
     txtTitle?:string;
-    iconTitle?:JSX.Element;
+    iconTitle?:React.ReactNode;
     className?:string;
-    style?:modalStyleType
+    style?:modalStyleType;
     shape?:globalShapeType;
-    size?:modalSizeType
+    size?:modalSizeType;
     onOpen?:()=>void;
     onClose?:()=>void;
-    elementHeader?:JSX.Element
-    elementFooter?:JSX.Element
-    children:JSX.Element
-    floatingConfig?:modalFloatingConfigType
+    elementHeader?:React.ReactNode;
+    elementFooter?:React.ReactNode;
+    children:React.ReactNode;
+    floatingConfig?:modalFloatingConfigType;
 }
 
 type modalSizeType = 'small' | 'medium' | 'large' | 'full'
@@ -245,7 +244,7 @@ type modalStyleType = {
     container:React.CSSProperties,
 }
 type modalFloatingConfigType = {
-    isChildOpen?:boolean,
-    isDisableDismiss?:boolean
-    level?:number
+    isChildOpen?:boolean;
+    isDisableDismiss?:boolean;
+    level?:number;
 }

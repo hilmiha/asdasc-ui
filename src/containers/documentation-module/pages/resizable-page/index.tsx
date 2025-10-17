@@ -4,15 +4,15 @@ import { baseUrl } from "../../constant"
 import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
+import { useDocModule } from "src/containers/documentation-module/context"
 import { nextComp, pageId, prevComp, sections } from "./constant"
 import PreviewSection from './section/preview-section'
 import ApiReferenceSection from './section/api-reference-section'
 import ExampleSection from './section/example-section'
 import KeyboardInteractionsSection from "./section/keyboard-interactions-section"
 import Button from "src/components/ui/button"
-import { useDocModule } from "src/containers/documentation-module/context"
 
-const DropdownPage = () =>{
+const ResizablePage = () =>{
     const {
         setSectionList,
         setSectionRef,
@@ -46,7 +46,7 @@ const DropdownPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Dropdown</p>
+                    <p className="text-title-xl">Resizable</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -61,7 +61,7 @@ const DropdownPage = () =>{
                     </div>
                 </div>
                 <p>
-                    A dropdown that opens within a portal, triggered and anchored by its associated trigger.
+                    Resizable panel layout.
                 </p>
                 <PreviewSection/>
             </div>
@@ -84,4 +84,4 @@ const DropdownPage = () =>{
     )
 }
 
-export default DropdownPage
+export default ResizablePage

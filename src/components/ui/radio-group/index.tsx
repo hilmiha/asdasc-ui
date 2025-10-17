@@ -37,9 +37,9 @@ const RadioGroup = ({
 export default RadioGroup
 
 interface _RadioGroup{
-    className?:string
-    options:optionItemType[]
+    className?:string;
+    options:optionItemType[];
     selectedId?: string; 
-    isDisabled?:boolean
-    onChange?:(newValue:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void
+    isDisabled?:boolean;
+    onChange?:(newValue:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void;
 }

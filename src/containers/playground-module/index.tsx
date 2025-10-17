@@ -1435,20 +1435,20 @@ function PlaygroundModule() {
                     {
                         isShowLeftPanel&&(
                             <>
-                                <ResizablePanel order={1} minPanelSize={0} defaultPanelSize={20} contentPadding='var(--space-300)'>
+                                <ResizablePanel order={1} minPanelSize={0} defaultPanelSize={20}>
                                     <div>
                                         <h1>Resizable Panels</h1>
                                         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
                                     </div>
                                 </ResizablePanel>
-                                <ResizableHandle/>
+                                <ResizableHandle direction={(appTheme.screenSize!=='laptop')?('vertical'):('horizontal')}/>
                             </>
 
                         )
                     }
                     <ResizablePanel order={2}>
                         <Resizable direction='vertical'>
-                            <ResizablePanel minPanelSize={20} contentPadding='var(--space-300)'>
+                            <ResizablePanel minPanelSize={20}>
                                 <div>
                                     <h1>Resizable Panels</h1>
                                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
@@ -1461,21 +1461,21 @@ function PlaygroundModule() {
                                     </div>
                                 </div>
                             </ResizablePanel>
-                            <ResizableHandle/>
+                            <ResizableHandle direction='vertical'/>
                             <ResizablePanel minPanelSize={20}>
                                 <Resizable direction='horizontal'>
-                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw' contentPadding='var(--space-300)'>
-                                        <div>
+                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw'>
+                                        <>
                                             <h1>Resizable Panels</h1>
                                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
-                                        </div>
+                                        </>
                                     </ResizablePanel>
-                                    <ResizableHandle/>
-                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw' contentPadding='var(--space-300)'>
-                                        <div>
+                                    <ResizableHandle direction='horizontal'/>
+                                    <ResizablePanel minPanelSize={20} minContentWidth='10vw'>
+                                        <>
                                             <h1>Resizable Panels</h1>
                                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis nesciunt nisi, fugit consequuntur cupiditate, aspernatur odit iste, mollitia deleniti cumque quo. Mollitia quod voluptatem voluptas obcaecati quas sit quo. Odio.</p>
-                                        </div>
+                                        </>
                                     </ResizablePanel>
                                 </Resizable>
                             </ResizablePanel>

@@ -2,7 +2,6 @@ import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
 import { apiRefInputColorList, apiRefTableColumnList } from "../constant"
-import { parsePropsToDocumentation } from "src/helper/helper"
 
 const ApiReferenceSection = () =>{
     const {
@@ -14,22 +13,6 @@ const ApiReferenceSection = () =>{
     },[])
 
     const apiRefInputColorData = useMemo<tableRowDataType[]>(()=>{
-        const tamp = parsePropsToDocumentation(`
-            id?:string;
-            className?:string;
-            style?:inputSelectionStyleType;
-            shape?:globalShapeType;
-            afterElement?:JSX.Element;
-            beforeElement?:JSX.Element;
-            txtPlaceholder?:string;
-            isDisabled?:boolean;
-            value?:string;
-            onChange?:(newValue:string)=>void;
-            error?:fieldErrorType;
-            onValidate?:(error:fieldErrorType, newValue:string)=>void;
-            config?:inputColorConfigType;
-        `)
-        console.log(tamp)
         return(apiRefInputColorList)
     },[])
 

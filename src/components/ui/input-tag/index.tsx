@@ -114,6 +114,7 @@ const InputTag = ({
                                 ref={inputRef}
                                 placeholder={txtPlaceholder}
                                 className='input-tag'
+                                enterKeyHint="send"
                                 value={searchParam}
                                 onChange={(e)=>{
                                     if(!isDisabled){

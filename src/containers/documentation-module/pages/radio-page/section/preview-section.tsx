@@ -1,6 +1,6 @@
 import { useState } from "react"
-import CheckboxButton from "src/components/ui/checkbox-button"
 import InputCode from "src/components/ui/input-code"
+import RadioButton from "src/components/ui/radio-button"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
 const PreviewSection = () =>{
@@ -17,9 +17,9 @@ const PreviewSection = () =>{
         >
             <PreviewBox>
                 <div style={{display:"flex", justifyContent:'center'}}>
-                    <CheckboxButton
+                    <RadioButton
                         isSelected={isSelected}
-                        txtLabel="Checkbox Item"
+                        txtLabel="Radio Item"
                         txtSublabel="Lorem ipsum dolor sit amet"
                         onClick={(newValue)=>{setIsSelected(newValue)}}
                     />
@@ -43,16 +43,16 @@ export default PreviewSection
 
 
 const sampleCode = `import { useState } from "react"
-import CheckboxButton from "src/components/ui/checkbox-button"
+import RadioButton from "src/components/ui/radio-button"
 
-const CheckboxButtonDemo = () =>{
+const RadioButtonDemo = () =>{
 
     const [isSelected, setIsSelected] = useState(false)
 
     return(
-        <CheckboxButton
+        <RadioButton
             isSelected={isSelected}
-            txtLabel="Checkbox Item"
+            txtLabel="Radio Item"
             txtSublabel="Lorem ipsum dolor sit amet"
             onClick={(newValue)=>{setIsSelected(newValue)}}
         />

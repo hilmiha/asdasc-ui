@@ -12,7 +12,7 @@ import KeyboardInteractionsSection from "./section/keyboard-interactions-section
 import Button from "src/components/ui/button"
 import { useDocModule } from "src/containers/documentation-module/context"
 
-const DropdownPage = () =>{
+const ModalPage = () =>{
     const {
         setSectionList,
         setSectionRef,
@@ -46,7 +46,7 @@ const DropdownPage = () =>{
                     display:'flex',
                     justifyContent:'space-between'
                 }}>
-                    <p className="text-title-xl">Dropdown</p>
+                    <p className="text-title-xl">Modal</p>
                     <div style={{display:'flex', gap:'var(--space-25)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
@@ -61,7 +61,7 @@ const DropdownPage = () =>{
                     </div>
                 </div>
                 <p>
-                    A dropdown that opens within a portal, triggered and anchored by its associated trigger.
+                    A modal that opens within a portal, triggered by its associated trigger.
                 </p>
                 <PreviewSection/>
             </div>
@@ -84,4 +84,4 @@ const DropdownPage = () =>{
     )
 }
 
-export default DropdownPage
+export default ModalPage

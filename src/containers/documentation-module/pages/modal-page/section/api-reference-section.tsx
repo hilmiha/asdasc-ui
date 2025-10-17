@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import Table, { type tableColumnType, type tableRowDataType } from "src/components/ui/table"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { apiRefCarouselList, apiRefCarouselChildList, apiRefTableColumnList } from "../constant"
+import { apiRefModalFloatingConfigList, apiRefModalList, apiRefTableColumnList } from "../constant"
 
 const ApiReferenceSection = () =>{
     const {
@@ -12,12 +12,12 @@ const ApiReferenceSection = () =>{
         return(apiRefTableColumnList)
     },[])
 
-    const apiRefCarouselData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefCarouselList)
+    const apiRefModalData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefModalList)
     },[])
 
-    const apiRefCarouselChildData = useMemo<tableRowDataType[]>(()=>{
-        return(apiRefCarouselChildList)
+    const apiRefModalFloatingConfigData = useMemo<tableRowDataType[]>(()=>{
+        return(apiRefModalFloatingConfigList)
     },[])
 
     return(
@@ -36,11 +36,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">Carousel</span></p>
-                <p>Contains all <span className="text-code">CarouselChild</span> into one controlled group.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">Modal</span></p>
+                <p>Modal component that contain trigger and content as the children.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefCarouselData}
+                    tableData={apiRefModalData}
                 />
             </div>
             <div
@@ -51,11 +51,11 @@ const ApiReferenceSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg"><span className="text-title-lg text-code">CarouselChild</span></p>
-                <p>Contains the content for one slide of a carousel.</p>
+                <p className="text-title-lg"><span className="text-title-lg text-code">modalFloatingConfig</span></p>
+                <p>Configuration on how the <span className="text-code">BottomSheet</span> behave.</p>
                 <Table
                     tableColumn={apiRefTableColumn}
-                    tableData={apiRefCarouselChildData}
+                    tableData={apiRefModalFloatingConfigData}
                 />
             </div>
         </>

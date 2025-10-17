@@ -1,7 +1,7 @@
 import './styles.scss';
 import clsx from 'clsx';
 import * as ctrl from './controller';
-import { useContext, type JSX } from 'react';
+import { useContext } from 'react';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import type { globalShapeType } from 'src/components/_types';
 import Button, { type buttonStyleType } from '../button';
@@ -68,17 +68,17 @@ const RadioButton = ({
 export default RadioButton
 
 interface _RadioButton {
-    className?:string,
+    className?:string;
     style?:buttonStyleType;
     shape?:globalShapeType;
-    appearance?: radioButtonAppearance
-    txtLabel?:string
-    txtSublabel?:string,
-    icon?:JSX.Element,
-    isSelected:boolean,
-    onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void
-    isDisabled?:boolean
-    isIndeterminate?:boolean
+    appearance?: radioButtonAppearance;
+    txtLabel?:string;
+    txtSublabel?:string;
+    icon?:React.ReactNode;
+    isSelected:boolean;
+    onClick?:(newValue:boolean, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    isDisabled?:boolean;
+    isIndeterminate?:boolean;
 }
 
 export type radioButtonAppearance = 'subtle-selected' | 'appear-selected'
