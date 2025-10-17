@@ -17,19 +17,6 @@
         gap: var(--space-400);
         border-bottom: 1px solid var(--clr-border);
         padding: var(--space-100) var(--space-300);
-        opacity: 1;
-        transition:
-            max-height 300ms ease-out,
-            padding 100ms ease-out,
-            opacity 200ms ease-out,
-            overflow 300ms ease-out;
-
-        &.hide-top-nav{
-            max-height: 0px;
-            overflow: hidden;
-            padding: 0px;
-            opacity: 0;
-        }
 
         .logo-box{
             display: flex;

@@ -6,9 +6,6 @@ import { PiCaretRightBold, PiSidebar } from 'react-icons/pi'
 import BottomSheet from 'src/components/ui/bottom-sheet'
 import { ThreeColumnTemplateContext, type ThreeColumnTemplateContextValue } from './context'
 import Button from 'src/components/ui/button'
-import { useAppTemplate } from '../app-template/context'
-
-
 
 interface _ThreeColumnTemplateProps {
     className?: string;
@@ -29,13 +26,9 @@ const ThreeColumnTemplate = ({
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
 
-    const {
-        isShowTopnav,
-        setIsShowTopnav
-    } = useAppTemplate()
-
     //scroll top when navigation change
     const pageContentBox = useRef<HTMLDivElement>(null)
+    const [isShowMobileNavContent, setIsShowMobileNavContent] = useState(true)
     const [isShowLeftContent, setIsShowLeftContent] = useState(false)
     const [isShowRightContent, setIsShowRightContent] = useState(false)
 
@@ -47,35 +40,36 @@ const ThreeColumnTemplate = ({
         setIsShowRightContent,
     };
 
+    const lastScrollTop = useRef(0);
+
     useEffect(()=>{
         pageContentBox.current?.scrollTo({top:0})
     },[location.pathname])
 
-    const lastScrollTop = useRef(0);
 
     const handleScroll = () => {
         const div = pageContentBox.current;
         if (!div) return;
+        if(div.scrollHeight<1000) return;
 
         const currentScrollTop = div.scrollTop;
-
-        if (currentScrollTop > lastScrollTop.current) {
-        // scrolling down
-            setIsShowTopnav(false);
-        } else {
-        // scrolling up
-            setIsShowTopnav(true);
+        if (currentScrollTop > lastScrollTop.current && isShowMobileNavContent) {
+            // scrolling down
+            setIsShowMobileNavContent(false);
+        } else if(currentScrollTop < lastScrollTop.current && !isShowMobileNavContent) {
+            // scrolling up
+            setIsShowMobileNavContent(true);
         }
 
         lastScrollTop.current = currentScrollTop;
     };
 
     useEffect(()=>{
-        if(!isShowTopnav && screenSize!=='mobile'){
-            setIsShowTopnav(true);
+        if(!isShowMobileNavContent && screenSize!=='mobile'){
+            setIsShowMobileNavContent(true);
         }
     },[screenSize])
-    
+
     return(
         <ThreeColumnTemplateContext.Provider value={ctxValue}>
             <div 
@@ -95,7 +89,7 @@ const ThreeColumnTemplate = ({
                             {leftSideContent}
                         </div>
                     ):(
-                        <div className='left-side-content-box-mobile'>
+                        <div className={`left-side-content-box-mobile ${isShowMobileNavContent?('show-mobile-nav'):('hide-mobile-nav')}`}>
                             <Button
                                 iconBefore={<PiSidebar className='global-icon'/>}
                                 txtLabel='Menu'
@@ -149,7 +143,11 @@ const ThreeColumnTemplate = ({
                             </BottomSheet>
                         </div>
                     )}
-                <div className='main-content-box' ref={pageContentBox} onScroll={screenSize==='mobile'?(handleScroll):(undefined)}>
+                <div 
+                    className='main-content-box' 
+                    ref={pageContentBox}
+                    onScroll={handleScroll}
+                >
                     <div className='doc-pages-box'>
                         <div className='page-box'>
                             <div className='page-content'>

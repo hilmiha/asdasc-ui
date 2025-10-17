@@ -17,7 +17,7 @@ const UnterConstruction = () =>{
         <div 
             // className="global-radius"
             style={{
-                height:'50vh',
+                height:'40vh',
                 display:'flex',
                 flexDirection:'column',
                 alignItems:'center',

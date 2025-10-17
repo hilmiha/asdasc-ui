@@ -33,6 +33,20 @@
         border-bottom: 1px solid var(--clr-border);
         display: flex;
         justify-content: space-between;
+        opacity:1;
+
+        transition:
+            max-height 100ms ease-out,
+            padding 100ms ease-out,
+            opacity 100ms ease-out,
+            overflow 100ms ease-out;
+
+        &.hide-mobile-nav{
+            max-height: 0px;
+            overflow: hidden;
+            padding: var(--space-0) var(--space-200);
+            opacity: 0;
+        }
     }
 
     .main-content-box{
