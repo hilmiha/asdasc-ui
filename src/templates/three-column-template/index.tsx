@@ -6,6 +6,7 @@ import { PiCaretRightBold, PiSidebar } from 'react-icons/pi'
 import BottomSheet from 'src/components/ui/bottom-sheet'
 import { ThreeColumnTemplateContext, type ThreeColumnTemplateContextValue } from './context'
 import Button from 'src/components/ui/button'
+import { useAppTemplate } from '../app-template/context'
 
 
 
@@ -28,6 +29,11 @@ const ThreeColumnTemplate = ({
         screenSize
     } = useContext(GlobalContext) as _GlobalContextType
 
+    const {
+        isShowTopnav,
+        setIsShowTopnav
+    } = useAppTemplate()
+
     //scroll top when navigation change
     const pageContentBox = useRef<HTMLDivElement>(null)
     const [isShowLeftContent, setIsShowLeftContent] = useState(false)
@@ -44,6 +50,31 @@ const ThreeColumnTemplate = ({
     useEffect(()=>{
         pageContentBox.current?.scrollTo({top:0})
     },[location.pathname])
+
+    const lastScrollTop = useRef(0);
+
+    const handleScroll = () => {
+        const div = pageContentBox.current;
+        if (!div) return;
+
+        const currentScrollTop = div.scrollTop;
+
+        if (currentScrollTop > lastScrollTop.current) {
+        // scrolling down
+            setIsShowTopnav(false);
+        } else {
+        // scrolling up
+            setIsShowTopnav(true);
+        }
+
+        lastScrollTop.current = currentScrollTop;
+    };
+
+    useEffect(()=>{
+        if(!isShowTopnav && screenSize!=='mobile'){
+            setIsShowTopnav(true);
+        }
+    },[screenSize])
     
     return(
         <ThreeColumnTemplateContext.Provider value={ctxValue}>
@@ -88,7 +119,7 @@ const ThreeColumnTemplate = ({
                                 txtLabel='On This Page'
                                 appearance='subtle'
                                 onClick={()=>{setIsShowRightContent(true)}}
-                                isSelected={isShowLeftContent}
+                                isSelected={isShowRightContent}
                                 style={{
                                     button:{
                                         margin:'0px',
@@ -118,7 +149,7 @@ const ThreeColumnTemplate = ({
                             </BottomSheet>
                         </div>
                     )}
-                <div className='main-content-box' ref={pageContentBox}>
+                <div className='main-content-box' ref={pageContentBox} onScroll={screenSize==='mobile'?(handleScroll):(undefined)}>
                     <div className='doc-pages-box'>
                         <div className='page-box'>
                             <div className='page-content'>
