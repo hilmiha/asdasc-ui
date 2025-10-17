@@ -19,7 +19,8 @@ export const sections = [
     {id:'example', txtLabel:'Example', isSub:false},
     {id:'example_0', txtLabel:'Disabled field', isSub:true},
     {id:'example_1', txtLabel:'Multiple selection', isSub:true},
-    {id:'example_2', txtLabel:'Validating value', isSub:true},
+    {id:'example_2', txtLabel:'Combobox', isSub:true},
+    {id:'example_3', txtLabel:'Validating value', isSub:true},
     {id:'keyboard', txtLabel:'Keyboard Interactions', isSub:false},
 ]
 

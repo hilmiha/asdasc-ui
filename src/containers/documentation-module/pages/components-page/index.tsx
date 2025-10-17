@@ -6,7 +6,7 @@ import { useNavigate } from "react-router"
 import IconButton from "src/components/ui/icon-button"
 import { PiArrowLeftBold, PiArrowRightBold } from "react-icons/pi"
 import { useDocModule } from "src/containers/documentation-module/context"
-import { nextComp, pageId, prevComp } from "./constant"
+import { nextComp, pageId, prevComp, sections } from "./constant"
 
 const ComponentsPage = () =>{
     const {
@@ -22,7 +22,7 @@ const ComponentsPage = () =>{
 
     useEffect(()=>{
         setPageOn(pageId)
-        setSectionList([])
+        setSectionList(sections)
     },[])
 
     return(

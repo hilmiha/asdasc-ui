@@ -5,6 +5,8 @@ export interface ThreeColumnTemplateContextValue {
     pageContentBox: React.RefObject<HTMLDivElement | null>;
     isShowLeftContent: boolean;
     setIsShowLeftContent: React.Dispatch<React.SetStateAction<boolean>>;
+    isShowRightContent: boolean;
+    setIsShowRightContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const ThreeColumnTemplateContext = createContext<ThreeColumnTemplateContextValue | null>(null);
 export const useThreeColumnTemplate = () => {

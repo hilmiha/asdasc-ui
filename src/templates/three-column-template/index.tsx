@@ -2,10 +2,10 @@ import clsx from 'clsx'
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import './styles.scss'
 import { useContext, useEffect, useRef, useState } from "react"
-import IconButton from 'src/components/ui/icon-button'
-import { PiListBold } from 'react-icons/pi'
+import { PiCaretRightBold, PiSidebar } from 'react-icons/pi'
 import BottomSheet from 'src/components/ui/bottom-sheet'
 import { ThreeColumnTemplateContext, type ThreeColumnTemplateContextValue } from './context'
+import Button from 'src/components/ui/button'
 
 
 
@@ -31,17 +31,20 @@ const ThreeColumnTemplate = ({
     //scroll top when navigation change
     const pageContentBox = useRef<HTMLDivElement>(null)
     const [isShowLeftContent, setIsShowLeftContent] = useState(false)
+    const [isShowRightContent, setIsShowRightContent] = useState(false)
 
     const ctxValue: ThreeColumnTemplateContextValue = {
         pageContentBox,
         isShowLeftContent,
-        setIsShowLeftContent
+        setIsShowLeftContent,
+        isShowRightContent, 
+        setIsShowRightContent,
     };
 
     useEffect(()=>{
         pageContentBox.current?.scrollTo({top:0})
     },[location.pathname])
-
+    
     return(
         <ThreeColumnTemplateContext.Provider value={ctxValue}>
             <div 
@@ -62,28 +65,56 @@ const ThreeColumnTemplate = ({
                         </div>
                     ):(
                         <div className='left-side-content-box-mobile'>
-                            <IconButton
-                                icon={<PiListBold className='global-icon'/>}
-                                txtLabel='Show'
+                            <Button
+                                iconBefore={<PiSidebar className='global-icon'/>}
+                                txtLabel='Menu'
                                 appearance='subtle'
-                                isShowtooltip={false}
                                 onClick={()=>{setIsShowLeftContent(true)}}
                                 isSelected={isShowLeftContent}
                                 style={{
                                     button:{
-                                        margin:'0px'
+                                        margin:'0px',
+                                        padding:"var(--space-25) var(--space-100)",
+                                        minHeight:'fit-content'
+                                    },
+                                    textLabel:{
+                                        fontWeight:'var(--font-weight-normal)',
+                                        fontSize:'var(--font-size-sm)'
                                     }
                                 }}
                             />
+                            <Button
+                                iconAfter={<PiCaretRightBold className='global-icon'/>}
+                                txtLabel='On This Page'
+                                appearance='subtle'
+                                onClick={()=>{setIsShowRightContent(true)}}
+                                isSelected={isShowLeftContent}
+                                style={{
+                                    button:{
+                                        margin:'0px',
+                                        padding:"var(--space-25) var(--space-100)",
+                                        minHeight:'fit-content'
+                                    },
+                                    textLabel:{
+                                        fontWeight:'var(--font-weight-normal)',
+                                        fontSize:'var(--font-size-sm)'
+                                    }
+                                }}
+                            />
+                            
                             <BottomSheet
                                 className='left-side-content-box-bottom-sheet'
                                 isOpen={isShowLeftContent}
                                 setIsOpen={setIsShowLeftContent}
-                                floatingConfig={{
-                                    defaultSnapPoint:'FULL'
-                                }}
                             >
                                 {leftSideContent}
+                            </BottomSheet>
+                            <BottomSheet
+                                className='left-side-content-box-bottom-sheet'
+                                isOpen={isShowRightContent}
+                                setIsOpen={setIsShowRightContent}
+                            >
+                                {rightSideContent}
                             </BottomSheet>
                         </div>
                     )}

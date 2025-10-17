@@ -1,5 +1,6 @@
 import Button from "src/components/ui/button"
 import type { DocModuleContextValue } from "../context"
+import { useThreeColumnTemplate } from "src/templates/three-column-template/context"
 
 const RightSideContent = ({
     ctxValue
@@ -12,6 +13,11 @@ const RightSideContent = ({
         scrollToSection
     } = ctxValue
 
+    const { 
+        isShowRightContent,
+        setIsShowRightContent 
+    } = useThreeColumnTemplate(); 
+    
     return(
         <div className="section-list-box">
             {
@@ -23,7 +29,12 @@ const RightSideContent = ({
                         txtLabel={
                             <div style={{flexGrow:'1', textAlign:'start'}}><p>{itm.txtLabel}</p></div>
                         }
-                        onClick={()=>{scrollToSection(itm.id)}}
+                        onClick={()=>{
+                            scrollToSection(itm.id)
+                            if(isShowRightContent){
+                                setIsShowRightContent(false)
+                            }
+                        }}
                     />
                 ))
             }

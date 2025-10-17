@@ -114,7 +114,7 @@ const InputTag = ({
                                 ref={inputRef}
                                 placeholder={txtPlaceholder}
                                 className='input-tag'
-                                enterKeyHint="send"
+                                enterKeyHint="enter"
                                 value={searchParam}
                                 onChange={(e)=>{
                                     if(!isDisabled){
@@ -215,7 +215,6 @@ const InputTag = ({
                             },
                             container:{
                                 display:filteredOptions.length===0?('none'):(undefined),
-                                border:'0px'
                             }
                         }}
                         onClick={(_, option, e)=>{
