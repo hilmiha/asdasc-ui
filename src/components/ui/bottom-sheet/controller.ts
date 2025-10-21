@@ -118,7 +118,7 @@ export const handlePointerUp = (
             }
         } else {
             // Fast downward drag
-            if (finalHeight < 20) {
+            if (finalHeight < 50) {
                 closestSnapPoint = 'HIDDEN';
             } else {
                 closestSnapPoint = 'HALF';

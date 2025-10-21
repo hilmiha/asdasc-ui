@@ -1,18 +1,16 @@
 import Button from "src/components/ui/button"
-import type { DocModuleContextValue } from "../context"
 import { useThreeColumnTemplate } from "src/templates/three-column-template/context"
+import type { rightSideSectionType } from ".."
 
 const RightSideContent = ({
-    ctxValue
+    sectionOn,
+    sectionList,
+    scrollToSection,
 }:{
-    ctxValue:DocModuleContextValue
+    sectionOn:string,
+    sectionList: rightSideSectionType[]
+    scrollToSection: (id: string) => void
 }) =>{
-    const {
-        sectionList,
-        sectionOn,
-        scrollToSection
-    } = ctxValue
-
     const { 
         isShowRightContent,
         setIsShowRightContent 

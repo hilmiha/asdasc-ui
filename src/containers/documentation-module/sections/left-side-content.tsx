@@ -3,16 +3,12 @@ import { useNavigate } from "react-router"
 import { baseUrl, sideNavMenues } from "../constant"
 import Button from "src/components/ui/button"
 import { useThreeColumnTemplate } from "src/templates/three-column-template/context"
-import type { DocModuleContextValue } from "../context"
 
 const LeftSideContent = ({
-    ctxValue
+    pageOn
 }:{
-    ctxValue:DocModuleContextValue
+    pageOn:string
 }) =>{
-    const {
-        pageOn
-    } = ctxValue
 
     const navigate = useNavigate()
     
@@ -20,7 +16,7 @@ const LeftSideContent = ({
         return([...sideNavMenues])
     },[])
 
-    const { setIsShowLeftContent } = useThreeColumnTemplate(); 
+    const { setIsShowLeftContent } = useThreeColumnTemplate()
     
     return(
         <>

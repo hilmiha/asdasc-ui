@@ -6,7 +6,7 @@ import routes from './routes'
 import LeftSideContent from './sections/left-side-content'
 import PageSkeleton from './sections/page-skeleton'
 import RightSideContent from './sections/right-side-content'
-import { DocModuleContext, type DocModuleContextValue } from './context'
+import { DocModuleContext } from './context'
 
 export type rightSideSectionType = {id:string, txtLabel:string, isSub:boolean}
 
@@ -27,18 +27,6 @@ const DocsModule = () =>{
             el.scrollIntoView({ behavior: "smooth", block: "start" })
         }
     }
-
-    const ctxValue: DocModuleContextValue = {
-        pageOn, 
-        setPageOn,
-        sectionList, 
-        setSectionList,
-        sectionOn, 
-        setSectionOn,
-        sectionRefs,
-        setSectionRef,
-        scrollToSection
-    };
 
     useEffect(() => {
         const ids = Object.keys(sectionRefs.current).filter((id) => sectionRefs.current[id] !== null)
@@ -83,14 +71,30 @@ const DocsModule = () =>{
     }, [location.pathname, JSON.stringify(sectionList)])
 
     return(
-        <DocModuleContext.Provider value={ctxValue}>
+        <DocModuleContext.Provider value={{
+            pageOn, 
+            setPageOn,
+            sectionList, 
+            setSectionList,
+            sectionOn, 
+            setSectionOn,
+            sectionRefs,
+            setSectionRef,
+            scrollToSection
+        }}>
             <ThreeColumnTemplate
                 className='docs-module'
                 leftSideContent={
-                    <LeftSideContent ctxValue={ctxValue}/>
+                    <LeftSideContent 
+                        pageOn={pageOn}
+                    />
                 }
                 rightSideContent={
-                    <RightSideContent ctxValue={ctxValue}/>
+                    <RightSideContent 
+                        sectionOn={sectionOn}
+                        sectionList={sectionList}
+                        scrollToSection={scrollToSection}
+                    />
                 }
             >
                 <Suspense fallback={<PageSkeleton/>}>

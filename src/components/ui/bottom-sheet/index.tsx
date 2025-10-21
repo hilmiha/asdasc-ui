@@ -34,23 +34,29 @@ const BottomSheet = ({
 
     //States and refs start ======
     const mountedOnce = useRef(false);
+    const contentRef = useRef<HTMLDivElement|null>(null);
+    const headerRef = useRef<HTMLDivElement|null>(null);
+    const titleBoxRef = useRef<HTMLDivElement|null>(null);
+    const footerRef = useRef<HTMLDivElement|null>(null);
+
+    const [initSize, setInitSize] = useState<number>(45)
     const snapPointConfig = useDeepCompareMemo<snapPointSizeType>(()=>{
         if(floatingConfig?.snapPointSize){
             return floatingConfig.snapPointSize
         }else if(screenSize==='mobile'){
             return{
                 HIDDEN: 0,
-                HALF: 45,
+                HALF: initSize,
                 FULL: 80
             }
         }else{
             return{
                 HIDDEN: 0,
-                HALF: 45,
+                HALF: initSize,
                 FULL: 95
             }
         }
-    },[screenSize, floatingConfig?.snapPointSize]);
+    },[screenSize, floatingConfig?.snapPointSize, initSize]);
 
     const [snapPoint, setSnapPoint] = useState<snapPointType>('HIDDEN');
     const [currentHeight, setCurrentHeight] = useState(0);
@@ -160,6 +166,30 @@ const BottomSheet = ({
     },[isMounted])
 
     useEffect(()=>{
+        if (contentRef.current) {
+            const viewportHeight = window.visualViewport?.height || window.innerHeight;
+            const getHeight = (ref: React.RefObject<HTMLElement | null>) => {
+                return ref.current?.scrollHeight || 0
+            };
+
+            const totalContentHeight =
+                getHeight(contentRef) +
+                getHeight(footerRef) +
+                getHeight(headerRef) +
+                getHeight(titleBoxRef) +
+                (screenSize === 'mobile' ? 80 : 130);
+
+            // If contentRef has scrollHeight, calculate percentage; otherwise use default 45
+            const heightPercent = contentRef.current.scrollHeight
+                ? Math.min((totalContentHeight < viewportHeight ? (totalContentHeight / viewportHeight) * 100 : 80), 80)
+                : 45;
+
+            setInitSize(heightPercent);
+            setTimeout(() => setCurrentHeight(heightPercent), 100);
+        }
+    },[contentRef.current!==null])
+
+    useEffect(()=>{
         if(isOpen){
             if(floatingConfig?.defaultSnapPoint==='FULL'){
                 ctrl.doChangeSnappoint('FULL', setSnapPoint, floatingConfig);
@@ -231,7 +261,7 @@ const BottomSheet = ({
                                         <div className='drag-handle'/>
                                         {
                                             (iconTitle || txtTitle)&&(
-                                                <div className='bottom-sheet-title-box'>
+                                                <div ref={titleBoxRef} className='bottom-sheet-title-box'>
                                                     <div className='title'>
                                                         {
                                                             (iconTitle)&&(
@@ -266,7 +296,7 @@ const BottomSheet = ({
                                     </div>
                                 
                                     {/* Content */}
-                                    <div 
+                                    <div
                                         className='content-box'
                                         style={{
                                             gridTemplateRows:modalGridStyle
@@ -275,6 +305,7 @@ const BottomSheet = ({
                                         {
                                             elementHeader&&(
                                                 <div 
+                                                    ref={headerRef}
                                                     className='element-header-box'
                                                     onTouchStart={(e)=>{
                                                         ctrl.handleTouchStart(e, setTouchStart)
@@ -290,6 +321,7 @@ const BottomSheet = ({
                                             )
                                         }
                                         <div 
+                                            ref={contentRef}
                                             className='bottom-sheet-body-box'
                                             onScroll={(e)=>{
                                                 ctrl.contentScrollUp(e, snapPoint, setSnapPoint)
@@ -300,6 +332,7 @@ const BottomSheet = ({
                                         {
                                             elementFooter&&(
                                                 <div 
+                                                    ref={footerRef}
                                                     className='element-footer-box'
                                                     onTouchStart={(e)=>{
                                                         ctrl.handleTouchStart(e, setTouchStart)

@@ -54,10 +54,8 @@ const ThreeColumnTemplate = ({
 
         const currentScrollTop = div.scrollTop;
         if (currentScrollTop > lastScrollTop.current && isShowMobileNavContent) {
-            // scrolling down
             setIsShowMobileNavContent(false);
         } else if(currentScrollTop < lastScrollTop.current && !isShowMobileNavContent) {
-            // scrolling up
             setIsShowMobileNavContent(true);
         }
 
@@ -146,7 +144,7 @@ const ThreeColumnTemplate = ({
                 <div 
                     className='main-content-box' 
                     ref={pageContentBox}
-                    onScroll={handleScroll}
+                    onScroll={screenSize==='mobile'?(handleScroll):(undefined)}
                 >
                     <div className='doc-pages-box'>
                         <div className='page-box'>
