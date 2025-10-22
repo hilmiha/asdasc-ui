@@ -138,22 +138,7 @@ const DropdownBottomSheet = ({
                     elementFooter={elementFooter}
                     onClose={onClose}
                     onOpen={onOpen}
-                    floatingConfig={{
-                        ...floatingConfig,
-                        snapPointSize:type==='single-with-time'?(
-                            {
-                                HIDDEN:0,
-                                HALF:65,
-                                FULL:80
-                            }
-                        ):(
-                            {
-                                HIDDEN:0,
-                                HALF:55,
-                                FULL:80
-                            }
-                        )
-                    }}
+                    floatingConfig={floatingConfig}
                     shape={shape}
                     style={{
                         container:style?.container,
