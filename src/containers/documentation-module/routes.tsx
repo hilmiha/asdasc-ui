@@ -25,8 +25,9 @@ const InputTextareaPage   = lazy(() => import('./pages/input-textarea-page'));
 const ModalPage   = lazy(() => import('./pages/modal-page'));
 const RadioPage   = lazy(() => import('./pages/radio-page'));
 const ResizablePage   = lazy(() => import('./pages/resizable-page'));
-
-
+const SkeletonPage   = lazy(() => import('./pages/skeleton-page'));
+const SpinnerPage   = lazy(() => import('./pages/spinner-page'));
+const SplitButtonPage   = lazy(() => import('./pages/split-button-page'));
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -53,6 +54,10 @@ const routes = [
     {key:'modal', path: '/modal', component: <ModalPage/>},
     {key:'radio', path: '/radio', component: <RadioPage/>},
     {key:'resizable', path: '/resizable', component: <ResizablePage/>},
+    {key:'skeleton', path: '/skeleton', component: <SkeletonPage/>},
+    {key:'spinner', path: '/spinner', component: <SpinnerPage/>},
+    {key:'split-button', path: '/split-button', component: <SplitButtonPage/>},
+
     {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
 

@@ -27,9 +27,9 @@
         max-height: 80vh;
         gap: var(--space-250);
 
-        animation: opening 300ms ease 0s 1 normal forwards;
+        animation: opening 250ms ease 0s 1 normal forwards;
         &.closing{
-            animation: closing 300ms ease 0s 1 normal forwards;
+            animation: closing 250ms ease 0s 1 normal forwards;
         }
         @keyframes opening {
             0% {

@@ -35,9 +35,9 @@ const Skeleton = ({
 export default Skeleton
 
 interface _Skeleton {
-    className?: string,
-    shape?:globalShapeType,
-    width?:string | number
-    height?:string | number
-    style?:React.CSSProperties,
+    className?: string;
+    shape?:globalShapeType;
+    width?:string | number;
+    height?:string | number;
+    style?:React.CSSProperties;
 }

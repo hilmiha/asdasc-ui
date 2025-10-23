@@ -7,7 +7,7 @@ import { GlobalContext, type _GlobalContextType } from 'src/context/global-conte
 import IconButton, { type iconButtonStyleType } from '../icon-button';
 import { PiCaretDownBold, PiCaretUpBold } from 'react-icons/pi';
 import type { globalShapeType, optionItemType } from 'src/components/_types';
-import DropdownMenu, { type dropdownMenuStyleType } from '../dropdown-menu';
+import DropdownMenu, { type dropdownFloatingConfigType, type dropdownMenuStyleType } from '../dropdown-menu';
 
 const SplitButton = ({
     ref = undefined,
@@ -21,7 +21,8 @@ const SplitButton = ({
     optionSelected = undefined,
     isDisabled = false,
     onClick = undefined,
-    onOptionClick = undefined
+    onOptionClick = undefined,
+    floatingConfig = undefined
 }:_SplitButton) =>{
 
     //Context start ====
@@ -74,6 +75,7 @@ const SplitButton = ({
                     </div>
                     
                 )}
+                floatingConfig={floatingConfig}
             />
         </div>
     )
@@ -83,19 +85,20 @@ export default SplitButton
 
 interface _SplitButton {
     ref?:React.Ref<HTMLDivElement>;
-    id?:string
+    id?:string;
     className?:string;
     style?:splitButtonStyleType;
     appearance?: 'neutral' | 'primary';
     shape?:globalShapeType;
     txtLabel:string;
-    options:optionItemType[]
-    optionSelected?:string[]
+    options:optionItemType[];
+    optionSelected?:string[];
     iconBefore?:JSX.Element;
     iconAfter?:JSX.Element;
     isDisabled?:boolean;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOptionClick?:(idButton:string, e:React.MouseEvent<HTMLButtonElement>)=>void;
+    floatingConfig?:dropdownFloatingConfigType;
 };
 
 export type splitButtonStyleType = {

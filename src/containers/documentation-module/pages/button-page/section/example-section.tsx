@@ -127,40 +127,44 @@ const ExampleSection = () =>{
 
 export default ExampleSection
 
-const example_1_code = `<Button 
-    txtLabel={'Neutral'}
-    appearance="neutral"
-/>
-<Button 
-    txtLabel={'Primary'}
-    appearance="primary"
-/>
-<Button 
-    txtLabel={'Danger'}
-    appearance="danger"
-/>
-<Button 
-    txtLabel={'Warning'}
-    appearance="warning"
-/>
-<Button 
-    txtLabel={'Success'}
-    appearance="success"
-/>
-<Button 
-    txtLabel={'Subtle'}
-    appearance="subtle"
-/>`
+const example_1_code = `<>
+    <Button 
+        txtLabel={'Neutral'}
+        appearance="neutral"
+    />
+    <Button 
+        txtLabel={'Primary'}
+        appearance="primary"
+    />
+    <Button 
+        txtLabel={'Danger'}
+        appearance="danger"
+    />
+    <Button 
+        txtLabel={'Warning'}
+        appearance="warning"
+    />
+    <Button 
+        txtLabel={'Success'}
+        appearance="success"
+    />
+    <Button 
+        txtLabel={'Subtle'}
+        appearance="subtle"
+    />
+</>`
 
-const example_2_code = `<Button 
-    txtLabel={'Loading'}
-    isLoading={true}
-/>
-<Button 
-    txtLabel={'Disabled'}
-    isDisabled={true}
-/>
-<Button 
-    txtLabel={'Selected'}
-    isSelected={true}
-/>`
+const example_2_code = `<>
+    <Button 
+        txtLabel={'Loading'}
+        isLoading={true}
+    />
+    <Button 
+        txtLabel={'Disabled'}
+        isDisabled={true}
+    />
+    <Button 
+        txtLabel={'Selected'}
+        isSelected={true}
+    />
+</>`

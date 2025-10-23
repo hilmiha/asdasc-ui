@@ -1,8 +1,6 @@
-import { useState } from "react"
 import type { optionItemType } from "src/components/_types"
 import InputCode from "src/components/ui/input-code"
-import Radio from "src/components/ui/radio-button/radio"
-import RadioGroup from "src/components/ui/radio-group"
+import SplitButton from "src/components/ui/split-button"
 import { useDocModule } from "src/containers/documentation-module/context"
 import PreviewBox from "src/containers/documentation-module/sections/preview-box"
 
@@ -11,7 +9,6 @@ const ExampleSection = () =>{
         setSectionRef
     } = useDocModule()
     
-    const [valueRadio, setValueRadio] = useState<string>('')
 
     return(
         <>
@@ -29,8 +26,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Radio as an indicator only</p>
-                <p>Use the <span className="text-code">radio</span> purely as a visual indicator.</p>
+                <p className="text-title-lg">Disabled state</p>
+                <p><span className="text-code">Split Button</span> can be disabled using <span className="text-code">idDisabled</span> prop.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -40,19 +37,18 @@ const ExampleSection = () =>{
                     }}
                 >
                     <PreviewBox>
-                        <div style={{display:'flex', gap:"var(--space-500)", flexWrap:'wrap', justifyContent:'center'}}>
-                            <Radio
-                                isSelected={false}
-                            />
-                            <Radio
-                                isSelected={true}
+                        <div style={{display:'flex', gap:"var(--space-100)", flexWrap:'wrap', justifyContent:'center'}}>
+                            <SplitButton
+                                txtLabel="Main Action"
+                                isDisabled={true}
+                                options={option}
                             />
                         </div>
                     </PreviewBox>
                     <InputCode
                         lang="tsx"
                         isDisabled={true}
-                        value={example_1_code}
+                        value={example_2_code}
                         style={{
                             inputCode:{
                                 maxHeight:'50vh'
@@ -69,8 +65,8 @@ const ExampleSection = () =>{
                     gap:'var(--space-150)'
                 }}
             >
-                <p className="text-title-lg">Controlled group of checkboxes</p>
-                <p>Create group checkboxes with controlled value.</p>
+                <p className="text-title-lg">Appearances</p>
+                <p><span className="text-code">Split Button</span> have several appearances can be used for difrent type of context and function.</p>
                 <div 
                     style={{
                         display:'grid',
@@ -81,18 +77,22 @@ const ExampleSection = () =>{
                 >
                     <PreviewBox>
                         <div style={{display:'flex', gap:"var(--space-100)", flexWrap:'wrap', justifyContent:'center'}}>
-                            <RadioGroup
-                                isDisabled={false}
-                                options={options}
-                                selectedId={valueRadio}
-                                onChange={(newValue) => setValueRadio(newValue)}
+                            <SplitButton
+                                txtLabel="Neutral Looks Action"
+                                appearance="neutral"
+                                options={option}
+                            />
+                            <SplitButton
+                                txtLabel="Primary Looks Action"
+                                appearance="primary"
+                                options={option}
                             />
                         </div>
                     </PreviewBox>
                     <InputCode
                         lang="tsx"
                         isDisabled={true}
-                        value={example_2_code}
+                        value={example_1_code}
                         style={{
                             inputCode:{
                                 maxHeight:'50vh'
@@ -101,6 +101,7 @@ const ExampleSection = () =>{
                     />
                 </div>
             </div>
+            
         </>
     )
 }
@@ -108,74 +109,25 @@ const ExampleSection = () =>{
 export default ExampleSection
 
 const example_1_code = `<>
-    <Checkbox
-        isSelected={false}
-        isIndeterminate={false}
+    <SplitButton
+        txtLabel="Neutral Looks Action"
+        appearance="neutral"
+        options={option}
     />
-    <Checkbox
-        isSelected={false}
-        isIndeterminate={true}
-    />
-    <Checkbox
-        isSelected={true}
-        isIndeterminate={false}
+    <SplitButton
+        txtLabel="Primary Looks Action"
+        appearance="primary"
+        options={option}
     />
 </>`
 
-const example_2_code = `import type { optionItemType } from "src/components/_types"
-import CheckboxGroup from "src/components/ui/checkbox-group"
+const example_2_code = `<SplitButton
+    txtLabel="Main Action"
+    isDisabled={true}
+    options={option}
+/>`
 
-const CheckboxButtonDemo = () =>{
-
-    const [value, setValue] = useState<string[]>([])
-    
-    const options:optionItemType[] =  [
-        {
-            id:'citrus', 
-            txtLabel:'Citrus',
-        },
-        {
-            id:'berries', 
-            txtLabel:'Berries',
-        },
-        {
-            id:'mix', 
-            txtLabel:'Mix',
-        },
-    ]
-
-    return(
-        <CheckboxGroup
-            isDisabled={false}
-            options={options}
-            selectedList={value}
-            isDefaultCollapse={false}
-            onChange={(newValue) => setValue(newValue)}
-        />
-    )
-}`
-
-const options:optionItemType[] =  [
-    {
-        id:'citrus', 
-        txtLabel:'Citrus',
-        childOption:[
-            {id:'orange', txtLabel:'Orange'},
-            {id:'lemon', txtLabel:'Lemon'},
-            {id:'lime', txtLabel:'Lime'},
-        ]
-    },
-    {
-        id:'berries', 
-        txtLabel:'Berries',
-        childOption:[
-            {id:'strawberry', txtLabel:'Strawberry'},
-            {id:'blueberry', txtLabel:'Blueberry'},
-            {id:'raspberry', txtLabel:'Raspberry'},
-        ]
-    },
-    {
-        id:'mix',
-        txtLabel:'Mix'
-    }
+const option:optionItemType[] = [
+    {id:'option-one', txtLabel:'Option One'},
+    {id:'option-two', txtLabel:'Option Two'},
 ]

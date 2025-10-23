@@ -15,9 +15,9 @@
         overflow: hidden;
         box-shadow: var(--box-shadow);
 
-        animation: opening-dropdown 300ms ease 0s 1 normal forwards;
+        animation: opening-dropdown 250ms ease 0s 1 normal forwards;
         &.closing{
-            animation: closing-dropdown 300ms ease 0s 1 normal forwards;
+            animation: closing-dropdown 250ms ease 0s 1 normal forwards;
         }
         @keyframes opening-dropdown {
             0% {

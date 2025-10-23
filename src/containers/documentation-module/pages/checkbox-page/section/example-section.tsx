@@ -114,18 +114,20 @@ const ExampleSection = () =>{
 
 export default ExampleSection
 
-const example_1_code = `<Checkbox
-    isSelected={false}
-    isIndeterminate={false}
-/>
-<Checkbox
-    isSelected={false}
-    isIndeterminate={true}
-/>
-<Checkbox
-    isSelected={true}
-    isIndeterminate={false}
-/>`
+const example_1_code = `<>
+    <Checkbox
+        isSelected={false}
+        isIndeterminate={false}
+    />
+    <Checkbox
+        isSelected={false}
+        isIndeterminate={true}
+    />
+    <Checkbox
+        isSelected={true}
+        isIndeterminate={false}
+    />
+</>`
 
 const example_2_code = `import type { optionItemType } from "src/components/_types"
 import CheckboxGroup from "src/components/ui/checkbox-group"

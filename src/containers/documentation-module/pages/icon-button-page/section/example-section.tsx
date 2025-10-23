@@ -137,49 +137,53 @@ const ExampleSection = () =>{
 
 export default ExampleSection
 
-const example_1_code = `<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Neutral'}
-    appearance="neutral"
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Primary'}
-    appearance="primary"
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Danger'}
-    appearance="danger"
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Warning'}
-    appearance="warning"
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Success'}
-    appearance="success"
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>}
-    txtLabel={'Subtle'}
-    appearance="subtle"
-/>`
+const example_1_code = `<>
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Neutral'}
+        appearance="neutral"
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Primary'}
+        appearance="primary"
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Danger'}
+        appearance="danger"
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Warning'}
+        appearance="warning"
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Success'}
+        appearance="success"
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>}
+        txtLabel={'Subtle'}
+        appearance="subtle"
+    />
+</>`
 
-const example_2_code = `<IconButton
-    icon={<PiStarFourBold className="global-icon"/>} 
-    txtLabel={'Loading'}
-    isLoading={true}
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>} 
-    txtLabel={'Disabled'}
-    isDisabled={true}
-/>
-<IconButton
-    icon={<PiStarFourBold className="global-icon"/>} 
-    txtLabel={'Selected'}
-    isSelected={true}
-/>`
+const example_2_code = `<>
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>} 
+        txtLabel={'Loading'}
+        isLoading={true}
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>} 
+        txtLabel={'Disabled'}
+        isDisabled={true}
+    />
+    <IconButton
+        icon={<PiStarFourBold className="global-icon"/>} 
+        txtLabel={'Selected'}
+        isSelected={true}
+    />
+</>`
