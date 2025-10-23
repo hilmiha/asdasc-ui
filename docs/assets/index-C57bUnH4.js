@@ -1,0 +1,1 @@
+import{r as x,G as a,j as t,i}from"./index-u7RRe44t.js";const c=({className:r=void 0,shape:s=void 0,width:o=void 0,height:e=void 0,style:n=void 0})=>{const{globalShape:l}=x.useContext(a);return t.jsx("div",{className:i("skeleton",s||l,r),style:{width:typeof o=="number"?`${o}px`:o,height:typeof e=="number"?`${e}px`:e,...n},children:t.jsx("p",{children:"..."})})};export{c as S};
