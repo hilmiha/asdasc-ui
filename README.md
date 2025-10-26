@@ -1,7 +1,7 @@
 
-🚧 ***Still In Development***🚧
+🚧 ***This project is under active development***🚧
 
-# 🚧 ASDASC 🚧 
+# ASDASC
 
 **Another Scalable Design And Stuff, Components**
 
