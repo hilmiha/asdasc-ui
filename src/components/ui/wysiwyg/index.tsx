@@ -10,8 +10,10 @@ import { PiWarningBold } from 'react-icons/pi';
 import type { fieldErrorType, globalShapeType } from 'src/components/_types';
 import type { wysiwygModulesType } from './components/toolbar-component';
 import ToolbarComponent from './components/toolbar-component';
+import FloatingToolbarWrapper from './components/floating-toolbar-component';
 
 const Wysiwyg = ({
+	type = 'classic',
 	className = undefined,
 	style = undefined,
 	shape = undefined,
@@ -72,7 +74,17 @@ const Wysiwyg = ({
 			quillRef.current = new Quill(editorRef.current, {
 				theme: 'snow',
 				modules: {
-					toolbar: false
+					toolbar: false,
+					keyboard: {
+						bindings: {
+							enter: {
+								key: 'Enter',
+								handler: function() {
+									return (config?.isDisableNewLine)?(false):(true); // Prevent default behavior
+								}
+							}
+						}
+					}
 				},
 				formats: [
 					'header', 'bold', 'italic', 'underline', 'strike',
@@ -136,7 +148,7 @@ const Wysiwyg = ({
 			)} 
 		>
 			{
-				(!isAsPreview)&&(
+				(type==='classic')&&(!isAsPreview || (isAsPreview && onChange))&&(
 					<ToolbarComponent 
 						quill={quillRef.current} 
 						shape={(shape)?(shape):(globalShape)}
@@ -145,10 +157,19 @@ const Wysiwyg = ({
 					/>
 				)
 			}
-			
+			{
+				(type==='floating' && !isAsPreview )&& (
+					<FloatingToolbarWrapper 
+						quill={quillRef.current}
+						moduleList={modules}
+						shape={shape || globalShape}
+						isDisabled={isDisabled}
+					/>
+				)
+			}
 			<div ref={editorRef} className={'editor-box'} style={style?.editorBox}/>
 			{
-				(!isAsPreview)&&(
+				(type==='classic')&&(!isAsPreview)&&(
 					<div className='footer-box' style={style?.footerBox}>
 						{
 							(error&& error.isError && error.errorMessage)&&(
@@ -174,6 +195,7 @@ const Wysiwyg = ({
 export default Wysiwyg;
 
 interface _Wysiwyg {
+	type?: 'classic' | 'floating'
 	className?: string;
 	style?: wysiwygStyleType;
 	shape?:globalShapeType;
@@ -196,6 +218,7 @@ export type wysiwygStyleType = {
 }
 export type wysiwygConfigType = {
     isRequired?:boolean
+	isDisableNewLine?:boolean
 	maxLength?: number
     minLength?: number
 	isHideTextCount?: boolean

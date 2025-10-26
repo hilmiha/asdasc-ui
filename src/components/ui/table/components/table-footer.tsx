@@ -138,7 +138,7 @@ const TableFooter = ({
                                 }}
                                 shape={shape}
                             />
-                            <p className='page-info-box'>Page {tableConfig.currentPage} / {tableConfig.countPage}</p>
+                            <p style={{width:'max-content'}}>Page {tableConfig.currentPage} / {tableConfig.countPage}</p>
                             <IconButton
                                 icon={<PiCaretRightBold className='global-icon'/>}
                                 txtLabel='Next Page'
@@ -219,7 +219,7 @@ const TableFooter = ({
                             trigger={
                                 <Button
                                     className='max-row-button'
-                                    txtLabel={`Show ${tableConfig.maxRow} Rows`}
+                                    txtLabel={`${tableConfig.maxRow} Rows`}
                                     iconAfter={<PiCaretDownBold className='global-icon'/>}
                                     appearance='subtle'
                                     shape={shape}

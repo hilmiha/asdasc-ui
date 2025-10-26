@@ -1,27 +1,20 @@
 import type { tableColumnType, tableRowDataType } from "src/components/ui/table"
 import Tag from "src/components/ui/tag"
 
-export const pageId = 'radio';
+export const pageId = 'wysiwyg';
 
 export const prevComp = {
-    name:'Modal',
-    path:'/modal'
-}
-export const nextComp = {
-    name:'Resizable',
-    path:'/resizable'
+    name:'Tooltip',
+    path:'/tooltip'
 }
 
 export const sections = [
-    {id:'preview', txtLabel:'Radio', isSub:false},
-    {id:'api_ref', txtLabel:'API Refrence', isSub:false},
-    {id:'api_ref_1', txtLabel:'Radio', isSub:true},
-    {id:'api_ref_2', txtLabel:'RadioButton', isSub:true},
-    {id:'api_ref_3', txtLabel:'RadioGroup', isSub:true},
-    {id:'example', txtLabel:'Example', isSub:false},
-    {id:'example_1', txtLabel:'Radio as an indicator only', isSub:true},
-    {id:'example_2', txtLabel:'Controlled group of Radios', isSub:true},
-    {id:'keyboard', txtLabel:'Keyboard Interactions', isSub:false},
+    {id:'preview', txtLabel:'Wysiwyg', isSub:false},
+    // {id:'api_ref', txtLabel:'API Refrence', isSub:false},
+    // {id:'api_ref_1', txtLabel:'Table', isSub:true},
+    // {id:'example', txtLabel:'Example', isSub:false},
+    // {id:'example_1', txtLabel:'Table', isSub:true},
+    // {id:'keyboard', txtLabel:'Keyboard Interactions', isSub:false},
 ]
 
 export const keyboardInteractionsColumnList:tableColumnType[] = [
@@ -33,12 +26,12 @@ export const keyboardInteractionsList:tableRowDataType[] = [
     {
         id:'1',
         key:<Tag txtLabel="Space"/>,
-        description:<p>When focus is on an <span className="text-code">RadioButton</span>, press and do the <span className="text-code">onClick</span> function.</p>,
+        description:<p>When focus is on an <span className="text-code">SwicthButton</span>, press and do the <span className="text-code">onClick</span> function.</p>,
     },
     {
         id:'2',
         key:<Tag txtLabel="Enter"/>,
-        description:<p>When focus is on an <span className="text-code">RadioButton</span>, press and do the <span className="text-code">onClick</span> function.</p>,
+        description:<p>When focus is on an <span className="text-code">SwicthButton</span>, press and do the <span className="text-code">onClick</span> function.</p>,
     },
     {
         id:'3',
@@ -53,7 +46,7 @@ export const apiRefTableColumnList:tableColumnType[] = [
     {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
-export const apiRefRadioList:tableRowDataType[] = [
+export const apiRefSwitchList:tableRowDataType[] = [
     {
         "id": "1",
         "prop": <p style={{fontFamily:'monospace'}}>isSelected<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
@@ -61,7 +54,7 @@ export const apiRefRadioList:tableRowDataType[] = [
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     }
 ]
-export const apiRefRadioButtonList:tableRowDataType[] = [
+export const apiRefSwitchButtonList:tableRowDataType[] = [
     {
         "id": "1",
         "prop": <p style={{fontFamily:'monospace'}}>className</p>,
@@ -83,7 +76,7 @@ export const apiRefRadioButtonList:tableRowDataType[] = [
     {
         "id": "4",
         "prop": <p style={{fontFamily:'monospace'}}>appearance</p>,
-        "type": <p style={{fontFamily:'monospace'}}>radioButtonAppearance</p>,
+        "type": <p style={{fontFamily:'monospace'}}>SwitchButtonAppearance</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     },
     {
@@ -126,38 +119,6 @@ export const apiRefRadioButtonList:tableRowDataType[] = [
         "id": "11",
         "prop": <p style={{fontFamily:'monospace'}}>isIndeterminate</p>,
         "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    }
-]
-export const apiRefRadioGroupList:tableRowDataType[] = [
-    {
-        "id": "1",
-        "prop": <p style={{fontFamily:'monospace'}}>className</p>,
-        "type": <p style={{fontFamily:'monospace'}}>string</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "2",
-        "prop": <p style={{fontFamily:'monospace'}}>options<span style={{color:"var(--clr-danger-700)"}}> *</span></p>,
-        "type": <p style={{fontFamily:'monospace'}}>optionItemType[]</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "3",
-        "prop": <p style={{fontFamily:'monospace'}}>selectedId</p>,
-        "type": <p style={{fontFamily:'monospace'}}>string</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "4",
-        "prop": <p style={{fontFamily:'monospace'}}>isDisabled</p>,
-        "type": <p style={{fontFamily:'monospace'}}>boolean</p>,
-        "default": <p style={{fontFamily:'monospace'}}>undefined</p>
-    },
-    {
-        "id": "5",
-        "prop": <p style={{fontFamily:'monospace'}}>onChange</p>,
-        "type": <p style={{fontFamily:'monospace'}}>{`function (newValue, option, event) => void`}</p>,
         "default": <p style={{fontFamily:'monospace'}}>undefined</p>
     }
 ]

@@ -1,14 +1,16 @@
 import { useContext, useState, type JSX } from 'react';
 import './styles.scss';
 import clsx from 'clsx';
-import { autoUpdate, flip, FloatingPortal, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions } from '@floating-ui/react';
+import { autoUpdate, flip, FloatingPortal, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions, type Placement } from '@floating-ui/react';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 // import * as ctrl from './controller';
 
 const Tooltip = ({
     className = undefined,
     children = <></>,
-    content = ''
+    content = '',
+    placement = "top",
+    fallbackPlacement = ['top', 'bottom', 'right', 'left']
 }:_Tooltip) =>{
     if(!content){
         return(
@@ -30,11 +32,11 @@ const Tooltip = ({
     const {refs, floatingStyles, context} = useFloating({
         open: isShow,
         onOpenChange: setIsShow,
-        placement: 'top',
+        placement: placement,
         middleware: [
             offset(4),
             shift(),
-            flip({padding: 10})
+            flip({padding: 10, fallbackPlacements:fallbackPlacement})
         ],
         strategy: 'fixed',
         whileElementsMounted: autoUpdate,
@@ -99,5 +101,7 @@ export default Tooltip
 interface _Tooltip {
     className?: string
     children: JSX.Element,
-    content: string | JSX.Element
+    content: string | JSX.Element,
+    placement?: Placement
+    fallbackPlacement?: Placement[]
 }

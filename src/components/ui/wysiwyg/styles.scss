@@ -25,7 +25,7 @@
     }
     
     // Styles when it does NOT have a .footer-box child
-    &:not(:has(.footer-box)) {
+    &:not(:has(>.footer-box)) {
         &.rounded .editor-box{
             border-bottom-left-radius: var(--space-100);
             border-bottom-right-radius: var(--space-100);
@@ -41,7 +41,7 @@
     }
 
     // Styles when it does NOT have a .footer-box child
-    &:not(:has(.toolbar-container)) {
+    &:not(:has(>.toolbar-container)) {
         &.rounded .editor-box{
             border-top-left-radius: var(--space-100);
             border-top-right-radius: var(--space-100);
@@ -91,6 +91,7 @@
             border-color: var(--clr-danger-700);
         }
     }
+    
 
     .toolbar-container{
         grid-row: 1 / 2;
@@ -100,18 +101,35 @@
         padding: var(--space-100);
         display: flex;
         flex-wrap: wrap;
+        
+        &.toolbar-floating{
+            border-bottom: 1px solid var(--clr-border);
+            max-width: 300px;
+        }
 
         &.rounded{
             border-top-left-radius: var(--space-100);
             border-top-right-radius: var(--space-100);
+            &.toolbar-floating{
+                border-bottom-left-radius: var(--space-100);
+                border-bottom-right-radius: var(--space-100);
+            }
         }
         &.box{
             border-top-left-radius: var(--space-0);
             border-top-right-radius: var(--space-0);
+            &.toolbar-floating{
+                border-bottom-left-radius: var(--space-0);
+                border-bottom-right-radius: var(--space-0);
+            }
         }
         &.circle{
             border-top-left-radius: var(--space-200);
             border-top-right-radius: var(--space-200);
+            &.toolbar-floating{
+                border-bottom-left-radius: var(--space-200);
+                border-bottom-right-radius: var(--space-200);
+            }
         }
 
         .icon-button{
@@ -143,14 +161,17 @@
         background-color: white;
         color: black;
         padding: var(--space-200) var(--space-50);
+        position: relative;
+        
 
         .ql-editor{
             max-height: 420px;
             overflow: auto;
             padding: var(--space-0) var(--space-200);
+
             p{
                 margin: 0px;
-                margin-bottom: 16px;
+                margin-bottom: 4px;
             }
             &.ql-blank::before {
                 color: hsl(from var(--clr-surface-5) h s l / 1);

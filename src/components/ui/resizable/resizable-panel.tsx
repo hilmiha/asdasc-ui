@@ -6,6 +6,7 @@ const ResizablePanel = ({
     children,
     order = undefined,
     minPanelSize = 0,
+    maxPanelSize = undefined,
     defaultPanelSize = 50,
     minContentWidth = '80px',
     isOverFlow = false
@@ -14,6 +15,7 @@ const ResizablePanel = ({
     children:JSX.Element,
     order?:number,
     minPanelSize?:number,
+    maxPanelSize?:number,
     defaultPanelSize?:number,
     minContentWidth?:string,
     isOverFlow?:boolean
@@ -29,13 +31,13 @@ const ResizablePanel = ({
 
     if(isPanelGroup){
         return(
-            <Panel id={id} minSize={minPanelSize} defaultSize={defaultPanelSize} order={order}>
+            <Panel id={id} minSize={minPanelSize} maxSize={maxPanelSize} defaultSize={defaultPanelSize} order={order}>
                 {children}
             </Panel>
         )
     }else{
         return(
-            <Panel id={id} minSize={minPanelSize} defaultSize={defaultPanelSize}>
+            <Panel id={id} minSize={minPanelSize} maxSize={maxPanelSize} defaultSize={defaultPanelSize}>
                 <div 
                     className='resizable-panel'
                     style={{

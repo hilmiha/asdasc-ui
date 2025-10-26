@@ -52,7 +52,7 @@ const AppTemplate = ({
                                     />
                                 }
                                 options={[
-                                    {id:'/', txtLabel:'Home'},
+                                    // {id:'/', txtLabel:'Home'},
                                     {id:'/docs', txtLabel:'Documentation'},
                                     {id:'/generate-colors', txtLabel:'Generate Colors'},
                                 ]}
@@ -74,12 +74,12 @@ const AppTemplate = ({
                     {
                         (screenSize!=='mobile')?(
                             <>
-                                <Button
+                                {/* <Button
                                     className='top-nav-button'
                                     appearance='subtle'
                                     txtLabel={'Home'}
                                     onClick={()=>{navigate('/')}}
-                                />
+                                /> */}
                                 <Button
                                     className='top-nav-button'
                                     appearance='subtle'

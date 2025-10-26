@@ -14,12 +14,14 @@ const ToolbarComponent = ({
     quill,
     shape,
     moduleList = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block'],
-    isDisabled = false
+    isDisabled = false,
+    isFloating = false,
 }:{
     quill: Quill | null,
     shape?:globalShapeType
     moduleList:wysiwygModulesType[]
     isDisabled:boolean
+    isFloating?:boolean
 }) =>{
     const [activeFormats, setActiveFormats] = useState<{[key: string]: any}>({});
     // const [selectedText, setSelectedText] = useState<string>('');
@@ -208,6 +210,9 @@ const ToolbarComponent = ({
     return(
         <div className={clsx(
             "toolbar-container",
+            {
+                ['toolbar-floating']:(isFloating),
+            },
             shape
         )}>
             {

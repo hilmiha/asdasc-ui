@@ -28,6 +28,13 @@ const ResizablePage   = lazy(() => import('./pages/resizable-page'));
 const SkeletonPage   = lazy(() => import('./pages/skeleton-page'));
 const SpinnerPage   = lazy(() => import('./pages/spinner-page'));
 const SplitButtonPage   = lazy(() => import('./pages/split-button-page'));
+const SwitchPage   = lazy(() => import('./pages/switch-page'));
+const TablePage   = lazy(() => import('./pages/table-page'));
+const TabsPage   = lazy(() => import('./pages/tabs-page'));
+const TagPage   = lazy(() => import('./pages/tag-page'));
+const TooltipPage   = lazy(() => import('./pages/tooltip-page'));
+const WysiwygPage   = lazy(() => import('./pages/wysiwyg-page'));
+
 
 const routes = [
     {key:'get-started', path: '/', component: <GetStartedPage/>},
@@ -57,6 +64,13 @@ const routes = [
     {key:'skeleton', path: '/skeleton', component: <SkeletonPage/>},
     {key:'spinner', path: '/spinner', component: <SpinnerPage/>},
     {key:'split-button', path: '/split-button', component: <SplitButtonPage/>},
+    {key:'switch', path: '/switch', component: <SwitchPage/>},
+    {key:'table', path: '/table', component: <TablePage/>},
+    {key:'tabs', path: '/tabs', component: <TabsPage/>},
+    {key:'tag', path: '/tag', component: <TagPage/>},
+    {key:'tooltip', path: '/tooltip', component: <TooltipPage/>},
+    {key:'wysiwyg', path: '/wysiwyg', component: <WysiwygPage/>},
+
 
     {key:'unknown', path: '/*', component: <UnterConstruction/>},
 ];
