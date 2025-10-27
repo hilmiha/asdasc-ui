@@ -8,9 +8,11 @@
 
 A React component collection built from years of front-end development experience and my journey of learning how to create my own components from scratch.
 
+[🔗 Documentation and Demo](http://hilmiha.github.io/asdasc-ui/docs)
+
 ### What is ASDASC?
 
-ASDASC is my personal exploration into building React components the way I think they should work. It's not about reinventing the wheel, but it's about understanding how the wheel is made and building one that fits my specific needs and preferences.
+ASDASC is my personal exploration into building React components the way I believe they're made and work. It's not about reinventing the wheel, but it's about understanding how the wheel is made and building one that fits my specific needs and preferences.
 
 ### Features
 

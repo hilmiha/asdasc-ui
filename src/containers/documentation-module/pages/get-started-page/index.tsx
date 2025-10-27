@@ -58,7 +58,7 @@ const GetStartedPage = () =>{
                     </div>
                 </div>
                 <p className="text-sub">Another Scalable Design And Stuff, Components</p>
-                <p>ASDASC is my personal exploration into building React components the way I think they should work. It's not about reinventing the wheel, but it's about understanding how the wheel is made and building one that fits my specific needs and preferences. This React component collection built from years of front-end development experience and my journey of learning how to create my own components from scratch.</p>
+                <p>ASDASC is my personal exploration into building React components the way I believe they're made and work. It's not about reinventing the wheel, but it's about understanding how the wheel is made and building one that fits my specific needs and preferences. This React component collection built from years of front-end development experience and my journey of learning how to create my own components from scratch.</p>
             </div>
             <div 
                 id="features" 
