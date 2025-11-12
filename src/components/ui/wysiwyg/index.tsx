@@ -37,7 +37,7 @@ const Wysiwyg = ({
 	const quillRef = useRef<Quill | null>(null);
 
 	const modules = useMemo<wysiwygModulesType[]>(()=>{
-		const tamp:wysiwygModulesType[] = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block']
+		const tamp:wysiwygModulesType[] = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block', 'clear']
 		
 		return config?.moduleList?(config.moduleList):(tamp)
 
@@ -71,6 +71,16 @@ const Wysiwyg = ({
 	useEffect(() => {
 		if (editorRef.current && !quillRef.current) {
 		// Initialize Quill without toolbar
+			let allowedFormat:wysiwygFormat[] = [
+				'header', 'bold', 'italic', 'underline', 'strike',
+				'list', 'indent', 'align', 'color', 'background',
+				'link', 'image', 'blockquote', 'code', 'code-block', 'script'
+			]
+
+			if(config?.disabledFormat){
+				allowedFormat = [...allowedFormat].filter((i)=>!config.disabledFormat?.includes(i))
+			}
+			
 			quillRef.current = new Quill(editorRef.current, {
 				theme: 'snow',
 				modules: {
@@ -84,13 +94,16 @@ const Wysiwyg = ({
 								}
 							}
 						}
+					},
+					clipboard: {
+						matchers: [
+							['*', function (node:any) {
+								return new Delta().insert(node.innerText); //clear format on paste
+							}]
+						]
 					}
 				},
-				formats: [
-					'header', 'bold', 'italic', 'underline', 'strike',
-					'list', 'indent', 'align', 'color', 'background',
-					'link', 'image', 'blockquote', 'code', 'code-block', 'script'
-				],
+				formats: allowedFormat,
 				placeholder:txtPlaceholder,
 				readOnly:isDisabled,
 			});
@@ -101,7 +114,56 @@ const Wysiwyg = ({
 
 
 			// Handle content changes
-			quillRef.current.on('text-change', debouncedOnChange);
+			const quill = quillRef.current;
+			quill.on('text-change', () => {
+				if (!config?.isListOnly) { //when isList only false
+					debouncedOnChange();
+					return;
+				}
+
+				//format when config isListOnlyTrue
+
+				const len = quill.getLength();
+				const range = quill.getSelection() || { index: len - 1 };
+				const format = quill.getFormat(range.index);
+
+				// Case 1: editor is empty or almost empty and not a bullet
+				if (len <= 1 && (format.list !== 'bullet' && format.list !== 'ordered')) {
+					const fallback = new Delta().insert('\n', { list: 'bullet' });
+					quill.setContents(fallback);
+					quill.setSelection(0);
+					return;
+				}
+
+				// Case 2: cursor is in a new non-bullet line
+				// (usually happens when user presses Enter at the end)
+				const [line] = quill.getLine(range.index);
+				if (line && !quill.getFormat(range.index).list) {
+					const lineIndex = quill.getIndex(line);
+					const lineLength = line.length();
+
+					// Remove that non-bullet line (delete its newline)
+					quill.deleteText(lineIndex, lineLength, 'silent');
+
+					// Find last bullet line
+					let lastBulletIndex = 0;
+					const lines = quill.getLines();
+					for (let i = lines.length - 1; i >= 0; i--) {
+						const formats = quill.getFormat(quill.getIndex(lines[i]));
+						if (formats.list === 'bullet' || formats.list === 'ordered') {
+							lastBulletIndex = quill.getIndex(lines[i]) + lines[i].length() - 1;
+							break;
+						}
+					}
+
+					// Move cursor back to end of last bullet
+					quill.setSelection(lastBulletIndex, 0, 'silent');
+					return;
+				}
+
+				// Default case: normal update
+				debouncedOnChange();
+			});
 
 			const editor = quillRef.current.root;
 			editor.addEventListener('focus', handleFocus);
@@ -203,7 +265,7 @@ interface _Wysiwyg {
 	txtPlaceholder?: string;
 	value?: Delta;
 	isDisabled?: boolean;
-	onChange?: (content: Delta) => void;
+	onChange?: (content: Delta, quillRef:React.RefObject<Quill | null>) => void;
 	onBlur?:(e:FocusEvent, value:Delta)=>void
 	onFocus?:(e:FocusEvent, value:Delta)=>void
     error?:fieldErrorType;
@@ -216,6 +278,7 @@ export type wysiwygStyleType = {
 	editorBox?:React.CSSProperties;
 	footerBox?:React.CSSProperties;
 }
+type wysiwygFormat = 'header' | 'bold' | 'italic' | 'underline' | 'strike' | 'list' | 'indent' | 'align' | 'color' | 'background' | 'link' | 'image' | 'blockquote' | 'code' | 'code-block' | 'script'
 export type wysiwygConfigType = {
     isRequired?:boolean
 	isDisableNewLine?:boolean
@@ -224,4 +287,6 @@ export type wysiwygConfigType = {
 	isHideTextCount?: boolean
 	isAsPreview?:boolean
 	moduleList?:wysiwygModulesType[]
+	disabledFormat?:wysiwygFormat[]
+	isListOnly?:boolean
 }

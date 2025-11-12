@@ -47,6 +47,7 @@ const ResizablePanel = ({
                     <div
                         style={{
                             minWidth:minContentWidth,
+                            height:'100%'
                         }}
                     >
                         {children}

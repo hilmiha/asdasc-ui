@@ -450,17 +450,21 @@ const ToolbarComponent = ({
                     />
                 )
             }
-            <IconButton
-                icon={<PiEraserBold className="global-icon"/>}
-                appearance="subtle"
-                txtLabel="Clear Formatting"
-                onClick={() => clearFormats()}
-                isDisabled={isDisabled}
-            />
+            {
+                moduleList.includes('clear')&&(
+                    <IconButton
+                        icon={<PiEraserBold className="global-icon"/>}
+                        appearance="subtle"
+                        txtLabel="Clear Formatting"
+                        onClick={() => clearFormats()}
+                        isDisabled={isDisabled}
+                    />
+                )
+            }
         </div>
     )
 }
 
 export default ToolbarComponent
 
-export type wysiwygModulesType = 'bold' | 'italic' | 'underline' | 'strike' | 'code' | 'subscript' | 'superscript' | 'text-type' | 'order-list' | 'unorder-list' | 'indent' | 'align' | 'color' | 'highlight' | 'link' | 'image' | 'quote-block' | 'code-block'
+export type wysiwygModulesType = 'bold' | 'italic' | 'underline' | 'strike' | 'code' | 'subscript' | 'superscript' | 'text-type' | 'order-list' | 'unorder-list' | 'indent' | 'align' | 'color' | 'highlight' | 'link' | 'image' | 'quote-block' | 'code-block' | 'clear'

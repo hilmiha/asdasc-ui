@@ -42,7 +42,7 @@ export const doValidateValue = (
 export const onInputChange = (
     quillRef:React.RefObject<Quill | null>,
     isDirtyRef: React.RefObject<boolean>,
-    onChange?: (content: Delta) => void,
+    onChange?: (content: Delta, event:React.RefObject<Quill | null>) => void,
     config?:wysiwygConfigType,
     onValidate?:(error:fieldErrorType, value:Delta)=>void
 ) =>{
@@ -52,7 +52,7 @@ export const onInputChange = (
     const newValue = quillRef.current.getContents()
 
     if (onChange) {
-        onChange(newValue);
+        onChange(newValue, quillRef);
     }  
     if(onValidate && config){
         doValidateValue(quillRef.current, onValidate, config)

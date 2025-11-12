@@ -156,7 +156,7 @@ const Dropdown = ({
                         <FloatingOverlay
                             lockScroll={floatingConfig?.isLockScroll}
                             style={{
-                                zIndex:'1',
+                                zIndex:'10',
                                 pointerEvents: floatingConfig?.isLockScroll ? "auto" : "none", // let scroll through
                             }}
                         >
