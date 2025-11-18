@@ -66,7 +66,7 @@ const TableFooter = ({
         const tamp:optionItemType[] = column.filter(i=>(i.key!=='#checkbox' && i.key!=='#expandable')).map((i)=>{
             return({
                 id:i.key,
-                txtLabel:i.txtLable,
+                txtLabel:i.txtLabel,
                 type:'option'
             })
         })
@@ -416,7 +416,7 @@ const TableSettingMobile = ({
                                         ):headerData.key==='#expandable'?(
                                             'Expandable'
                                         ):(
-                                            headerData.txtLable
+                                            headerData.txtLabel
                                         )
                                     }
                                 </div>

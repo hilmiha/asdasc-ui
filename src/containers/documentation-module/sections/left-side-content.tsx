@@ -24,8 +24,8 @@ const LeftSideContent = ({
                 menuComponent.map((section)=>(
                     <div key={section.id} style={{ marginBottom:'var(--space-400)'}}>
                         {
-                            (section.txtLable)&&(
-                                <p className='text-sub' style={{marginBottom:'var(--space-100)', marginLeft:"var(--space-100)"}}>{section.txtLable}</p>
+                            (section.txtLabel)&&(
+                                <p className='text-sub' style={{marginBottom:'var(--space-100)', marginLeft:"var(--space-100)"}}>{section.txtLabel}</p>
                             )
                         }
                         <div style={{display:'grid', gap:'var(--space-50)'}}>
@@ -35,7 +35,7 @@ const LeftSideContent = ({
                                         className='side-nav-button'
                                         appearance='subtle'
                                         key={menu.id}
-                                        txtLabel={<div style={{flexGrow:'1', textAlign:'start'}}>{menu.txtLable}</div>}
+                                        txtLabel={<div style={{flexGrow:'1', textAlign:'start'}}>{menu.txtLabel}</div>}
                                         isSelected={pageOn===menu.id}
                                         onClick={()=>{
                                             navigate(`${baseUrl}${menu.to}`)

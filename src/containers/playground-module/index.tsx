@@ -1491,11 +1491,11 @@ export default PlaygroundModule
 
 
 const tableColumnDummy: tableColumnType[] = [
-    {key:'label1', txtLable:'Label 1', size:{size:'30%', min:'200px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
-    {key:'label2', txtLable:'Label 2', size:{size:'60%', min:'280px'}, isCanSort:false, horizontalAlign:'start'},
-    {key:'label3', txtLable:'Label 3', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'end'},
-    {key:'label4', txtLable:'Label 4', size:{size:'10%', min:'120px'}, isCanSort:false, horizontalAlign:'start'},
-    {key:'action', type:'row-action', txtLable:'Action', size:{size:'0%', min:'154px'}, horizontalAlign:'center', actionButtonList:[
+    {key:'label1', txtLabel:'Label 1', size:{size:'30%', min:'200px'}, isCanSort:true, horizontalAlign:'start', isDefaultSort:true},
+    {key:'label2', txtLabel:'Label 2', size:{size:'60%', min:'280px'}, isCanSort:false, horizontalAlign:'start'},
+    {key:'label3', txtLabel:'Label 3', size:{size:'10%', min:'120px'}, isCanSort:true, horizontalAlign:'end'},
+    {key:'label4', txtLabel:'Label 4', size:{size:'10%', min:'120px'}, isCanSort:false, horizontalAlign:'start'},
+    {key:'action', type:'row-action', txtLabel:'Action', size:{size:'0%', min:'154px'}, horizontalAlign:'center', actionButtonList:[
         {id:"edit", type:'button', txtLabel:'Edit', icon:<PiPencil className='global-icon'/>},
         {id:"delete", type:'icon-button', txtLabel:'Delete', icon:<PiTrashBold className='global-icon'/>},
         {

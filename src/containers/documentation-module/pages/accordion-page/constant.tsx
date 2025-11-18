@@ -24,8 +24,8 @@ export const sections = [
 ]
 
 export const keyboardInteractionsColumnList:tableColumnType[] = [
-    {key:'key', txtLable:'Key', size:{min:'100px', size:'1fr'}},
-    {key:'description', txtLable:'Description', size:{min:'400px', size:'1fr'}},
+    {key:'key', txtLabel:'Key', size:{min:'100px', size:'1fr'}},
+    {key:'description', txtLabel:'Description', size:{min:'400px', size:'1fr'}},
 ]
 
 export const keyboardInteractionsList:tableRowDataType[] = [
@@ -52,9 +52,9 @@ export const keyboardInteractionsList:tableRowDataType[] = [
 ]
 
 export const apiRefTableColumnList:tableColumnType[] = [
-    {key:'prop', txtLable:'Prop', size:{min:'140px', size:'0.5fr'}},
-    {key:'type', txtLable:'Type', size:{min:'220px', size:'1fr'}},
-    {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
+    {key:'prop', txtLabel:'Prop', size:{min:'140px', size:'0.5fr'}},
+    {key:'type', txtLabel:'Type', size:{min:'220px', size:'1fr'}},
+    {key:'default', txtLabel:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
 export const apiRefAccordionGroupList:tableRowDataType[] = [

@@ -53,7 +53,7 @@ const Table = ({
                     {
                         key:'#checkbox',
                         size:{size:'0%', min:'23px'},
-                        txtLable:''
+                        txtLabel:''
                     },
                     ...prev
                 ]
@@ -68,7 +68,7 @@ const Table = ({
                     {
                         key:'#expandable',
                         size:{size:'0%', min:'23px'},
-                        txtLable:''
+                        txtLabel:''
                     },
                     ...prev
                 ]
@@ -298,7 +298,7 @@ export type rowActionButtonType = {
 
 export type tableColumnType = {
     key:string,
-    txtLable:string,
+    txtLabel:string,
     size:{
         size:string,
         min:string

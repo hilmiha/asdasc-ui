@@ -18,9 +18,9 @@ export const sections = [
 ]
 
 export const apiRefTableColumnList:tableColumnType[] = [
-    {key:'prop', txtLable:'Prop', size:{min:'140px', size:'0.5fr'}},
-    {key:'type', txtLable:'Type', size:{min:'220px', size:'1fr'}},
-    {key:'default', txtLable:'Default', size:{min:'100px', size:'0.3fr'}},
+    {key:'prop', txtLabel:'Prop', size:{min:'140px', size:'0.5fr'}},
+    {key:'type', txtLabel:'Type', size:{min:'220px', size:'1fr'}},
+    {key:'default', txtLabel:'Default', size:{min:'100px', size:'0.3fr'}},
 ]
 
 export const apiRefSkeletonList:tableRowDataType[] = [

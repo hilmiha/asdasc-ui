@@ -73,7 +73,7 @@ const ComponentsPage = () =>{
                         <Button
                             appearance='subtle'
                             key={menu.id}
-                            txtLabel={menu.txtLable}
+                            txtLabel={menu.txtLabel}
                             onClick={()=>{navigate(`${baseUrl}${menu.to}`)}}
                             style={{
                                 button:{

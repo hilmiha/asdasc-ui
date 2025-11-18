@@ -138,7 +138,7 @@ const TableColumn = ({
                                     </div>
                                 )
                             }
-                            {headerData.txtLable}
+                            {headerData.txtLabel}
                             {
                                 (
                                     tableConfig &&
