@@ -256,9 +256,11 @@ export const onInputBlur = (
     }
 
     //do blur event
-    if(onBlur){
-        onBlur(event, newValue)
-    }
+    setTimeout(() => {
+        if(onBlur){
+            onBlur(event, newValue)
+        }
+    }, 400);
 }
 
 //onFocus function of input component
