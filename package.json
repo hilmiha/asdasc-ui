@@ -20,6 +20,7 @@
     "@codemirror/view": "^6.38.4",
     "@floating-ui/react": "^0.27.13",
     "@fontsource/inter": "^5.2.6",
+    "@fontsource/noto-color-emoji": "^5.2.10",
     "@fsegurai/codemirror-theme-github-dark": "^6.2.2",
     "@fsegurai/codemirror-theme-github-light": "^6.2.2",
     "@types/lodash": "^4.17.20",

@@ -1200,9 +1200,6 @@ function PlaygroundModule() {
                     onClose={()=>{
                         console.log('onClose')
                     }}
-                    floatingConfig={{
-                        isDisableDismiss:false
-                    }}
                 >
                     <p>
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit quia magnam earum deserunt voluptatem ea dolorem rerum, aperiam eligendi recusandae obcaecati sint libero. Eum, qui natus itaque asperiores et tempora.

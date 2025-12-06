@@ -1,1 +1,0 @@
-.split-button{display:flex;position:relative}.split-button .button-one{border-top-right-radius:0;border-bottom-right-radius:0;margin-right:0}.split-button .button-more{border-top-left-radius:0;border-bottom-left-radius:0;margin-left:0;border-left:0px;height:calc(100% - var(--space-100))}.split-button .button-more.circle{width:var(--space-500)}
