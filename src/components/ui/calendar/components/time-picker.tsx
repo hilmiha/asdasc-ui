@@ -69,7 +69,6 @@ const TimePicker = ({
                 isDisabled={isDisabled?isDisabled:!value}
                 config={{
                     maxLength: 2,
-                    isHideClear: true,
                 }}
             />
 
@@ -85,7 +84,6 @@ const TimePicker = ({
                 isDisabled={isDisabled?isDisabled:!value}
                 config={{
                     maxLength: 2,
-                    isHideClear: true,
                 }}
             />
 
@@ -101,7 +99,6 @@ const TimePicker = ({
                 isDisabled={isDisabled?isDisabled:!value}
                 config={{
                     maxLength: 2,
-                    isHideClear: true,
                 }}
             />
         </div>

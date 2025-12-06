@@ -57,7 +57,7 @@ const ExampleSection = () =>{
                                     <p className="text-title-lg">Header</p>
                                 )}
                                 elementFooter={(
-                                    <div style={{display:'flex', justifyContent:'end'}}>
+                                    <div style={{display:'flex', justifyContent:'end', gap:"var(--space-100)"}}>
                                         <Button txtLabel={'Button'}/>
                                         <Button txtLabel={'Button'} appearance="primary"/>
                                     </div>
@@ -104,7 +104,7 @@ const example_1_code = `<Dropdown
         <p className="text-title-lg">Header</p>
     )}
     elementFooter={(
-        <div style={{display:'flex', justifyContent:'end'}}>
+        <div style={{display:'flex', justifyContent:'end', gap:"var(--space-100)"}}>
             <Button txtLabel={'Button'}/>
             <Button txtLabel={'Button'} appearance="primary"/>
         </div>

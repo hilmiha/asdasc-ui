@@ -11,7 +11,6 @@
 
         min-height: 32.01px;
         border: 1px solid var(--clr-border);
-        margin: var(--space-50);
         display: flex;
         gap: var(--space-100);
         align-items: center;
@@ -146,7 +145,7 @@
         grid-column: span 2;
         grid-row: 2 / 3;
 
-        margin: var(--space-100);
+        margin: var(--space-100) var(--space-0);
         display: flex;
         align-items: center;
         gap: var(--space-100);

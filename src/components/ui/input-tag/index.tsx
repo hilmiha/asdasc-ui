@@ -28,6 +28,7 @@ const InputTag = ({
     onFocus = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined,
 }:_InputTag) =>{
@@ -76,6 +77,14 @@ const InputTag = ({
             ctrl.doValidateValue(value, onValidate,config)
         }
     },[JSON.stringify(value)])
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(!isFocus && onValidate && config){
+                ctrl.doValidateValue(value, onValidate,config)
+            }
+        }
+    },[triggerValidate])
 
     // Update ref
     const inputTagRef = useRef<HTMLInputElement>(null);
@@ -148,7 +157,7 @@ const InputTag = ({
                     )
                 }
                 {
-                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
+                    (value.length > 0 && !isDisabled && config?.isShowClear)&&(
                         <IconButton
                             className='clear-button'
                             icon={<PiXBold/>}
@@ -283,6 +292,7 @@ interface _InputTag {
     onFocus?:(e:React.FocusEvent<HTMLInputElement>, inputValue:string[])=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void;
+    triggerValidate?:0|1;
     config?:inputTagConfigType;
 }
 
@@ -294,5 +304,5 @@ export type inputTagConfigType = {
     maxValue?:number
     prefixElement?:React.ReactNode|string
     sufixElement?:React.ReactNode|string
-    isHideClear?:boolean
+    isShowClear?:boolean
 }

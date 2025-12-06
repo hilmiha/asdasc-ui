@@ -142,9 +142,6 @@ const ColorPicker = ({
                                             setHexInput(ctrl.rgbaToHex(color, isAllowAlpha))
                                         }, 600);
                                     }
-                                }}  
-                                config={{
-                                    isHideClear:true
                                 }}
                             />
                         )
@@ -173,7 +170,7 @@ const ColorPicker = ({
                                             }, 600);
                                         }
                                     }}
-                                    config={{prefixElement:'R', isHideClear:true, maxLength:3}}
+                                    config={{prefixElement:'R', maxLength:3}}
                                 />
                                 <InputText
                                     className='rgba-input'
@@ -194,7 +191,7 @@ const ColorPicker = ({
                                             }, 600);
                                         }
                                     }}
-                                    config={{prefixElement:'G', isHideClear:true, maxLength:3}}
+                                    config={{prefixElement:'G', maxLength:3}}
                                 />
                                 <InputText
                                     className='rgba-input'
@@ -215,7 +212,7 @@ const ColorPicker = ({
                                             }, 600);
                                         }
                                     }}
-                                    config={{prefixElement:'B', isHideClear:true, maxLength:3}}
+                                    config={{prefixElement:'B', maxLength:3}}
                                 />
                                 {
                                     (isAllowAlpha)&&(
@@ -238,7 +235,7 @@ const ColorPicker = ({
                                                     }, 600);
                                                 }
                                             }}
-                                            config={{prefixElement:'A', sufixElement:'%', isHideClear:true, maxLength:3}}
+                                            config={{prefixElement:'A', sufixElement:'%', maxLength:3}}
                                         />
                                     )
                                 }

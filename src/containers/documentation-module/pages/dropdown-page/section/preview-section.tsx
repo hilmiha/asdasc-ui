@@ -25,7 +25,7 @@ const PreviewSection = () =>{
                             <p className="text-title-lg">Header</p>
                         )}
                         elementFooter={(
-                            <div style={{display:'flex', justifyContent:'end'}}>
+                            <div style={{display:'flex', justifyContent:'end', gap:"var(--space-100)"}}>
                                 <Button txtLabel={'Button'}/>
                                 <Button txtLabel={'Button'} appearance="primary"/>
                             </div>
@@ -66,7 +66,7 @@ const DropdownDemo = () =>{
                 <p className="text-title-lg">Header</p>
             )}
             elementFooter={(
-                <div style={{display:'flex', justifyContent:'end'}}>
+                <div style={{display:'flex', justifyContent:'end', gap:"var(--space-100)"}}>
                     <Button txtLabel={'Button'}/>
                     <Button txtLabel={'Button'} appearance="primary"/>
                 </div>

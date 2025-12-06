@@ -1,4 +1,6 @@
-import type { optionItemType } from "src/components/_types";
+import type { fieldErrorType, optionItemType } from "src/components/_types";
+import type { checkboxGroupConfigType } from ".";
+import { getFormatedNumberForDisplay } from "src/helper/helper";
 
 // Toggle collapse state
 export const onCollapseButtonClick = (
@@ -82,29 +84,69 @@ export const onOptionItemClick = (
     option: optionItemType, 
     isChecked: boolean, 
     checkedLeaves:Set<string>, 
-    onChange?:(checkedLeafIds: string[]) => void
+    onChange?:(checkedLeafIds: string[]) => void,
+    onValidate?:(error:fieldErrorType, newValue:string[])=>void,
+    config?:checkboxGroupConfigType,
 ) => {
-    const newValue = new Set(checkedLeaves);
+    const tampNewValue = new Set(checkedLeaves);
     const leafIds = getLeafIds(option);
     const disabledIds = getDisabledLeafIds(option)
-    const countSelectedLeaf = leafIds.filter((i)=>newValue.has(i))
+    const countSelectedLeaf = leafIds.filter((i)=>tampNewValue.has(i))
 
     leafIds.forEach((id) => {
         if (isChecked && ((leafIds.length-disabledIds.length)!==countSelectedLeaf.length)) {
-            newValue.add(id);
+            tampNewValue.add(id);
         } else {
-            newValue.delete(id);
+            tampNewValue.delete(id);
         }
     });
 
     if(isChecked){
         disabledIds.forEach((i)=>{
-            newValue.delete(i)
+            tampNewValue.delete(i)
         })
     }
 
+    const newValue = [...tampNewValue]
+
     if(onChange){
-        onChange([...newValue]);
+        onChange(newValue);
+    }
+    
+    if(!!onValidate && !!config){
+        doValidateValue(newValue, onValidate, config)
     }
 };
+
+export const doValidateValue = (
+    newValue:string[],
+    onValidate:(error:fieldErrorType, newValue:string[])=>void,
+    config:checkboxGroupConfigType,
+) => {
+    let isError = false
+    let errorMessage = ''
+
+    if(config['isRequired'] && !isError){
+        if(newValue.length===0){
+            isError = true
+            errorMessage = 'This field cannot be empty!'
+        }
+    }
+
+    if(config['maxValue'] && !isError){
+        if(newValue.length > config['maxValue']){
+            isError = true
+            errorMessage = `Value selected cannot exceed ${getFormatedNumberForDisplay(`${config['maxValue']}`)} items`
+        }
+    }
+
+    if(config['minValue'] && !isError){
+        if(newValue.length < config['minValue']){
+            isError = true
+            errorMessage = `Value must be at least ${getFormatedNumberForDisplay(`${config['minValue']}`)} items`
+        }
+    }
+
+    onValidate({isError:isError, errorMessage:errorMessage},newValue)
+}
 

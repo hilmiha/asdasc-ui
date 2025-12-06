@@ -25,8 +25,10 @@ const InputText = ({
     onChange = undefined,
     onBlur = undefined,
     onFocus = undefined,
+    onKeyDown = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined
 }:_InputText) =>{
@@ -64,18 +66,26 @@ const InputText = ({
             if (onChange) {
                 onChange(newValue, e);
             }
-        }, 500),
+        }, 300),
     [onChange]);
     
     //detect if value change/setted outsite of component
     useEffect(()=>{
         if((value !== tampValue) && !isFocus){
             setTampValue(value)
-            if(onValidate && config){
+            if(onValidate && config && isDirty){
                 ctrl.doValidateValue(type, value, onValidate, config)
             }
         }
     },[value])
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(onValidate && config){
+                ctrl.doValidateValue(type, value, onValidate, config)
+            }
+        }
+    },[triggerValidate])
 
     return(
         <div className={clsx(
@@ -124,6 +134,11 @@ const InputText = ({
                         }
                         setIsFocus(true)
                     }}
+                    onKeyDown={(e)=>{
+                        if(!isDisabled){
+                            ctrl.onKeyDownInput(e, tampValue, onKeyDown)
+                        }
+                    }}
                     disabled={isDisabled}
                     type={inputTypeMode.type}
                     inputMode={inputTypeMode.mode}
@@ -136,7 +151,14 @@ const InputText = ({
                     )
                 }
                 {
-                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
+                    (config?.isWithCounter && !isDisabled)&&(
+                        <div>
+                            <p className='text-sub text-sm'>{`${tampValue.length}${config.maxLength?(` / ${config.maxLength}`):('')}`}</p>
+                        </div>
+                    )
+                }
+                {
+                    (tampValue.length > 0 && !isDisabled && config?.isShowClear)&&(
                         <IconButton
                             className='clear-button'
                             icon={<PiXBold/>}
@@ -197,12 +219,14 @@ export interface _InputText {
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void;
     onBlur?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void;
     onFocus?:(e:React.FocusEvent<HTMLInputElement>, value:string)=>void;
+    onKeyDown?:(e:React.KeyboardEvent<HTMLInputElement>, value:string)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, value:string)=>void;
+    triggerValidate?:0|1;
     config?:inputTextConfigType;
 }
 
-export type inputTextType = 'text' | 'text-no-space' | 'number-text' | 'number' | 'password';
+export type inputTextType = 'text' | 'text-no-space' | 'number-text' | 'number' | 'password' | 'tel';
 
 export type inputTextConfigType = {
     isRequired?:boolean
@@ -213,7 +237,8 @@ export type inputTextConfigType = {
     validRegex?:[RegExp, string][]
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
-    isHideClear?:boolean
+    isShowClear?:boolean
+    isWithCounter?:boolean
 }
 
 export type inputTextStyleType = {

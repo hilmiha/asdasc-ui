@@ -1,4 +1,5 @@
-import { PiArrowDownBold, PiArrowsDownUpBold, PiArrowUpBold, PiCaretUpDownBold, PiDotsSixVerticalBold } from "react-icons/pi"
+import { PiCaretUpDownBold, PiDotsSixVerticalBold } from "react-icons/pi"
+import { TbArrowsSort, TbSortAscending, TbSortDescending } from "react-icons/tb";
 import type { tableColumnType, tableConfigType } from ".."
 import IconButton from "../../icon-button"
 import { useContext, useEffect } from "react"
@@ -93,7 +94,7 @@ const TableColumn = ({
             >
                 {column.map((headerData) => (
                     <th
-                        className={(headerData.key==='#checkbox'||headerData.key==='#expandable')?'no-swap':undefined}
+                        className={(headerData.key==='#checkbox'||headerData.key==='#expandable'||headerData.isLockSwap)?'no-swap':undefined}
                         key={headerData.key}
                         style={{
                             width: headerData.size.size,
@@ -106,7 +107,7 @@ const TableColumn = ({
                     >
                         <div className='cell-header'>
                             {
-                                (isColumnSwapable && headerData.key!=='#checkbox' && headerData.key!=='#expandable' && screenSize!=="mobile")&&(
+                                (isColumnSwapable && headerData.key!=='#checkbox' && headerData.key!=='#expandable'&& !headerData.isLockSwap && screenSize!=="mobile")&&(
                                     <div className={(isLoading)?('drag-handle-loading'):('drag-handle')}>
                                         <PiDotsSixVerticalBold className='global-icon' size={18}/>
                                     </div>
@@ -149,10 +150,10 @@ const TableColumn = ({
                                     <div style={{flexGrow:'1', display:'flex', justifyContent:'end'}}>
                                         <IconButton
                                             className='sort-button'
-                                            icon={tableConfig.sortBy===headerData.key?(tableConfig.isSortDesc?(<PiArrowUpBold className='global-icon'/>):(<PiArrowDownBold className='global-icon'/>)):(<PiArrowsDownUpBold className='global-icon'/>)}
+                                            icon={tableConfig.sortBy===headerData.key?(!tableConfig.isSortDesc?(<TbSortDescending className='global-icon'/>):(<TbSortAscending className='global-icon'/>)):(<TbArrowsSort className='global-icon'/>)}
                                             appearance='subtle'
                                             shape={shape}
-                                            txtLabel={tableConfig.sortBy===headerData.key?((tableConfig.isSortDesc)?('Chnage Sort To Asc'):('Change Sort To Des')):('Sort Asc')}
+                                            txtLabel={tableConfig.sortBy===headerData.key?((tableConfig.isSortDesc)?('Change Sort To Asc'):('Change Sort To Des')):('Sort Asc')}
                                             isSelected={tableConfig.sortBy===headerData.key}
                                             onClick={()=>{
                                                 if(isLoading){

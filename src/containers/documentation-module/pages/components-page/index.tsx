@@ -46,7 +46,7 @@ const ComponentsPage = () =>{
                     justifyContent:'space-between'
                 }}>
                     <p className="text-title-xl">Components</p>
-                    <div style={{display:'flex', gap:'var(--space-25)'}}>
+                    <div style={{display:'flex', gap:'var(--space-100)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
                             txtLabel={`to ${prevComp.name}`}
@@ -66,6 +66,7 @@ const ComponentsPage = () =>{
                 style={{
                     display:'grid',
                     gridTemplateColumns:(screenSize==='laptop')?('1fr 1fr 1fr'):(screenSize==='tablet')?('1fr 1fr'):('1fr'),
+                    gap:'var(--space-100)'
                 }}
             >
                 {

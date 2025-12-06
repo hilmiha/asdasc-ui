@@ -84,7 +84,10 @@ const Dropdown = ({
         enabled: !isDisabled
     });
     const dismiss = useDismiss(context,{
-        outsidePressEvent: 'click',
+        enabled:(floatingConfig?.disabledDismiss==='all'?(false):(true)),
+        escapeKey:(floatingConfig?.disabledDismiss==='esc'?false:true),
+        outsidePress:(floatingConfig?.disabledDismiss==='outside'?false:true),
+        outsidePressEvent: 'pointerdown',
         ancestorScroll: false,
     });
     const role = useRole(context);
@@ -202,7 +205,6 @@ const Dropdown = ({
                                             <div className='dropdown-body-box'>
                                                 {children}
                                             </div>
-                                            
                                             {
                                                 elementFooter&&(
                                                     <div className='element-footer-box'>
@@ -241,7 +243,7 @@ interface _Dropdown {
     onClose?: () => void;
     elementHeader?:JSX.Element;
     elementFooter?:JSX.Element;
-    children?:JSX.Element | JSX.Element[];
+    children?:React.ReactNode;
     triggerClose?:1|0;
     floatingConfig?:dropdownFloatingConfigType;
 }
@@ -255,6 +257,7 @@ export type dropdownFloatingConfigType = {
     isLockScroll?:boolean
     isShowDropdown?:boolean
     level?:number,
+    disabledDismiss?:'all'|'esc'|'outside'
 }
 
 export type dropdownStyleType = {

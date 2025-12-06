@@ -28,7 +28,7 @@
         }
     }
     &.success{
-        background-color: hsl(from var(--clr-surface-success-3) h s l / 0.7);
+        background-color: hsl(from var(--clr-surface-success-3) h s l / 0.5);
         border: 1px solid var(--clr-border-success);
         color: var(--clr-success-900);
         .tag-label-box-as-button{
@@ -36,7 +36,7 @@
         }
     }
     &.warning{
-        background-color: hsl(from var(--clr-surface-warning-3) h s l / 0.7);
+        background-color: hsl(from var(--clr-surface-warning-3) h s l / 0.4);
         border: 1px solid var(--clr-border-warning);
         color: var(--clr-warning-900);
         .tag-label-box-as-button{
@@ -44,7 +44,7 @@
         }
     }
     &.danger{
-        background-color: hsl(from var(--clr-surface-danger-3) h s l / 0.7);
+        background-color: hsl(from var(--clr-surface-danger-3) h s l / 0.5);
         border: 1px solid var(--clr-border-danger);
         color: var(--clr-danger-900);
         .tag-label-box-as-button{

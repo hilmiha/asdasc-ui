@@ -48,10 +48,10 @@ const ExampleSection = () =>{
                                 isOpen={isOpen}
                                 txtTitle="Bottom Sheet Title"
                                 floatingConfig={{
-                                    isDisableDismiss:true
+                                    disabledDismiss:'all'
                                 }}
                                 elementFooter={
-                                    <div style={{display:"flex", justifyContent:'end', gap:'var(--space-50)'}}>
+                                    <div style={{display:"flex", justifyContent:'end', gap:'var(--space-100)'}}>
                                         <Button txtLabel={'Reject'} onClick={()=>{setIsOpen(false)}}/>
                                         <Button txtLabel={'Accept'} onClick={()=>{setIsOpen(false)}} appearance="primary"/>
                                     </div>
@@ -89,10 +89,10 @@ const example_1_code = `<Button
     isOpen={isOpen}
     txtTitle={"Bottom Sheet Header"}
     floatingConfig={{
-        isDisableDismiss:true // Disabled default dismis behaviour
+        disabledDismiss:'all' // Disabled dismiss with click outside, and Esc key. Other option are 'esc' and 'outside'
     }}
     elementFooter={(
-        <div style={{display:"flex", justifyContent:'end', gap:'var(--space-50)'}}>
+        <div style={{display:"flex", justifyContent:'end', gap:'var(--space-100)'}}>
             <Button 
                 txtLabel={'Reject'} 
                 onClick={()=>{setIsOpen(false)}} // Give access for user to dismis

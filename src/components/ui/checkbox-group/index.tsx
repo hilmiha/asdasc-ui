@@ -1,19 +1,27 @@
 import './styles.scss'
 import * as ctrl from './controller';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CheckboxButton from '../checkbox-button';
-import { PiCaretDownBold, PiCaretUpBold, PiCircleBold } from 'react-icons/pi';
+import { PiCaretDownBold, PiCaretUpBold, PiCircleBold, PiWarningBold } from 'react-icons/pi';
 import IconButton from '../icon-button';
-import type { optionItemType } from 'src/components/_types';
+import type { fieldErrorType, optionItemType } from 'src/components/_types';
 import { useDeepCompareMemo } from 'src/hook/useDeepCompareMemo';
 import clsx from 'clsx';
+import type { buttonStyleType } from '../button';
 
 const CheckboxGroup = ({ 
+    className = undefined,
+    style = undefined,
     options = [], 
     selectedList = [], 
     isDisabled = false,
     isDefaultCollapse = true,
-    onChange = undefined
+    onChange = undefined,
+
+    triggerValidate = 0,
+    error = undefined,
+    onValidate = undefined,
+    config = undefined
 }:_CheckboxGroup) => {
     const checkedLeaves = new Set(selectedList);
     const [collapsed, setCollapsed] = useState<Set<string>>(new Set()); 
@@ -22,7 +30,7 @@ const CheckboxGroup = ({
         return JSON.stringify(options).includes('childOption')
     },[options])
 
-    const renderTree = (option: optionItemType) => {
+    const renderTree = (option: optionItemType, isParentCollapse?:boolean) => {
         const state = ctrl.getNodeState(option, checkedLeaves);
         const isParent = option.childOption && option.childOption.length > 0;
         const isCollapsed = isDefaultCollapse?collapsed.has(option.id):!collapsed.has(option.id);
@@ -32,7 +40,7 @@ const CheckboxGroup = ({
         }
 
         return (
-            <div className='checkbox-tree-box' key={option.id}>
+            <div className={'checkbox-tree-box'} key={option.id}>
                 <div className='parent-box'>
                     {
                         (isParent) ? (
@@ -47,7 +55,7 @@ const CheckboxGroup = ({
                                 isShowtooltip={false}
                             />
                         ) : (isTree) ? (
-                            <PiCircleBold className='global-icon' color='transparent' style={{margin:'calc(var(--space-50) + 1px)'}}/> // spacer for child alignment
+                            <PiCircleBold className='global-icon' color='transparent' style={{margin:'calc(var(--space-0))'}}/> // spacer for child alignment
                         ):(
                             <></>
                         )
@@ -58,8 +66,9 @@ const CheckboxGroup = ({
                         txtLabel={option.txtLabel}
                         txtSublabel={option.txtSublabel}
                         icon={option.icon}
-                        onClick={(isCheck) => ctrl.onOptionItemClick(option, isCheck, checkedLeaves, onChange)}
-                        isDisabled={isDisabled || option.isDisabled}
+                        onClick={(isCheck) => ctrl.onOptionItemClick(option, isCheck, checkedLeaves, onChange, onValidate, config)}
+                        isDisabled={isDisabled || option.isDisabled || isParentCollapse}
+                        style={style?.checkboxButton}
                     />
                 </div>
 
@@ -73,7 +82,7 @@ const CheckboxGroup = ({
                         >
                             <div>
                                 {
-                                    option.childOption!.map(renderTree)
+                                    option.childOption!.map((i)=>{return renderTree(i, isCollapsed)})
                                 }
                             </div>
                         </div>
@@ -83,13 +92,43 @@ const CheckboxGroup = ({
         );
     };
 
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(onValidate && config){
+                ctrl.doValidateValue(selectedList, onValidate, config)
+            }
+        }
+    },[triggerValidate])
+
     return (
-        <div>
+        <div
+            className={clsx(
+                'checkbox-group-container', 
+                {
+                    ['error']:(error?.isError),
+                },
+                className
+            )}
+            style={style?.container}
+        >
+            <div
+                style={style?.box}
+            >
+                {
+                    options.map(
+                        (itmOption)=>{
+                            return renderTree(itmOption)
+                        }
+                    )
+                }
+            </div>
             {
-                options.map(
-                    (itmOption)=>{
-                        return renderTree(itmOption)
-                    }
+                (error && error.isError && error.errorMessage)&&(
+                    <div className='error-box'>
+                        <PiWarningBold className='global-icon'/>
+                        <p>{error.errorMessage}</p>
+                    </div>
                 )
             }
         </div>
@@ -99,9 +138,29 @@ const CheckboxGroup = ({
 export default CheckboxGroup;
 
 interface _CheckboxGroup {
+    className?:string;
+    style?:checkboxGroupStyleType;
     options: optionItemType[];
     selectedList?: string[]; 
     isDisabled?: boolean;
     isDefaultCollapse?: boolean;
     onChange?: (checkedLeafIds: string[]) => void;
+
+    triggerValidate?:0|1;
+    error?:fieldErrorType;
+    onValidate?:(error:fieldErrorType, value:string[])=>void;
+    config?:checkboxGroupConfigType;
+    
+}
+
+export type checkboxGroupConfigType = {
+    minValue?:number
+    maxValue?:number
+    isRequired?:boolean
+}
+
+export type checkboxGroupStyleType = {
+    container?:React.CSSProperties;
+    box?:React.CSSProperties;
+    checkboxButton?:buttonStyleType
 }

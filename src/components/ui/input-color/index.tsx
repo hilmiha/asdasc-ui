@@ -28,6 +28,7 @@ const InputColor = ({
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined,
 }:_InputColor) =>{
@@ -62,6 +63,14 @@ const InputColor = ({
             ctrl.doValidateValue(value, onValidate, config)
         }
     },[value])
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(!isDropdownOpen && onValidate && config){
+                ctrl.doValidateValue(value, onValidate, config)
+            }
+        }
+    },[triggerValidate])
 
     return(
         <div className={clsx(
@@ -129,7 +138,7 @@ const InputColor = ({
                                     )
                                 }
                                 {
-                                    (value && !isDisabled && !config?.isHideClear)&&(
+                                    (value && !isDisabled && config?.isShowClear)&&(
                                         <IconButton
                                             className='clear-button'
                                             icon={<PiXBold/>}
@@ -237,6 +246,7 @@ interface _InputColor {
     onChange?:(newValue:string)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void;
+    triggerValidate?:0|1;
     config?:inputColorConfigType;
 }
 
@@ -245,7 +255,7 @@ export type inputColorConfigType = {
     isAllowAlpha?:boolean
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
-    isHideClear?:boolean
+    isShowClear?:boolean
 }
 
 export type inputSelectionStyleType = {

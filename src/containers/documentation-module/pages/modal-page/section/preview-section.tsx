@@ -27,7 +27,7 @@ const PreviewSection = () =>{
                         setIsOpen={setIsOpen}
                         txtTitle="Modal Title"
                         elementFooter={
-                            <div style={{display:"flex", justifyContent:'end', gap:'var(--space-50)'}}>
+                            <div style={{display:"flex", justifyContent:'end', gap:'var(--space-100)'}}>
                                 <Button txtLabel={'Reject'} onClick={()=>{setIsOpen(false)}} />
                                 <Button txtLabel={'Accept'}  onClick={()=>{setIsOpen(false)}} appearance="primary"/>
                             </div>

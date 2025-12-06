@@ -2,13 +2,13 @@ import type { inputSelectConfigType, inputSelectType } from ".";
 import { getFormatedNumberForDisplay } from "src/helper/helper";
 import type { fieldErrorType, optionItemType } from "src/components/_types";
 
-export const getDisplayValue = (value:string[], option:optionItemType[]): string[] => {
+export const getDisplayValue = (value:string[], option:optionItemType[]): {txtLabel:string, icon?:React.JSX.Element}[] => {
     return value.map((i)=>{
         const tamp = option.find(j=>j.id===i)
         if(tamp){
-            return tamp.txtLabel
+            return {txtLabel:tamp.txtLabel, icon:tamp.icon}
         }else{
-            return i
+            return {txtLabel:i, icon:undefined}
         }
     });
 };

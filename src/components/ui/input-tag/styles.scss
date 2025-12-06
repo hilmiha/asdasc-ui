@@ -9,7 +9,6 @@
         grid-column: 2 / 3;
         grid-row: 1 / 2;
         border: 1px solid var(--clr-border);
-        margin: var(--space-50);
         padding: 2.8px calc(var(--space-200) + 2px);
         background-color: hsl(from var(--clr-surface-1) h s l / 0.7);
         display: flex;
@@ -173,7 +172,7 @@
         grid-column: span 2;
         grid-row: 2 / 3;
 
-        margin: var(--space-100);
+        margin: var(--space-100) var(--space-0);
         display: flex;
         align-items: center;
         gap: var(--space-100);

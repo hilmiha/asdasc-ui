@@ -1,7 +1,7 @@
-.radio-toggle-vertical{
+.button.radio-toggle-vertical{
     flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-100);
+    padding: var(--space-150) var(--space-200);
     .icon-before{
         margin: 0px;
         min-height: 20px;

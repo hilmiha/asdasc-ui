@@ -9,6 +9,14 @@
 @import '@fontsource/inter/800.css';
 @import '@fontsource/inter/900.css';
 
+@font-face {
+    font-family: 'Noto Color Emoji';
+    font-style: normal;
+    font-display: fallback;
+    font-weight: 400;
+    src: url(@fontsource/noto-color-emoji/files/noto-color-emoji-emoji-400-normal.woff2) format('woff2'), url(@fontsource/noto-color-emoji/files/noto-color-emoji-emoji-400-normal.woff) format('woff');
+}
+
 :root {
     // Font weights
     --font-weight-light: #{$font-weight-light};           
@@ -32,6 +40,8 @@
     --space-800: #{$space-800};
     --space-1000: #{$space-1000};
 
+    --scrollbar-gutter: #{$space-50};
+
     @include generate-font-size-variable(medium);
     @include generate-global-color-variable(false);
 
@@ -40,9 +50,9 @@
     color: var(--clr-text);
 
     *:not(.ql-editor):not(.ql-editor *):not(.cm-editor):not(.cm-editor *){
-        font-family: 'Inter', monospace;
+        font-family: 'Inter', 'Noto Color Emoji', monospace;
         font-size: var(--font-size);
-        line-height: 160%;
+        line-height: 1.6;
 
         &.text-code{
             font-family: monospace;
@@ -54,8 +64,22 @@
     .text-sub{
         color: var(--clr-surface-6);
     }
+    .text-sm{
+        font-size: var(--font-size-sm) !important;
+    }
+    .text-lg{
+        font-size: var(--font-size-lg) !important;
+    }
+    .text-xl{
+        font-size: var(--font-size-xl) !important;
+    }
+
     .text-title{
         font-weight: var(--font-weight-bold);
+    }
+    .text-title-sm{
+        font-weight: var(--font-weight-bold);
+        font-size: var(--font-size-sm) !important;
     }
     .text-title-lg{
         font-weight: var(--font-weight-bold);
@@ -130,9 +154,11 @@ html {
 }
 
 /* width */
+
+
 ::-webkit-scrollbar {
-    width: var(--space-50);
-    height: var(--space-50);
+    width: var(--scrollbar-gutter);
+    height: var(--scrollbar-gutter);
 }
 
 /* Track */

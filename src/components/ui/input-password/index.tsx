@@ -16,6 +16,7 @@ const InputPassword = ({
     value = '',
     isDisabled = false,
     onChange = undefined,
+    onKeyDown = undefined,
     error = undefined,
     onValidate = undefined,
     config = undefined,
@@ -38,6 +39,7 @@ const InputPassword = ({
             txtPlaceholder={txtPlaceholder}
             isDisabled={isDisabled}
             onChange={onChange}
+            onKeyDown={onKeyDown}
             onValidate={onValidate}
             config={config}
             error={error}
@@ -69,6 +71,7 @@ interface _InputPassword {
     value?:string;
     isDisabled?:boolean
     onChange?:(newValue:string, e:React.ChangeEvent<HTMLInputElement>|React.MouseEvent<HTMLButtonElement, MouseEvent>|undefined)=>void
+    onKeyDown?:(e:React.KeyboardEvent<HTMLInputElement>, value:string)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string)=>void;
     config?:inputTextConfigType;

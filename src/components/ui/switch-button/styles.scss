@@ -99,6 +99,7 @@
     padding-left: var(--space-25);
     padding-right: var(--space-25);
     position: relative;
+    background-color: hsl(from var(--clr-surface-1) h s l / 1);
 
     &.rounded{
         border-radius: var(--space-100);

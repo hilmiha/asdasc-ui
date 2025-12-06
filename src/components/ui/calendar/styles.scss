@@ -649,6 +649,14 @@
     }
 
     .rdp-range_start {
+        .rdp-day_button{
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            
+            &:hover, &:focus-visible{
+                background-color: var(--clr-primary-800);
+            }
+        }
         background: var(--rdp-range_start-background);
     }
 
@@ -672,6 +680,13 @@
     }
 
     .rdp-range_end {
+        .rdp-day_button{
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            &:hover, &:focus-visible{
+                background-color: var(--clr-primary-800);
+            }
+        }
         background: var(--rdp-range_end-background);
     }
 
@@ -681,6 +696,12 @@
     }
 
     .rdp-range_start.rdp-range_end {
+        .rdp-day_button{
+            border-top-right-radius: var(--global-radius);
+            border-bottom-right-radius: var(--global-radius);
+            border-top-left-radius: var(--global-radius);
+            border-bottom-left-radius: var(--global-radius);
+        }
         background: revert;
     }
 

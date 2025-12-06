@@ -27,6 +27,7 @@ export const InputTextarea = ({
     onFocus = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined
 }:_InputTextarea) =>{
@@ -71,11 +72,18 @@ export const InputTextarea = ({
     useEffect(()=>{
         if((value !== tampValue) && !isFocus){
             setTampValue(value)
-            if(onValidate && config){
+            if(onValidate && config && isDirty){
                 ctrl.doValidateValue(type, value, onValidate, config)
             }
         }
     },[value])
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(onValidate && config){
+                ctrl.doValidateValue(type, value, onValidate, config)
+            }
+        }
+    },[triggerValidate])
 
     
     // Textarea height height resize start =====
@@ -165,7 +173,14 @@ export const InputTextarea = ({
                     )
                 }
                 {
-                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
+                    (config?.isWithCounter && !isDisabled)&&(
+                        <div>
+                            <p className='text-sub text-sm'>{`${tampValue.length}${config.maxLength?(` / ${config.maxLength}`):('')}`}</p>
+                        </div>
+                    )
+                }
+                {
+                    (tampValue.length > 0 && !isDisabled && config?.isShowClear)&&(
                         <IconButton
                             className='clear-button'
                             icon={<PiXBold/>}
@@ -228,6 +243,7 @@ export interface _InputTextarea {
     onFocus?:(e:React.FocusEvent<HTMLTextAreaElement>, value:string)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, value:string)=>void;
+    triggerValidate?:0|1;
     config?:inputTextareaConfigType;
 }
 
@@ -246,7 +262,8 @@ export type inputTextareaConfigType = {
     validRegex?:[RegExp, string][]
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
-    isHideClear?:boolean
+    isWithCounter?:boolean
+    isShowClear?:boolean
 }
 
 export type inputTextareaStyleType = {

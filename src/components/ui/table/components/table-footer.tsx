@@ -2,7 +2,7 @@ import * as ctrl from '../controller';
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
 import IconButton from "../../icon-button"
-import { PiArrowLineUpBold, PiCaretDownBold, PiCaretLeftBold, PiCaretLineLeftBold, PiCaretLineRightBold, PiCaretRightBold, PiCheckBold, PiColumnsBold, PiDotsSixVerticalBold, PiEyeBold, PiEyeClosedBold, PiGearBold, PiGearFill } from "react-icons/pi"
+import { PiArrowLineUpBold, PiCaretDownBold, PiCaretLeftBold, PiCaretLineLeftBold, PiCaretLineRightBold, PiCaretRightBold, PiCheckBold, PiDotsSixVerticalBold, PiEyeBold, PiEyeClosedBold, PiGearBold, PiGearFill } from "react-icons/pi"
 import DropdownMenu from "../../dropdown-menu"
 import Button from "../../button"
 import Sortable from "sortablejs"
@@ -13,6 +13,7 @@ import type { globalShapeType, optionItemType } from "src/components/_types"
 import CheckboxButton from "../../checkbox-button"
 import clsx from "clsx"
 import Spinner from '../../spinner';
+import { TbColumns3 } from 'react-icons/tb';
 
 const TableFooter = ({
     tableContainerRef,
@@ -63,10 +64,10 @@ const TableFooter = ({
         {id:'100', txtLabel:'100 Rows'},
     ]
     const columnList = useDeepCompareMemo<optionItemType[]>(()=>{
-        const tamp:optionItemType[] = column.filter(i=>(i.key!=='#checkbox' && i.key!=='#expandable')).map((i)=>{
+        const tamp:optionItemType[] = column.filter(i=>(i.key!=='#checkbox' && i.key!=='#expandable' && !i.isAlwaysShow)).map((i)=>{
             return({
                 id:i.key,
-                txtLabel:i.txtLabel,
+                txtLabel:i.alis||i.txtLabel||i.key,
                 type:'option'
             })
         })
@@ -247,7 +248,7 @@ const TableFooter = ({
                             <DropdownMenu
                                 trigger={
                                     <IconButton
-                                        icon={<PiColumnsBold className='global-icon'/>}
+                                        icon={<TbColumns3 className='global-icon'/>}
                                         txtLabel='Column'
                                         appearance='subtle'
                                         shape={shape}

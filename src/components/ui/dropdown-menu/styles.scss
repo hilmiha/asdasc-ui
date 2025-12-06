@@ -1,11 +1,11 @@
 .dropdown-menu-dropdown{
     .content-box{
         .element-header-box{
-            padding: var(--space-0) !important;
+            padding: var(--space-50) !important;
         }
 
         .dropdown-body-box{
-            margin: var(--space-0) !important;
+            padding: var(--space-25) var(--space-50) !important;
             overflow: auto;
         }
 
@@ -15,19 +15,20 @@
     }
 
     .dropdown-body-box{
-        padding: var(--space-25) var(--space-0);
         display: grid;
         grid-auto-rows: max-content;
         .dropdown-item {
             flex-grow: 1;
             width: auto;
-            margin: var(--space-25) var(--space-50);
+            margin: var(--space-25) var(--space-0);
 
             .text-label-box{
                 flex-grow: 1;
                 flex-direction: column;
                 align-items: start;
-                
+                .text-label{
+                    text-align: start;
+                }
                 .text-sublabel{
                     font-size: var(--font-size-sm);
                     font-weight: var(--font-weight-normal);
@@ -84,7 +85,9 @@
                     flex-grow: 1;
                     flex-direction: column;
                     align-items: start;
-                    
+                    .text-label{
+                        text-align: start;
+                    }
                     .text-sublabel{
                         color: var(--clr-surface-5);
                         font-size: var(--font-size-sm);

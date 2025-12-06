@@ -27,6 +27,7 @@ const InputDate = ({
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined,
 }:_InputDate) =>{
@@ -54,6 +55,14 @@ const InputDate = ({
             ctrl.doValidateValue(type, value, onValidate,config)
         }
     },[JSON.stringify(value)])
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(!isDropdownOpen && onValidate && config){
+                ctrl.doValidateValue(type, value, onValidate,config)
+            }
+        }
+    },[triggerValidate])
 
     return(
         <div className={clsx(
@@ -92,6 +101,9 @@ const InputDate = ({
                                     const isTriggerClicked = !(e.target as HTMLElement).classList.contains('clear-button')
                                     if((e.keyCode===13 || e.keyCode===32) && isTriggerClicked ){
                                         e.preventDefault()
+                                        if(!triggerButtonRef.current){
+                                            triggerButtonRef.current = trigger.current as HTMLButtonElement
+                                        }
                                         triggerButtonRef.current?.click()
                                     }
                                 }}
@@ -120,7 +132,7 @@ const InputDate = ({
                                     )
                                 }
                                 {
-                                    (value && !isDisabled && !config?.isHideClear)&&(
+                                    (value && !isDisabled && config?.isShowClear)&&(
                                         <IconButton
                                             className='clear-button'
                                             icon={<PiXBold/>}
@@ -218,6 +230,7 @@ interface _InputDate {
     onChange?:(newValue:validCalendarValue)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:validCalendarValue)=>void;
+    triggerValidate?:0|1;
     config?:inputDateTimeConfigType;
 }
 
@@ -228,7 +241,7 @@ export type inputDateTimeConfigType = {
     disabledDates?:validCalendarDisabledValue[]
     sufixElement?:JSX.Element|string
     prefixElement?:JSX.Element|string
-    isHideClear?:boolean
+    isShowClear?:boolean
     minSelected?:number
     maxSelected?:number
 }

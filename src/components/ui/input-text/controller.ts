@@ -7,6 +7,7 @@ import type { DebouncedFunc } from "lodash";
 export const getInputTypeMode = (type: inputTextType): {type:"numeric" | "text" | "password", mode:'text' | 'tel'} => {
     switch (type) {
         case 'number':
+        case 'tel':
         case 'number-text':
             return {type:'numeric', mode:'tel'}
         case 'password':
@@ -174,6 +175,16 @@ export const onInputChange = (
         case 'number-text':
             newValue = inputValue.replace(/[^0-9]/g, '')
             break
+        case 'tel':
+            if(inputValue.length===0){
+                newValue = ''
+            }else if (!inputValue.startsWith('+')) {
+                newValue = '+' + newValue.replace(/\D/g, '');
+            } else {
+                newValue = '+' + newValue.slice(1).replace(/\D/g, '');
+            }
+
+            break
         case 'number':
             const cleanedValue = getCleanedNumberForState(inputValue);
             newValue = cleanedValue;
@@ -226,6 +237,12 @@ export const onInputBlur = (
     if(type==='number'){
         newValue = getCleanedNumberForState(newValue)
     }
+
+    if(type==='tel'){
+        if(newValue==='+'){
+            newValue = ''
+        }
+    }
     
     //send new value out of this component (trimmed and clean)
     if(oldValue!==newValue){
@@ -275,5 +292,15 @@ export const onClearButtonClick = (
 
     if(inputRef?.current){
         inputRef.current.focus()
+    }
+}
+
+export const onKeyDownInput = (
+    event:React.KeyboardEvent<HTMLInputElement>,
+    value:string,
+    onKeyDown?:(e:React.KeyboardEvent<HTMLInputElement>, value:string)=>void
+) => {
+    if(onKeyDown){
+        onKeyDown(event, value)
     }
 }

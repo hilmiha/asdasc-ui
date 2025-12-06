@@ -130,7 +130,9 @@ const BottomSheet = ({
         whileElementsMounted: autoUpdate,
     });
     const dismiss = useDismiss(context,{
-        enabled:(floatingConfig?.isDisableDismiss!==undefined)?(!floatingConfig.isDisableDismiss):(true),
+        enabled:(floatingConfig?.disabledDismiss==='all'?(false):(true)),
+        escapeKey:(floatingConfig?.disabledDismiss==='esc'?false:true),
+        outsidePress:(floatingConfig?.disabledDismiss==='outside'?false:true),
         outsidePressEvent: 'pointerdown',
         ancestorScroll: false,
     });
@@ -279,7 +281,7 @@ const BottomSheet = ({
                                                         }
                                                     </div>
                                                     {
-                                                        (!floatingConfig?.isDisableDismiss)&&(
+                                                        (floatingConfig?.disabledDismiss!=='all')&&(
                                                             <IconButton
                                                                 className='x-button'
                                                                 icon={<PiXBold className='global-icon x-icon'/>}
@@ -381,7 +383,7 @@ interface _BottomSheet{
 export type bottomSheetFloatingConfig = {
     defaultSnapPoint?:'FULL'|'HALF';
     snapPointSize?:snapPointSizeType;
-    isDisableDismiss?:boolean;
+    disabledDismiss?:'all'|'esc'|'outside'
     isChildOpen?:boolean;
     level?:number;
 }

@@ -1,3 +1,5 @@
+import { detectPhoneNumber } from "./inter-phone-number-helper";
+
 export const getFormatedNumberForDisplay = (value: string): string => {
     if (!value) return '';
     
@@ -89,3 +91,36 @@ export function parsePropsToDocumentation(propsString: string) {
     }).filter(Boolean);
     return result;
 }
+
+export const getFileSizeDisplay = (size: number) => {
+    var fSExt = new Array("Bytes", "KB", "MB", "GB"),
+    i = 0;
+    while (size > 900) {
+        size /= 1024;
+        i++;
+    }
+    var exactSize = Math.round(size * 100) / 100 + " " + fSExt[i];
+
+    return exactSize;
+};
+
+export const getFormatedPhoneNumber = (value: string) => {
+    const detect = detectPhoneNumber(value);
+    const code = detect.code;
+
+    // Remove the country code from the value
+    let nationalNumber = value.replace(code, ""); 
+
+    // Ensure only digits remain
+    nationalNumber = nationalNumber.replace(/\D/g, ""); 
+
+    // Format into blocks: 3-4-4
+    const part1 = nationalNumber.substring(0, 3);
+    const part2 = nationalNumber.substring(3, 7);
+    const part3 = nationalNumber.substring(7, 11);
+
+    // Join parts (skip undefined)
+    const formatted = [code, part1, part2, part3].filter(Boolean).join("-");
+
+    return formatted;
+};

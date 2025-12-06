@@ -25,9 +25,11 @@ const InputSelection = ({
     option = [],
     value = [],
     isDisabled = false,
+    isLoading = false,
     onChange = undefined,
     error = undefined,
     onValidate = undefined,
+    triggerValidate = 0,
 
     config = undefined,
 }:_InputSelection) =>{
@@ -44,8 +46,21 @@ const InputSelection = ({
     const [searchParam, setSearchParam] = useState('')
 
     const labelValue = useDeepCompareMemo(()=>{
-        return ctrl.getDisplayValue(value, option)
+        const labelsTamp = ctrl.getDisplayValue(value, option)
+        return(
+            <>
+                {
+                    labelsTamp.map((i, idx)=>(
+                        <span className='value-label-text' style={{whiteSpace:'pre'}} key={i.txtLabel}>
+                            {type==='single'&&i.icon}{i.txtLabel}
+                            {((idx+1)!==labelsTamp.length)?(','):('')}
+                        </span>
+                    ))
+                }
+            </>
+        )
     },[value, option])
+    
 
     const optionTamp = useDeepCompareMemo(()=>{
         return ctrl.getProcessedOption(value, option, searchParam, config?.maxValue)
@@ -66,6 +81,14 @@ const InputSelection = ({
             ctrl.doValidateValue(value, onValidate,config)
         }
     },[JSON.stringify(value)])
+
+    useEffect(()=>{
+        if(triggerValidate===1){
+            if(!isDropdownOpen && onValidate && config){
+                ctrl.doValidateValue(value, onValidate,config)
+            }
+        }
+    },[triggerValidate])
 
     return(
         <div className={clsx(
@@ -91,6 +114,7 @@ const InputSelection = ({
             <DropdownMenu
                 className='input-select-dropdown'
                 isDisabled={isDisabled}
+                isLoading={isLoading}
                 trigger={
                     (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
                         if(trigger.current){
@@ -118,6 +142,9 @@ const InputSelection = ({
                                     const isTriggerClicked = !(e.target as HTMLElement).classList.contains('clear-button')
                                     if((e.keyCode===13 || e.keyCode===32) && isTriggerClicked ){
                                         e.preventDefault()
+                                        if(!triggerButtonRef.current){
+                                            triggerButtonRef.current = trigger.current as HTMLButtonElement
+                                        }
                                         triggerButtonRef.current?.click()
                                     }
                                 }}
@@ -132,7 +159,7 @@ const InputSelection = ({
                                 <div className='value-label-box'>
                                     {
                                         (value.length>0)?(
-                                            <p className='value-label'>{labelValue.join(', ')}</p>
+                                            <>{labelValue}</>
                                         ):(
                                             <span className='placeholder'>{txtPlaceholder}</span>
                                         )
@@ -146,7 +173,7 @@ const InputSelection = ({
                                     )
                                 }
                                 {
-                                    (value.length > 0 && !isDisabled && !config?.isHideClear)&&(
+                                    (value.length > 0 && !isDisabled && config?.isShowInlineClear)&&(
                                         <IconButton
                                             className='clear-button'
                                             icon={<PiXBold/>}
@@ -193,56 +220,54 @@ const InputSelection = ({
                     }
                 }}
                 elementHeader={
-                    <>
-                        {
-                            (config?.isCombobox)?(
-                                <div className='search-bar-box'>
-                                    <InputText 
-                                        ref={searchBarRef}
-                                        type='text'
-                                        txtPlaceholder='Search...'
-                                        value={searchParam}
-                                        onChange={(newValue)=>{setSearchParam(newValue)}}
-                                        config={{
-                                            prefixElement:<PiMagnifyingGlassBold className='global-icon'/>
-                                        }}
-                                    />
-                                </div>
-                            ):undefined
-                        }
-                        {
-                            (!config?.isHideClear)&&(
-                                <div className='reset-box'>
-                                    <Button
-                                        shape='box'
-                                        className='reset-button'
-                                        txtLabel={'Clear Selection'}
-                                        appearance='subtle'
-                                        onClick={(e)=>{
-                                            if(onChange){
-                                                ctrl.clearValue(e, onChange)
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            )
-                        }
-                    </>
+                    (config?.isCombobox || config?.isShowOptionBoxClear)?(
+                        <>
+                            {
+                                (config?.isCombobox)?(
+                                    <div className='search-bar-box'>
+                                        <InputText 
+                                            ref={searchBarRef}
+                                            type='text'
+                                            txtPlaceholder='Search...'
+                                            value={searchParam}
+                                            onChange={(newValue)=>{setSearchParam(newValue)}}
+                                            config={{
+                                                prefixElement:<PiMagnifyingGlassBold className='global-icon'/>
+                                            }}
+                                        />
+                                    </div>
+                                ):undefined
+                            }
+                            {
+                                (config?.isShowOptionBoxClear)&&(
+                                    <div className='reset-box'>
+                                        <Button
+                                            shape='box'
+                                            className='reset-button'
+                                            txtLabel={'Clear Selection'}
+                                            appearance='subtle'
+                                            onClick={(e)=>{
+                                                if(onChange){
+                                                    ctrl.clearValue(e, onChange)
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )
+                            }
+                        </>
+                    ):(undefined)
                 }
                 elementFooter={
-                    <>
-                        {
-                            (searchParam && optionTamp.length===0 && option.length>0)&&(
-                                <div className='empty-box'>
-                                    <PiEmpty className='global-icon' size={32}/>
-                                    <div>
-                                        <span>No result.</span>
-                                        <span>Try other search param!</span>
-                                    </div>
-                                </div>
-                            )
-                        }
-                    </>
+                    (searchParam && optionTamp.length===0 && option.length>0)?(
+                        <div className='empty-box'>
+                            <PiEmpty className='global-icon' size={32}/>
+                            <div>
+                                <span>No result.</span>
+                                <span>Try other search param!</span>
+                            </div>
+                        </div>
+                    ):(undefined)
                 }
                 floatingConfig={{
                     isLockScroll:true,
@@ -291,11 +316,13 @@ interface _InputSelection {
     type:inputSelectType;
     txtPlaceholder?:string;
     isDisabled?:boolean;
+    isLoading?:boolean;
     option?:optionItemType[];
     value?:string[];
     onChange?:(newValue:string[], option:optionItemType|undefined, e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>void;
     error?:fieldErrorType;
     onValidate?:(error:fieldErrorType, newValue:string[])=>void;
+    triggerValidate?:0|1;
     config?:inputSelectConfigType;
 }
 
@@ -308,7 +335,8 @@ export type inputSelectConfigType = {
     maxValue?:number
     sufixElement?:React.ReactNode|string
     prefixElement?:React.ReactNode|string
-    isHideClear?:boolean
+    isShowInlineClear?:boolean
+    isShowOptionBoxClear?:boolean
 }
 
 export type inputSelectionStyleType = {

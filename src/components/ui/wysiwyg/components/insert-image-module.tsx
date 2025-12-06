@@ -72,7 +72,6 @@ const InsertImageModule = ({
                                 onChange={(newValue)=>{setHeight(newValue)}}
                                 config={{
                                     sufixElement:'px',
-                                    isHideClear:true
                                 }}
                             />
                             <InputText
@@ -82,7 +81,6 @@ const InsertImageModule = ({
                                 onChange={(newValue)=>{setWidth(newValue)}}
                                 config={{
                                     sufixElement:'px',
-                                    isHideClear:true
                                 }}
                             />
                             <div style={{display:'flex', justifyContent:'end'}}>
@@ -141,7 +139,6 @@ const InsertImageModule = ({
                             onChange={(newValue)=>{setHeight(newValue)}}
                             config={{
                                 sufixElement:'px',
-                                isHideClear:true
                             }}
                         />
                         <InputText
@@ -151,7 +148,6 @@ const InsertImageModule = ({
                             onChange={(newValue)=>{setWidth(newValue)}}
                             config={{
                                 sufixElement:'px',
-                                isHideClear:true
                             }}
                         />
                         <div style={{display:'flex', justifyContent:'end'}}>

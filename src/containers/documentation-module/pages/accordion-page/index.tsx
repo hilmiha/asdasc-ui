@@ -47,7 +47,7 @@ const AccordionPage = () =>{
                     justifyContent:'space-between'
                 }}>
                     <p className="text-title-xl">Accordion</p>
-                    <div style={{display:'flex', gap:'var(--space-25)'}}>
+                    <div style={{display:'flex', gap:'var(--space-100)'}}>
                         <IconButton
                             icon={<PiArrowLeftBold className="global-icon"/>}
                             txtLabel={`to ${prevComp.name}`}

@@ -9,6 +9,7 @@ import Dropdown from '../dropdown';
 import clsx from 'clsx';
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context';
 import type { checkboxButtonAppearance } from '../checkbox-button';
+import Skeleton from '../skeleton';
 
 const DropdownMenu = ({
     className,
@@ -19,6 +20,7 @@ const DropdownMenu = ({
     optionSelected = undefined,
     optionSelectedAppearance = 'subtle-selected',
     isDisabled = false,
+    isLoading = false,
     onClick,
     onClose,
     onOpen,
@@ -126,6 +128,17 @@ const DropdownMenu = ({
                     }}
                     floatingConfig={floatingConfig}
                 />
+                {
+                    (isLoading)&&(
+                        <div style={{display:'grid', gap:'var(--space-100)', margin:'var(--space-50) var(--space-0)'}}>
+                            <Skeleton style={{margin:'0px'}}/>
+                            <Skeleton style={{margin:'0px'}}/>
+                            <Skeleton style={{margin:'0px'}}/>
+                            <Skeleton style={{margin:'0px'}}/>
+                            <Skeleton style={{margin:'0px'}}/>
+                        </div>
+                    )
+                }
             </Dropdown>
         )
     }else{
@@ -195,6 +208,7 @@ interface _DropdownMenu {
     optionSelected?:string[];
     optionSelectedAppearance?:checkboxButtonAppearance;
     isDisabled?:boolean;
+    isLoading?:boolean;
     onClick?:(idOption:string, option:optionItemType, e:React.MouseEvent<HTMLButtonElement>)=>void;
     onOpen?: () => void;
     onClose?: () => void;

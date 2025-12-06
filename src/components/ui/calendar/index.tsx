@@ -2,12 +2,13 @@ import './styles.scss'
 import * as ctrl from './controller';
 import clsx from 'clsx'
 import { useContext, useMemo, useState } from 'react'
-import { DayPicker, type CustomComponents, type DateRange, type Mode } from "react-day-picker"
+import { DayPicker, isDateRange, type CustomComponents, type DateRange, type Mode } from "react-day-picker"
 import { GlobalContext, type _GlobalContextType } from 'src/context/global-context'
 import type { globalShapeType } from 'src/components/_types'
 import CalendarNavigation from './components/calendar-navigation'
 import CalendarPickerArea from './components/calendar-picker-area'
 import TimePicker from './components/time-picker'
+import { closestIndexTo, isAfter, isBefore, isSameDay, isWithinInterval } from 'date-fns';
 
 const Calendar = ({
     type = 'single',
@@ -81,6 +82,7 @@ const Calendar = ({
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
+                        defaultMonth={value?((value as Date[])[0]):(undefined)}
                         components={components}
                         mode='multiple'
                         selected={value as Date[] | undefined}
@@ -92,10 +94,39 @@ const Calendar = ({
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
+                        defaultMonth={value?((value as DateRange).from):(undefined)}
                         components={components}
                         mode='range'
                         selected={value as DateRange | undefined}
-                        onSelect={(newValue)=>{ctrl.onValueChange(type, value, newValue, isDisabled, onChange)}}
+                        onSelect={(newValue)=>{
+                            if(!value || !newValue){
+                                ctrl.onValueChange(type, value, newValue, isDisabled, onChange)
+                            }
+                        }}
+                        onDayClick={(clickedDate)=>{
+                            if(value && isDateRange(value) && value.from && value.to){
+                                const currentValueFrom = value.from
+                                const currentValueTo = value.to
+                                
+                                let newValue = undefined
+                                if(isSameDay(clickedDate, currentValueFrom) || isSameDay(clickedDate, currentValueTo)){
+
+                                }else if(isWithinInterval(clickedDate, {start:currentValueFrom, end:currentValueTo})){
+                                    const clesesTo = closestIndexTo(clickedDate, [currentValueFrom, currentValueTo]);
+                                    if(clesesTo===0){
+                                        newValue = {from:clickedDate, to:currentValueTo}
+                                    }else{
+                                        newValue = {from:currentValueFrom, to:clickedDate}
+                                    }
+                                }else if(isAfter(clickedDate, currentValueFrom)){
+                                    newValue = {from:currentValueFrom, to:clickedDate}
+                                }else if(isBefore(clickedDate, currentValueFrom)){
+                                    newValue = {from:clickedDate, to:currentValueTo}
+                                }
+                                ctrl.onValueChange(type, value, newValue, isDisabled, onChange)
+
+                            }
+                        }}
                         disabled={disabledDates}
                         fixedWeeks={true}
                     />
@@ -103,6 +134,7 @@ const Calendar = ({
                     <DayPicker
                         startMonth={calendarStartValue}
                         endMonth={calendarEndValue}
+                        defaultMonth={value?((value as Date)):(undefined)}
                         components={components}
                         mode='single'
                         selected={value as Date | undefined}

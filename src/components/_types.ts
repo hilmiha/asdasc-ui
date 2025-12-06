@@ -6,7 +6,7 @@ export type globalShapeType = 'rounded' | 'box' | 'circle';
 export type globalAppearanceType = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'subtle';
 
 export type fieldErrorType = {
-    isError:boolean,
+    isError:true | false | null,
     errorMessage:string
 }
 
@@ -18,5 +18,6 @@ export type optionItemType = {
     alias?:string, 
     icon?:JSX.Element,
     isDisabled?:boolean,
+    data?:{[key:string]:any},
     childOption?:optionItemType[]
 };

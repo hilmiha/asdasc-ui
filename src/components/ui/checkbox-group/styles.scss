@@ -1,53 +1,74 @@
-.checkbox-tree-box{
-    margin: var(--space-25);
-    .text-label-box{
-        .text-label{
-            text-align: start;
+.checkbox-group-container{
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    
+    &.error{
+        .checkbox-button{
+            border-color: var(--clr-danger-700) !important;
         }
     }
-    .checkbox-button{
+    .checkbox-tree-box{
         margin: var(--space-25);
-    }
-    .parent-box{
-        display: flex;
-        align-items: start;
-        gap: var(--space-0);
+        .text-label-box{
+            .text-label{
+                text-align: start;
+            }
+        }
+        .checkbox-button{
+            // padding: var(--space-0) var(--space-50);
+            // min-height: unset;
+            margin: var(--space-25);
+            margin-left: var(--space-100);
+        }
+        .parent-box{
+            display: flex;
+            align-items: start;
+            gap: var(--space-0);
 
-        .collapse-button{
-            margin-top: var(--space-100);
-            height: fit-content;
-            width: fit-content;
-            padding: var(--space-0);
+            .collapse-button{
+                margin-top: calc(var(--space-100) + 2px);
+                height: fit-content;
+                width: fit-content;
+                padding: var(--space-0);
 
-            .global-icon{
-                color: var(--clr-surface-4);
+                .global-icon{
+                    color: var(--clr-surface-4);
+                }
+            }
+        }
+
+        .child-box{
+            margin-left: calc(var(--space-400) - 5px);
+            position: relative;
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.3s ease-out;
+
+            >div{
+                overflow: hidden;
+                padding-left: var(--space-25);
+            }
+            
+            &.closed{
+                grid-template-rows:  0fr;
+            }
+
+            &::after{
+                content: '';
+                position: absolute;
+                display: block;
+                height: 100%;
+                border-left: 1px solid var(--clr-border);
+                left: -20px;
             }
         }
     }
-
-    .child-box{
-        margin-left: var(--space-400);
-        position: relative;
-        display: grid;
-        grid-template-rows: 1fr;
-        transition: grid-template-rows 0.3s ease-out;
-
-        >div{
-            overflow: hidden;
-        }
-        
-        &.closed{
-            grid-template-rows:  0fr;
-        }
-
-        &::after{
-            content: '';
-            position: absolute;
-            display: block;
-            height: 100%;
-            width: 1px;
-            background-color: var(--clr-border);
-            left: -20px;
-        }
+    .error-box{
+        margin: var(--space-100) var(--space-0);
+        display: flex;
+        align-items: center;
+        gap: var(--space-100);
+        color: var(--clr-danger-700);
     }
 }
+

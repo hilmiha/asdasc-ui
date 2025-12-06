@@ -42,42 +42,37 @@ const Table = ({
 
     const tableColumnFloatingRef = useRef<HTMLTableRowElement>(null);
     const [isColumnDragging, setIsColumnDragging] = useState(false)
-    const [column, setColumn] = useState<tableColumnType[]>(tableColumn)
+    const [column, setColumn] = useState<tableColumnType[]>([])
     const [columnShowList, setColumnShowList] = useState<string[]>(column.map((i)=>i.key)) 
     
     useEffect(()=>{
-        const tampColumnKeys = column.map((i)=>i.key)
+        const tampColumnKeys = tableColumn.map((i)=>i.key)
+        let tampNew = [...tableColumn]
+        
         if(isCheckbox && !tampColumnKeys.includes('#checkbox')){
-            setColumn((prev)=>{
-                const tampNew = [
-                    {
-                        key:'#checkbox',
-                        size:{size:'0%', min:'23px'},
-                        txtLabel:''
-                    },
-                    ...prev
-                ]
-
-                setColumnShowList(tampNew.map((i)=>i.key))
-                return tampNew
-            })
+            tampNew = [
+                {
+                    key:'#checkbox',
+                    size:{size:'0%', min:'23px'},
+                    txtLabel:''
+                },
+                ...tampNew
+            ]
         }
         if(isExpandable && !tampColumnKeys.includes('#expandable')){
-            setColumn((prev)=>{
-                const tampNew = [
-                    {
-                        key:'#expandable',
-                        size:{size:'0%', min:'23px'},
-                        txtLabel:''
-                    },
-                    ...prev
-                ]
-
-                setColumnShowList(tampNew.map((i)=>i.key))
-                return tampNew
-            })
+            tampNew = [
+                {
+                    key:'#expandable',
+                    size:{size:'0%', min:'23px'},
+                    txtLabel:''
+                },
+                ...tampNew
+            ]
         }
-    },[])
+
+        setColumn(tampNew)
+        setColumnShowList(tampNew.map((i)=>i.key))
+    },[JSON.stringify(tableColumn), isCheckbox, isExpandable])
 
     const [rowExpanded, setRowExpanded] = useState<string[]>([])
 
@@ -99,7 +94,7 @@ const Table = ({
         if(onClickRowCheckbox){
             onClickRowCheckbox([])
         }
-    },[tableConfig])
+    },[JSON.stringify(tableConfig)])
 
     return(
         <div
@@ -113,122 +108,140 @@ const Table = ({
             )}
         >
             <div
-                className='table-box'
-                ref={tableContainerRef}
                 style={{
-                    maxHeight:'100%',
-                    overflowY:isColumnDragging?'hidden':'auto'
-                }}
-                onScroll={(e)=>{
-                    const scrollTop = (e.target as HTMLDivElement).scrollTop
-                    if(scrollTop>0){
-                        setIsTableScrolled(true)
-                    }else{
-                        setIsTableScrolled(false)
-                    }
+                    overflowX:'auto',
+                    display:'grid',
+                    gridAutoRows:'min-content 1fr'
                 }}
             >
-                <table className={clsx('table-header-floating')}>
-                    <TableColumn
-                        ref={tableColumnFloatingRef}
-                        column={column}
-                        setColumn={setColumn}
-                        columnShowList={columnShowList}
-                        tableConfig={tableConfig}
-                        onClickSortColumn={onClickSortColumn}
+                <div
+                    className='header-box'
+                    style={{
+                        paddingRight:'var(--scrollbar-gutter)',
+                        backgroundColor:'hsl(from var(--clr-surface-2) h s l / 1)'
+                    }}
+                >
+                    <table className={clsx('table-header-floating')}>
+                        <TableColumn
+                            ref={tableColumnFloatingRef}
+                            column={column}
+                            setColumn={setColumn}
+                            columnShowList={columnShowList}
+                            tableConfig={tableConfig}
+                            onClickSortColumn={onClickSortColumn}
 
-                        setIsColumnDragging={setIsColumnDragging}
-                        isColumnSwapable={isColumnSwapable}
-                        isLoading={isLoading}
+                            setIsColumnDragging={setIsColumnDragging}
+                            isColumnSwapable={isColumnSwapable}
+                            isLoading={isLoading}
 
-                        columnCheckboxState={columnCheckboxState}
-                        onClickColumnCheckbox={()=>{
-                            if(onClickRowCheckbox && !isLoading){
-                                ctrl.onClickCheckboxAll(columnCheckboxState, tableData, onClickRowCheckbox)
-                            }
-                        }}
-                        onClickExpandAll={()=>{
-                            if(!isLoading){
-                                ctrl.onClickExpandAll(tableData, setRowExpanded)
-                            }
-                        }}
-                        shape={shape}
-                    />
-                </table>
-                <table className="table-data" style={{height:'1px'}}>
-                    <tbody className='table-body'>
-                        {
-                            (isLoading)?(
-                                <>
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                    <TableDataRowLoading
-                                        column={column}
-                                        columnShowList={columnShowList} 
-                                        shape={shape}
-                                    />
-                                </>
-                            ):(
-                                <>
-                                    {tableData.map((rowData) => (
-                                        <TableDataRow
-                                            key={rowData.id}
-                                            rowData={rowData}
+                            columnCheckboxState={columnCheckboxState}
+                            onClickColumnCheckbox={()=>{
+                                if(onClickRowCheckbox && !isLoading){
+                                    ctrl.onClickCheckboxAll(columnCheckboxState, tableData, onClickRowCheckbox)
+                                }
+                            }}
+                            onClickExpandAll={()=>{
+                                if(!isLoading){
+                                    ctrl.onClickExpandAll(tableData, setRowExpanded)
+                                }
+                            }}
+                            shape={shape}
+                        />
+                    </table>
+                </div>
+                <div
+                    style={{
+                        maxHeight:'100%',
+                        overflowY:isColumnDragging?'hidden':'auto',
+                        overflowX:'hidden',
+                        scrollbarGutter:'stable'
+                    }}
+                    ref={tableContainerRef}
+                    onScroll={(e)=>{
+                        const scrollTop = (e.target as HTMLDivElement).scrollTop
+                        if(scrollTop>0){
+                            setIsTableScrolled(true)
+                        }else{
+                            setIsTableScrolled(false)
+                        }
+                    }}
+                >
+                    <table className='table-data' style={{height:'1px'}}>
+                        <tbody className='table-body'>
+                            {
+                                (isLoading)?(
+                                    <>
+                                        <TableDataRowLoading
                                             column={column}
-                                            columnShowList={columnShowList}
-                                            onClickRow={onClickRow}
-                                            onClickRowAction={onClickRowAction}
-                                            onClickRowCheckbox={(rowData)=>{
-                                                if(onClickRowCheckbox){
-                                                    ctrl.onClickCheckboxRow(selectedRow, rowData, onClickRowCheckbox)
-                                                }
-                                            }}
-                                            isSelected={selectedRow.includes(rowData.id)}
-                                            isExpanded={rowExpanded.includes(rowData.id)}
-                                            onClickExpandButton={(id)=>{
-                                                ctrl.onClickExpandRow(id, setRowExpanded)
-                                            }}
+                                            columnShowList={columnShowList} 
                                             shape={shape}
                                         />
-                                    ))}
-                                </>
-                            )
-                        }
-                    </tbody>
-                </table>
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                        <TableDataRowLoading
+                                            column={column}
+                                            columnShowList={columnShowList} 
+                                            shape={shape}
+                                        />
+                                    </>
+                                ):(
+                                    <>
+                                        {tableData.map((rowData, idx) => (
+                                            <TableDataRow
+                                                idx={idx}
+                                                key={rowData.id}
+                                                rowData={rowData}
+                                                column={column}
+                                                columnShowList={columnShowList}
+                                                onClickRow={onClickRow}
+                                                onClickRowAction={onClickRowAction}
+                                                onClickRowCheckbox={(rowData)=>{
+                                                    if(onClickRowCheckbox){
+                                                        ctrl.onClickCheckboxRow(selectedRow, rowData, onClickRowCheckbox)
+                                                    }
+                                                }}
+                                                isSelected={selectedRow.includes(rowData.id)}
+                                                isExpanded={rowExpanded.includes(rowData.id)}
+                                                onClickExpandButton={(id)=>{
+                                                    ctrl.onClickExpandRow(id, setRowExpanded)
+                                                }}
+                                                shape={shape}
+                                            />
+                                        ))}
+                                    </>
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {
                 (isShowFooter)&&(
@@ -299,6 +312,7 @@ export type rowActionButtonType = {
 export type tableColumnType = {
     key:string,
     txtLabel:string,
+    alis?:string,
     size:{
         size:string,
         min:string
@@ -306,6 +320,8 @@ export type tableColumnType = {
     horizontalAlign?:'start' | 'end' | 'center',
     verticalAlign?:'top' | 'bottom' | 'middle',
     isCanSort?:boolean,
+    isAlwaysShow?:boolean
+    isLockSwap?:boolean,
     isDefaultSort?:boolean
 
     type?:'row-action'
@@ -321,4 +337,6 @@ export type tableConfigType = {
     totalData: number;
     sortBy: string;
     isSortDesc: boolean;
+    searchParam?:string
+    filter?:{[key:string]:any}
 }

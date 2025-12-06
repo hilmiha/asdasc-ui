@@ -13,7 +13,7 @@ $clr-red: (
     dark: #E2483D,
 );
 $clr-orange: (
-    light: #ff8903, //#ffb869
+    light: #ff8903,
     dark: #ff6900,
 );
 $clr-yellow: (
@@ -29,15 +29,15 @@ $clr-green: (
     dark: #0aa347,
 );
 $clr-emerald: (
-    light: #00bc7d,
-    dark: #009966,
+    light: #09b097,
+    dark: #0a9f89,
 );
 $clr-teal: (
     light: #42B2D7,
     dark: #2898BD,
 );
 $clr-blue: (
-    light: #388BFF,
+    light: #388BFF, //#256EB8,
     dark: #1D7AFC,
 );
 $clr-purple: (
@@ -89,19 +89,33 @@ $clr-black: (
 
 @mixin generate-surface-colors($prefix, $colors, $isDark: false) {
     @if $isDark {
+        // --#{$prefix}-1: #{color.mix(map.get($colors, light), #101214, 5%)};
+        // --#{$prefix}-2: #{color.mix(map.get($colors, light), #121416, 8%)};
+        // --#{$prefix}-3: #{color.mix(map.get($colors, light), #17191c, 10%)};
+        // --#{$prefix}-4: #{color.mix(map.get($colors, light), #38414A, 12%)};
+        // --#{$prefix}-5: #{color.mix(map.get($colors, light), #596773, 15%)};
+        // --#{$prefix}-6: #{color.mix(map.get($colors, light), #7a8d9d, 20%)};
+
         --#{$prefix}-1: #{color.mix(map.get($colors, light), #101214, 5%)};
-        --#{$prefix}-2: #{color.mix(map.get($colors, light), #121416, 8%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, light), #121416, 7%)};
         --#{$prefix}-3: #{color.mix(map.get($colors, light), #17191c, 10%)};
         --#{$prefix}-4: #{color.mix(map.get($colors, light), #38414A, 12%)};
         --#{$prefix}-5: #{color.mix(map.get($colors, light), #596773, 15%)};
-        --#{$prefix}-6: #{color.mix(map.get($colors, light), #7a8d9d, 20%)};
+        --#{$prefix}-6: #{color.mix(map.get($colors, light), #8a9095, 20%)};
     } @else {
-        --#{$prefix}-1: #{color.mix(map.get($colors, dark), #F7F8F9, 5%)};
-        --#{$prefix}-2: #{color.mix(map.get($colors, dark), #f6f7f9, 10%)};
-        --#{$prefix}-3: #{color.mix(map.get($colors, dark), #f1f3f7, 15%)};
-        --#{$prefix}-4: #{color.mix(map.get($colors, dark), #bac2cf, 20%)};
-        --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8c95a4, 25%)};
-        --#{$prefix}-6: #{color.mix(map.get($colors, light), #5c626c, 20%)};
+        // --#{$prefix}-1: #{color.mix(map.get($colors, dark), #F7F8F9, 5%)};
+        // --#{$prefix}-2: #{color.mix(map.get($colors, dark), #f6f7f9, 10%)};
+        // --#{$prefix}-3: #{color.mix(map.get($colors, dark), #f1f3f7, 15%)};
+        // --#{$prefix}-4: #{color.mix(map.get($colors, dark), #bac2cf, 20%)};
+        // --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8c95a4, 25%)};
+        // --#{$prefix}-6: #{color.mix(map.get($colors, light), #5c626c, 20%)};
+
+        --#{$prefix}-1: #{color.mix(map.get($colors, dark), #FFFFFF, 0%)};
+        --#{$prefix}-2: #{color.mix(map.get($colors, dark), #f6f7f9, 4%)};
+        --#{$prefix}-3: #{color.mix(map.get($colors, dark), #f1f3f7, 12%)};
+        --#{$prefix}-4: #{color.mix(map.get($colors, dark), #bac2cf, 17%)};
+        --#{$prefix}-5: #{color.mix(map.get($colors, dark), #8c95a4, 22%)};
+        --#{$prefix}-6: #{color.mix(map.get($colors, light), #606469, 28%)};
     }
 }
 
@@ -236,7 +250,7 @@ $clr-danger:$clr-red; //defaul danger color
         --font-size-lg: #{$font-size-lg};
         --font-size-xl: #{$font-size-xl};
     }  @else {
-        $font-size-sm:10px;
+        $font-size-sm:11px;
         $font-size:12px;
         $icon-size:14px;
         $font-size-lg:16px;

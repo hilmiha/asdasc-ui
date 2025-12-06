@@ -1,0 +1,31 @@
+.input-phone-number{
+
+    .button-error{
+        border-color: var(--clr-danger-700);
+    }
+}
+
+//Style dropdown container
+.country-option-dropdown, .dropdown-bottom-sheet{
+    .search-bar-box{
+        margin: var(--space-25) var(--space-50);
+    }
+
+    .empty-box{
+        margin: var(--space-400) var(--space-150);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        >div{
+            margin-top: var(--space-100);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap:var(--space-50);
+        }
+    }
+
+    .dropdown-item .text-label{
+        font-weight: var(--font-weight-normal);
+    }
+}

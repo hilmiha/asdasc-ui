@@ -7,6 +7,7 @@ import { GlobalContext, type _GlobalContextType } from 'src/context/global-conte
 import Tooltip from '../tooltip';
 import type { globalAppearanceType, globalShapeType } from 'src/components/_types';
 import Spinner from '../spinner';
+import type { Placement } from '@floating-ui/react';
 
 const IconButton = ({
     ref = undefined,
@@ -21,7 +22,9 @@ const IconButton = ({
     isDisabled = false,
     isLoading = false,
     isShowtooltip = true,
-    onClick = undefined
+    tooltipPlacement = 'top',
+    onClick = undefined,
+    tabIndex = undefined
 }:_IconButton) =>{
 
     //Context start ====
@@ -33,10 +36,12 @@ const IconButton = ({
     return(
         <Tooltip
             content={isShowtooltip?txtLabel:''}
+            placement={tooltipPlacement}
         >
             <button
                 ref={ref}
                 id={id}
+                tabIndex={tabIndex}
                 className={
                     clsx(
                         className,
@@ -92,7 +97,9 @@ interface _IconButton {
     isDisabled?:boolean;
     isLoading?:boolean;
     isShowtooltip?:boolean;
+    tooltipPlacement?:Placement;
     onClick?:(e:React.MouseEvent<HTMLButtonElement>)=>void;
+    tabIndex?:number
 }
 
 export type iconButtonStyleType = {

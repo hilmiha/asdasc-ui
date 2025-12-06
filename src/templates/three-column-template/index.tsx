@@ -77,7 +77,7 @@ const ThreeColumnTemplate = ({
                     className
                 )}
                 style={{
-                    gridTemplateColumns:(screenSize==='laptop' || screenSize==='tablet')?'240px 1fr':('1fr'),
+                    gridTemplateColumns:(screenSize==='laptop' || screenSize==='tablet')?'270px 1fr':('1fr'),
                     gridTemplateRows:(screenSize==='mobile')?('max-content 1fr'):('1fr')
                 }}
             >

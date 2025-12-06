@@ -128,7 +128,7 @@ export const handlePointerUp = (
 
     //if disable dismiss, bottom sheet cant be hidden
     if(
-        floatingConfig?.isDisableDismiss&&
+        floatingConfig?.disabledDismiss==='all'&&
         closestSnapPoint === 'HIDDEN'
     ){
         closestSnapPoint = 'HALF'

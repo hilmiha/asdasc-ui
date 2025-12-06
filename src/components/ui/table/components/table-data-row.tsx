@@ -10,6 +10,7 @@ import CheckboxButton from "../../checkbox-button";
 import type { globalShapeType } from "src/components/_types";
 
 const TableDataRow = ({
+    idx,
     rowData,
     onClickRow,
     onClickRowAction,
@@ -21,6 +22,7 @@ const TableDataRow = ({
     onClickExpandButton,
     shape,
 }:{
+    idx:number,
     rowData:tableRowDataType
     onClickRow?:(rowData:tableRowDataType)=>void
     onClickRowAction?:(idButton:string, rowDate:tableRowDataType)=>void
@@ -33,6 +35,10 @@ const TableDataRow = ({
     shape?:globalShapeType
 }) =>{
 
+    const isOdd = useMemo(()=>{
+        return idx % 2 !== 0;
+    },[idx])
+    
     const isCanClickRow = useMemo(()=>{
         if(onClickRow!==undefined){
             return true
@@ -45,6 +51,7 @@ const TableDataRow = ({
             <tr 
                 className={clsx({
                     ['row-clickable']:(isCanClickRow),
+                    ['row-odd']:(isOdd),
                     ['row-selected']:(isSelected)
                 })}
                 key={rowData.id} 

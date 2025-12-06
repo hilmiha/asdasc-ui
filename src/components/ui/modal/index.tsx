@@ -70,7 +70,9 @@ const Modal = ({
         whileElementsMounted: autoUpdate,
     });
     const dismiss = useDismiss(context,{
-        enabled:(floatingConfig?.isDisableDismiss!==undefined)?(!floatingConfig.isDisableDismiss):(true),
+        enabled:(floatingConfig?.disabledDismiss==='all'?(false):(true)),
+        escapeKey:(floatingConfig?.disabledDismiss==='esc'?false:true),
+        outsidePress:(floatingConfig?.disabledDismiss==='outside'?false:true),
         outsidePressEvent: 'pointerdown',
         ancestorScroll: false,
     });
@@ -153,7 +155,7 @@ const Modal = ({
                             >
                                 {
                                     (txtTitle || iconTitle)&&(
-                                        <div className='modal-title-box'>
+                                        <div className='modal-title-box' style={style?.titleBox}>
                                             <div className='title'>
                                                 {
                                                     (iconTitle)&&(
@@ -171,7 +173,7 @@ const Modal = ({
                                                 }
                                             </div>
                                             {
-                                                (!floatingConfig?.isDisableDismiss)&&(
+                                                (floatingConfig?.disabledDismiss!=='all')&&(
                                                     <IconButton
                                                         className='x-button'
                                                         icon={<PiXBold className='global-icon'/>}
@@ -190,6 +192,7 @@ const Modal = ({
                                     (elementHeader)&&(
                                         <div
                                             className='modal-header-box'
+                                            style={style?.header}
                                         >
                                             {elementHeader}
                                         </div>
@@ -197,6 +200,7 @@ const Modal = ({
                                 }
                                 <div
                                     className='modal-body-box'
+                                    style={style?.body}
                                 >
                                     {children}
                                 </div>
@@ -204,6 +208,7 @@ const Modal = ({
                                     (elementFooter)&&(
                                         <div
                                             className='modal-footer-box'
+                                            style={style?.footer}
                                         >
                                             {elementFooter}
                                         </div>
@@ -222,7 +227,7 @@ const Modal = ({
 
 export default Modal
 
-interface _Modal {
+export interface _Modal {
     isOpen?:boolean;
     setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     txtTitle?:string;
@@ -241,10 +246,14 @@ interface _Modal {
 
 type modalSizeType = 'small' | 'medium' | 'large' | 'full'
 type modalStyleType = {
-    container:React.CSSProperties,
+    container?:React.CSSProperties,
+    titleBox?:React.CSSProperties,
+    header?:React.CSSProperties,
+    body?:React.CSSProperties,
+    footer?:React.CSSProperties,
 }
 type modalFloatingConfigType = {
     isChildOpen?:boolean;
-    isDisableDismiss?:boolean;
+    disabledDismiss?:'all'|'esc'|'outside'
     level?:number;
 }
