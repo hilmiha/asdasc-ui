@@ -13,7 +13,7 @@ import clsx from "clsx";
 const ToolbarComponent = ({
     quill,
     shape,
-    moduleList = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block'],
+    moduleList = ['bold', 'italic', 'underline', 'strike', 'code', 'subscript', 'superscript', 'text-type', 'order-list', 'unorder-list', 'indent', 'align', 'color', 'highlight', 'link', 'image', 'quote-block', 'code-block', 'clear'],
     isDisabled = false,
     isFloating = false,
 }:{

@@ -66,7 +66,7 @@ const FloatingToolbarWrapper = (
             position: strategy,
             top: y,
             left: x ?? 0,
-            zIndex: 1,
+            zIndex: 10,
             display:isVisible?('block'):('none')
         }}
         >
