@@ -22,6 +22,7 @@ const ColorPreview = ({
             <div
                 className='global-radius'
                 style={{
+                    border:'1px solid var(--clr-border)',
                     position:'absolute',
                     height:height??'31.6px',
                     width:width??'31.6px',
