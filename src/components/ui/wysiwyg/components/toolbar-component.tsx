@@ -393,7 +393,7 @@ const ToolbarComponent = ({
             {
                 moduleList.includes('color')&&(
                     <FormatTextColorModule
-                        selected={activeFormats.color || '#000000'}
+                        selected={activeFormats.color || ''}
                         onApply={(value) => formatText('color', value)}
                         isDisabled={isDisabled}
                     />

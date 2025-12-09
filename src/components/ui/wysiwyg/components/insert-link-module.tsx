@@ -1,5 +1,4 @@
 import { PiArrowRightBold, PiLinkBold } from "react-icons/pi"
-import Dropdown from "../../dropdown"
 import IconButton from "../../icon-button"
 import { useContext, useEffect, useRef, useState } from "react"
 import { GlobalContext, type _GlobalContextType } from "src/context/global-context"
@@ -7,6 +6,7 @@ import BottomSheet from "../../bottom-sheet"
 import InputText from "../../input-text"
 import Button from "../../button"
 import Quill from "quill"
+import Modal from "../../modal"
 
 const InsertLinkModule = ({
     quill,
@@ -84,60 +84,57 @@ const InsertLinkModule = ({
                         </BottomSheet>
                     </>
                 ):(
-                    <Dropdown
-                        trigger={
-                            (triggerRef, getReferenceProps, isDropdownOpen, trigger)=>{
-                                if(trigger.current){
-                                    triggerButtonRef.current = trigger.current as HTMLButtonElement
-                                }
-                                return(
-                                    <IconButton 
-                                        ref={triggerRef}
-                                        {...(getReferenceProps?.() ?? {})}
-                                        icon={<PiLinkBold className="global-icon"/>}
-                                        txtLabel={'Insert Link'}
-                                        appearance="subtle"
-                                        isSelected={isDropdownOpen}
-                                        isDisabled={isDisabled}
+                    <>
+                        <IconButton 
+                            icon={<PiLinkBold className="global-icon"/>}
+                            txtLabel={'Insert Link'}
+                            appearance="subtle"
+                            isSelected={isOpen}
+                            onClick={()=>{setIsOpen(true)}}
+                            isDisabled={isDisabled}
+                        />
+                        <Modal
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                            onOpen={()=>{
+                                setSelection(quill?.getSelection()||{index: 0, length: 0})
+                            }}
+                            onClose={()=>{
+                                setLink('')
+                                setLinkTxt('')
+                            }}
+                        >
+                            <div style={{display:"grid", gap:"var(--space-100)"}}>
+                                <InputText
+                                    type="text-no-space"
+                                    txtPlaceholder="Enter link..."
+                                    value={link}
+                                    onChange={(newValue)=>{setLink(newValue)}}
+                                />
+                                <InputText
+                                    type="text"
+                                    txtPlaceholder="Enter link text..."
+                                    value={linkTxt}
+                                    onChange={(newValue)=>{setLinkTxt(newValue)}}
+                                />
+                                <div style={{display:'flex', justifyContent:'end'}}>
+                                    <Button
+                                        iconAfter={<PiArrowRightBold className="global-icon"/>}
+                                        txtLabel={'Insert'}
+                                        appearance="primary"
+                                        isDisabled={!linkTxt && !link}
+                                        onClick={()=>{
+                                            if(triggerButtonRef.current){
+                                                triggerButtonRef.current.click()
+                                            }
+                                            onInsert(selection, link, linkTxt)
+                                            setIsOpen(false)
+                                        }}
                                     />
-                                )
-                            }
-                        }
-                        onOpen={()=>{
-                            setSelection(quill?.getSelection()||{index: 0, length: 0})
-                        }}
-                        onClose={()=>{
-                            setLink('')
-                            setLinkTxt('')
-                        }}
-                    >
-                        <InputText
-                            type="text-no-space"
-                            txtPlaceholder="Enter link..."
-                            value={link}
-                            onChange={(newValue)=>{setLink(newValue)}}
-                        />
-                        <InputText
-                            type="text-no-space"
-                            txtPlaceholder="Enter link text..."
-                            value={linkTxt}
-                            onChange={(newValue)=>{setLinkTxt(newValue)}}
-                        />
-                        <div style={{display:'flex', justifyContent:'end'}}>
-                            <Button
-                                iconAfter={<PiArrowRightBold className="global-icon"/>}
-                                txtLabel={'Insert'}
-                                appearance="primary"
-                                isDisabled={!linkTxt && !link}
-                                onClick={()=>{
-                                    if(triggerButtonRef.current){
-                                        triggerButtonRef.current.click()
-                                    }
-                                    onInsert(selection, link, linkTxt)
-                                }}
-                            />
-                        </div>
-                    </Dropdown>
+                                </div>
+                            </div>
+                        </Modal>
+                    </>
                 )
             }
         </>

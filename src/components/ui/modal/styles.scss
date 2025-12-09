@@ -27,7 +27,7 @@
         overflow: hidden;
         border: 1px solid var(--clr-border);
         outline: 0px;
-        padding: var(--space-300);
+        padding: var(--space-300) var(--space-0);
         background-color: var(--clr-surface-2);
         max-height: 80vh;
         gap: var(--space-250);
@@ -111,6 +111,7 @@
             }
         }
         .modal-title-box{
+            padding: var(--space-0) var(--space-300);
             display: flex;
             align-items: center;
 
@@ -147,7 +148,14 @@
             }
         }
 
+        .modal-header-box{
+            padding: var(--space-0) var(--space-300);
+        }
+        .modal-footer-box{
+            padding: var(--space-0) var(--space-300) ;
+        }
         .modal-body-box{
+            padding: var(--space-50) var(--space-300);
             overflow: auto;
         }
     }
